@@ -31,10 +31,5 @@ public class ViewBabyController implements Serializable {
         child = connect.getChildren();
         return child;
     }
-    
-    
-    
-    
-    
-    
+       
 }

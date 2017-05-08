@@ -1,13 +1,14 @@
 package com.child.Model;
 
 import com.models.Person;
+import java.io.Serializable;
 import java.util.Date;
 
 /**
  * 
  * @author Barry Gray Kapelembe 
  */
-public class Child extends Person {
+public class Child extends Person implements Serializable{
     private String destingushingMarks;
     private Temperature temp;
     private Meals meal;
@@ -16,17 +17,17 @@ public class Child extends Person {
     private ChildMedicalHistory medicalHistory;
     private int babyProfileid;
     
-    /*SELECT `babyprofile`.`idBabyProfile`,
-    `babyprofile`.`firstName`,
-    `babyprofile`.`lastName`,
-    `babyprofile`.`distinguishingMarks`
-FROM `onthatile children's ministries`.`babyprofile`;
-*/
-
+    public void clearChild(){
+        this.destingushingMarks = null;
+        super.setLastname(null);
+        super.setFirstname(null);
+    }
+    
     public Child(String firstname, String lastname, char gender, String placeOfBirth, Date dateOfBirth) {
         super(firstname, lastname, gender, placeOfBirth, dateOfBirth);
     }
-
+    public Child(){
+    }
     public Child(String destingushingMarks, String firstname, String lastname) {
         super(firstname, lastname);
         this.destingushingMarks = destingushingMarks;

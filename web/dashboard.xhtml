@@ -43,9 +43,17 @@
                             </p:submenu>
                             <p:submenu label="Baby tracker">
                                 <p:menuitem value="View child profiles" actionListener="#{menuView.delete}" action="viewBaby" ajax="false" icon="ui-icon-close"/>
-                                <p:menuitem value="Add baby profile" actionListener="#{menuView.delete}"  ajax="false" icon="ui-icon-close"/>
-                                <p:menuitem value="Edit baby profile" actionListener="#{menuView.delete}"  ajax="false" icon="fa-edit"/>
+                                <p:menuitem value="Add baby profile" actionListener="#{menuView.delete}" action="addBaby" ajax="false" icon="ui-icon-close"/>
+                                <p:menuitem value="Edit baby profile" actionListener="#{menuView.delete}" action="editBaby"  ajax="true" icon="fa-edit"/>
+                                <p:menuitem value="Delete baby profile" actionListener="#{menuView.delete}" action="deleteBaby" ajax="true" icon="fa-edit"/>
                                 <p:menuitem value="Capture data" actionListener="#{menuView.delete}"  ajax="false" icon="ui-icon-close"/>
+                                <p:menuitem value="Generate report" actionListener="#{menuView.delete}"  ajax="false" icon="ui-icon-close"/>    
+                            </p:submenu>
+                            <p:submenu label="Intern / Applicant">
+                                <p:menuitem value="View Applicant profile" actionListener="#{menuView.delete}"  ajax="false" icon="ui-icon-close"/>
+                                <p:menuitem value="Add Applicant profile" actionListener="#{menuView.delete}"  ajax="false" icon="ui-icon-close"/>
+                                <p:menuitem value="Edit Applicant profile" actionListener="#{menuView.delete}"   ajax="true" icon="fa-edit"/>
+                                <p:menuitem value="Delete Applicant profile" actionListener="#{menuView.delete}"  ajax="true" icon="fa-edit"/>
                                 <p:menuitem value="Generate report" actionListener="#{menuView.delete}"  ajax="false" icon="ui-icon-close"/>    
                             </p:submenu>
                             <p:submenu label="Needs">
@@ -71,20 +79,8 @@
 
                 <p:layoutUnit position="center">
                     <div align="center"> 
-                        <h1>Staff memebrs</h1>
+                        <h1>Staff members</h1>
                         <hr/>
-
-                        <!--
-                         private String firstname;
-    private String lastname;
-    private char gender;
-    private String phoneNumber;
-    private String address;
-    private String placeOfBirth;
-    private Date dateOfBirth;
-    private String emailAddress;
-                        -->
-
                         <p:dataTable var="temp" value="#{OthantileStaffList.users}">
                             <p:column headerText="Staff ID">
                                 <h:outputText value="#{temp.staffID}" />

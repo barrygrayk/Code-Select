@@ -21,6 +21,8 @@ public abstract class Person {
         this.firstname = firstname;
         this.lastname = lastname;
     }
+    public Person(){
+    }
     private String placeOfBirth;
     private Date dateOfBirth;
     private String emailAddress;

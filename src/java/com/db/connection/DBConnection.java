@@ -28,9 +28,10 @@ public class DBConnection {
     private Connection conn = null;
     private Statement stmt = null;
     private ResultSet rs = null;
+    
     public DBConnection() {
-        this.dbUserName = "onthatileDB";
-        this.dbPassWord = "adminServer";
+        this.dbUserName = "root";
+        this.dbPassWord = "database";
         conString = "jdbc:mysql://localhost:3306/onthatile children's ministries";
     }
     public Connection getConnection() throws ClassNotFoundException {
@@ -45,6 +46,7 @@ public class DBConnection {
         }
         return con;
     }
+    
     public List<Staff> getUsers() {
         try {
             conn = getConnection();

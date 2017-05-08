@@ -1,12 +1,37 @@
 <?xml version='1.0' encoding='UTF-8' ?>
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml"
-      xmlns:h="http://xmlns.jcp.org/jsf/html">
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:p="http://primefaces.org/ui">
     <h:head>
         <title>Facelet Title</title>
     </h:head>
     <h:body>
-        Hello from Facelets
+        <!--Hello from Facelets-->
+        <h:form id="addChildForm">
+            <div id="childPersonalDetails">
+                <h1>Child Personal Profile</h1>
+                <p:panel header="Child Personal Details" style="margin-top:10px">
+                    <h:panelGrid columns="2" cellpadding="5">
+                        <p:outputLabel id="firstname" value="First Name:"/>
+                        <p:inputText id="txtFname" value="#{ChildCont.firstname}" />
+                        <p:outputLabel id="lastname" value="Surname:"/>
+                        <p:inputText id="txtSname" value="#{ChildCont.lastname}" />
+                        <p:outputLabel id="distinguishmark" value="Distinguish Mark:"/>
+                        <p:inputText id="txtDistinguishMark" value="#{ChildCont.destingushingMarks}" />
+                        <p:outputLabel id="gender" value="Gender:"/>
+                        <p:selectOneMenu id="genderOptions" value="Male">
+                            <!-- might require listener to display dropdown menu items -->
+                        </p:selectOneMenu>
+                        <p:outputLabel id="address" value="Address:"/>
+                        <p:inputTextarea rows="4" cols="40" />
+                        
+                        <h:commandButton value="Save" action="#{ChildCont.setChild()}"></h:commandButton>
+                         
+                    </h:panelGrid>
+                </p:panel>
+            </div>
+        </h:form>
     </h:body>
 </html>
 

@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project-private xmlns="http://www.netbeans.org/ns/project-private/1">
+    <editor-bookmarks xmlns="http://www.netbeans.org/ns/editor-bookmarks/2" lastBookmarkId="0"/>
+    <open-files xmlns="http://www.netbeans.org/ns/projectui-open-files/2">
+        <group>
+            <file>file:/Users/efsan1/NetBeansProjects/Code-Select/web/WEB-INF/faces-configRules.xml</file>
+            <file>file:/Users/efsan1/NetBeansProjects/Code-Select/src/java/com/db/connection/DBConnection.java</file>
+            <file>file:/Users/efsan1/NetBeansProjects/Code-Select/src/java/com/child/Model/Temperature.java</file>
+            <file>file:/Users/efsan1/NetBeansProjects/Code-Select/src/java/com/child/Model/Meals.java</file>
+            <file>file:/Users/efsan1/NetBeansProjects/Code-Select/web/WEB-INF/faces-config.xml</file>
+            <file>file:/Users/efsan1/NetBeansProjects/Code-Select/src/java/com/models/Person.java</file>
+            <file>file:/Users/efsan1/NetBeansProjects/Code-Select/src/java/com/child/Model/Weight.java</file>
+            <file>file:/Users/efsan1/NetBeansProjects/Code-Select/src/java/com/controller/ChildController.java</file>
+            <file>file:/Users/efsan1/NetBeansProjects/Code-Select/src/java/com/applicants/Controller/EducationAndQualification.java</file>
+            <file>file:/Users/efsan1/NetBeansProjects/Code-Select/src/java/com/child/Model/ChildMedicalHistory.java</file>
+            <file>file:/Users/efsan1/NetBeansProjects/Code-Select/web/index.xhtml</file>
+            <file>file:/Users/efsan1/NetBeansProjects/Code-Select/src/java/com/child/Model/Nappies.java</file>
+            <file>file:/Users/efsan1/NetBeansProjects/Code-Select/src/java/com/profile/Controller/UsersController.java</file>
+            <file>file:/Users/efsan1/NetBeansProjects/Code-Select/src/java/com/db/connection/ChildProfileConnection.java</file>
+            <file>file:/Users/efsan1/NetBeansProjects/Code-Select/src/java/com/applicants/Controller/SpiritualLife.java</file>
+            <file>file:/Users/efsan1/NetBeansProjects/Code-Select/nbproject/build-impl.xml</file>
+            <file>file:/Users/efsan1/NetBeansProjects/Code-Select/web/childProfile.xhtml</file>
+            <file>file:/Users/efsan1/NetBeansProjects/Code-Select/web/viewbaby.xhtml</file>
+            <file>file:/Users/efsan1/NetBeansProjects/Code-Select/src/java/com/profile/Controller/AddStaffMember.java</file>
+            <file>file:/Users/efsan1/NetBeansProjects/Code-Select/src/java/com/models/Role.java</file>
+            <file>file:/Users/efsan1/NetBeansProjects/Code-Select/src/java/com/child/Model/Child.java</file>
+            <file>file:/Users/efsan1/NetBeansProjects/Code-Select/src/java/com/applicants/Controller/ApplicantMedicalHistory.java</file>
+            <file>file:/Users/efsan1/NetBeansProjects/Code-Select/src/java/com/appstuff/models/DBConnection.java</file>
+            <file>file:/Users/efsan1/NetBeansProjects/Code-Select/src/java/com/models/Staff.java</file>
+            <file>file:/Users/efsan1/NetBeansProjects/Code-Select/web/addBaby.xhtml</file>
+            <file>file:/Users/efsan1/NetBeansProjects/Code-Select/web/welcomePrimefaces.xhtml</file>
+            <file>file:/Users/efsan1/NetBeansProjects/Code-Select/web/dashboard.xhtml</file>
+            <file>file:/Users/efsan1/NetBeansProjects/Code-Select/web/WEB-INF/web.xml</file>
+            <file>file:/Users/efsan1/NetBeansProjects/Code-Select/src/java/com/models/OthantileStaff.java</file>
+            <file>file:/Users/efsan1/NetBeansProjects/Code-Select/src/java/com/applicants/Controller/Applicant.java</file>
+        </group>
+    </open-files>
+</project-private>
