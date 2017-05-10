@@ -1,8 +1,7 @@
-package com.models;
+package com.staff.Model;
 
 import java.util.Date;
-import javax.faces.bean.ManagedBean;
-import javax.faces.bean.SessionScoped;
+
 
 /**
  * 

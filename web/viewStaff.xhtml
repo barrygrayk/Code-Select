@@ -5,11 +5,12 @@
       xmlns:p="http://primefaces.org/ui"
       xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
       xmlns:f="http://xmlns.jcp.org/jsf/core">
+    
 
 
     <ui:composition>
         <h:form>
-            <p:dataTable id="staff" var="temp" value="#{StaffMembers.allStaffMemebers}">
+            <p:dataTable id="staff" var="temp" value="#{StaffMembers.allStaffMemebers}" selectionMode="single" rowKey="#{temp.staffID}" selection="#{StaffMembers.selectedsatff}">
                 <f:facet name="header">
                     Staff Members
 

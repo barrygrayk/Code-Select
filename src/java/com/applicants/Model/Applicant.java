@@ -4,9 +4,9 @@
  * and open the template in the editor.
  */
 
-package com.applicants.Controller;
+package com.applicants.Model;
 
-import com.models.Person;
+import com.staff.Model.Person;
 import java.util.Date;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.SessionScoped;

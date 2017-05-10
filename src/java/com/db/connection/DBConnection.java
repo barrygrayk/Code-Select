@@ -1,6 +1,6 @@
 package com.db.connection;
 import com.child.Model.Child;
-import com.models.OthantileStaff;
+import com.staff.Model.OthantileStaff;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.PreparedStatement;

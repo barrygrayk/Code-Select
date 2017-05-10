@@ -1,6 +1,6 @@
 package com.child.Model;
 
-import com.models.Person;
+import com.staff.Model.Person;
 import java.util.Date;
 
 /**

@@ -1,5 +1,5 @@
 
-package com.models;
+package com.staff.Model;
 
 /**
  *

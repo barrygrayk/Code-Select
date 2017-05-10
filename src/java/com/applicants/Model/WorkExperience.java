@@ -1,5 +1,5 @@
 
-package com.applicants.Controller;
+package com.applicants.Model;
 
 import java.util.Date;
 import javax.faces.bean.ManagedBean;

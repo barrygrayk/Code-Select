@@ -1,6 +1,6 @@
 
-package com.profile.Controller;
-import com.models.OthantileStaff;
+package com.staff.Model;
+import com.staff.Model.OthantileStaff;
 import java.util.Date;
 import java.util.Random;
 import javax.faces.bean.ManagedBean;

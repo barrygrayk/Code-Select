@@ -1,7 +1,7 @@
-package com.profile.Controller;
+package com.Controllers;
 import com.MenuView.MenuView;
 import com.db.connection.StaffTableConnection;
-import com.models.OthantileStaff;
+import com.staff.Model.OthantileStaff;
 import java.io.Serializable;
 import java.sql.SQLException;
 import java.util.ArrayList;
@@ -23,6 +23,19 @@ public class StaffMemberController extends OthantileStaff implements Serializabl
 
     private int staffiid;
     private List<OthantileStaff> staff = new ArrayList<>();
+    private List<OthantileStaff> selectedStaffs = new ArrayList<>();
+    private OthantileStaff selectedsatff; 
+
+    public OthantileStaff getSelectedsatff() {
+        return selectedsatff;
+    }
+
+    public void setSelectedsatff(OthantileStaff selectedsatff) {
+        this.selectedsatff = selectedsatff;
+    }
+
+   
+    
     private List<String> roles = new ArrayList<>();
     private String role;
     private int id;

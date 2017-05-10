@@ -1,7 +1,7 @@
 package com.db.connection;
 
 import com.MenuView.MenuView;
-import com.models.OthantileStaff;
+import com.staff.Model.OthantileStaff;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;

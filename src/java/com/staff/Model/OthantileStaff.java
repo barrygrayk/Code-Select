@@ -1,17 +1,12 @@
-package com.models;
+package com.staff.Model;
 
 /**
  *
  * @author efsan1
  */
-import com.models.Person;
-import com.profile.Controller.Authentication;
-import com.profile.Controller.Authentication;
-import com.profile.Controller.Message;
-import com.profile.Controller.Message;
+
 import java.util.Date;
-import javax.faces.bean.ManagedBean;
-import javax.faces.bean.SessionScoped;
+
 
 public class OthantileStaff extends Person implements Role {
 
