@@ -59,8 +59,8 @@ public class StaffTableConnection extends DatabaseConnection {
             Logger.getLogger(StaffTableConnection.class.getName()).log(Level.SEVERE, null, ex);
         } finally {
             try {
-                //ps1.close();
-                //ps2.close();
+                ps1.close();
+                ps2.close();
                 connection.close();
             } catch (SQLException ex) {
                 Logger.getLogger(StaffTableConnection.class.getName()).log(Level.SEVERE, null, ex);

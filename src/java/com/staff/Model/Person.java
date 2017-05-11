@@ -20,6 +20,9 @@ public abstract class Person {
         this.firstname = firstname;
         this.lastname = lastname;
     }
+    
+    
+    
     private String placeOfBirth;
     private Date dateOfBirth;
     private String emailAddress;

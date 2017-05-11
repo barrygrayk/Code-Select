@@ -12,12 +12,35 @@
         <to-view-id>viewStaff.xhtml</to-view-id>
         <redirect/>
     </navigation-case>
-    <navigation-case>
+    <!--<navigation-case>
+        <from-outcome>viewBaby</from-outcome>
+        <to-view-id>viewbaby.xhtml</to-view-id>
+        <redirect/>
+    </navigation-case>-->
+
+     <navigation-case>
         <from-outcome>viewBaby</from-outcome>
         <to-view-id>viewbaby.xhtml</to-view-id>
         <redirect/>
     </navigation-case>
-     
+    
+    <navigation-case>
+        <from-outcome>addBaby</from-outcome>
+        <to-view-id>addBaby.xhtml</to-view-id>
+    </navigation-case>
+    
+    <navigation-case>
+        <from-outcome>deleteBaby</from-outcome>
+        <to-view-id>deleteBaby.xhtml</to-view-id>
+        <redirect/>
+    </navigation-case>
+    
+    <navigation-case>
+        <from-outcome>editBaby</from-outcome>
+        <to-view-id>editBaby.xhtml</to-view-id>
+        <redirect/>
+    </navigation-case>
 </navigation-rule>
+
 
 </faces-config>
