@@ -24,6 +24,7 @@ import org.primefaces.event.UnselectEvent;
 public class ChildController extends Child implements Serializable{
     
     private ArrayList <Child> listOfChildren;
+    
     private ArrayList <Child> selectedChildren;
     private Child child;
     private PreparedStatement ps;
