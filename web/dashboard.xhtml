@@ -16,7 +16,7 @@
 
                 <meta content='text/html; charset=UTF-8' http-equiv="Content-Type"/>
                 <meta name="viewport" content="width=device-width, initial-scale=1" />
-                <title>Onthatile Dashboard</title>
+                <title>Onthatile Dashboard</title>      
             </f:facet>
             <f:facet name="middle">
                 <h:outputStylesheet name="bootstrap/css/bootstrap.css" />
@@ -31,7 +31,7 @@
 
             <p:layout fullPage="true">
 
-                <p:layoutUnit position="north" size="50" resizable="true" closable="true" collapsible="true">
+                <p:layoutUnit position="north" size="50" resizable="true" closable="true" collapsible="true" >
                     <p>Onthatile</p>
                     <ui:include src="header.xhtml" />
                 </p:layoutUnit>
@@ -46,7 +46,7 @@
                         <f:ajax render=":content">
                             <p:growl autoUpdate="true"/>
 
-                            <p:panelMenu style="width:242px">
+                            <p:panelMenu style="width:256px">
 
                                 <p:submenu label="Dashboard"/>
                                 <p:submenu label="Messages">
@@ -55,17 +55,19 @@
                                 </p:submenu>
 
                                 <p:submenu label="Staff Management">
+                                    <p:menuitem id="adssd" value="Staff manger" actionListener="#{menuView.save}" action="#{Include.setPage('staffManager')}" icon="ui-icon-disk" update=":content"/>
                                     <p:menuitem id="ps" value="View Staff" actionListener="#{menuView.save}" action="#{Include.setPage('viewStaff')}" icon="ui-icon-disk" update=":content">
                                         <f:param name="navParam" value="viewStaff" />
                                     </p:menuitem>
                                     <p:menuitem id="add" value="Add staff" actionListener="#{menuView.save}" action="#{Include.setPage('addStaff')}" icon="ui-icon-disk" update=":content"/>
+                                    <p:menuitem value="View All" actionListener="#{menuView.update}"  action="#{Include.setPage('viewAllStaff')}" icon="ui-icon-disk" update=":content" />
                                     <p:menuitem value="Edit Staff" actionListener="#{menuView.update}"  icon="ui-icon-fa-edit" />
                                 </p:submenu>
                                <p:submenu label="Baby tracker">
-                                <p:menuitem value="View child profiles" actionListener="#{menuView.delete}" action="#{Include.setPage('viewbaby')}" ajax="false" icon="ui-icon-close"/>
-                                <p:menuitem value="Add baby profile" actionListener="#{menuView.delete}" action="#{Include.setPage('addBaby')}" ajax="false" icon="ui-icon-close"/>
-                                <p:menuitem value="Edit baby profile" actionListener="#{menuView.delete}" action="#{Include.setPage('editBaby')}"  ajax="false" icon="fa-edit"/>
-                                <p:menuitem value="Delete baby profile" actionListener="#{menuView.delete}" action="#{Include.setPage('deleteBaby')}" ajax="false" icon="fa-edit"/>
+                                <p:menuitem value="View child profiles" actionListener="#{menuView.delete}" action="#{Include.setPage('viewbaby')}" update=":content" icon="ui-icon-close"/>
+                                <p:menuitem value="Add baby profile" actionListener="#{menuView.delete}" action="#{Include.setPage('addBaby')}" update=":content" icon="ui-icon-close"/>
+                                <p:menuitem value="Edit baby profile" actionListener="#{menuView.delete}" action="#{Include.setPage('editBaby')}"  update=":content" icon="fa-edit"/>
+                                <p:menuitem value="Delete baby profile" actionListener="#{menuView.delete}" action="#{Include.setPage('deleteBaby')}" update=":content" icon="fa-edit"/>
                                 <p:menuitem value="Capture data" actionListener="#{menuView.delete}"  ajax="false" icon="ui-icon-close"/>
                                 <p:menuitem value="Generate report" actionListener="#{menuView.delete}"  ajax="false" icon="ui-icon-close"/>    
                             </p:submenu>

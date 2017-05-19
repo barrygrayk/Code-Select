@@ -20,12 +20,12 @@ public class Bean implements Serializable{
      }
 
    public String getPage() {
-         System.out.println("getting "+page);
+         System.out.println("getting________ "+page);
         return page;
     }
 
     public void setPage(String page) {
-        System.out.println(page);
+        System.out.println("__Setting____"+page);
         this.page = page;
     }
     

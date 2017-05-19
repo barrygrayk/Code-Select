@@ -4,69 +4,107 @@
       xmlns:h="http://xmlns.jcp.org/jsf/html"
       xmlns:p="http://primefaces.org/ui"
       xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
-      xmlns:f="http://xmlns.jcp.org/jsf/core">
-    
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      >
+
 
 
     <ui:composition>
         <h:form>
-            <p:dataTable id="staff" var="temp" value="#{StaffMembers.allStaffMemebers}" selectionMode="single" rowKey="#{temp.staffID}">
-                <f:facet name="header">
-                    Staff Members
+            <h3>Staff Members</h3>
 
-                    <p:commandButton id="toggler" type="button" value="Select Columns" style="float:right" icon="ui-icon-calculator" />
-                    <p:columnToggler datasource="staff" trigger="toggler" />
+            <p:dataTable id="staff" var="temp" value="#{StaffMembers.allStaffMemebers}"   selectionMode="single" rowKey="#{temp.staffID}" selection="#{StaffMembers.selectedsatff}">
+                <f:facet name="header">
                     <p:outputPanel>
                         <h:outputText value="Search all fields:" />
-                        <p:inputText id="globalFilter" onkeyup="PF('carsTable').filter()" style="width:150px" placeholder="Enter keyword"/>
+                        <p:inputText id="globalFilter"  style="width:150px" placeholder="Enter keyword"/>
                     </p:outputPanel>
                 </f:facet>
-                <p:column headerText="Staff ID" sortBy="#{temp.staffID}">
+                <!--Ajax Ed -->
+                <p:ajax event="rowSelect" listener="#{StaffMembers.onRowSelect}" update="@form"/>
+                <p:ajax event="rowUnselect" listener="#{StaffMembers.onRowUnselect}" update="@form"/>
+
+                <p:column headerText="Staff ID">
                     <h:outputText value="#{temp.staffID}" />
                 </p:column>
 
-                <p:column headerText="First name" sortBy="#{temp.firstname}">
+                <p:column headerText="First name" >
                     <h:outputText value="#{temp.firstname}" />
                 </p:column>
 
-                <p:column headerText="Last name" sortBy="#{temp.lastname}">
+                <p:column headerText="Last name" >
                     <h:outputText value="#{temp.lastname}" />
                 </p:column>
 
-                <p:column headerText="Gender" sortBy="#{temp.gender}">
-                    <h:outputText value="#{temp.gender}" />
-                </p:column>
-                <p:column headerText="Address" sortBy="#{temp.address}">
-                    <h:outputText value="#{temp.address}" />
-                </p:column>
 
-                <p:column headerText="Place of birth" sortBy="#{temp.placeOfBirth}">
-                    <h:outputText value="#{temp.placeOfBirth}" />
-                </p:column>
+                <f:facet name="footer">
 
-                <p:column headerText="Date" sortBy="#{temp.dateOfBirth}">
-                    <h:outputText value="#{temp.dateOfBirth}" />
-                </p:column>
-                <p:column headerText="Email address" sortBy="#{temp.emailAddress}">
-                    <h:outputText value="#{temp.emailAddress}" />
-                </p:column>
-                <p:column headerText="Role" sortBy="#{temp.roleName}">
-                    <h:outputText value="#{temp.roleName}" />
-                </p:column>
-                <p:column headerText="Edit">
-                    <a href="upadateStaff.xhtml?id=#{temp.staffID}" onclick="">Update</a>
-                </p:column>
-                <p:column headerText="Remove">
-
-                    <h:commandLink value ="Delete" action="#{StaffMembers.deleteStaffMember(temp.staffID)}"
-                                   onclick="if (!confirm('Are you sure you want to delete staff member'))
-                                               return false"/>
-
-                </p:column>
+                    <p:commandButton process="staff"  icon="ui-icon-search" value="View All" action="#{Include.setPage('viewAllStaff')}" update=":content"/>
+                    <p:commandButton process="staff"  icon="ui-icon-search" value="View" oncomplete="PF('multiCarDialog').show()" />
+                    <p:commandButton id="add_" value="Add" icon="ui-icon-extlink" type="button" onclick="PF('dlg1').show()" update="@form" oncomplete="PF('dig').hide();" />
+                    <p:commandButton id="dialog" value="Edit" icon="ui-icon-extlink" type="button" onclick="PF('dlg').show()" update="@form" oncomplete="PF('dig').hide();" />
+                    <p:commandButton value="Delete" actionListener="#{StaffMembers.deleteStaffMember()}"  update="@form" >
+                        <p:confirm header="Confirmation" message="Are you sure, you want delete selected record(s)?" icon="ui-icon-alert" />
+                    </p:commandButton>
+                    <p:confirmDialog global="true">
+                        <p:commandButton value="Yes" type="button" styleClass="ui-confirmdialog-yes" icon="ui-icon-check"  />
+                        <p:commandButton value="No" type="button" styleClass="ui-confirmdialog-no" icon="ui-icon-close" />
+                    </p:confirmDialog>
+                </f:facet>
 
             </p:dataTable>
+            <p:dialog header="Update Record" widgetVar="dlg"   resizable="false" responsive="true">
+                <ui:include src="updateStaff.xhtml" />
+            </p:dialog>
+            <p:dialog header="Add Record" widgetVar="dlg1" resizable="false" responsive="true">
+                <ui:include src="addStaff.xhtml" />
+            </p:dialog>
+
+
+            <p:dialog header="Bio dialog" widgetVar="multiCarDialog" modal="true" appendTo="@(body)" showEffect="fade" hideEffect="fade" resizable="false" width="auto">
+
+                <p:fieldset legend="View bio" toggleable="true" toggleSpeed="500">
+                    <h:panelGrid columns="2" cellpadding="30" class="addStaff">
+                        <h:outputLabel value="ID: "/>
+                        <h:outputText value="#{StaffMembers.selectedsatff.staffID}" style="display:block"/>
+                    </h:panelGrid>
+                    <h:panelGrid columns="2" cellpadding="30" class="addStaff">
+                        <h:outputLabel value="First name: "/>
+                        <h:outputText value="#{StaffMembers.selectedsatff.firstname}" style="display:block"/>
+                    </h:panelGrid>
+                    <h:panelGrid columns="2" cellpadding="30" class="addStaff">
+                        <h:outputLabel value="Last name: "/>
+                        <h:outputText value="#{StaffMembers.selectedsatff.lastname}" style="display:block"/>
+                    </h:panelGrid>
+                    <h:panelGrid columns="2" cellpadding="30" class="addStaff">
+                        <h:outputLabel value="Gender: "/>
+                        <h:outputText value="#{StaffMembers.selectedsatff.gender}" style="display:block"/>
+                    </h:panelGrid> 
+                    <h:panelGrid columns="2" cellpadding="30" class="addStaff">
+                        <h:outputLabel value="Address: "/>
+                        <h:outputText value="#{StaffMembers.selectedsatff.address}" style="display:block"/>
+                    </h:panelGrid> 
+                    <h:panelGrid columns="1"  cellpadding="30" class="addStaff">
+                        <h:outputLabel value="Place of birth:* " />
+                        <h:outputLabel value="#{StaffMembers.selectedsatff.placeOfBirth}" style="display:block" />
+                    </h:panelGrid>
+                    <h:panelGrid columns="2" cellpadding="30" class="addStaff">
+                        <h:outputLabel value="Email address: "/>
+                        <h:outputText value="#{StaffMembers.selectedsatff.emailAddress}" style="display:block"/>
+                    </h:panelGrid>
+                    <h:panelGrid columns="2" cellpadding="30" class="addStaff">
+                        <h:outputLabel value="Date of birth: "/>
+                        <h:outputText value="#{StaffMembers.selectedsatff.dateOfBirth}" style="display:block"/>
+                    </h:panelGrid>
+                    <h:panelGrid columns="2" cellpadding="30" class="addStaff">
+                        <h:outputLabel value="Role: "/>
+                        <h:outputText value="#{StaffMembers.selectedsatff.roleName}" style="display:block"/>
+                    </h:panelGrid> 
+                </p:fieldset>
+            </p:dialog>
         </h:form>
     </ui:composition>
 
 </html>
+
 

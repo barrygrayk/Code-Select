@@ -1,0 +1,105 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:h="http://xmlns.jcp.org/jsf/html">
+
+    <ui:composition>
+        <h2 align="center"> Staff manager</h2>
+        <h:panelGrid columns="1" cellpadding="30" columnClasses="no-border, no-border" >
+
+            <p:panel>
+                <hr/>
+                <h4 align="center"> Task Tracker </h4>
+                <hr/>
+                <p:timeline id="timeline" value="#{customTimelineView.model}" 
+                            editable="true" eventMargin="15" eventMarginAxis="0" 
+                            start="#{customTimelineView.start}" 
+                            end="#{customTimelineView.end}" 
+                            showNavigation="true" showButtonNew="true" 
+                            axisOnTop="true" stackEvents="false"/> 
+
+                <!--<p:timeline value="#{limitTimelineRangeView.model}"
+                            min="#{limitTimelineRangeView.min}"
+                            max="#{limitTimelineRangeView.max}"
+                            zoomMin="#{limitTimelineRangeView.zoomMin}"
+                            zoomMax="#{limitTimelineRangeView.zoomMax}"
+                            height="180px"  showNavigation="true"/>-->
+            </p:panel>
+            <hr/>
+            <h4 align="center"> Shift Management </h4>
+            <hr/>
+            <h:panelGrid columns="3" cellpadding="10"  columnClasses="no-border, no-border"  >
+                <p:panel>
+
+                    <h:form>
+                        <p:dataTable var="temp" value="#{StaffMembers.allStaffMemebers}" draggableRows="true" styleClass="myTable">
+
+                            <p:column headerText="Staff name">
+                                <h:outputText value="#{temp.firstname}"  />
+                                <h:outputText value="  " />
+                                <h:outputText value="#{temp.lastname}" />
+                            </p:column>
+
+                            <p:column headerText="Shift time">
+                                <h:outputText value="27/06/27" />
+                            </p:column>
+
+                            <p:column headerText="Status">
+                                <h:outputText value="In" />
+
+                                <f:facet name="footer">
+                                    <p:commandButton id="add_" value="Assign Shift" icon="ui-icon-extlink" type="button" onclick="PF('dlg1').show()" update="@form" oncomplete="PF('dig').hide();" />
+                                </f:facet>
+                            </p:column>
+                        </p:dataTable>
+                        <p:dialog header="Assign shift" widgetVar="dlg1" resizable="false" responsive="true">
+                            <h:form>
+                                <h:panelGrid columns="1"  cellpadding="30" class="addStaff">
+                                    <h:outputLabel for="mask"    value="Name *" />
+                                    <p:selectOneMenu id="name" value="#{StaffMembers.staffName}" effect="fold" required="true" >
+                                        <f:selectItem itemLabel="Select staff" itemValue="#{StaffMembers.staffName}" />
+                                        <f:selectItems value="#{StaffMembers.staffMemberNames}" />
+                                    </p:selectOneMenu>
+                                </h:panelGrid>
+
+                                <h:panelGrid columns="1"  cellpadding="30" class="addStaff">
+                                    <h:outputLabel for="mask"    value="Shift Date: *" />
+                                    <p:calendar id="mask" value="#{StaffMembers.dateOfBirth}" pattern="yyyy-MM-dd" mask="true" required="true" label="Date of birth" />
+                                </h:panelGrid>
+                                <h:panelGrid columns="1"  cellpadding="30" class="addStaff">
+                                    <p:outputLabel for="time" value="Shift time:" />
+                                    <p:calendar id="time" value="#{StaffMembers.dateOfBirth}" pattern="HH:mm" timeOnly="true"  />
+                                </h:panelGrid>
+
+                            </h:form>
+
+                        </p:dialog>
+                    </h:form>
+                </p:panel>
+                <p:panel toggleable="true" >
+
+                    <h:form>
+                        <p:calendar id="inline" value="#{StaffMembers.date}" mode="inline" />
+                        <p:outputLabel for="inline" value="#{StaffMembers.date}" />
+                    </h:form>
+                </p:panel>
+                <p:panel>
+                    <p:dataList value="#{StaffMembers.allStaffMemebers}" var="staff" type="ordered" >
+                        <f:facet name="header">
+                            Up coming events 
+                        </f:facet>
+                        #{staff.roleName}
+                    </p:dataList>
+                </p:panel>
+            </h:panelGrid>
+
+        </h:panelGrid>
+
+    </ui:composition>
+
+</html>
+

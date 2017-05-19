@@ -19,6 +19,7 @@ import java.util.logging.Logger;
 public class StaffTableConnection extends DatabaseConnection {
 
     private List<OthantileStaff> staff = new ArrayList<>();
+    private MenuView feedback = new MenuView ();
 
     public StaffTableConnection() {
         super();
@@ -100,6 +101,7 @@ public class StaffTableConnection extends DatabaseConnection {
     public OthantileStaff getAStaffMember(int id) throws ClassNotFoundException {
         OthantileStaff oStaff = null;
         try {
+            
             String sql = "SELECT staffID, firstName, LastName,gender,address,placeOfBirth,dateOfBirth, emailAddress, roleName "
                     + "     FROM"
                     + "     onthantilestaff,`staffroles` "
@@ -107,7 +109,8 @@ public class StaffTableConnection extends DatabaseConnection {
                     + "     onthantilestaff.staffID = OnthantileStaff_staffID AND onthantilestaff.staffID =?  ";
             getResultSet(id, sql);
             List<OthantileStaff> list = getOthantileStaffRecord();
-            oStaff = list.get(0);
+            if (list.size()>=1)
+                oStaff = list.get(0);
         } catch (SQLException ex) {
             Logger.getLogger(StaffTableConnection.class.getName()).log(Level.SEVERE, null, ex);
         } finally {
@@ -128,6 +131,8 @@ public class StaffTableConnection extends DatabaseConnection {
         try {
             setOthantileStaffColumns(staff, sql1, true).execute();
             setOthantileRoleColumns(staff, sql2, staff.getStaffID()).execute();
+            MenuView view = new MenuView ();
+            view.addMessage("Update complete", null);
         } catch (SQLException ex) {
             Logger.getLogger(StaffTableConnection.class.getName()).log(Level.SEVERE, null, ex);
         } finally {
@@ -149,9 +154,12 @@ public class StaffTableConnection extends DatabaseConnection {
             ps1 = connection.prepareStatement(sql1);
             ps1.setInt(1, id);
             ps1.execute();
+            feedback.addMessage("Record has been deleted",null);
             ps2 = connection.prepareStatement(sql2);
             ps2.setInt(1, id);
             ps2.execute();
+            
+             feedback.addMessage("Role has been detacted",null);
         } catch (SQLException ex) {
             Logger.getLogger(StaffTableConnection.class.getName()).log(Level.SEVERE, null, ex);
         } finally {
@@ -238,4 +246,18 @@ public class StaffTableConnection extends DatabaseConnection {
     boolean recordValidator() {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
+    
+    
+    
+    // task asignmnet 
+    public void getTaskes (){
+        
+    }
+    
+    
+   
+   public void getShifts (){
+   }
+    
+    //TO Do authenticatio algorithm 
 }

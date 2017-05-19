@@ -7,11 +7,11 @@
       xmlns:f="http://xmlns.jcp.org/jsf/core">
     <ui:composition>
 
-        <h1>Add staff member</h1>
+   
         <h:form>
             <p:growl id="msgs" showDetail="true" />
             <!--cellpadding = "10" cellspacing = "1-->
-            <h:panelGrid columns="4" cellpadding="30" >
+            <h:panelGrid columns="2" cellpadding="30" >
                 <h:panelGrid columns="1"  cellpadding="30" class="addStaff">
                     <h:outputLabel value="Firstname: *" />
                     <p:inputText value="#{StaffMembers.firstname}" required="true" label="Firstname"/>
@@ -25,14 +25,7 @@
                     <p:selectOneRadio id="Gender" value="#{StaffMembers.gender}" required="true" label="Gender">
                         <f:selectItem itemLabel="Male" itemValue="M" />
                         <f:selectItem itemLabel="Female" itemValue="F" />
-
-
                     </p:selectOneRadio>
-                    <!-- <h:outputText value="Gender: *" />
-                     <p:selectOneButton value="#{StaffMembers.gender}" rendered="true">
-                        <f:selectItem itemLabel="Male" itemValue="M" />
-                        <f:selectItem itemLabel="Female" itemValue="F" />
-                    </p:selectOneButton>-->
                 </h:panelGrid>
                 <h:panelGrid columns="1"  cellpadding="30" class="addStaff">
                     <h:outputLabel value="Address:* " />
@@ -61,12 +54,9 @@
                         <f:selectItem itemLabel="Select a role" itemValue="#{StaffMembers.role}" />
                         <f:selectItems value="#{StaffMembers.roles}" />
                     </p:selectOneMenu>
-                </h:panelGrid>
-                
+                </h:panelGrid>                 
                 <div align="center"> 
-
-                    <h:commandButton value="Add Staff" action="#{StaffMembers.addStaffMember()}"  />
-
+                    <p:commandButton value="Add Staff" action="#{Include.setPage(StaffMembers.addStaffMember())}" update=":content"/>
                 </div>
             </h:panelGrid>
         </h:form>

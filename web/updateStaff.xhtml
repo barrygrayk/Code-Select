@@ -9,17 +9,19 @@
         <f:event type="preRenderView"
                  listener="#{StaffMembers.loasSaffMember(param['id'])}"/>
     </f:metadata>
- 
-    <body>
-        
-        <h1>Update</h1>
+
+    <ui:composition>
+        <f:metadata>
+            <f:event type="preRenderView"
+                     listener="#{StaffMembers.loasSaffMember(param['id'])}"/>
+        </f:metadata>
         <h:form>
-            
+
             <p:growl id="msgs" showDetail="true" />
             <!--cellpadding = "10" cellspacing = "1-->
-           
-            <h:panelGrid columns="4" cellpadding="30" >
-                
+
+            <h:panelGrid columns="2" cellpadding="30" >
+
                 <h:panelGrid columns="1"  cellpadding="30" class="addStaff">
                     <h:outputLabel value="Firstname: *" />
                     <p:inputText value="#{StaffMembers.firstname}" required="true" label="Firstname"/>
@@ -41,7 +43,7 @@
                         <f:selectItem itemLabel="Male" itemValue="M" />
                         <f:selectItem itemLabel="Female" itemValue="F" />
                     </p:selectOneButton>-->
-                  
+
                 </h:panelGrid>
                 <h:panelGrid columns="1"  cellpadding="30" class="addStaff">
                     <h:outputLabel value="Address:* " />
@@ -71,15 +73,15 @@
                         <f:selectItems value="#{StaffMembers.roles}" />
                     </p:selectOneMenu>
                 </h:panelGrid>
-                
+
                 <div align="center"> 
                     <h:inputHidden value="#{StaffMembers.staffID}"/>
-                    <h:commandButton value="Add Staff" action="#{StaffMembers.updateStaffRecord()}"  />
+                    <p:commandButton value="Update" action="#{Include.setPage(StaffMembers.updateStaffRecord())}" update=":content" />
 
                 </div>
             </h:panelGrid>
         </h:form>
-    </body>
-   
+    </ui:composition>
+
 </html>
 
