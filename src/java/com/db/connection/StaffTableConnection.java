@@ -34,6 +34,7 @@ public class StaffTableConnection extends DatabaseConnection {
     public void addStaffMemeber(OthantileStaff staff) throws ClassNotFoundException {
         PreparedStatement ps1 = null;
         PreparedStatement ps2 = null;
+          System.out.println("In db con_________");
         try {
             MenuView view = new MenuView();
             String sql = "INSERT INTO .`onthantilestaff`(`firstName`,`LastName`,`gender`,`address`,`placeOfBirth`,`dateOfBirth`,`emailAddress`) VALUES(?,?,?,?,?,?,?)";

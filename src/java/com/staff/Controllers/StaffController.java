@@ -155,9 +155,9 @@ public class StaffController extends OthantileStaff implements Serializable {
         this.roles = roles;
     }
 
-    public String addStaffMember() throws ClassNotFoundException, SQLException {
+    public void addStaffMember() throws ClassNotFoundException, SQLException {
         OthantileStaff staff;
-        System.out.println("We are here ");
+        System.out.println("We are here_________");
         if (getFirstname().trim().isEmpty() || getLastname().trim().isEmpty() || getAddress().trim().isEmpty() || getPlaceOfBirth().trim().isEmpty()) {
             MenuView view = new MenuView();
             view.error("Spaces", "Spaces are not avild input");
@@ -167,16 +167,17 @@ public class StaffController extends OthantileStaff implements Serializable {
             System.out.println(role);
             staff.setAccessLevel(assignAccessLevel(role));
             staff.setRoleName(role);
-            
-            
-            //FacesContext.getCurrentInstance().getExternalContext().invalidateSession();
+             new StaffTableConnection().addStaffMemeber(staff);
+              System.out.println("We are  not in if here_________");
+            FacesContext.getCurrentInstance().getExternalContext().invalidateSession();
         }
-          return "viewStaff";
+
         
 
     }
 
     public List<OthantileStaff> getAllStaffMemebers() {
+        System.out.println("All________________________");
         staff = new StaffTableConnection().getStaffMemebers();
         return staff;
     }

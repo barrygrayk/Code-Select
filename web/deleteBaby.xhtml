@@ -5,7 +5,10 @@
       xmlns:p="http://primefaces.org/ui"
       xmlns:f="http://xmlns.jcp.org/jsf/core"
       xmlns:ui="http://xmlns.jcp.org/jsf/facelets">
-    
+    <!--<h:head>
+        <title>Facelet Title</title>
+    </h:head>
+    <h:body>-->
         <ui:composition>
         <h:form id="childDetailsDeletion">
             <div id="div1">
@@ -16,15 +19,15 @@
                     <f:facet name="header">
                         Child Personal Details 
                         <p:outputPanel>
-                            <!--<h:outputText value="Search for" style="margin-right: 1000px; margin-top: -10px"/>
-                            <p:inputText id="globalFilter" onkeyup="PF('deleteTable').filter()" style="width:300px; margin-right: 850px" placeholder="Enter keyword"/>-->
+                            <!--<h:outputText value="Search for" style="margin-right: 1000px; margin-top: -10px"/>-->
+                            <p:inputText id="globalFilter" onkeyup="PF('deleteTable').filter()" style="width:300px; margin-right: 850px" placeholder="Enter keyword"/>
                         </p:outputPanel>
                     </f:facet>
                     <p:ajax event="rowSelectCheckbox" listener="#{ChildCont.onRowSelection}" update="@form"/>
                     <p:ajax event="rowUnselectCheckbox" listener="#{ChildCont.onRowUnselection}" update="@form"/>
                     
-                    <p:column selectionMode="multiple" style="width: 16px; text-align: center" styleClass="selectionCheckBox"/>
-                    <p:column headerText="Child ID">
+                    <p:column selectionMode="multiple" style="width:80px; text-align: center" styleClass="selectionCheckBox"/>
+                    <p:column headerText="Child ID" style="width: 150px">
                         <h:outputText value="#{temp.babyProfileid}"/>
                     </p:column>
                     <p:column headerText="First Name">
@@ -39,7 +42,7 @@
                     <f:facet name="footer">
                        <!--<p:commandButton process="dtChild" value="Delete" action="#{ChildCont.deleteChild()}" icon="ui-icon-remove" style="margin-right: 1050px"/>  -->    
                        <p:growl id="message" showDetail="true" />
-                        <p:commandButton value="Delete" actionListener="#{ChildCont.deleteChild()}" style="margin-right: 1050px" update="message">
+                        <p:commandButton value="Delete" actionListener="#{ChildCont.deleteChild()}" style="margin-right: 1050px" update="dtChild">
                             <p:confirm header="Confirmation" message="Are you sure, you want delete selected record(s)?" icon="ui-icon-alert" />
                         </p:commandButton>
                         <p:confirmDialog global="true">
@@ -51,7 +54,7 @@
 
         </h:form>
         </ui:composition>
-  
+    <!--</h:body>-->
 </html>
 
     

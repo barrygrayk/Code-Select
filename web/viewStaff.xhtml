@@ -10,7 +10,7 @@
 
 
     <ui:composition>
-        <h:form>
+        <h:form id="viewForm">   
             <h3>Staff Members</h3>
 
             <p:dataTable id="staff" var="temp" value="#{StaffMembers.allStaffMemebers}"   selectionMode="single" rowKey="#{temp.staffID}" selection="#{StaffMembers.selectedsatff}">
@@ -21,8 +21,8 @@
                     </p:outputPanel>
                 </f:facet>
                 <!--Ajax Ed -->
-                <p:ajax event="rowSelect" listener="#{StaffMembers.onRowSelect}" update="@form"/>
-                <p:ajax event="rowUnselect" listener="#{StaffMembers.onRowUnselect}" update="@form"/>
+                <p:ajax event="rowSelect" listener="#{StaffMembers.onRowSelect}" update=":viewForm"/>
+                <p:ajax event="rowUnselect" listener="#{StaffMembers.onRowUnselect}" update=":viewForm"/>
 
                 <p:column headerText="Staff ID">
                     <h:outputText value="#{temp.staffID}" />
@@ -41,9 +41,9 @@
 
                     <p:commandButton process="staff"  icon="ui-icon-search" value="View All" action="#{Include.setPage('viewAllStaff')}" update=":content"/>
                     <p:commandButton process="staff"  icon="ui-icon-search" value="View" oncomplete="PF('multiCarDialog').show()" />
-                    <p:commandButton id="add_" value="Add" icon="ui-icon-extlink" type="button" onclick="PF('dlg1').show()" update="@form" oncomplete="PF('dig').hide();" />
-                    <p:commandButton id="dialog" value="Edit" icon="ui-icon-extlink" type="button" onclick="PF('dlg').show()" update="@form" oncomplete="PF('dig').hide();" />
-                    <p:commandButton value="Delete" actionListener="#{StaffMembers.deleteStaffMember()}"  update="@form" >
+                    <p:commandButton id="add_" value="Add" icon="ui-icon-extlink" type="button" onclick="PF('dlg1').show()" oncomplete="PF('dig').hide();" />
+                    <p:commandButton id="dialog" value="Edit" icon="ui-icon-extlink" type="button" onclick="PF('dlg').show()" update=":viewForm" oncomplete="PF('dig').hide();" />
+                    <p:commandButton value="Delete" actionListener="#{StaffMembers.deleteStaffMember()}"  update=":viewForm" >
                         <p:confirm header="Confirmation" message="Are you sure, you want delete selected record(s)?" icon="ui-icon-alert" />
                     </p:commandButton>
                     <p:confirmDialog global="true">
@@ -53,12 +53,13 @@
                 </f:facet>
 
             </p:dataTable>
+             <p:dialog header="Add Record" widgetVar="dlg1" resizable="false" responsive="true">
+                <ui:include src="addStaff.xhtml" />
+            </p:dialog>
             <p:dialog header="Update Record" widgetVar="dlg"   resizable="false" responsive="true">
                 <ui:include src="updateStaff.xhtml" />
             </p:dialog>
-            <p:dialog header="Add Record" widgetVar="dlg1" resizable="false" responsive="true">
-                <ui:include src="addStaff.xhtml" />
-            </p:dialog>
+           
 
 
             <p:dialog header="Bio dialog" widgetVar="multiCarDialog" modal="true" appendTo="@(body)" showEffect="fade" hideEffect="fade" resizable="false" width="auto">

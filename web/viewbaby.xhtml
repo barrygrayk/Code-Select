@@ -3,27 +3,45 @@
 <html xmlns="http://www.w3.org/1999/xhtml"
       xmlns:h="http://xmlns.jcp.org/jsf/html"
       xmlns:p="http://primefaces.org/ui"
-      xmlns:ui="http://xmlns.jcp.org/jsf/facelets">
- 
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:f="http://xmlns.jcp.org/jsf/core">
+    <!--<h:head>
+        <title>Child View </title>
+    </h:head>
+    <h:body>-->
         <ui:composition>
-        <p:dataTable var="temp" value="#{ChildCont.listOfChildren}">
-            <p:column headerText="Child ID">
-                <h:outputText value="#{temp.babyProfileid}" />
-            </p:column>
-            <p:column headerText="First name">
-                <h:outputText value="#{temp.firstname}" />
-            </p:column>
-            <p:column headerText="Last name">
-                <h:outputText value="#{temp.lastname}" />
-            </p:column>
-            <p:column headerText="Uniqure markers">
-                <h:outputText value="#{temp.destingushingMarks}" />
-            </p:column>
-        </p:dataTable>
-        <p:panel id="pMeals">
-            
-        </p:panel>
+            <h:form id="viewListOfBabies">
+                <div id="div1">
+                    <h1>Current Child in Baby Home</h1>
+                </div>
+                <p:growl id="viewListOfChildren" showDetail="true"/>
+                <p:dataTable id="viewTable" var="temp" value="#{ChildCont.listOfChildren}" selectionMode="single"  rowKey="#{temp.babyProfileid}" selection="#{ChildCont.child}" > 
+
+                <p:ajax event="rowSelect" listener="#{ChildCont.onRowSelect}" update="@form"/>
+                <p:ajax event="rowUnselect" listener="#{ChildCont.onRowUnselect}" update="@form"/>
+               
+                <p:column headerText="Child ID">
+                    <h:outputText value="#{temp.babyProfileid}" />
+                </p:column>
+                
+                <p:column headerText="First Name">
+                    <h:outputText  value="#{temp.firstname}"/>
+                </p:column>
+                
+                <p:column headerText="Last Name">
+                    <h:outputText  value="#{temp.lastname}"/>
+                </p:column>
+                
+                <p:column headerText="Distinguish Mark">         
+                    <h:outputText value="#{temp.destingushingMarks}"/>
+                </p:column>
+                
+                <f:facet name="footer">
+                    <p:commandButton process="viewTable" update=":content" icon="ui-icon-search" value="View" action="#{Include.setPage('childProfilePage')}" style="margin-right: 1050px"/>
+                </f:facet>
+            </p:dataTable>
+            </h:form>
         </ui:composition>
- 
+    <!--</h:body>-->
 </html>
 

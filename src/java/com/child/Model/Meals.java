@@ -1,13 +1,32 @@
 package com.child.Model;
 
+import java.util.Date;
+
 /**
  * 
  * @author Barry Gray Kapelembe 
  */
 public class Meals {
+    
     private String mealDescription;
-    private String amountEaten;
+    private int mealID;
     private String commentOnEating;
+    private Date mealIntakeTime;
+
+    public Meals(){
+    }
+    
+    public Meals(String desc){
+        this.mealDescription = desc;
+    }
+    
+    public void setMealIntakeTime(Date mealIntakeTime) {
+        this.mealIntakeTime = mealIntakeTime;
+    }
+
+    public Date getMealIntakeTime() {
+        return mealIntakeTime;
+    }
 
     public String getMealDescription() {
         return mealDescription;
@@ -17,12 +36,12 @@ public class Meals {
         this.mealDescription = mealDescription;
     }
 
-    public String getAmountEaten() {
-        return amountEaten;
+    public int getMealID() {
+        return mealID;
     }
 
-    public void setAmountEaten(String amountEaten) {
-        this.amountEaten = amountEaten;
+    public void setMealID(int mealID) {
+        this.mealID = mealID;
     }
 
     public String getCommentOnEating() {

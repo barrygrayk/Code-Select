@@ -1,6 +1,5 @@
 
 package com.appstuff.models;
-
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;
@@ -18,12 +17,9 @@ public final class DBConnection{
     
     // non-default constructor
     public DBConnection() throws SQLException {
-        this.dbUserName = "onthatileDB";
+         this.dbUserName = "onthatileDB";
         this.dbPassword = "adminServer";
-        connLink ="jdbc:mysql://127.0.0.1:3306/onthatile children's ministries"; 
-        
-        /*"onthatileDB";
-        this.dbPassWord = "adminServer";**/
+        connLink = "jdbc:mysql://localhost:3306/onthatile children's ministries";
     }
     
     // creating a connection to the DB
@@ -34,7 +30,7 @@ public final class DBConnection{
             connection.setAutoCommit(true);
         } catch (SQLException | ClassNotFoundException ex) {
         }
-        return connection;
+        return this.connection;
     } 
 
 }

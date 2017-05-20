@@ -7,17 +7,17 @@
       xmlns:f="http://xmlns.jcp.org/jsf/core">
     <ui:composition>
 
-   
+
         <h:form>
             <p:growl id="msgs" showDetail="true" />
             <!--cellpadding = "10" cellspacing = "1-->
-            <h:panelGrid columns="2" cellpadding="30" >
+            <h:panelGrid columns="2 " cellpadding="30" >
                 <h:panelGrid columns="1"  cellpadding="30" class="addStaff">
-                    <h:outputLabel value="Firstname: *" />
+                    <h:outputLabel value="First name: *" />
                     <p:inputText value="#{StaffMembers.firstname}" required="true" label="Firstname"/>
                 </h:panelGrid>
                 <h:panelGrid columns="1"  cellpadding="30" class="addStaff">
-                    <h:outputLabel value="Lastname: *" />
+                    <h:outputLabel value="Last name: *" />
                     <p:inputText value="#{StaffMembers.lastname}" required="true" label="Lastname"/>
                 </h:panelGrid>
                 <h:panelGrid columns="2"  cellpadding="30" class="addStaff">
@@ -55,9 +55,10 @@
                         <f:selectItems value="#{StaffMembers.roles}" />
                     </p:selectOneMenu>
                 </h:panelGrid>                 
-                <div align="center"> 
-                    <p:commandButton value="Add Staff" action="#{Include.setPage(StaffMembers.addStaffMember())}" update=":content"/>
-                </div>
+               
+                        <p:commandButton value="Add Staff" action="#{StaffMembers.addStaffMember()}"/>
+
+                   
             </h:panelGrid>
         </h:form>
     </ui:composition>

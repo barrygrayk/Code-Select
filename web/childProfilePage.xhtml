@@ -1,0 +1,182 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:f="http://xmlns.jcp.org/jsf/core">
+   <!-- <h:head>
+        <title>Facelet Title</title>
+    </h:head>
+    <h:body>-->
+        <ui:composition>
+            <h:form id="childProfile">
+                <p:chart type="line" model="#{chartView.lineModel1}" style="height:300px;"/>
+                <div id="Title" align="left" style="padding-left: 20px">
+                    <h1> Onthantile's Baby Profile</h1>
+                </div>
+                <p:growl id="childProfilePage" showDetail="true"/>
+                <div id="ComponentsRow1">
+                    <p:panelGrid id="optionPanel" columns="3" style="width: 900px;">
+                        <p:column width="300px">
+                            <p:selectOneMenu id="searchChildAdvance" style="width: 50px;">
+                            </p:selectOneMenu>
+                        </p:column>
+                        <p:column width="300px">
+                            <h:outputText value="Alerts/Reminders"/>
+                        </p:column>
+                        <p:column width="300px">
+                            <p:calendar id="button"  showOn="button" style="text-align: right;" />
+                            <p:commandButton value="Previous" ajax="false"/>
+                            <p:commandButton value="Next" ajax="false"/>
+                        </p:column>
+                    </p:panelGrid>
+                    <p:panelGrid id="topPanel" columns="4" style="width: 900px; height: 50px">
+                        <p:column>
+                            <p:panelGrid columns="2" style="width: 240px; height: 100px">
+                                <f:facet name="header">
+                                    <h:graphicImage  width="100px" height="100px" name="/images/ALine.jpg" />
+                                </f:facet>
+                                
+                                <p:column width="150px">
+                                    <h4><h:outputText value="Name: #{ChildCont.child.firstname} #{ChildCont.child.lastname}"/></h4>
+                                    <h4><h:outputText value="Date-Of-Birth: #{ChildCont.child.dateOfBirth}" /></h4>                                  
+                                    <h4><h:outputText value="Unique Marker: #{ChildCont.child.destingushingMarks}" /></h4>
+                                </p:column>
+                            </p:panelGrid>
+                        
+                        </p:column>
+                        
+                        <p:panel >  
+                            <h:outputText value="Height Chart" />
+                              <p:chart type="line" model="#{chartView.lineModel1}" style="height:300px;"/>
+                        </p:panel>
+                            
+                         <p:column>
+                            <h:outputText value="Temperature Chart" />
+                             <p:chart type="line" model="#{chartView.lineModel1}" style="height:300px;"/>
+                            
+                        </p:column>
+                        
+                        <p:column>                
+                            <h:outputText value="Weight chart" />
+                             <p:chart type="line" model="#{chartView.lineModel1}" style="height:300px;"/>
+                        </p:column>
+                        
+                    </p:panelGrid>
+                    
+                    <p:panelGrid id="secondPanel" columns="2" style="width: 900px;">
+                        <p:column >
+                            <p:dataTable id="mealsTb" var="temp" value="#{ChildCont.getListOfMealsHadDb()}" selectionMode="single"  rowKey="#{temp.mealID}" selection="#{temp.mealID}">
+                                
+                                <p:column headerText="Meal Type">
+                                    <h:outputText value="#{temp.mealDescription}" />
+                                </p:column>
+                                
+                                <p:column headerText="Time">
+                                    <h:outputText value="#{temp.mealIntakeTime}" />
+                                </p:column>
+                                
+                                <p:column headerText="Comments">
+                                    <h:outputText value="#{temp.commentOnEating}" />
+                                </p:column>
+                                <f:facet name="footer">
+                                    <p:commandButton value="Edit" type="button" onclick="PF('dlg').show()" update="@form" oncomplete="PF('dlg').hide();"/>
+                                </f:facet>
+                            </p:dataTable>
+                            <p:dialog header="Update Meal Record" widgetVar="dlg" resizable="false" width="230px">
+                                
+                                <p:row id="updateColumnMeals" >
+                                <h:outputText value="Meal Type:" />
+                                <p:inputText id="txtMealType" value="Rice" />
+                                </p:row>
+                                <p:row id="updateColumnTime" >
+                                <h:outputText value="Time:" />
+                                <p:inputText id="txtMealTime" value="13:45" />
+                                </p:row>
+                                <h:outputText value="Comments:" />
+                                <p:inputText id="txtMealComment" value="afedfsdf" />
+                                <p:commandButton value="Update" action="#{ChildCont.humorMe()}" icon="ui-icon-update"/>
+                                
+                            </p:dialog>
+                        </p:column>
+                        <p:column>
+                            <p:dataTable id="nappyTb" var="temp" value="#{ChildCont.getListOfNappiesDb()}" selectionMode="single"  rowKey="#{temp.nappyId}" selection="#{temp.nappyId}">
+                                
+                                <p:column headerText="Nappy Wet">
+                                    <h:outputText value="#{temp.conditionWet}" />
+                                </p:column>
+                                
+                                <p:column headerText="Nappy Dirty">
+                                    <h:outputText value="#{temp.conditionDry}" />
+                                </p:column>
+                                
+                                <p:column headerText="Changing Time">
+                                    <h:outputText value="#{temp.nappyChangeTime}" />
+                                </p:column>
+                            </p:dataTable>    
+                        </p:column>
+                    </p:panelGrid>
+                    
+                    <p:panelGrid id="thirdP" columns="3" style="width: 900px;">
+                        <p:column>
+                            <p:dataTable id="dtCaretakerShift">
+                                <p:column headerText="Time/Shift">
+                                    <h:outputText value="unavailable" />
+                                </p:column>
+                                <p:column headerText="Name">
+                                    <h:outputText value="#{ChildCont.getCareTakerName}" />
+                                </p:column>
+                            </p:dataTable>
+                        </p:column>
+                        <p:column>
+                            <p:selectOneListbox id="dailyActivitiesList" value="#{ChildCont.currentActivity}" var="list" onclick="#{ChildCont.humorMe()}">
+                                <f:selectItems value="#{ChildCont.listOfActivitiesDb}" var="c" itemValue="#{c}" itemLabel="#{c.title}"/>
+                                <p:column>
+                                    <h:outputText value="#{list.title}" />
+                                </p:column>
+                              
+                            </p:selectOneListbox>
+                        </p:column>
+                        <p:column>
+                            <p:dataTable id="dtSleepRoutine" var="temp" value="#{ChildCont.getListOfSleepingRoutineDb()}" selectionMode="single"  rowKey="#{temp.sleepingRoutineID}" selection="#{temp.sleepingRoutineID}">
+                                <p:column headerText="Sleeping Time">
+                                    <h:outputText value="#{temp.sleepingTime}" />
+                                </p:column>
+                                <p:column headerText="Waking Time">
+                                    <h:outputText value="#{temp.wakingTime}" />
+                                </p:column>
+                            </p:dataTable>
+                        </p:column> 
+                    </p:panelGrid>
+                    
+                    <p:panelGrid id="bottomP" columns="4" style="width: 900px;">
+                        <p:column>
+                            <h:outputText value="Medical Report" />
+                        </p:column>
+                        <p:column>
+                            <h:outputText value="Anomalies" />
+                        </p:column>
+                        <p:column>
+                            <h:outputText value="Uploading Document" />
+                            <h:form enctype="multipart/form-data">
+                                <p:growl id="messages" showDetail="true" />
+ 
+                                <p:fileUpload value="#{fileUploadView.file}" mode="simple"/>
+ 
+                                <p:commandButton value="Save" ajax="false" actionListener="#{ChildCont.upload}" disabled="true" />
+                            </h:form>
+                        </p:column>
+                        <p:column>
+                            <h:outputText value="Adoption" />
+                        </p:column>
+                    </p:panelGrid>
+
+                </div>
+
+            </h:form>       
+        </ui:composition>
+
+   <!-- </h:body>-->
+</html>
+

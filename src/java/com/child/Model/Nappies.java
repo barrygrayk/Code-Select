@@ -1,12 +1,33 @@
 package com.child.Model;
 
+import java.util.Date;
+
 /**
  * 
- * @author Barry Gray Kapelembe 
+ * @author efsan1
  */
 public class Nappies {
+    
+    private int nappyId;
     private boolean conditionWet;
     private boolean conditionDry;
+    private Date nappyChangeTime;
+    
+    public int getNappyId() {
+        return nappyId;
+    }
+
+    public void setNappyId(int nappyId) {
+        this.nappyId = nappyId;
+    }
+
+    public Date getNappyChangeTime() {
+        return nappyChangeTime;
+    }
+
+    public void setNappyChangeTime(Date nappyChangeTime) {
+        this.nappyChangeTime = nappyChangeTime;
+    }
 
     public boolean isConditionWet() {
         return conditionWet;

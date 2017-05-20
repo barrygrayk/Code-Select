@@ -62,7 +62,7 @@
                     <p:inputText value="#{StaffMembers.emailAddress}" required="true" label="Email "/>-->
                     <h:outputLabel value="Email:* " />
                     <p:inputText id="email" value="#{StaffMembers.emailAddress}" required="true" label="Email" validatorMessage="#{StaffMembers.emailAddress} Email Not valid">
-                        <f:validateRegex pattern="[\w\.-]*[a-zA-Z0-9_]@[\w\.-]*[a-zA-Z0-9]\.[a-zA-Z][a-zA-Z\.]*[a-zA-Z]" />
+                        <!--<f:validateRegex pattern="[\w\.-]*[a-zA-Z0-9_]@[\w\.-]*[a-zA-Z0-9]\.[a-zA-Z][a-zA-Z\.]*[a-zA-Z]" />-->
                     </p:inputText>
                     <p:message for="email" />
                 </h:panelGrid>

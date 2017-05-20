@@ -5,7 +5,10 @@
       xmlns:p="http://primefaces.org/ui"
       xmlns:f="http://xmlns.jcp.org/jsf/core"
       xmlns:ui="http://xmlns.jcp.org/jsf/facelets">
-    
+    <!--<h:head>
+        <title>Facelet Title</title>
+    </h:head>
+    <h:body>-->
         <ui:composition>
         <h:form id="editBabyForm">
             <p:growl id="edtForm" showDetail="true"/>
@@ -40,11 +43,15 @@
                     <p:inputText id="txtDistinguishMarkU" value="#{ChildCont.child.destingushingMarks}"/>   
                 </div>
                 <div id="btnfield">
-                    <p:commandButton value="Update" action="#{ChildCont.updateChild()}" icon="ui-icon-update"/>
+                    <p:commandButton value="Update" action="#{ChildCont.updateChild()}" icon="ui-icon-update" update="edtTable"/>
+                    <p:commandButton value="Load" action="#{Include.setPage('childProfilePage')}" icon="ui-icon-update" update=":content"/>
+                    
+                    
+                 
                 </div>
             </p:panel>
         </h:form>
         </ui:composition>
-
+    <!--</h:body>-->
 </html>
 
