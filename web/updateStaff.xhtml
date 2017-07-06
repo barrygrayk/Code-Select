@@ -7,16 +7,15 @@
       xmlns:f="http://xmlns.jcp.org/jsf/core">
     <f:metadata>
         <f:event type="preRenderView"
-                 listener="#{StaffMembers.loasSaffMember(param['id'])}"/>
+                 listener="#{StaffMembers.loasSaffMember()}"/>
     </f:metadata>
 
     <ui:composition>
         <f:metadata>
             <f:event type="preRenderView"
-                     listener="#{StaffMembers.loasSaffMember(param['id'])}"/>
+                     listener="#{StaffMembers.loasSaffMember()}"/>
         </f:metadata>
         <h:form>
-
             <p:growl id="msgs" showDetail="true" />
             <!--cellpadding = "10" cellspacing = "1-->
 
@@ -62,7 +61,7 @@
                     <p:inputText value="#{StaffMembers.emailAddress}" required="true" label="Email "/>-->
                     <h:outputLabel value="Email:* " />
                     <p:inputText id="email" value="#{StaffMembers.emailAddress}" required="true" label="Email" validatorMessage="#{StaffMembers.emailAddress} Email Not valid">
-                        <!--<f:validateRegex pattern="[\w\.-]*[a-zA-Z0-9_]@[\w\.-]*[a-zA-Z0-9]\.[a-zA-Z][a-zA-Z\.]*[a-zA-Z]" />-->
+                        <f:validateRegex pattern="[\w\.-]*[a-zA-Z0-9_]@[\w\.-]*[a-zA-Z0-9]\.[a-zA-Z][a-zA-Z\.]*[a-zA-Z]" />
                     </p:inputText>
                     <p:message for="email" />
                 </h:panelGrid>
@@ -76,7 +75,8 @@
 
                 <div align="center"> 
                     <h:inputHidden value="#{StaffMembers.staffID}"/>
-                    <p:commandButton value="Update" action="#{Include.setPage(StaffMembers.updateStaffRecord())}" update=":content" />
+                    <p:commandButton value="Update" action="#{Include.setPage(StaffMembers.updateStaffRecord())}" update=":viewForm" />
+                    
 
                 </div>
             </h:panelGrid>

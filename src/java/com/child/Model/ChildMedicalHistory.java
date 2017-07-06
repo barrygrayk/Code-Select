@@ -1,81 +1,98 @@
 package com.child.Model;
 
 import java.util.ArrayList;
-
+import java.util.Date;
 /**
  * 
- * @author Barry Gray Kapelembe 
+ * @author efsan1 
  */
 public class ChildMedicalHistory {
-    private ArrayList <String> doctersName = new ArrayList <String>();
-    private ArrayList <String>  illnessDetected= new ArrayList <String>() ;
-    private ArrayList <String>  cause = new ArrayList <String>();
-    private ArrayList <String> medicines = new ArrayList <String>();
-    private ArrayList <String> allergies = new ArrayList <String>();
-    private ArrayList <String> specialTreatmeants = new ArrayList <String>();
-    private ArrayList <String> clincVisited = new ArrayList <String>();
+    
+    private String doctersName;
+    private String  illnessDetected;
+    private String  cause;
+    private String medicines;
+    private String allergies;
+    private String specialTreatmeants ;
+    private String clincVisited;
+    private Date dateOfVisit; 
 
-    public ArrayList<String> getDoctersName() {
+    public ChildMedicalHistory(String doctersName, String illnessDetected, String cause, String medicines, String allergies, String specialTreatmeants, String clincVisited, Date dateOfVisit) {
+        
+        this.doctersName = doctersName;
+        this.illnessDetected = illnessDetected;
+        this.cause = cause;
+        this.medicines = medicines;
+        this.allergies = allergies;
+        this.specialTreatmeants = specialTreatmeants;
+        this.clincVisited = clincVisited;
+        this.dateOfVisit = dateOfVisit;
+    }
+    
+    public ChildMedicalHistory(){}
+    
+    public String getDoctersName() {
         return doctersName;
     }
 
-    public void setDoctersName(ArrayList<String> doctersName) {
+    public void setDoctersName(String doctersName) {
         this.doctersName = doctersName;
     }
 
-    public ArrayList<String> getIllnessDetected() {
+    public String getIllnessDetected() {
         return illnessDetected;
     }
 
     public void setIllnessDetected(String illnessDetected) {
-        this.illnessDetected.add(illnessDetected);
+        this.illnessDetected = illnessDetected;
     }
 
-    public ArrayList<String> getCause() {
+    public String getCause() {
         return cause;
     }
 
     public void setCause(String cause) {
-        this.cause.add(cause);
+        this.cause=cause;
     }
 
-    public ArrayList<String> getMedicines() {
+    public String getMedicines() {
         return medicines;
     }
 
     public void setMedicines(String medicines) {
-        this.medicines.add(medicines);
+        this.medicines=medicines;
     }
 
-    public ArrayList<String> getAllergies() {
+    public String getAllergies() {
         return allergies;
     }
 
     public void setAllergies(String allergies) {
-        this.allergies.add(allergies);
+        this.allergies=allergies;
     }
 
-    public ArrayList<String> getSpecialTreatmeants() {
+    public String getSpecialTreatmeants() {
         return specialTreatmeants;
     }
 
     public void setSpecialTreatmeants(String specialTreatmeants) {
-        this.specialTreatmeants.add(specialTreatmeants);
+        this.specialTreatmeants=specialTreatmeants;
     }
 
-    public ArrayList<String> getClincVisited() {
+    public String getClincVisited() {
         return clincVisited;
     }
 
     public void setClincVisited(String clincVisited) {
-        this.clincVisited.add(clincVisited);
+        this.clincVisited=clincVisited;
+    }
+
+    public Date getDateOfVisit() {
+        return dateOfVisit;
+    }
+
+    public void setDateOfVisit(Date dateOfVisit) {
+        this.dateOfVisit = dateOfVisit;
     }
     
-    
-    
-    
-    
-    
-    
-
 }

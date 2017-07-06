@@ -21,10 +21,12 @@ public  abstract class  DatabaseConnection {
     protected ResultSet resultset = null;
 
     public DatabaseConnection() {
-        this.dbUserName = "onthatileDB";
-        this.dbPassWord = "adminServer";
+        this.dbUserName = "root";
+        this.dbPassWord = "password";
         conString = "jdbc:mysql://localhost:3306/onthatile children's ministries";
         //jdbc:mysql://localhost:3306/?user=root
+        //jdbc:mysql://127.0.0.1:3306/?user=root
+        //root@127.0.0.1:3306
     }
 
     public Connection getConnection() throws ClassNotFoundException {

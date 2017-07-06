@@ -8,8 +8,8 @@
       xmlns:c="http://xmlns.jcp.org/jsp/jstl/core">
     <ui:composition>
         <c:forEach items="#{StaffMembers.allStaffMemebers}" var="o">
-        <h:form>
-           
+            <h:form>
+
                 <p:panel id="toggleable" header="#{o.firstname}" toggleable="true" closable="true" toggleSpeed="500" closeSpeed="500" widgetVar="panel" style="margin-bottom:20px">
 
 
@@ -18,6 +18,11 @@
                         <h:outputText value="#{o.staffID}" />
                     </h:panelGrid>
                     <h:panelGrid columns="2" cellpadding="30" class="addStaff">
+                        
+                        <h:panelGrid columns="2" cellpadding="30" class="addStaff">
+                            <h:outputLabel value="User name: "/>
+                            <h:outputText value="#{o.authcateDetails.userName}" />
+                        </h:panelGrid>
 
                         <h:panelGrid columns="2" cellpadding="30" class="addStaff">
                             <h:outputLabel value="First name: "/>
@@ -51,7 +56,7 @@
                             <h:outputLabel value="Date of birth: "/>
                             <h:outputText value="#{o.dateOfBirth}" />
                         </h:panelGrid>
-                       
+
                     </h:panelGrid>
 
                     <f:facet name="options">
@@ -63,9 +68,9 @@
                         </p:menu>
                     </f:facet>
                 </p:panel>
-           
-        </h:form>
- </c:forEach>
+
+            </h:form>
+        </c:forEach>
     </ui:composition>
 </html>
 

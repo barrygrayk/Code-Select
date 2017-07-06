@@ -1,4 +1,3 @@
-
 package com.appstuff.models;
 import java.sql.Connection;
 import java.sql.DriverManager;
@@ -17,9 +16,9 @@ public final class DBConnection{
     
     // non-default constructor
     public DBConnection() throws SQLException {
-         this.dbUserName = "onthatileDB";
-        this.dbPassword = "adminServer";
-        connLink = "jdbc:mysql://localhost:3306/onthatile children's ministries";
+       this.dbUserName = "root";
+        this.dbPassword = "password";
+        connLink= "jdbc:mysql://localhost:3306/onthatile children's ministries";
     }
     
     // creating a connection to the DB

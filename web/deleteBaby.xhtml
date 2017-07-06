@@ -11,13 +11,13 @@
     <h:body>-->
         <ui:composition>
         <h:form id="childDetailsDeletion">
-            <div id="div1">
-                <h1>Child Personal Profile</h1>
-            </div>                
+                <div id="div1">
+                    <h1>Eliminate Child Record(s)</h1>
+                </div>
                 <p:growl id="deleteChild" showDetail="true"/>
                 <p:dataTable id="dtChild" var="temp" value="#{ChildCont.listOfChildren}" selection="#{ChildCont.selectedChildren}" rowKey="#{temp.babyProfileid}" widgetVar="deleteTable" filteredValue="#{ChildCont.listOfChildren}" emptyMessage="Record not Found"> 
                     <f:facet name="header">
-                        Child Personal Details 
+                        
                         <p:outputPanel>
                             <!--<h:outputText value="Search for" style="margin-right: 1000px; margin-top: -10px"/>-->
                             <p:inputText id="globalFilter" onkeyup="PF('deleteTable').filter()" style="width:300px; margin-right: 850px" placeholder="Enter keyword"/>
@@ -27,28 +27,28 @@
                     <p:ajax event="rowUnselectCheckbox" listener="#{ChildCont.onRowUnselection}" update="@form"/>
                     
                     <p:column selectionMode="multiple" style="width:80px; text-align: center" styleClass="selectionCheckBox"/>
-                    <p:column headerText="Child ID" style="width: 150px">
+                    <p:column headerText="Child ID" style="width: 120px">
                         <h:outputText value="#{temp.babyProfileid}"/>
                     </p:column>
-                    <p:column headerText="First Name">
+                    <p:column headerText="First Name" style="width: 140px">
                         <h:outputText value="#{temp.firstname}"/>
                     </p:column>
-                    <p:column headerText="Last Name">
+                    <p:column headerText="Last Name" style="width: 140px">
                         <h:outputText value="#{temp.lastname}"/>
                     </p:column>
-                    <p:column headerText="Distinguish Mark">
+                    <p:column headerText="Distinguish Mark" style="width: 140px">
                         <h:outputText value="#{temp.destingushingMarks}"/>
                     </p:column> 
                     <f:facet name="footer">
-                       <!--<p:commandButton process="dtChild" value="Delete" action="#{ChildCont.deleteChild()}" icon="ui-icon-remove" style="margin-right: 1050px"/>  -->    
-                       <p:growl id="message" showDetail="true" />
+                       <p:commandButton process="dtChild" value="Delete" action="#{ChildCont.deleteChild()}" icon="ui-icon-remove" style="margin-right: 1050px"/>  
+                       <!--<p:growl id="message" showDetail="true" />
                         <p:commandButton value="Delete" actionListener="#{ChildCont.deleteChild()}" style="margin-right: 1050px" update="dtChild">
                             <p:confirm header="Confirmation" message="Are you sure, you want delete selected record(s)?" icon="ui-icon-alert" />
                         </p:commandButton>
                         <p:confirmDialog global="true">
                             <p:commandButton value="Yes" type="button" styleClass="ui-confirmdialog-yes" icon="ui-icon-check" />
                             <p:commandButton value="No" type="button" styleClass="ui-confirmdialog-no" icon="ui-icon-close" />
-                        </p:confirmDialog> 
+                        </p:confirmDialog> -->
                     </f:facet>
                 </p:dataTable>
 

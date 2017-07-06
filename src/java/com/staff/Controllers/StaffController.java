@@ -3,7 +3,11 @@ package com.staff.Controllers;
 import com.MenuView.MenuView;
 import com.db.connection.StaffTableConnection;
 import com.navigation.Bean;
+import com.staff.Model.Authenticate;
+import com.staff.Model.Authentication;
 import com.staff.Model.OthantileStaff;
+import com.validation.MrKaplan;
+import com.validation.TheEqualizer;
 import java.io.Serializable;
 import java.sql.SQLException;
 import java.util.ArrayList;
@@ -13,21 +17,23 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.annotation.PostConstruct;
 import javax.faces.bean.ManagedBean;
-import javax.faces.bean.RequestScoped;
-import javax.faces.context.FacesContext;
+import javax.faces.bean.ViewScoped;
+import javax.ws.rs.GET;
+import javax.ws.rs.Path;
+import javax.ws.rs.Produces;
+import javax.ws.rs.core.MediaType;
 import org.primefaces.event.SelectEvent;
 import org.primefaces.event.UnselectEvent;
-//import org.primefaces.event.SelectEvent;
-//import org.primefaces.event.UnselectEvent;
 
 /**
  *
  * @author Barry Gray Kapelembe
  */
 @ManagedBean(name = "StaffMembers", eager = true)
-@RequestScoped
+@ViewScoped
 public class StaffController extends OthantileStaff implements Serializable {
-    private List <String> staffMemberNames = new ArrayList ();
+
+    private List<String> staffMemberNames = new ArrayList();
     private String staffName;
 
     public String getStaffName() {
@@ -36,6 +42,7 @@ public class StaffController extends OthantileStaff implements Serializable {
 
     public void setStaffName(String staffName) {
         this.staffName = staffName;
+
     }
 
     public List<String> getStaffMemberNames() {
@@ -45,7 +52,6 @@ public class StaffController extends OthantileStaff implements Serializable {
     public void setStaffMemberNames(List<String> staffMemberNames) {
         this.staffMemberNames = staffMemberNames;
     }
-    
 
     public Date getDate() {
         return date;
@@ -71,7 +77,6 @@ public class StaffController extends OthantileStaff implements Serializable {
     private List<String> roles = new ArrayList<>();
     private String role;
     private OthantileStaff selectedsatff;
-
     public List<OthantileStaff> getSearchStaff() {
         return searchStaff;
     }
@@ -133,9 +138,9 @@ public class StaffController extends OthantileStaff implements Serializable {
         roles.add("Admin");
         roles.add("Caregiver");
         roles.add("Intern");
-       List<OthantileStaff> staffList= getAllStaffMemebers();
-       staffList.forEach((sta) -> {
-           staffMemberNames.add(sta.getFirstname() +" " +sta.getLastname() );
+        List<OthantileStaff> staffList = getAllStaffMemebers();
+        staffList.forEach((sta) -> {
+            staffMemberNames.add(sta.getFirstname() + " " + sta.getLastname());
         });
     }
 
@@ -154,39 +159,43 @@ public class StaffController extends OthantileStaff implements Serializable {
     public void setRoles(List<String> roles) {
         this.roles = roles;
     }
-
-    public void addStaffMember() throws ClassNotFoundException, SQLException {
+    
+   
+    public String addStaffMember() throws ClassNotFoundException, SQLException {
+        System.out.println("aaaaaaaaaaa");
+        MrKaplan validate = new MrKaplan();
+        TheEqualizer eqi = new TheEqualizer();
+        //String page = "addStaff";
         OthantileStaff staff;
-        System.out.println("We are here_________");
-        if (getFirstname().trim().isEmpty() || getLastname().trim().isEmpty() || getAddress().trim().isEmpty() || getPlaceOfBirth().trim().isEmpty()) {
-            MenuView view = new MenuView();
-            view.error("Spaces", "Spaces are not avild input");
-
-        } else {
-            staff = new OthantileStaff(staffiid, getFirstname(), getLastname(), getGender(), getAddress(), getPlaceOfBirth(), getDateOfBirth(), getEmailAddress());
-            System.out.println(role);
+        if (validate.isValidInput(getFirstname()) && validate.isValidInput(getLastname()) && validate.isAcceptableAddress(getAddress())
+                && validate.isAcceptableAddress(getPlaceOfBirth())) {
+            staff = new OthantileStaff(staffiid, eqi.toUperAndLower(getFirstname()), eqi.toUperAndLower(getLastname()), getGender(),
+                    eqi.toUperAndLower(getAddress()), eqi.toUperAndLower(getPlaceOfBirth()), getDateOfBirth(), getEmailAddress().toLowerCase());
+            System.out.println(role);//eqi.toUperAndLower(getAddress())
             staff.setAccessLevel(assignAccessLevel(role));
             staff.setRoleName(role);
-             new StaffTableConnection().addStaffMemeber(staff);
-              System.out.println("We are  not in if here_________");
-            FacesContext.getCurrentInstance().getExternalContext().invalidateSession();
+            Authenticate auth = new Authentication ();
+            auth.createUsername(staff.getFirstname(), staff.getLastname());
+            staff.setAuthcateDetails((Authentication) auth);
+            new StaffTableConnection().addStaffMemeber(staff);
+            //age = "viewStaff";
+            //MenuView view = new MenuView();
+            ///view.error("Try again", null);
         }
-
-        
-
+        return "viewStaff";
     }
 
     public List<OthantileStaff> getAllStaffMemebers() {
-        System.out.println("All________________________");
+    
         staff = new StaffTableConnection().getStaffMemebers();
         return staff;
     }
 
-    public void loasSaffMember(int id) {
-        staffiid = id;
+    public void loasSaffMember() {
+      /**  staffiid = id;
         this.id = id;
         setStaffID(id);
-        setStaffiid(staffiid);
+        setStaffiid(staffiid);*/
         if (selectedsatff != null) {
             int iddd = selectedsatff.getStaffID();
 
@@ -202,6 +211,7 @@ public class StaffController extends OthantileStaff implements Serializable {
                     setDateOfBirth(sta.getDateOfBirth());
                     setPlaceOfBirth(sta.getPlaceOfBirth());
                     role = sta.getRoleName();
+                    
                     MenuView view = new MenuView();
                     //view.addMessage("Record has been loaded", null);
 
@@ -210,33 +220,38 @@ public class StaffController extends OthantileStaff implements Serializable {
             } catch (ClassNotFoundException ex) {
                 Logger.getLogger(StaffController.class.getName()).log(Level.SEVERE, null, ex);
             }
-        } 
+        }
     }
 
     public String updateStaffRecord() throws ClassNotFoundException, SQLException {
-        System.out.println("_________ID__        dkdkddkdkkdkdnkdnkdnkdnkdkdnkdnkdnkdnkdnkdnk________" + selectedsatff.getStaffID());
-        OthantileStaff staff = new OthantileStaff(selectedsatff.getStaffID(), getFirstname(), getLastname(), getGender(), getAddress(), getPlaceOfBirth(), getDateOfBirth(), getEmailAddress());
-        System.out.println(role);
-        staff.setAccessLevel(assignAccessLevel(role));
-        staff.setRoleName(role);
-        new StaffTableConnection().updateStaffMember(staff);
-        //FacesContext.getCurrentInstance().getExternalContext().invalidateSession();
+        MrKaplan validate = new MrKaplan();
+        TheEqualizer eqi = new TheEqualizer();
+
+        if (validate.isValidInput(getFirstname()) && validate.isValidInput(getLastname()) && validate.isAcceptableAddress(getAddress())
+                && validate.isAcceptableAddress(getPlaceOfBirth()) && validate.isValidDate(getDateOfBirth())) {
+            OthantileStaff staff = new OthantileStaff(selectedsatff.getStaffID(), eqi.toUperAndLower(getFirstname()), eqi.toUperAndLower(getLastname()), getGender(),
+                    eqi.toUperAndLower(getAddress()), eqi.toUperAndLower(getPlaceOfBirth()), getDateOfBirth(), getEmailAddress().toLowerCase());
+            staff.setAccessLevel(assignAccessLevel(role));
+            staff.setRoleName(role);
+            new StaffTableConnection().updateStaffMember(staff);
+            //FacesContext.getCurrentInstance().getExternalContext().invalidateSession();
+        }
         return "viewStaff";
     }
 
     public String deleteStaffMember() throws ClassNotFoundException {
         String toPage = null;
         if (selectedsatff != null) {
-            Bean setPage = new Bean();
-            setPage.setPage("viewStaff");
+           /* Bean setPage = new Bean();
+            setPage.setPage("viewStaff");*/
             new StaffTableConnection().deleteStaff(selectedsatff.getStaffID());
         } else {
             MenuView out = new MenuView();
             out.error("Detele error", "No staff member has been selected");
 
         }
-        FacesContext.getCurrentInstance().getExternalContext().invalidateSession();
-        return toPage;
+        //FacesContext.getCurrentInstance().getExternalContext().invalidateSession();
+        return "viewStaff";
     }
 
     public int assignAccessLevel(String role) {

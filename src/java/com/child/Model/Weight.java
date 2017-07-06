@@ -1,24 +1,50 @@
 package com.child.Model;
 
+import java.util.Date;
+
 /**
  * 
- * @author Barry Gray Kapelembe 
+ * @author efsan1
  */
 public class Weight {
-    private double weightReading;
+    
+    private double weight;
+    private Date dateRecorded;
 
-    public double getWeightReading() {
-        return weightReading;
+    public Weight(double weightReading, Date dateRecorded) {
+        this.weight = weightReading;
+        this.dateRecorded = dateRecorded;
+    }
+    
+    public Weight(){
+    }
+    public double getWeight() {
+        return weight;
+    }
+    
+    public void setWeight(double weightReading) {
+        this.weight = weightReading;
     }
 
-    public boolean setWeightReading(double weightReading) {
+    public Date getDateRecorded() {
+        return dateRecorded;
+    }
+
+    public void setDateRecorded(Date dateRecorded) {
+        this.dateRecorded = dateRecorded;
+    }
+    
+    // needs rethinking
+    public boolean VerifyWeightReading(double weightReading) {
         boolean set = false;
         if (weightReading > 0 ){
-            this.weightReading = weightReading;
+            this.weight = weightReading;
             set = true;
         }
         return set;   
     }
+
+   
     
     
 

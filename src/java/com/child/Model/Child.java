@@ -8,22 +8,29 @@ import java.util.Date;
 
 /**
  * 
- * @author Barry Gray Kapelembe 
+ * @author efsan1 
  */
 public class Child extends Person implements Serializable{
     
     private String destingushingMarks;
     private ArrayList<Temperature> listOfTempRecorded;
     private ArrayList<Meals> listOfMealsHad;
-    private ArrayList<Weight> listOfWeightRecorded;
+    private Weight weightRecorded = new Weight();
+    private Height heightRecorded = new Height();
     private ArrayList<Nappies> listOfNappyRecords;
-    private ChildMedicalHistory medicalHistory;
+    private ChildMedicalHistory medicalHistory = new ChildMedicalHistory();
+    protected ArrayList<ChildMedicalHistory> listOfMedicalHistoryRecords = new ArrayList<ChildMedicalHistory>();
     private ArrayList<SleepingRoutine> listOfSleepingRecords;
     private ArrayList<DailyActivities> listOfActivitiesRecorded; 
     private int babyProfileid;
-    //this needs to be rethought
-    private int staffID;
-
+    private double headCir;
+    private ArrayList childRequiredDocs,childArrivalCondition;
+    private String requiredDocNote, ChildArrivalMedicalReport, generalRemarks;
+    private ParentInfo parentInfo = new ParentInfo();
+    private SocialWorker socialWorkerDetails = new SocialWorker();
+    protected IntakeInfo intakeDetails = new IntakeInfo();
+    
+    private ArrayList<Object> spreadProperties;
     
     public void clearChild(){
         this.destingushingMarks = null;
@@ -31,11 +38,29 @@ public class Child extends Person implements Serializable{
         super.setFirstname(null);
     }
     
-    public Child(int babyProfileid, String firstname, String lastname, char gender, String placeOfBirth, Date dateOfBirth, String marks, int staffID) {
+    public Child(int babyProfileid, String firstname, String lastname, char gender, Date dateOfBirth,
+            String placeOfBirth, String destingushingMarks, ArrayList childRequiredDocs, 
+            ArrayList childArrivalCondition, String requiredDocNote, String ChildArrivalMedicalReport ,
+            IntakeInfo intakeDetails, SocialWorker socialWorkerDetails, ParentInfo parentInfo, String generalRemarks,
+            Weight weightRecorded, Height heightRecorded, double headCir, 
+            ArrayList<ChildMedicalHistory> listOfMedicalHistoryRecords) {
+        
         super(firstname, lastname, gender, placeOfBirth, dateOfBirth);
-        this.destingushingMarks =  marks;
+        this.destingushingMarks =  destingushingMarks;
         this.babyProfileid = babyProfileid;
-        this.staffID = staffID;
+        this.childRequiredDocs = childRequiredDocs;
+        this.childArrivalCondition = childArrivalCondition;
+        this.requiredDocNote = requiredDocNote;
+        this.ChildArrivalMedicalReport = ChildArrivalMedicalReport;
+        this.intakeDetails = intakeDetails;
+        this.socialWorkerDetails = socialWorkerDetails;
+        this.parentInfo = parentInfo;
+        this.generalRemarks = generalRemarks;
+        this.weightRecorded = weightRecorded;
+        this.heightRecorded = heightRecorded;
+        this.headCir = headCir;
+        this.listOfMedicalHistoryRecords = listOfMedicalHistoryRecords;
+        
     }
     public Child(){
     }
@@ -67,7 +92,7 @@ public class Child extends Person implements Serializable{
     public void setMedicalHistory(ChildMedicalHistory medicalHistory) {
         this.medicalHistory = medicalHistory;
     }
-
+    
     public String getDestingushingMarks() {
         return destingushingMarks;
     }
@@ -108,12 +133,12 @@ public class Child extends Person implements Serializable{
     }*/
     
 
-    public ArrayList<Weight> getlistOfWeightRecorded() {
-        return listOfWeightRecorded;
+    public Weight getWeightRecorded() {
+        return weightRecorded;
     }
 
-    public void setlistOfWeightRecorded(ArrayList<Weight> weight) {
-        this.listOfWeightRecorded = weight;
+    public void setWeightRecorded(Weight weightRecorded) {
+        this.weightRecorded = weightRecorded;
     }
 
     public ArrayList<Nappies> getlistOfNappyRecords() {
@@ -137,20 +162,109 @@ public class Child extends Person implements Serializable{
         this.listOfSleepingRecords = listOfSleepingRecords;
     }
     
-    public int getStaffID() {
-        return staffID;
-    }
-
-    public void setStaffID(int staffID) {
-        this.staffID = staffID;
-    }
-
     public ArrayList<DailyActivities> getListOfActivitiesRecorded() {
         return listOfActivitiesRecorded;
     }
 
     public void setListOfActivitiesRecorded(ArrayList<DailyActivities> listOfActivitiesRecorded) {
         this.listOfActivitiesRecorded = listOfActivitiesRecorded;
+    }
+
+    public ArrayList<ChildMedicalHistory> getListOfMedicalHistoryRecords() {
+        return listOfMedicalHistoryRecords;
+    }
+
+    public void setListOfMedicalHistoryRecords(ArrayList<ChildMedicalHistory> listOfMedicalHistoryRecords) {
+        this.listOfMedicalHistoryRecords = listOfMedicalHistoryRecords;
+    }
+    
+    public ArrayList getChildRequiredDocs() {
+        return childRequiredDocs;
+    }
+
+    public void setChildRequiredDocs(ArrayList childRequiredDocs) {
+        this.childRequiredDocs = childRequiredDocs;
+    }
+
+    public String getRequiredDocNote() {
+        return requiredDocNote;
+    }
+
+    public void setRequiredDocNote(String requiredDocNote) {
+        this.requiredDocNote = requiredDocNote;
+    }
+
+    public ArrayList getChildArrivalCondition() {
+        return childArrivalCondition;
+    }
+
+    public void setChildArrivalCondition(ArrayList childArrivalCondition) {
+        this.childArrivalCondition = childArrivalCondition;
+    }
+
+    public String getChildArrivalMedicalReport() {
+        return ChildArrivalMedicalReport;
+    }
+
+    public void setChildArrivalMedicalReport(String ChildArrivalMedicalReport) {
+        this.ChildArrivalMedicalReport = ChildArrivalMedicalReport;
+    }
+
+    public double getHeadCir() {
+        return headCir;
+    }
+
+    public void setHeadCir(double headCir) {
+        this.headCir = headCir;
+    }
+
+    public String getGeneralRemarks() {
+        return generalRemarks;
+    }
+
+    public void setGeneralRemarks(String generalRemarks) {
+        this.generalRemarks = generalRemarks;
+    }
+
+    public ParentInfo getParentInfo() {
+        return parentInfo;
+    }
+
+    public void setParentInfo(ParentInfo parentInfo) {
+        this.parentInfo = parentInfo;
+    }
+
+    public ArrayList<Object> getSpreadProperties() {
+        return spreadProperties;
+    }
+
+    public void setSpreadProperties(ArrayList<Object> spreadProperties) {
+        
+        this.spreadProperties = spreadProperties;
+    }
+
+    public SocialWorker getSocialWorkerDetails() {
+        return socialWorkerDetails;
+    }
+
+    public void setSocialWorkerDetails(SocialWorker socialWorkerDetails) {
+        this.socialWorkerDetails = socialWorkerDetails;
+    }
+
+    public IntakeInfo getIntakeDetails() {
+        return intakeDetails;
+    }
+
+    public void setIntakeDetails(IntakeInfo intakeDetails) {
+        this.intakeDetails = intakeDetails;
+    }
+
+    public Height getHeightRecorded() {
+        return heightRecorded;
+    }
+
+    public void setHeightRecorded(Height heightRecorded) {
+        this.heightRecorded = heightRecorded;
     }
     
     @Override

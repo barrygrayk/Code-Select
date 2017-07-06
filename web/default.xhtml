@@ -8,6 +8,9 @@
         <h1> Dashboard content will be here</h1>
    
             <p:chart type="line" model="#{chartView.lineModel1}" style="height:300px;"/>
+            <h:form>
+                <p:commandButton icon="ui-icon-delete" value="Add" action="#{StaffMembers.openDialogBox('addStaff')}"/>    
+            </h:form>
       
 
        

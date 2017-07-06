@@ -37,7 +37,11 @@
                 </p:layoutUnit>
 
                 <p:layoutUnit position="south" size="50" closable="true" collapsible="true">
-                    Footer content 
+                    <h:form>
+                        <h:commandButton value="logout" action="#{loginBean.doLogOut()}"/>
+
+                    </h:form>
+
                 </p:layoutUnit>
 
                 <p:layoutUnit position="west" size="auto" header="Retract" collapsible="true">
@@ -46,7 +50,7 @@
                         <f:ajax render=":content">
                             <p:growl autoUpdate="true"/>
 
-                            <p:panelMenu style="width:256px">
+                            <p:panelMenu style="width:216px">
 
                                 <p:submenu label="Dashboard"/>
                                 <p:submenu label="Messages">
@@ -63,15 +67,15 @@
                                     <p:menuitem value="View All" actionListener="#{menuView.update}"  action="#{Include.setPage('viewAllStaff')}" icon="ui-icon-disk" update=":content" />
                                     <p:menuitem value="Edit Staff" actionListener="#{menuView.update}"  icon="ui-icon-fa-edit" />
                                 </p:submenu>
-                               <p:submenu label="Baby tracker">
-                                <p:menuitem value="View child profiles" actionListener="#{menuView.delete}" action="#{Include.setPage('viewbaby')}" update=":content" icon="ui-icon-close"/>
-                                <p:menuitem value="Add baby profile" actionListener="#{menuView.delete}" action="#{Include.setPage('addBaby')}" update=":content" icon="ui-icon-close"/>
-                                <p:menuitem value="Edit baby profile" actionListener="#{menuView.delete}" action="#{Include.setPage('editBaby')}"  update=":content" icon="fa-edit"/>
-                                <p:menuitem value="Delete baby profile" actionListener="#{menuView.delete}" action="#{Include.setPage('deleteBaby')}" update=":content" icon="fa-edit"/>
-                                <p:menuitem value="Child Profile" actionListener="#{menuView.delete}" action="#{Include.setPage('childProfilePage')}" update=":content" icon="fa-edit"/>
-                                <p:menuitem value="Capture data" actionListener="#{menuView.delete}"  ajax="false" icon="ui-icon-close"/>
-                                <p:menuitem value="Generate report" actionListener="#{menuView.delete}"  ajax="false" icon="ui-icon-close"/>    
-                            </p:submenu>
+                                <p:submenu label="Baby tracker">
+                                    <p:menuitem value="View child profiles" actionListener="#{menuView.delete}" action="#{Include.setPage('viewbaby')}" update=":content" icon="ui-icon-close"/>
+                                    <p:menuitem value="Add baby profile" actionListener="#{menuView.delete}" action="#{Include.setPage('addBaby')}" update=":content" icon="ui-icon-close"/>
+                                    <p:menuitem value="Edit baby profile" actionListener="#{menuView.delete}" action="#{Include.setPage('editBaby')}"  update=":content" icon="fa-edit"/>
+                                    <p:menuitem value="Delete baby profile" actionListener="#{menuView.delete}" action="#{Include.setPage('deleteBaby')}" update=":content" icon="fa-edit"/>
+                                    <p:menuitem value="Child Profile" actionListener="#{menuView.delete}" action="#{Include.setPage('childProfilePage')}" update=":content" icon="fa-edit"/>
+                                    <p:menuitem value="Capture data" actionListener="#{menuView.delete}"  ajax="false" icon="ui-icon-close"/>
+                                    <p:menuitem value="Generate report" actionListener="#{menuView.delete}"  ajax="false" icon="ui-icon-close"/>    
+                                </p:submenu>
                                 <p:submenu label="Needs">
                                     <p:menuitem value="Add needs" actionListener="#{menuView.save}" icon="ui-icon-disk" />
                                     <p:menuitem value="View needs" actionListener="#{menuView.update}"  icon="ui-icon-fa-edit" />

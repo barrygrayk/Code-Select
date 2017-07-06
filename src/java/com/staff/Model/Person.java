@@ -12,7 +12,7 @@ import java.util.Date;
 public abstract class Person {
     private String firstname;
     private String lastname;
-    private char gender;
+    protected char gender;
     private String phoneNumber;
     private String address;
 

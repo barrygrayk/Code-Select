@@ -3,44 +3,66 @@
               xmlns="http://xmlns.jcp.org/xml/ns/javaee"
               xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
               xsi:schemaLocation="http://xmlns.jcp.org/xml/ns/javaee http://xmlns.jcp.org/xml/ns/javaee/web-facesconfig_2_2.xsd">
-    
+    <!--   
+    <application>
+        <action-listener>org.primefaces.application.DialogActionListener</action-listener>
+        <navigation-handler>org.primefaces.application.DialogNavigationHandler</navigation-handler>
+        <view-handler>org.primefaces.application.DialogViewHandler</view-handler>
+    </application>-->
 
-<navigation-rule>
-    <from-view-id>/dashboard.xhtml</from-view-id>
-    <navigation-case>
-        <from-outcome>#{Include.getPage()}</from-outcome>
-        <to-view-id>viewStaff.xhtml</to-view-id>
-        <redirect/>
-    </navigation-case>
-    <!--<navigation-case>
-        <from-outcome>viewBaby</from-outcome>
-        <to-view-id>viewbaby.xhtml</to-view-id>
-        <redirect/>
-    </navigation-case>-->
+    <navigation-rule>
+        <from-view-id>/dashboard.xhtml</from-view-id>
+        <navigation-case>
+            <from-outcome>#{Include.getPage()}</from-outcome>
+            <to-view-id>viewStaff.xhtml</to-view-id>
+            <redirect/>
+        </navigation-case>
+        <!--<navigation-case>
+            <from-outcome>viewBaby</from-outcome>
+            <to-view-id>viewbaby.xhtml</to-view-id>
+            <redirect/>
+        </navigation-case>-->
 
-     <navigation-case>
-        <from-outcome>viewBaby</from-outcome>
-        <to-view-id>viewbaby.xhtml</to-view-id>
-        <redirect/>
-    </navigation-case>
+        <navigation-case>
+            <from-outcome>viewBaby</from-outcome>
+            <to-view-id>viewbaby.xhtml</to-view-id>
+            <redirect/>
+        </navigation-case>
     
-    <navigation-case>
-        <from-outcome>addBaby</from-outcome>
-        <to-view-id>addBaby.xhtml</to-view-id>
-    </navigation-case>
+        <navigation-case>
+            <from-outcome>addBaby</from-outcome>
+            <to-view-id>addBaby.xhtml</to-view-id>
+        </navigation-case>
     
-    <navigation-case>
-        <from-outcome>deleteBaby</from-outcome>
-        <to-view-id>deleteBaby.xhtml</to-view-id>
-        <redirect/>
-    </navigation-case>
+        <navigation-case>
+            <from-outcome>deleteBaby</from-outcome>
+            <to-view-id>deleteBaby.xhtml</to-view-id>
+            <redirect/>
+        </navigation-case>
     
-    <navigation-case>
-        <from-outcome>editBaby</from-outcome>
-        <to-view-id>editBaby.xhtml</to-view-id>
-        <redirect/>
-    </navigation-case>
-</navigation-rule>
+        <navigation-case>
+            <from-outcome>editBaby</from-outcome>
+            <to-view-id>editBaby.xhtml</to-view-id>
+            <redirect/>
+        </navigation-case>
+    </navigation-rule>
+    <navigation-rule>
+        <from-view-id>/login.xhtml</from-view-id>
+        <navigation-case>
+            <from-outcome>dashboard</from-outcome>
+            <to-view-id>/dashboard.xhtml</to-view-id>
+            <redirect/>
+        </navigation-case>
+    </navigation-rule> 
+    <navigation-rule>
+        <from-view-id>/dashboard.xhtml</from-view-id>
+        <navigation-case>
+            <from-outcome>#{Include.page}.xhtml</from-outcome>
+            <to-view-id>/viewStaff.xhtml</to-view-id>
+             <redirect/>
+        </navigation-case>
+    </navigation-rule>
+    
 
 
 </faces-config>

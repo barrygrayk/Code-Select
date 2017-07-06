@@ -60,7 +60,7 @@
                             <h:form>
                                 <h:panelGrid columns="1"  cellpadding="30" class="addStaff">
                                     <h:outputLabel for="mask"    value="Name *" />
-                                    <p:selectOneMenu id="name" value="#{StaffMembers.staffName}" effect="fold" required="true" >
+                                        <p:selectOneMenu id="name" value="#{StaffMembers.staffName}" effect="fold" required="true" >
                                         <f:selectItem itemLabel="Select staff" itemValue="#{StaffMembers.staffName}" />
                                         <f:selectItems value="#{StaffMembers.staffMemberNames}" />
                                     </p:selectOneMenu>

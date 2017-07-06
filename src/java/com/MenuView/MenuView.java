@@ -16,7 +16,7 @@ public class MenuView {
         addMessage("Success", "Data saved");
     }
     public void addSatff(String message) {
-        addMessage("Success", message + " Has been added");
+        addMessage( message,null );
     }
     public void errorMessage(String message) {
         error("Error", message);

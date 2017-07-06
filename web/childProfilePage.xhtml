@@ -11,15 +11,17 @@
     <h:body>-->
         <ui:composition>
             <h:form id="childProfile">
-                <p:chart type="line" model="#{chartView.lineModel1}" style="height:300px;"/>
+                
                 <div id="Title" align="left" style="padding-left: 20px">
                     <h1> Onthantile's Baby Profile</h1>
                 </div>
                 <p:growl id="childProfilePage" showDetail="true"/>
                 <div id="ComponentsRow1">
-                    <p:panelGrid id="optionPanel" columns="3" style="width: 900px;">
+                    <p:panelGrid id="optionPanel" columns="3" style="width: 1000px;">
                         <p:column width="300px">
-                            <p:selectOneMenu id="searchChildAdvance" style="width: 50px;">
+                            <p:selectOneMenu id="searchChildAdvance" value="#{ChildCont.slectedChild}" style="width: 50px;">
+                                <f:selectItem itemLabel="Select a child" itemValue="#{ChildCont.slectedChild}"/>
+                                <f:selectItems value="#{ChildCont.listOfChildrenDropbox }"/>
                             </p:selectOneMenu>
                         </p:column>
                         <p:column width="300px">
@@ -31,41 +33,46 @@
                             <p:commandButton value="Next" ajax="false"/>
                         </p:column>
                     </p:panelGrid>
-                    <p:panelGrid id="topPanel" columns="4" style="width: 900px; height: 50px">
-                        <p:column>
-                            <p:panelGrid columns="2" style="width: 240px; height: 100px">
+                    
+                    <p:panelGrid id="topPanel" columns="4" style="width: 1000px; height: 50px">
+                        <p:column >
+                            <p:panelGrid columns="2" style="width: 210px; height: 100px">
                                 <f:facet name="header">
-                                    <h:graphicImage  width="100px" height="100px" name="/images/ALine.jpg" />
+                                    <h:graphicImage  width="110px" height="100px" name="/images/baby5.jpg" />
                                 </f:facet>
                                 
                                 <p:column width="150px">
                                     <h4><h:outputText value="Name: #{ChildCont.child.firstname} #{ChildCont.child.lastname}"/></h4>
-                                    <h4><h:outputText value="Date-Of-Birth: #{ChildCont.child.dateOfBirth}" /></h4>                                  
+                                    <h4><h:outputText value="Birth: #{ChildCont.child.dateOfBirth}" /></h4>                                  
                                     <h4><h:outputText value="Unique Marker: #{ChildCont.child.destingushingMarks}" /></h4>
                                 </p:column>
                             </p:panelGrid>
                         
                         </p:column>
                         
-                        <p:panel >  
-                            <h:outputText value="Height Chart" />
-                              <p:chart type="line" model="#{chartView.lineModel1}" style="height:300px;"/>
+                        <p:panel style="width: 230px">  
+                            <h:outputText value="Height Chart"/>
+                              <p:chart type="line" model="#{chartView.lineModel1}" style="height:175px; width:180px"/>
                         </p:panel>
                             
                          <p:column>
+                             <p:panel style="width: 230px">
                             <h:outputText value="Temperature Chart" />
-                             <p:chart type="line" model="#{chartView.lineModel1}" style="height:300px;"/>
-                            
+                             <p:chart type="line" model="#{chartView.lineModel1}" style="height:175px; width:180px"/>
+                            </p:panel>
                         </p:column>
                         
-                        <p:column>                
+                        <p:column> 
+                            <p:panel style="width: 230px">
                             <h:outputText value="Weight chart" />
-                             <p:chart type="line" model="#{chartView.lineModel1}" style="height:300px;"/>
+                             <p:chart type="line" model="#{chartView.lineModel1}" style="height:175px; width:180px"/>
+                             </p:panel>
                         </p:column>
+                              
                         
                     </p:panelGrid>
                     
-                    <p:panelGrid id="secondPanel" columns="2" style="width: 900px;">
+                    <p:panelGrid id="secondPanel" columns="2" style="width: 1000px;">
                         <p:column >
                             <p:dataTable id="mealsTb" var="temp" value="#{ChildCont.getListOfMealsHadDb()}" selectionMode="single"  rowKey="#{temp.mealID}" selection="#{temp.mealID}">
                                 
@@ -84,8 +91,8 @@
                                     <p:commandButton value="Edit" type="button" onclick="PF('dlg').show()" update="@form" oncomplete="PF('dlg').hide();"/>
                                 </f:facet>
                             </p:dataTable>
-                            <p:dialog header="Update Meal Record" widgetVar="dlg" resizable="false" width="230px">
-                                
+                            <p:dialog header="Update Meal Record" widgetVar="dlg" resizable="false" responsive="true">
+                                <h:panelGrid columns="1">
                                 <p:row id="updateColumnMeals" >
                                 <h:outputText value="Meal Type:" />
                                 <p:inputText id="txtMealType" value="Rice" />
@@ -97,7 +104,7 @@
                                 <h:outputText value="Comments:" />
                                 <p:inputText id="txtMealComment" value="afedfsdf" />
                                 <p:commandButton value="Update" action="#{ChildCont.humorMe()}" icon="ui-icon-update"/>
-                                
+                                </h:panelGrid>
                             </p:dialog>
                         </p:column>
                         <p:column>
@@ -118,7 +125,7 @@
                         </p:column>
                     </p:panelGrid>
                     
-                    <p:panelGrid id="thirdP" columns="3" style="width: 900px;">
+                    <p:panelGrid id="thirdP" columns="3" style="width: 1000px;">
                         <p:column>
                             <p:dataTable id="dtCaretakerShift">
                                 <p:column headerText="Time/Shift">
@@ -130,6 +137,7 @@
                             </p:dataTable>
                         </p:column>
                         <p:column>
+                            <h4><h:outputLabel value="List of Activities" /></h4>
                             <p:selectOneListbox id="dailyActivitiesList" value="#{ChildCont.currentActivity}" var="list" onclick="#{ChildCont.humorMe()}">
                                 <f:selectItems value="#{ChildCont.listOfActivitiesDb}" var="c" itemValue="#{c}" itemLabel="#{c.title}"/>
                                 <p:column>
@@ -150,7 +158,7 @@
                         </p:column> 
                     </p:panelGrid>
                     
-                    <p:panelGrid id="bottomP" columns="4" style="width: 900px;">
+                    <p:panelGrid id="bottomP" columns="4" style="width: 1000px;">
                         <p:column>
                             <h:outputText value="Medical Report" />
                         </p:column>

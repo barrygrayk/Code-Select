@@ -1,0 +1,223 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:f="http://xmlns.jcp.org/jsf/core">
+    <ui:composition>
+     
+        <h:form id="testEditForm">
+            <p:tabView dynamic="true">
+                <p:tab title="Intake Details" id="tab2">
+                    <div id="SocialWorker">
+                        <h:panelGrid columns="2">
+                            <p:column>
+                            <p:fieldset id="p2" legend="Intake Information" style="margin-top:10px; text-align:left">
+                                <h:panelGrid columns="2" cellpadding="5">
+                                    <p:outputLabel id="deliverPerson" value="Dropped at Onthantile by:"/>
+                                    <p:inputText id="txtDelivername" value="#{ChildCont.child.intakeDetails.personWhoDropped}"/>
+                                    <p:outputLabel id="fetchLocation" value="Fetched From:"/>
+                                    <p:inputText id="txtFetchLocation" value="#{ChildCont.child.intakeDetails.fetchLocation}"/>
+                                    <p:outputLabel id="fetchPerson" value="Fetched by:"/>
+                                    <p:inputText id="txtFetchname" value="#{ChildCont.child.intakeDetails.personWhoFetched}"/>
+                                    <p:outputLabel id="fetchPersonTlfn" value="Phone Number:"/>
+                                    <p:inputText id="txtFetchPersonTlfn" value="#{ChildCont.child.intakeDetails.phoneNumber}" />
+                                    <p:outputLabel id="droppeddate" value="Date and Time:" />
+                                    <p:calendar id="dateDropped"  mask="99/99/9999" pattern="dd/MM/yyyy HH:mm:ss" value="#{ChildCont.child.intakeDetails.dateAndTime}" >
+                                        <p:ajax event="dateSelect" listener="#{ChildCont.onDateTimeSelect}" />
+                                    </p:calendar>
+                                </h:panelGrid>
+                            </p:fieldset>
+                            <p:fieldset id="f6" legend="Required Documentation" style="margin-top:10px; text-align:left">
+                                <h:panelGrid columns="2" cellpadding="5">
+                                    <p:selectManyCheckbox id="RD" value="#{ChildCont.child.childRequiredDocs}" layout="grid" columns="1">
+                                        <f:selectItem itemLabel="Form 36" itemValue="form36" />
+                                        <f:selectItem itemLabel="Medical Report" itemValue="medicalReport" />
+                                        <f:selectItem itemLabel="Clinic Card" itemValue="clinicCard" />
+                                        <f:selectItem itemLabel="Birth Certificate" itemValue="birthCertificate" />
+                                    </p:selectManyCheckbox>
+                                    <p:panel style="border: none">
+                                        <p:outputLabel id="RDCommnets" value="Comments"/><br/>
+                                        <p:inputTextarea rows="3" cols="29" style="align-self: flex-end;" value="#{ChildCont.child.requiredDocNote}"/>
+                                    </p:panel>
+                                </h:panelGrid>
+                            </p:fieldset>  
+                            </p:column>
+                            <p:column>
+                            <p:row>  
+                                <p:fieldset id="f5" legend="Parent Information" style="margin-top:10px; text-align:left">
+                                    <h:panelGrid columns="1">
+                                        <h:panelGrid columns="4">
+                                            <p:outputLabel id="Fathername" value="Father Full Name:" />
+                                            <p:inputText id="txtFathername" value="#{ChildCont.child.parentInfo.fatherName}"/>
+                                            <p:outputLabel id="IdentificationN" value="ID Number:"/>
+                                            <p:inputText id="txtIdN" value="#{ChildCont.child.parentInfo.fatherID}"/>
+                                            <p:outputLabel id="Mothername" value="Mother Full Name:" />
+                                            <p:inputText id="txtMothername" value="#{ChildCont.child.parentInfo.motherName}" />
+                                            <p:outputLabel id="IdNumber" value="ID Number:" />
+                                            <p:inputText id="txtIdNumber" value="#{ChildCont.child.parentInfo.motherID}" />
+                                            <p:outputLabel id="ContactN" value="Contact Number(s):" />
+                                            <p:inputText id="txtContactN" value="#{ChildCont.child.parentInfo.contactNumber}" />
+
+                                        </h:panelGrid>
+                                        <h:panelGrid columns="2">                                               
+                                            <p:outputLabel id="address" value="Physical Addresses"/>
+                                            <p:inputTextarea rows="2" cols="40" style="align-self: flex-end;" value="#{ChildCont.child.parentInfo.physicalAddress}"/>
+                                        </h:panelGrid>
+                                    </h:panelGrid>
+                                </p:fieldset>
+                            </p:row>
+                            <p:row>
+                            <p:fieldset id="f3" legend="Social Worker Information" style="margin-top:10px; text-align:left">
+                                <h:panelGrid columns="4">
+                                    <p:outputLabel id="SWname" value="Name:" />
+                                    <p:inputText id="txtSWname" value="#{ChildCont.child.socialWorkerDetails.socialWorkerName}" />
+                                    <p:outputLabel id="SWtlfn" value="Phone Number:" />
+                                    <p:inputText id="txtSWtfln" value="#{ChildCont.child.socialWorkerDetails.phoneNumber}"  />
+                                    <p:outputLabel id="organisation" value="Organization:" />
+                                    <p:inputText id="txtOrg" value="#{ChildCont.child.socialWorkerDetails.organization}" />
+                                    <p:outputLabel id="email" value="Email Address:" />
+                                    <p:inputText id="txtEmail" value="#{ChildCont.child.socialWorkerDetails.email}" />
+                                </h:panelGrid>
+                                <p:outputLabel id="scc" value="Any Additional Information:" />
+                                <p:inputTextarea rows="2" cols="23" style="align-self: flex-end;" value="#{ChildCont.child.socialWorkerDetails.additionalInfo}"/>
+                            </p:fieldset>
+                            </p:row>
+                            </p:column>
+                            
+
+                        </h:panelGrid>
+                    </div>
+                </p:tab>
+                <p:tab title="Child Details" id="tab1">
+                    <div id="childPersonalDetails">
+                        <h:panelGrid columns="2" cellpadding="5">
+                            <p:fieldset id="PanelAdd" legend="Child Description" style="margin-top:10px; text-align:left">
+                            <h:panelGrid columns="2">
+                                <h:panelGrid columns="2" cellpadding="5">
+                                    <p:outputLabel id="firstname" value="First Name:"/>
+                                    <p:inputText id="txtFname" value="#{ChildCont.child.firstname}" />
+                                    <p:outputLabel id="lastname" value="Surname:"/>
+                                    <p:inputText id="txtSname" value="#{ChildCont.child.lastname}" />
+                                    <p:outputLabel id="distinguishmark" value="Distinguish Mark:"/>
+                                    <p:inputText id="txtDistinguishMark" value="#{ChildCont.child.destingushingMarks}" />
+
+                                    <p:outputLabel id="gender" value="Gender:"/>
+                                    <p:selectOneMenu id="genderOptions" value="#{ChildCont.child.gender}">
+                                        <f:selectItem itemLabel="Select gender" itemValue=""/>
+                                        <f:selectItem itemLabel="Male" itemValue="M" />
+                                        <f:selectItem itemLabel="Female" itemValue="F" />
+                                    </p:selectOneMenu>
+
+                                    <p:outputLabel id="birthdate" value="Date-of-birth:" />
+                                    <p:calendar id="event" value="#{ChildCont.child.dateOfBirth}" pattern = "dd/MM/yyyy" mask = "true">
+                                    <p:ajax event="dateSelect" listener="#{ChildCont.onDateSelect}" />
+                                    </p:calendar>
+
+                                    <p:outputLabel id="placeOfBirth" value="Place-of-birth:" />
+                                    <p:inputText id="txtPlaceOfBirth" value="#{ChildCont.child.placeOfBirth}" />
+
+                                </h:panelGrid>
+                                <h:panelGrid columns="1" cellpadding="5" cellspacing="5">
+                                    <h:panelGrid columns="2" >
+                                    <p:outputLabel id="headCircunference" value="Head CIR:" />
+                                    <p:inputText id="txtHeadCirc" value="#{ChildCont.child.headCir}" />
+                                    <p:outputLabel id="Initialheight" value="Height:" />
+                                    <p:inputText id="txtHeight" value="#{ChildCont.child.heightRecorded.height}" />
+                                    <p:outputLabel id="Initialweight" value="Weight:" />
+                                    <p:inputText id="txtWeight" value="#{ChildCont.child.weightRecorded.weight}" />
+                                    </h:panelGrid>
+                                    <p:panel id="P7" >
+                                    <h5><h:outputLabel value="Diet details" /></h5>
+                                    <p:selectManyCheckbox id="basic" value="#{ChildCont.selectedChildren}" layout="grid" columns="1">
+                                        <f:selectItem itemLabel="Formula details" itemValue="none" />
+                                        <f:selectItem itemLabel="Solid details" itemValue="none" />
+                                        
+                                    </p:selectManyCheckbox></p:panel>
+                                    
+                                </h:panelGrid>
+                            </h:panelGrid>
+                        </p:fieldset>
+                            
+                        <p:fieldset id="f4" legend="Medical History Details" style="margin-top:10px; text-align:left">
+                                <h:panelGrid columns="2" cellpadding="5">
+                                    <p:panel id="P4">
+                                        <p:contextMenu>
+                                            <p:menuitem value="Update Illness" onclick="PF('dlg').show()" icon="ui-icon-add"/>
+                                        </p:contextMenu>
+                                        <p:dataList value="#{ChildCont.child.listOfMedicalHistoryRecords}" var="medicalH" type="ordered">
+                                            <f:facet name="header">
+                                                List any known Illnesses
+                                            </f:facet>
+                                            #{medicalH.illnessDetected}
+                                        </p:dataList>
+                                    </p:panel>
+                                    
+                                    <p:panel id="P5">
+                                    <h5><h:outputLabel value="Child Condition" /></h5>
+                                    <p:selectManyCheckbox id="childCondition" value="#{ChildCont.child.childArrivalCondition}" layout="grid" columns="1">
+                                        <f:selectItem itemLabel=" Signs of Abuse" itemValue="abuse" />
+                                        <f:selectItem itemLabel=" Signs of Neglect" itemValue="neglect" />
+                                        <f:selectItem itemLabel=" Others" itemValue="others" />
+                                    </p:selectManyCheckbox>
+                                    </p:panel>
+                                    
+                                    <p:outputLabel id="mrc" value="Medical Report Comments:" />
+                                    <p:inputTextarea rows="3" cols="26" style="align-self: flex-end;" value="#{ChildCont.child.childArrivalMedicalReport}" />
+                                    
+                                    <p:dialog header="Update Illness Details" widgetVar="dlg" resizable="false" responsive="true">
+                                        <h:panelGrid columns="2">
+                                            <h:outputText value="Name/Desc:" />
+                                            <p:inputText id="txtIdesc" value="#{ChildCont.child.medicalHistory.illnessDetected}" />
+                                            <h:outputText value="Causes:" />
+                                            <p:inputText id="txtCauses" value="#{ChildCont.child.medicalHistory.cause}" />
+                                            <h:outputText value="Treatment:" />
+                                            <p:inputText id="txtTreatment" value="#{ChildCont.child.medicalHistory.medicines}" />
+                                            <h:outputText value="Special Treatment:" />
+                                            <p:inputText id="txtSpecialTreatment" value="#{ChildCont.child.medicalHistory.specialTreatmeants}" />
+                                            <h:outputText value="Allergy:" />
+                                            <p:inputText id="txtAllergy" value="#{ChildCont.child.medicalHistory.allergies}" />
+                                            <h:outputText value="Doctor Seen:" />
+                                            <p:inputText id="txtDoctor" value="#{ChildCont.child.medicalHistory.doctersName}" />
+                                            <h:outputText value="Clinic/Hospital:" />
+                                            <p:inputText id="txtClinic" value="#{ChildCont.child.medicalHistory.clincVisited}" />
+                                            <h:outputText value="Date:" />
+                                            <p:calendar id="dateEvent" value="#{ChildCont.child.medicalHistory.dateOfVisit}" pattern = "dd/MM/yyyy" mask = "true">
+                                                <p:ajax event="dateSelect" listener="#{ChildCont.onDateSelect}" />
+                                            </p:calendar>
+                                            <p:commandButton value="Done" onclick="PF('dlg').hide()" icon="ui-icon-save"/>
+                                            <p:row>
+                                            <p:commandButton value="Previuos" onclick="PF('dlg').hide()" icon="ui-icon-previous"/>
+                                            <p:commandButton value="Next" onclick="PF('dlg').hide()" icon="ui-icon-next"/>   
+                                            </p:row>
+                                                      
+                                        </h:panelGrid>
+                                    </p:dialog>
+                                </h:panelGrid>
+                              
+                            </p:fieldset>
+                            
+                        
+                        </h:panelGrid>  
+                        <p:panelGrid columns="2">
+                            <p:outputLabel id="cc" value="Include Any Concerns / Remarks:" />
+                            <p:inputTextarea rows="3" cols="75" style="align-self: flex-end;" value="#{ChildCont.child.generalRemarks}"/>
+                        </p:panelGrid>
+
+                        <p:panel id="P3">
+                            <p:commandButton value="Cancel" onclick="PF('dlgEdit').hide();" update="viewListOfBabies:viewTable">
+                                <p:resetInput target="PanelAdd"/>
+                            </p:commandButton>
+                            <p:commandButton value="Update" action="#{ChildCont.humorMe()}" onclick="PF('dlgEdit').hide()" update="viewListOfBabies:viewTable">
+                                <p:resetInput target="PanelAdd"/>
+                            </p:commandButton>
+                        </p:panel>
+                    </div>
+                </p:tab>
+            </p:tabView>
+        </h:form>
+       
+    </ui:composition>
+</html>
+
