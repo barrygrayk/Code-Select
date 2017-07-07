@@ -18,6 +18,8 @@ import io.jsonwebtoken.Claims;
 
 public class JJWT implements AuthTokens {
 private  final String aC = "essa";
+private String id;
+private String  subject;
     @Override
     public String creatJWt(String id, String issuer, String subject, long ttlMillis) {
         //The JWT signature algorithm we will be using to sign the token
@@ -44,6 +46,18 @@ private  final String aC = "essa";
         return builder.compact();
     }
 
+    public String getId() {
+        return id;
+    }
+
+ 
+
+    public String getSubject() {
+        return subject;
+    }
+
+
+
     @Override
     public void verifyToken(String token) {
         //This line will throw an exception if it is not a signed JWS (as expected)
@@ -53,6 +67,8 @@ private  final String aC = "essa";
         System.out.println("Subject: " + claims.getSubject());
         System.out.println("Issuer: " + claims.getIssuer());
         System.out.println("Expiration: " + claims.getExpiration());
+        id =claims.getId();
+        subject = claims.getSubject();
     }
 
 }

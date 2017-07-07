@@ -4,7 +4,11 @@ import com.MenuView.MenuView;
 import com.db.connection.StaffTableConnection;
 import com.staff.Model.Authenticate;
 import java.io.Serializable;
+import java.io.UnsupportedEncodingException;
+import java.nio.charset.StandardCharsets;
+import java.security.spec.InvalidKeySpecException;
 import java.sql.SQLException;
+import java.util.Arrays;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -14,6 +18,7 @@ import javax.faces.bean.ManagedBean;
 import javax.faces.bean.SessionScoped;
 import javax.faces.context.FacesContext;
 import javax.servlet.http.HttpSession;
+import static sun.security.krb5.Confounder.bytes;
 //import javax.ws.rs.Path;
 
 /**
@@ -23,7 +28,7 @@ import javax.servlet.http.HttpSession;
 @ManagedBean(name = "Login", eager = true)
 @SessionScoped
 //@Path("/login")
-public class LoginBean extends Passwords implements Serializable{
+public class LoginBean extends Passwords implements Serializable {
 
     private String password;
     private String username;
@@ -41,6 +46,7 @@ public class LoginBean extends Passwords implements Serializable{
     @PostConstruct
     public void init() {
         try {
+
             staffDB = new StaffTableConnection();
             authenticatedStaff = staffDB.getAuthenticatedStaff();
 
@@ -55,26 +61,24 @@ public class LoginBean extends Passwords implements Serializable{
         System.out.println("int____" + authenticatedStaff.size());
     }
 
-    public String doLogin() {
-        JJWT jwt = new JJWT();
-        System.out.println(jwt.creatJWt("1", "barry", "gary", serialVersionUID));
-        jwt.verifyToken("eyJhbGciOiJIUzI1NiJ9.eyJqdGkiOiIxIiwiaWF0IjoxNDk5MDE4MTU1LCJzdWIiOiJnYXJ5IiwiaXNzIjoiYmFycnkifQ.iTUQLWovUYJRuNmuqk-JWH2HQDoz1yxkX1db5vTbIbg");
+    public String doLogin() throws InvalidKeySpecException, UnsupportedEncodingException {
         int authCount = 0;
+        byte[] expectedHash = null;
+        byte[] salt = null;
         System.out.println(authenticatedStaff.size());
         for (Authenticate auth : authenticatedStaff) {
-            System.out.println(auth.getUsername());
+            System.out.println("thatusernam " + auth.getUsername());
             if (auth.getUsername().equals(username)) {
                 authCount++;
                 id = auth.authId();
                 setUsername(auth.getUsername());
+                System.out.println("MATCH________________" + username);
                 fullname = staffDB.getFullname(id);
-            }
-            if (auth.getHashedPassword().equals("testing")) {
-                //authCount++;        
+                expectedHash = auth.getHashedPassword();
+                salt = auth.getSalt();
             }
         }
-        System.out.println(authCount);
-        if (authCount == 1) {
+        if (isExpectedPassword(password.toCharArray(), salt, expectedHash)) {
             HttpSession session = SessionUtils.getSession();
             session.setAttribute("username", username);
             session.setAttribute("LoggedIn", "LoggedIn");
@@ -89,7 +93,7 @@ public class LoginBean extends Passwords implements Serializable{
 
     public String doLogOut() {
         System.out.println("__________________________________com.validation.LoginBean.doLogOut()");
-      HttpSession hs = SessionUtils.getSession();
+        HttpSession hs = SessionUtils.getSession();
         hs.invalidate();
 
         return "login.xhtml";

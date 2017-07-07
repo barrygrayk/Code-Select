@@ -23,13 +23,13 @@ public abstract class  Passwords {
   
   
 
-  public static byte[] getNextSalt() {
+  public  byte[] getNextSalt() {
     byte[] salt = new byte[16];
     RANDOM.nextBytes(salt);
     return salt;
   }
 
-  public static byte[] hash(char[] password, byte[] salt) throws InvalidKeySpecException {
+  public  byte[] hash(char[] password, byte[] salt) throws InvalidKeySpecException {
     PBEKeySpec spec = new PBEKeySpec(password, salt, ITERATIONS, KEY_LENGTH);
     Arrays.fill(password, Character.MIN_VALUE);
     try {
@@ -41,7 +41,7 @@ public abstract class  Passwords {
       spec.clearPassword();
     }
   }
-  public static boolean isExpectedPassword(char[] password, byte[] salt, byte[] expectedHash) throws InvalidKeySpecException {
+  public  boolean isExpectedPassword(char[] password, byte[] salt, byte[] expectedHash) throws InvalidKeySpecException {
     byte[] pwdHash = hash(password, salt);
     Arrays.fill(password, Character.MIN_VALUE);
     if (pwdHash.length != expectedHash.length) return false;
@@ -51,7 +51,7 @@ public abstract class  Passwords {
     return true;
   }
 
-  public static String generateRandomPassword(int length) {
+  public  String generateRandomPassword(int length) {
     StringBuilder sb = new StringBuilder(length);
     for (int i = 0; i < length; i++) {
       int c = RANDOM.nextInt(62);

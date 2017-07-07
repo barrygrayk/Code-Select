@@ -41,9 +41,8 @@ public class StaffTableConnection extends DatabaseConnection {
         PreparedStatement staffInsert = null;
         PreparedStatement roleInsert = null;
         PreparedStatement authInsert = null;
-        String token =null;
-  
-        
+        String token = null;
+
         try {
             String staffInsertQuery = "INSERT INTO .`onthantilestaff`(`firstName`,`LastName`,`gender`,`address`,`placeOfBirth`,`dateOfBirth`,`emailAddress`) VALUES(?,?,?,?,?,?,?)";
             staffInsert = setOthantileStaffColumns(staff, staffInsertQuery, false);
@@ -62,9 +61,9 @@ public class StaffTableConnection extends DatabaseConnection {
                 String authQuery = "INSERT INTO .`stafflogins` (`passwordSalt`,`passwordHash`,`userName`,`OnthantileStaff_staffID`,`status`,`token`) VALUES (?,?,?,?,?,?)";
                 AuthTokens jwt = new JJWT();
                 String id = fKey + "";
-                System.out.println("_____"+staff.getAuthcateDetails());
+                System.out.println("_____" + staff.getAuthcateDetails());
                 token = jwt.creatJWt(id, "OthantileWebApplication", staff.getAuthcateDetails().getUsername(), 0L);
-                authInsert = setStaffAuthenticationColumns(staff, authQuery, fKey,token);
+                authInsert = setStaffAuthenticationColumns(staff, authQuery, fKey, token);
                 authInsert.execute();
             }
             connection.commit();
@@ -74,7 +73,7 @@ public class StaffTableConnection extends DatabaseConnection {
                     + " sucessfully created. Your account details are as follows:\n" + "\n"
                     + "User name: " + staff.getAuthcateDetails().getUsername() + "\n" + "Role: " + staff.getRoleName()
                     + "\nFollow the link below to activate your accout.\n"
-                    + "\nhttp://localhost:8080/OnthatileWebApplication/faces/"+token+"/"+"register.xhtml";
+                    + "\nhttp://localhost:8080/OnthatileWebApplication/faces/" + token + "/" + "register.xhtml";
             sendEmailToStaff(staff.getEmailAddress(), "Othantile Staff Account", body);
             feedback.addMessage("Sucess", staff.getFirstname() + "'s bio has been added");
         } catch (SQLException ex) {
@@ -242,8 +241,8 @@ public class StaffTableConnection extends DatabaseConnection {
     public PreparedStatement setStaffAuthenticationColumns(OthantileStaff staff, String query, int fkey, String token) throws SQLException {
         PreparedStatement ps = null;
         ps = connection.prepareStatement(query);
-        ps.setString(1, staff.getAuthcateDetails().getSalt());
-        ps.setString(2, staff.getAuthcateDetails().getHashedPassword());
+        ps.setBytes(1, staff.getAuthcateDetails().getSalt());
+        ps.setBytes(2, staff.getAuthcateDetails().getHashedPassword());
         ps.setString(3, staff.getAuthcateDetails().getUsername());
         ps.setInt(4, fkey);
         ps.setString(5, staff.getAuthcateDetails().getStatus());
@@ -281,8 +280,8 @@ public class StaffTableConnection extends DatabaseConnection {
             st.setRoleName(resultset.getString("roleName"));
             Authenticate auth = new Authentication();
             auth.setUsername(resultset.getString("userName"));
-            auth.setSalt(resultset.getString("passwordSalt"));
-            auth.sethashPassword(resultset.getString("passwordHash"));
+            auth.setSalt(resultset.getBytes("passwordSalt"));
+            auth.sethashPassword(resultset.getBytes("passwordHash"));
             auth.setStatus(getAccountStatus(resultset.getString("status")));
             st.setAuthcateDetails((Authentication) auth);
             members.add(st);
@@ -331,12 +330,27 @@ public class StaffTableConnection extends DatabaseConnection {
             Authenticate auth = new Authentication();
             auth.setAuthId(resultset.getInt("OnthantileStaff_staffID"));
             auth.setUsername(resultset.getString("userName"));
-            auth.setSalt(resultset.getString("passwordSalt"));
-            auth.sethashPassword(resultset.getString("passwordHash"));
+            auth.setSalt(resultset.getBytes("passwordSalt"));
+            auth.sethashPassword(resultset.getBytes("passwordHash"));
             auth.setStatus(getAccountStatus(resultset.getString("status")));
+            auth.setToken(resultset.getString("token"));
             authenticatedStaff.add(auth);
         }
         return authenticatedStaff;
+    }
+
+    public void updatePassword(Authenticate auth) throws ClassNotFoundException, SQLException {
+        connection = getConnection();
+        String updateAuthfQuery = "UPDATE stafflogins SET passwordSalt=?, passwordHash=?,status=? WHERE userName =?";
+        PreparedStatement ps = null;
+        ps = connection.prepareStatement(updateAuthfQuery);
+        ps.setBytes(1, auth.getSalt());
+        ps.setBytes(2, auth.getHashedPassword());
+        ps.setString(3, auth.getStatus());
+        ps.setString(4, auth.getUsername());
+        ps.execute();
+        feedback.addMessage(auth.getUsername(),"Account has been sucessfully activated" );
+
     }
 
     public String getFullname(int id) {

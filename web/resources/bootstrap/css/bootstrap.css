@@ -6960,6 +6960,9 @@ div.timeline-event-selected {
 *
 * ======================================================= */
 
+.lo{
+     background-image: url("#{resource['images/logo.png']}");
+}
 
 .style-3 {
     background-image: url("#{resource['images/geometry2.png']}");
@@ -6971,6 +6974,9 @@ div.timeline-event-selected {
     margin: auto;
 }
 
+.username{
+    padding: 5px;   
+}
 
 a {
     color: #33cccc;
@@ -7055,8 +7061,9 @@ a:hover {
     font-weight: 300;
     height: 50px;
     width: 100%;
-    padding-left: 5;
+    padding-left: 5px;
     padding-right: 0;
+    text-align: center;
     border: none;
     border-bottom: 0.1px solid rgba(0, 0, 0, 0.1);
     -webkit-box-shadow: none;

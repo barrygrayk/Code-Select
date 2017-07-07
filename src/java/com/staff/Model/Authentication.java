@@ -6,20 +6,22 @@ import java.util.Random;
  *
  * @author Gray
  */
-
 public class Authentication implements Authenticate {
+
     private int id;
-    private String hashedPassword;
-    private String salt;
+    private byte [] hashedPassword;
+    private byte[] salt;
     private String userName;
-    String [] statusArray = {"Pending activaton","Pending reset","Active"};
+    private String token;
+
+    String[] statusArray = {"Pending activaton", "Pending reset", "Active"};
     String status;
 
     public Authentication() {
-        hashedPassword = "testing";
+        hashedPassword = "testing".getBytes();
         userName = null;
-        salt = "testing";
-        status=statusArray[0];
+        salt = "testing".getBytes();
+        status = statusArray[0];
     }
 
     @Override
@@ -33,14 +35,14 @@ public class Authentication implements Authenticate {
         Random rnd = new Random();
         int num = rnd.nextInt(99) + 1;
         if (firstname != null && lastname != null) {
-            this.userName = firstname.toLowerCase().substring(0,2) + lastname.toLowerCase().substring(0, 3) + num;
+            this.userName = firstname.toLowerCase().substring(0, 2) + lastname.toLowerCase().substring(0, 3) + num;
             set = true;
         }
         return set;
     }
 
     @Override
-    public boolean sethashPassword(String hash) {
+    public boolean sethashPassword(byte [] hash) {
         boolean set = false;
         if (hash != null) {
             this.hashedPassword = hash;
@@ -50,12 +52,12 @@ public class Authentication implements Authenticate {
     }
 
     @Override
-    public String getHashedPassword() {
+    public byte [] getHashedPassword() {
         return hashedPassword;
     }
 
     @Override
-    public boolean setSalt(String salt) {
+    public boolean setSalt(byte [] salt) {
         boolean set = false;
         if (salt != null) {
             this.salt = salt;
@@ -65,14 +67,14 @@ public class Authentication implements Authenticate {
     }
 
     @Override
-    public String getSalt() {
+    public byte [] getSalt() {
         return salt;
     }
 
     @Override
     public boolean setStatus(int status) {
         boolean set = false;
-        if (status >=0 && status <= 2){
+        if (status >= 0 && status <= 2) {
             this.status = statusArray[status];
             set = true;
         }
@@ -81,32 +83,48 @@ public class Authentication implements Authenticate {
 
     @Override
     public String getStatus() {
-        return status;      
+        return status;
     }
 
     @Override
     public boolean setUsername(String username) {
         boolean set = false;
-        if (username != null){
-             this.userName = username;
-             set = true;
+        if (username != null) {
+            this.userName = username;
+            set = true;
         }
-       return set;
-        
+        return set;
+
     }
 
     @Override
     public int authId() {
-       return id;
+        return id;
     }
 
     @Override
     public boolean setAuthId(int id) {
-      boolean set = false;
-      if (id>0){
-          this.id=id;
-          set = true;
-      }
-      return set;
+        boolean set = false;
+        if (id > 0) {
+            this.id = id;
+            set = true;
+        }
+        return set;
     }
+
+    @Override
+    public String getToken() {
+        return token;
+    }
+
+    @Override
+    public boolean setToken(String token) {
+        boolean set = false;
+        if (token != null) {
+            this.token = token;
+            set = true;
+        }
+        return set;
+    }
+
 }
