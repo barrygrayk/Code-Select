@@ -6972,6 +6972,7 @@ div.timeline-event-selected {
     width: 40%;
     height: auto;
     margin: auto;
+    padding:  5px;
 }
 
 .username{

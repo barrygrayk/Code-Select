@@ -5,7 +5,9 @@ import com.db.connection.StaffTableConnection;
 import com.navigation.Bean;
 import com.staff.Model.Authenticate;
 import com.staff.Model.Authentication;
+import com.staff.Model.OthantileShift;
 import com.staff.Model.OthantileStaff;
+import com.staff.Model.Shift;
 import com.validation.MrKaplan;
 import com.validation.TheEqualizer;
 import java.io.Serializable;
@@ -18,10 +20,6 @@ import java.util.logging.Logger;
 import javax.annotation.PostConstruct;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.ViewScoped;
-import javax.ws.rs.GET;
-import javax.ws.rs.Path;
-import javax.ws.rs.Produces;
-import javax.ws.rs.core.MediaType;
 import org.primefaces.event.SelectEvent;
 import org.primefaces.event.UnselectEvent;
 
@@ -35,6 +33,49 @@ public class StaffController extends OthantileStaff implements Serializable {
 
     private List<String> staffMemberNames = new ArrayList();
     private String staffName;
+    private Date date, shitDate, shiftTime;
+    private int staffiid;
+    private List<Shift> shifts = new ArrayList<>();
+    private List<OthantileStaff> staff = new ArrayList<>();
+    private List<OthantileStaff> selectedStaffMembers = new ArrayList<>();
+    private List<OthantileStaff> searchStaff = new ArrayList<>();
+    private List<String> roles = new ArrayList<>();
+    private String role;
+    private OthantileStaff selectedsatff;
+
+    public List<String> getShiftTypes() {
+        return shiftTypes;
+    }
+
+    public Date getShitDate() {
+        return shitDate;
+    }
+
+    public void setShitDate(Date shitDate) {
+        this.shitDate = shitDate;
+    }
+
+    public Date getShiftTime() {
+        return shiftTime;
+    }
+
+    public void setShiftTime(Date shiftTime) {
+        this.shiftTime = shiftTime;
+    }
+
+    public void setShiftTypes(List<String> shiftTypes) {
+        this.shiftTypes = shiftTypes;
+    }
+    private List<String> shiftTypes = new ArrayList();
+    private String shift;
+
+    public String getShift() {
+        return shift;
+    }
+
+    public void setShift(String shift) {
+        this.shift = shift;
+    }
 
     public String getStaffName() {
         return staffName;
@@ -61,11 +102,6 @@ public class StaffController extends OthantileStaff implements Serializable {
         this.date = date;
     }
 
-    private Date date;
-    private int staffiid;
-    private List<OthantileStaff> staff = new ArrayList<>();
-    private List<OthantileStaff> selectedStaffMembers = new ArrayList<>();
-
     public int getId() {
         return id;
     }
@@ -73,10 +109,7 @@ public class StaffController extends OthantileStaff implements Serializable {
     public void setId(int id) {
         this.id = id;
     }
-    private List<OthantileStaff> searchStaff = new ArrayList<>();
-    private List<String> roles = new ArrayList<>();
-    private String role;
-    private OthantileStaff selectedsatff;
+
     public List<OthantileStaff> getSearchStaff() {
         return searchStaff;
     }
@@ -134,14 +167,38 @@ public class StaffController extends OthantileStaff implements Serializable {
 
     @PostConstruct
     public void init() {
+        shiftTime = new Date();
         roles = new ArrayList<>();
         roles.add("Admin");
         roles.add("Caregiver");
         roles.add("Intern");
+        shiftTypes.add("Single (8hrs)");
+        shiftTypes.add("double (16hrs)");
+
         List<OthantileStaff> staffList = getAllStaffMemebers();
+        shifts   = getShifts();
+        System.out.println(shifts.size());
         staffList.forEach((sta) -> {
             staffMemberNames.add(sta.getFirstname() + " " + sta.getLastname());
         });
+    }
+
+    public List<Shift> getShifts() {
+         shifts = new StaffTableConnection().getAllShifts();
+         
+         for (OthantileStaff stf:staff){
+             for(Shift sh:shifts){
+                 if (stf.getStaffID() == sh.shitID()){
+                     sh.setNames(stf.getFirstname()+" "+stf.getLastname());
+                 }    
+             } 
+         }
+        //boolean contains = staff.contains(shifts.get(0));
+        return shifts;
+    }
+
+    public void setShifts(List<Shift> shifts) {
+        this.shifts = shifts;
     }
 
     public List<OthantileStaff> getStaff() {
@@ -159,13 +216,10 @@ public class StaffController extends OthantileStaff implements Serializable {
     public void setRoles(List<String> roles) {
         this.roles = roles;
     }
-    
-   
+
     public String addStaffMember() throws ClassNotFoundException, SQLException {
-        System.out.println("aaaaaaaaaaa");
         MrKaplan validate = new MrKaplan();
         TheEqualizer eqi = new TheEqualizer();
-        //String page = "addStaff";
         OthantileStaff staff;
         if (validate.isValidInput(getFirstname()) && validate.isValidInput(getLastname()) && validate.isAcceptableAddress(getAddress())
                 && validate.isAcceptableAddress(getPlaceOfBirth())) {
@@ -174,35 +228,27 @@ public class StaffController extends OthantileStaff implements Serializable {
             System.out.println(role);//eqi.toUperAndLower(getAddress())
             staff.setAccessLevel(assignAccessLevel(role));
             staff.setRoleName(role);
-            Authenticate auth = new Authentication ();
+            Authenticate auth = new Authentication();
             auth.createUsername(staff.getFirstname(), staff.getLastname());
             staff.setAuthcateDetails((Authentication) auth);
             new StaffTableConnection().addStaffMemeber(staff);
-            //age = "viewStaff";
-            //MenuView view = new MenuView();
-            ///view.error("Try again", null);
         }
         return "viewStaff";
     }
 
     public List<OthantileStaff> getAllStaffMemebers() {
-    
         staff = new StaffTableConnection().getStaffMemebers();
         return staff;
     }
+    
+
 
     public void loasSaffMember() {
-      /**  staffiid = id;
-        this.id = id;
-        setStaffID(id);
-        setStaffiid(staffiid);*/
         if (selectedsatff != null) {
             int iddd = selectedsatff.getStaffID();
-
             try {
                 OthantileStaff sta = new StaffTableConnection().getAStaffMember(iddd);
                 if (sta != null) {
-                    //super(sta.getFirstname(),sta.getLastname(),sta.getGender(),sta.getAddress(),sta.getDateOfBirth(),sta.getDateOfBirth(),sta.getEmailAddress());
                     setFirstname(sta.getFirstname());
                     setLastname(sta.getLastname());
                     setGender(sta.getGender());
@@ -211,12 +257,7 @@ public class StaffController extends OthantileStaff implements Serializable {
                     setDateOfBirth(sta.getDateOfBirth());
                     setPlaceOfBirth(sta.getPlaceOfBirth());
                     role = sta.getRoleName();
-                    
-                    MenuView view = new MenuView();
-                    //view.addMessage("Record has been loaded", null);
-
                 }
-
             } catch (ClassNotFoundException ex) {
                 Logger.getLogger(StaffController.class.getName()).log(Level.SEVERE, null, ex);
             }
@@ -226,7 +267,6 @@ public class StaffController extends OthantileStaff implements Serializable {
     public String updateStaffRecord() throws ClassNotFoundException, SQLException {
         MrKaplan validate = new MrKaplan();
         TheEqualizer eqi = new TheEqualizer();
-
         if (validate.isValidInput(getFirstname()) && validate.isValidInput(getLastname()) && validate.isAcceptableAddress(getAddress())
                 && validate.isAcceptableAddress(getPlaceOfBirth()) && validate.isValidDate(getDateOfBirth())) {
             OthantileStaff staff = new OthantileStaff(selectedsatff.getStaffID(), eqi.toUperAndLower(getFirstname()), eqi.toUperAndLower(getLastname()), getGender(),
@@ -234,7 +274,6 @@ public class StaffController extends OthantileStaff implements Serializable {
             staff.setAccessLevel(assignAccessLevel(role));
             staff.setRoleName(role);
             new StaffTableConnection().updateStaffMember(staff);
-            //FacesContext.getCurrentInstance().getExternalContext().invalidateSession();
         }
         return "viewStaff";
     }
@@ -242,15 +281,11 @@ public class StaffController extends OthantileStaff implements Serializable {
     public String deleteStaffMember() throws ClassNotFoundException {
         String toPage = null;
         if (selectedsatff != null) {
-           /* Bean setPage = new Bean();
-            setPage.setPage("viewStaff");*/
             new StaffTableConnection().deleteStaff(selectedsatff.getStaffID());
         } else {
             MenuView out = new MenuView();
             out.error("Detele error", "No staff member has been selected");
-
         }
-        //FacesContext.getCurrentInstance().getExternalContext().invalidateSession();
         return "viewStaff";
     }
 
@@ -270,4 +305,36 @@ public class StaffController extends OthantileStaff implements Serializable {
         return access;
     }
 
+    public void assignShift() {
+        MenuView out = new MenuView();
+        int index = 0, fKey = 0;
+        if (staffMemberNames.size() > 0) {
+            for (String names : staffMemberNames) {
+                if (names.endsWith(staffName)) {
+                    index = staffMemberNames.indexOf(names);
+                }
+            }
+            if (staff.size() > 0) {
+                fKey = staff.get(index).getStaffID();
+                System.out.println(fKey);
+                Shift assignShift = new OthantileShift(fKey, shitDate, shiftTime);
+                assignShift.setShiftndTime(shift);
+                new StaffTableConnection().assignAShift(assignShift);
+                // System.out.println(assignShift.getShiftEndTime());
+                // System.out.println(getFirstname());
+                // System.out.println(assignShift.getShiftDate() + " " + assignShift.getShiftTime());
+            } else {
+                out.error("Shit error", "No staff members found");
+            }
+
+        } else {
+
+            out.error("Shit error", "No staff members found");
+
+        }
+
+    }
+
+    public void search() {
+    }
 }

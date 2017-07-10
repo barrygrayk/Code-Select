@@ -18,8 +18,8 @@
                     </p:outputPanel>
                 </f:facet>
                 <!--Ajax Ed -->
-                <p:ajax event="rowSelect" listener="#{StaffMembers.onRowSelect}" update=":viewForm" process="staff"/>
-                <p:ajax event="rowUnselect" listener="#{StaffMembers.onRowUnselect}" update=":viewForm" process="staff"/>   
+                    <p:ajax event="rowSelect" listener="#{StaffMembers.onRowSelect}" update=":viewForm" process="staff"/>
+                    <p:ajax event="rowUnselect" listener="#{StaffMembers.onRowUnselect}" update=":viewForm" process="staff"/>   
                 <p:column headerText="First name" >
                     <h:outputText value="#{temp.firstname}" />
                 </p:column>

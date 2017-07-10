@@ -29,7 +29,7 @@ import static sun.security.krb5.Confounder.bytes;
 @SessionScoped
 //@Path("/login")
 public class LoginBean extends Passwords implements Serializable {
-
+//us MrKaplan for error checking
     private String password;
     private String username;
     private String fullname;

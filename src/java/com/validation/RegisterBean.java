@@ -39,8 +39,8 @@ public class RegisterBean extends Passwords implements Serializable {
     private List<Authenticate> authenticatedStaff;
     private StaffTableConnection staffDB;
     private final MenuView feedBack = new MenuView();
-    private boolean disable=true;
-    private String message="Welcome ";
+    private boolean disable = true;
+    private String message = "Welcome ";
     private String username;
     private String fullname;
     private String password;
@@ -88,12 +88,13 @@ public class RegisterBean extends Passwords implements Serializable {
     @PostConstruct
     public void init() {
         System.out.println("int-------");
-        FacesContext facesContext = FacesContext.getCurrentInstance();
-        HttpSession session = (HttpSession) facesContext.getExternalContext().getSession(true);
+        HttpServletRequest origRequest = (HttpServletRequest) FacesContext.getCurrentInstance().getExternalContext().getRequest();
+        System.out.println(origRequest.getQueryString());
         try {
             staffDB = new StaffTableConnection();
             authenticatedStaff = staffDB.getAuthenticatedStaff();
-            String token = (String) session.getAttribute("url");
+            String token = origRequest.getQueryString().replace("token=", "").trim();
+            System.out.println("replaced===" + token);
             JJWT jwt = new JJWT();
             jwt.verifyToken(token);
             for (Authenticate auth : authenticatedStaff) {
@@ -104,8 +105,8 @@ public class RegisterBean extends Passwords implements Serializable {
                             username = auth.getUsername();
                             fullname = staffDB.getFullname(auth.authId());
                             setDisable(false);
-                        }else{
-                            message= "This token is already active. Contact admistration for a new token";
+                        } else {
+                            message = "This token is already active. Contact admistration for a new token";
                         }
 
                     }
@@ -131,9 +132,10 @@ public class RegisterBean extends Passwords implements Serializable {
         this.message = message;
     }
 
-    public void activate() throws InvalidKeySpecException {
+    public String activate() throws InvalidKeySpecException {
         System.out.println("activting-------");
-        
+        String goTo =   "";
+
         if (checkLength() && checkEquality()) {
             byte[] salt = getNextSalt();
             byte[] hashed = hash(password.toCharArray(), salt);
@@ -146,13 +148,15 @@ public class RegisterBean extends Passwords implements Serializable {
             auth.setStatus(2);
             try {
                 staffDB.updatePassword(auth);
-                setDisable(true);
+               goTo =  "login.xhtml?faces-redirect=true";
+                //setDisable(true);
             } catch (ClassNotFoundException | SQLException ex) {
                 Logger.getLogger(RegisterBean.class.getName()).log(Level.SEVERE, null, ex);
                 feedBack.error("Database Error", ex.getMessage());
             }
         }
-
+        
+        return goTo;
     }
 
     public boolean isDisable() {

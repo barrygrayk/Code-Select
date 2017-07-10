@@ -5,13 +5,16 @@ import com.Email.SendEmail;
 import com.MenuView.MenuView;
 import com.staff.Model.Authenticate;
 import com.staff.Model.Authentication;
+import com.staff.Model.OthantileShift;
 import com.staff.Model.OthantileStaff;
+import com.staff.Model.Shift;
 import com.validation.AuthTokens;
 import com.validation.JJWT;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.sql.Time;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -68,12 +71,12 @@ public class StaffTableConnection extends DatabaseConnection {
             }
             connection.commit();
             String id = fKey + "";
-            String body = "Dear " + staff.getFirstname() + ", " + staff.getLastname() + "\n" + "\nWelcome to othantile Childrens ministries. "
+            String body = "Dear " + staff.getFirstname() + staff.getLastname() + ", " + "\n" + "\nWelcome to Othantile Childrens Ministries. "
                     + "Your account has been"
                     + " sucessfully created. Your account details are as follows:\n" + "\n"
                     + "User name: " + staff.getAuthcateDetails().getUsername() + "\n" + "Role: " + staff.getRoleName()
                     + "\nFollow the link below to activate your accout.\n"
-                    + "\nhttp://localhost:8080/OnthatileWebApplication/faces/" + token + "/" + "register.xhtml";
+                    + "\nhttp://localhost:8080/OnthatileWebApplication/faces/register.xhtml?token=" + token;
             sendEmailToStaff(staff.getEmailAddress(), "Othantile Staff Account", body);
             feedback.addMessage("Sucess", staff.getFirstname() + "'s bio has been added");
         } catch (SQLException ex) {
@@ -349,7 +352,7 @@ public class StaffTableConnection extends DatabaseConnection {
         ps.setString(3, auth.getStatus());
         ps.setString(4, auth.getUsername());
         ps.execute();
-        feedback.addMessage(auth.getUsername(),"Account has been sucessfully activated" );
+        feedback.addMessage(auth.getUsername(), "Account has been sucessfully activated");
 
     }
 
@@ -385,4 +388,65 @@ public class StaffTableConnection extends DatabaseConnection {
     }
 
     //TO Do authenticatio algorithm 
+    public void assignAShift(Shift shift) {
+
+        String shiftInsertQuery = "INSERT INTO `othantileShifts` (`shiftdate`,`shiftStartTime`,`shiftEndTime`,`status`,`onthantilestaff_staffID`) VALUES (?,?,?,?,?)";
+        try {
+            connection = getConnection();
+            setOthantileShiftColumns(shift, shiftInsertQuery).execute();
+            feedback.addMessage("Success", "Shit has been successfully assigned");
+        } catch (ClassNotFoundException | SQLException ex) {
+            Logger.getLogger(StaffTableConnection.class.getName()).log(Level.SEVERE, null, ex);
+            feedback.error("Database error", ex.getMessage());
+        }
+    }
+
+    public PreparedStatement setOthantileShiftColumns(Shift shift, String query) throws ClassNotFoundException, SQLException {
+
+        PreparedStatement ps = null;
+        ps = connection.prepareStatement(query);
+        Date date = new Date();
+        date = shift.getShiftDate();
+        java.util.Date utilStartDate = date;
+        java.sql.Date sqlStartDate = new java.sql.Date(utilStartDate.getTime());
+        ps.setDate(1, sqlStartDate);
+        Time starTime = new Time(shift.getShiftTime().getTime());
+        ps.setTime(2, starTime);
+        Time endTime = new Time(shift.getShiftEndTime().getTime());
+        ps.setTime(3, endTime);
+        ps.setString(4, "Out");
+        ps.setInt(5, shift.shitID());
+        return ps;
+    }
+
+    public List<Shift> getAllShifts() {
+
+        String shiftQuery = "SELECT * FROM `othantileShifts`";
+        List<Shift> allShifts = new ArrayList<>();
+        try {
+            getResultSet(shiftQuery);
+            while (resultset.next()) {
+                Shift shifts = new OthantileShift();
+                shifts.setShiftID(resultset.getInt("onthantilestaff_staffID"));
+                shifts.setshiftdate(resultset.getDate("shiftdate"));
+                shifts.setShiftTime(resultset.getTime("shiftStartTime"));
+                shifts.setShiftndTime(resultset.getTime("shiftEndTime"));
+                shifts.setStatus(resultset.getString("status"));
+                allShifts.add(shifts);
+            }
+            System.out.println("_____"
+                    + allShifts.size());
+
+        } catch (ClassNotFoundException | SQLException ex) {
+            Logger.getLogger(StaffTableConnection.class.getName()).log(Level.SEVERE, null, ex);
+            feedback.error("Read error", ex.getMessage());
+        } finally {
+            try {
+                connection.close();
+            } catch (SQLException ex) {
+                feedback.error("Connection error", ex.getMessage());
+            }
+        }
+        return allShifts;
+    }
 }
