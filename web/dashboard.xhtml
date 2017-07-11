@@ -77,12 +77,12 @@
                                     <p:menuitem value="Generate report" actionListener="#{menuView.delete}"  ajax="false" icon="ui-icon-close"/>    
                                 </p:submenu>
                                 <p:submenu label="Needs">
-                                    <p:menuitem value="Add needs" actionListener="#{menuView.save}" icon="ui-icon-disk" />
+                                    <p:menuitem value="Add needs" actionListener="#{menuView.save}"  icon="ui-icon-disk" />
                                     <p:menuitem value="View needs" actionListener="#{menuView.update}"  icon="ui-icon-fa-edit" />
                                 </p:submenu>
                                 <p:separator />
                                 <p:submenu label="Inventory" >
-                                    <p:menuitem value="Add inventory" actionListener="#{menuView.save}" icon="ui-icon-disk" />
+                                    <p:menuitem value="Add inventory" actionListener="#{menuView.save}" action="#{Include.setPage('inventory')}" update=":content" icon="ui-icon-disk" />
                                     <p:menuitem value="Edit stock levels" actionListener="#{menuView.update}"  icon="ui-icon-fa-edit" />
                                     <p:submenu label="Links" icon="ui-icon-extlink">
                                         <p:submenu label="PrimeFaces" icon="ui-icon-heart">

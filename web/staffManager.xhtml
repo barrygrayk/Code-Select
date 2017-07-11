@@ -21,13 +21,6 @@
                             end="#{customTimelineView.end}" 
                             showNavigation="true" showButtonNew="true" 
                             axisOnTop="true" stackEvents="false"/> 
-
-        <!--<p:timeline value="#{limitTimelineRangeView.model}"
-                    min="#{limitTimelineRangeView.min}"
-                    max="#{limitTimelineRangeView.max}"
-                    zoomMin="#{limitTimelineRangeView.zoomMin}"
-                    zoomMax="#{limitTimelineRangeView.zoomMax}"
-                    height="180px"  showNavigation="true"/>-->
             </p:panel>
             <hr/>
             <h4 align="center"> Shift Management </h4>
@@ -64,9 +57,7 @@
                                         <f:selectItem itemLabel="Select staff" itemValue="#{StaffMembers.staffName}" />
                                         <f:selectItems value="#{StaffMembers.staffMemberNames}" />
                                     </p:selectOneMenu>
-
                                 </h:panelGrid>
-
                                 <h:panelGrid columns="2"  cellpadding="30" class="addStaff">
                                     <h:outputLabel for="mask"    value="Shift Date: * " />
                                     <p:calendar id="mask" value="#{StaffMembers.shitDate}" pattern="yyyy-MM-dd" mask="true" required="true" label="shift date" />
@@ -75,14 +66,12 @@
                                     <p:outputLabel for="time" value="Shift time: *"  />
                                     <p:calendar id="time" value="#{StaffMembers.shiftTime}" pattern="HH:mm" timeOnly="true"  />
                                 </h:panelGrid>
-
                                 <h:panelGrid columns="2"  cellpadding="30" class="addStaff">
                                     <h:outputLabel for="mask"    value="Shift type: * " />
                                     <p:selectOneMenu id="shift" value="#{StaffMembers.shift}" effect="fold" required="true" >
                                         <f:selectItem itemLabel="Duration: " itemValue="#{StaffMembers.shift}" />
                                         <f:selectItems value="#{StaffMembers.shiftTypes}" />
                                     </p:selectOneMenu>
-
                                 </h:panelGrid>
                                 <p:commandButton value="Assign" action="#{StaffMembers.assignShift()}" update=":shiftform"/>
                             </h:form>

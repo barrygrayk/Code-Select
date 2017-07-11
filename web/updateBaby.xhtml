@@ -144,13 +144,13 @@
                                 <h:panelGrid columns="2" cellpadding="5">
                                     <p:panel id="P4">
                                         <p:contextMenu>
-                                            <p:menuitem value="Update Illness" onclick="PF('dlg').show()" icon="ui-icon-add"/>
+                                            <p:menuitem value="Update Illness" onclick="#{ChildCont.child.selectMedicalRecordToUpdate()};PF('dlgUpdate').show()" icon="ui-icon-add"/>
                                         </p:contextMenu>
-                                        <p:dataList value="#{ChildCont.child.listOfMedicalHistoryRecords}" var="medicalH" type="ordered">
+                                        <p:dataList value="#{ChildCont.child.listOfMedicalHistoryRecords}" var="medical" type="ordered">
                                             <f:facet name="header">
                                                 List any known Illnesses
                                             </f:facet>
-                                            #{medicalH.illnessDetected}
+                                            #{medical.illnessDetected}
                                         </p:dataList>
                                     </p:panel>
                                     
@@ -166,10 +166,12 @@
                                     <p:outputLabel id="mrc" value="Medical Report Comments:" />
                                     <p:inputTextarea rows="3" cols="26" style="align-self: flex-end;" value="#{ChildCont.child.childArrivalMedicalReport}" />
                                     
-                                    <p:dialog header="Update Illness Details" widgetVar="dlg" resizable="false" responsive="true">
-                                        <h:panelGrid columns="2">
+                                    <p:dialog  header="Update Illness Details" widgetVar="dlgUpdate" resizable="false" responsive="true">
+                                        <h:panelGrid id="medicalIllDialog" columns="2">
                                             <h:outputText value="Name/Desc:" />
-                                            <p:inputText id="txtIdesc" value="#{ChildCont.child.medicalHistory.illnessDetected}" />
+                                            <p:inputText id="txtIdesc" value="#{ChildCont.child.medicalHistory.illnessDetected}" > 
+                                                <f:ajax listener="#{ChildCont.child.medicalHistory.illnessDetected}" />
+                                            </p:inputText>
                                             <h:outputText value="Causes:" />
                                             <p:inputText id="txtCauses" value="#{ChildCont.child.medicalHistory.cause}" />
                                             <h:outputText value="Treatment:" />
@@ -186,11 +188,17 @@
                                             <p:calendar id="dateEvent" value="#{ChildCont.child.medicalHistory.dateOfVisit}" pattern = "dd/MM/yyyy" mask = "true">
                                                 <p:ajax event="dateSelect" listener="#{ChildCont.onDateSelect}" />
                                             </p:calendar>
-                                            <p:commandButton value="Done" onclick="PF('dlg').hide()" icon="ui-icon-save"/>
-                                            <p:row>
-                                            <p:commandButton value="Previuos" onclick="PF('dlg').hide()" icon="ui-icon-previous"/>
-                                            <p:commandButton value="Next" onclick="PF('dlg').hide()" icon="ui-icon-next"/>   
-                                            </p:row>
+                                            
+                                            <!--<p:row>-->
+                                                <!--<p:commandButton value="Previuos" onclick="" icon="ui-icon-previous">
+                                                    <p:ajax update="medicalIllDialog" resetValues="true" />
+                                                </p:commandButton>-->
+                                                
+                                                <p:commandButton value="Select other record" onclick="#{ChildCont.child.next()}"  oncomplete="PF('dlgUpdate').show()">
+                                                   <p:ajax update="medicalIllDialog" ignoreAutoUpdate="true" resetValues="true" />
+                                                </p:commandButton> 
+                                                <p:commandButton value="Done" onclick="PF('dlgUpdate').hide()" icon="ui-icon-save"/>
+                                            <!--</p:row>-->
                                                       
                                         </h:panelGrid>
                                     </p:dialog>
@@ -209,7 +217,7 @@
                             <p:commandButton value="Cancel" onclick="PF('dlgEdit').hide();" update="viewListOfBabies:viewTable">
                                 <p:resetInput target="PanelAdd"/>
                             </p:commandButton>
-                            <p:commandButton value="Update" action="#{ChildCont.humorMe()}" onclick="PF('dlgEdit').hide()" update="viewListOfBabies:viewTable">
+                            <p:commandButton value="Update" action="#{ChildCont.updateChild()}" onclick="PF('dlgEdit').hide()" update="viewListOfBabies:viewTable">
                                 <p:resetInput target="PanelAdd"/>
                             </p:commandButton>
                         </p:panel>

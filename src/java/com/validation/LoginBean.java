@@ -5,10 +5,10 @@ import com.db.connection.StaffTableConnection;
 import com.staff.Model.Authenticate;
 import java.io.Serializable;
 import java.io.UnsupportedEncodingException;
-import java.nio.charset.StandardCharsets;
+
 import java.security.spec.InvalidKeySpecException;
 import java.sql.SQLException;
-import java.util.Arrays;
+
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -18,7 +18,7 @@ import javax.faces.bean.ManagedBean;
 import javax.faces.bean.SessionScoped;
 import javax.faces.context.FacesContext;
 import javax.servlet.http.HttpSession;
-import static sun.security.krb5.Confounder.bytes;
+
 //import javax.ws.rs.Path;
 
 /**

@@ -10,7 +10,6 @@ import com.child.Model.IntakeInfo;
 import com.child.Model.Meals;
 import com.child.Model.Nappies;
 import com.child.Model.ParentInfo;
-import com.child.Model.RequiredDocumentation;
 import com.child.Model.SleepingRoutine;
 import com.child.Model.SocialWorker;
 import com.child.Model.Weight;
@@ -174,7 +173,7 @@ public class ChildController extends Child implements Serializable{
         
         while(rs.next()){
             
-            int id = rs.getInt("idBabyProfile"); System.out.println("ID now:"+id);
+            int id = rs.getInt("idBabyProfile");
             String fName = rs.getString("firstName");
             String lName = rs.getString("lastName");
             String distinguishMarks = rs.getString("distinguishingMarks");
@@ -277,10 +276,9 @@ public class ChildController extends Child implements Serializable{
         rs2 = stmt2.executeQuery(sql2);
         ArrayList<ChildMedicalHistory> medicalHistoryRecords = new ArrayList<ChildMedicalHistory>();
         while(rs2.next()){
-            ChildMedicalHistory medicalHistory = new ChildMedicalHistory(rs2.getString("doctName"), rs2.getString("illnessesDetected"),
+            medicalHistoryRecords.add(new ChildMedicalHistory(rs2.getString("doctName"), rs2.getString("illnessesDetected"),
                     rs2.getString("reasonForIllnesses"), rs2.getString("medications"), rs2.getString("allergies"), 
-                    rs2.getString("specialTreatments"), rs2.getString("hospitalVisited"), rs2.getDate("dateofVisit"));
-            medicalHistoryRecords.add(medicalHistory);
+                    rs2.getString("specialTreatments"), rs2.getString("hospitalVisited"), rs2.getDate("dateofVisit")));        
         }
         return medicalHistoryRecords;
     }
@@ -427,7 +425,7 @@ public class ChildController extends Child implements Serializable{
                 + "`distinguishingMarks`,`form36`,`clinicCard`,`birthCertificate`,`medicalReport`,"
                 + "`requiredDocsComment`,`medicalReportComments`,`abuse`,`neglect`,`others`,`generalRemarks`,`headCir`) "
                 + "VALUES(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)";
-        ps = connection.prepareStatement(sql,Statement.RETURN_GENERATED_KEYS);  
+        ps = connection.prepareStatement(sql);  
      
         ps.setString(1,this.getFirstname());
         ps.setString(2,this.getLastname());
@@ -500,16 +498,17 @@ public class ChildController extends Child implements Serializable{
                 + ",`allergies`,`specialTreatments`,`dateofVisit`,`hospitalVisited`,`babyprofile_idBabyProfile`)"
                 + "VALUES(?,?,?,?,?,?,?,?,"+fk+")";
         ps = connection.prepareStatement(sql);
-        
-        ps.setString(1,this.getMedicalHistory().getDoctersName());
-        ps.setString(2,this.getMedicalHistory().getIllnessDetected());
-        ps.setString(3,this.getMedicalHistory().getCause());
-        ps.setString(4,this.getMedicalHistory().getMedicines());
-        ps.setString(5,this.getMedicalHistory().getAllergies());
-        ps.setString(6,this.getMedicalHistory().getSpecialTreatmeants());
-        ps.setDate(7,dateConverter(this.getMedicalHistory().getDateOfVisit()));
-        ps.setString(8,this.getMedicalHistory().getClincVisited());
-        ps.execute();
+        for(int i=0; i < this.listOfMedicalHistoryRecords.size();i++){
+            ps.setString(1,this.listOfMedicalHistoryRecords.get(i).getDoctersName());
+            ps.setString(2,this.listOfMedicalHistoryRecords.get(i).getIllnessDetected());
+            ps.setString(3,this.listOfMedicalHistoryRecords.get(i).getCause());
+            ps.setString(4,this.listOfMedicalHistoryRecords.get(i).getMedicines());
+            ps.setString(5,this.listOfMedicalHistoryRecords.get(i).getAllergies());
+            ps.setString(6,this.listOfMedicalHistoryRecords.get(i).getSpecialTreatmeants());
+            ps.setDate(7,dateConverter(this.listOfMedicalHistoryRecords.get(i).getDateOfVisit()));
+            ps.setString(8,this.listOfMedicalHistoryRecords.get(i).getClincVisited());
+            ps.execute();
+        }
          
         // to another table- babyheigth
         sql ="INSERT INTO .`babyheight`(`date`,`babyheight`,`babyprofile_idBabyProfile`)"
@@ -604,14 +603,74 @@ public class ChildController extends Child implements Serializable{
     public void updateChild() throws SQLException {
         
         int selectedChildID = this.child.getBabyProfileid();
-        sql = "UPDATE babyprofile,babyintake SET firstName=?, lastName=?, distinguishingMarks=?, droppedBy=? WHERE idBabyProfile ="+selectedChildID;
+        sql = "UPDATE babyprofile,babyintake, parentinfo, socialworker, babyheight, babyweight SET firstName=?, lastName=?, distinguishingMarks=?, droppedBy=?"
+                + ",FetchedBy=?, FetchLocation=?, babyintake.PhoneNumber=?, `Date/Time`=?,"
+                + "fathername=?, mothername=?,fatherID=?, motherID=?, contactNumber=?,"
+                + "physicalAddress=?, socialworkerName=?, organization=?, socialworker.PhoneNumber=?,"
+                + "emailAddress=?, additionalInfo=?, headCir=?, generalRemarks=?, "
+                + "requiredDocsComment=?, gender=?, medicalReportComments=?, babyheight=?,"
+                + " weight=?, DOB=?, placeOfBirth=?, form36=?, clinicCard=?, birthCertificate=?, "
+                + "medicalReport=?, abuse=?, neglect=?, others=? WHERE babyweight.babyprofile_idBabyProfile =idBabyProfile AND socialworker.babyprofile_idBabyProfile =idBabyProfile "
+                + "AND babyheight.babyprofile_idBabyProfile =idBabyProfile AND babyintake.babyprofile_idBabyProfile =idBabyProfile AND"
+                + " parentinfo.babyprofile_idBabyProfile =idBabyProfile AND idBabyProfile ="+selectedChildID;
         
+        //profile table
         ps = connection.prepareStatement(sql);
         ps.setString(1,this.child.getFirstname());
         ps.setString(2, this.child.getLastname());
         ps.setString(3,this.child.getDestingushingMarks());
+        //intake table
         ps.setString(4,this.child.getIntakeDetails().getPersonWhoDropped());
-        ps.executeUpdate();    
+        ps.setString(5, this.child.getIntakeDetails().getPersonWhoFetched());
+        ps.setString(6, this.child.getIntakeDetails().getFetchLocation());
+        ps.setLong(7, this.child.getIntakeDetails().getPhoneNumber());
+        ps.setDate(8, dateConverter(this.child.getIntakeDetails().getDateAndTime()));
+        //parent information
+        ps.setString(9,this.child.getParentInfo().getFatherName());
+        ps.setString(10,this.child.getParentInfo().getMotherName());
+        ps.setString(11,this.child.getParentInfo().getFatherID());
+        ps.setString(12,this.child.getParentInfo().getMotherID());
+        ps.setLong(13,this.child.getParentInfo().getContactNumber());
+        ps.setString(14,this.child.getParentInfo().getPhysicalAddress());
+        //social worker
+        ps.setString(15,this.child.getSocialWorkerDetails().getSocialWorkerName());
+        ps.setString(16,this.child.getSocialWorkerDetails().getOrganization());
+        ps.setLong(17,this.child.getSocialWorkerDetails().getPhoneNumber());
+        ps.setString(18,this.child.getSocialWorkerDetails().getEmail());
+        ps.setString(19,this.child.getSocialWorkerDetails().getAdditionalInfo());
+        //profile table again
+        ps.setDouble(20,this.child.getHeadCir());
+        ps.setString(21, this.child.getGeneralRemarks());
+        ps.setString(22, this.child.getRequiredDocNote());
+        ps.setString(23, Character.toString(this.child.getGender()));
+        ps.setString(24, this.child.getChildArrivalMedicalReport());
+        //height 
+        ps.setDouble(25, this.child.getHeightRecorded().getHeight());
+        //weight 
+        ps.setDouble(26, this.child.getWeightRecorded().getWeight());
+        ps.setDate(27, dateConverter(this.child.getDateOfBirth()));
+        ps.setString(28, this.child.getPlaceOfBirth());
+        //Required Docs
+        ps.setInt(29, quickCheck("form36",this.child.getChildRequiredDocs()));
+        ps.setInt(30, quickCheck("clinicCard",this.child.getChildRequiredDocs()));
+        ps.setInt(31, quickCheck("birthCertificate",this.child.getChildRequiredDocs()));
+        ps.setInt(32, quickCheck("medicalReport",this.child.getChildRequiredDocs()));
+        //Arrival Condition
+        ps.setInt(33, quickCheck("abuse",this.child.getChildArrivalCondition()));
+        ps.setInt(34, quickCheck("neglect",this.child.getChildArrivalCondition()));
+        ps.setInt(35, quickCheck("others",this.child.getChildArrivalCondition()));
+        
+        
+        
+        
+        ps.executeUpdate();
+        
+    }
+    // update medicalHistoryRecord 
+    public void updateChildMedicalRecord(int id) throws SQLException {
+        sql2 = "UPDATE babymedicalhistory SET doctName=?, illnessesDetected=?, reasonForIllnesses=?"
+                + ", medications=?, allergies=?, specialTreatments=?, dateofVisit, hospitalVisited=?"
+                + " WHERE babyprofile_idBabyProfile ="+id;
     }
     
     //updating meals table

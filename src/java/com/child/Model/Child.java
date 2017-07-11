@@ -29,6 +29,7 @@ public class Child extends Person implements Serializable{
     private ParentInfo parentInfo = new ParentInfo();
     private SocialWorker socialWorkerDetails = new SocialWorker();
     protected IntakeInfo intakeDetails = new IntakeInfo();
+    private int currentIndex = -1;
     
     private ArrayList<Object> spreadProperties;
     
@@ -267,6 +268,62 @@ public class Child extends Person implements Serializable{
         this.heightRecorded = heightRecorded;
     }
     
+    // select medicalRecord to update
+    public void selectMedicalRecordToUpdateByIndex(int i){
+        
+        if((!this.listOfMedicalHistoryRecords.isEmpty()) && (i>=0 && i<this.listOfMedicalHistoryRecords.size())){
+            
+            this.medicalHistory.setDoctersName(this.listOfMedicalHistoryRecords.get(i).getDoctersName());
+            this.medicalHistory.setIllnessDetected(this.listOfMedicalHistoryRecords.get(i).getIllnessDetected());
+            this.medicalHistory.setAllergies(this.listOfMedicalHistoryRecords.get(i).getAllergies());
+            this.medicalHistory.setCause(this.listOfMedicalHistoryRecords.get(i).getCause());
+            this.medicalHistory.setClincVisited(this.listOfMedicalHistoryRecords.get(i).getClincVisited());
+            this.medicalHistory.setMedicines(this.listOfMedicalHistoryRecords.get(i).getMedicines());
+            this.medicalHistory.setSpecialTreatmeants(this.listOfMedicalHistoryRecords.get(i).getSpecialTreatmeants());
+            this.medicalHistory.setDateOfVisit(this.listOfMedicalHistoryRecords.get(i).getDateOfVisit());
+            
+            
+        }
+    }
+    // load first medicalRecord to update: default
+    public void selectMedicalRecordToUpdate(){
+        currentIndex = 0;
+        selectMedicalRecordToUpdateByIndex(0);
+    }
+    // select next medicalRecord to Update :next button 
+    public void next(){
+        if(!this.listOfMedicalHistoryRecords.isEmpty()){
+            if(currentIndex == -1){
+                currentIndex = this.listOfMedicalHistoryRecords.indexOf(this.medicalHistory);
+                System.out.println("Fics index: "+currentIndex);
+            }
+            if((currentIndex + 1) < this.listOfMedicalHistoryRecords.size()){
+                currentIndex = currentIndex + 1;
+                selectMedicalRecordToUpdateByIndex(currentIndex);
+                System.out.println("nexttttt"+this.medicalHistory.getIllnessDetected()+"\n indesx:"+currentIndex);
+            }else{
+                selectMedicalRecordToUpdate();
+                currentIndex = 0;
+            }
+        }
+    }
+    
+    // select medicalRecord to update: previous button 
+    public void previous(){
+        /*if(!this.listOfMedicalHistoryRecords.isEmpty()){
+            if(currentIndex == -1){
+                currentIndex = this.listOfMedicalHistoryRecords.indexOf(this.medicalHistory);
+            }
+            if((currentIndex - 1) > 0 ){
+                currentIndex = currentIndex - 1;
+                selectMedicalRecordToUpdateByIndex(currentIndex);
+            }else{
+                currentIndex = this.listOfMedicalHistoryRecords.size() - 1;
+                selectMedicalRecordToUpdateByIndex(currentIndex);
+            }
+        }*/
+    }
+        
     @Override
     public int getAge() {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.

@@ -17,7 +17,9 @@ public class ChildMedicalHistory {
     private String clincVisited;
     private Date dateOfVisit; 
 
-    public ChildMedicalHistory(String doctersName, String illnessDetected, String cause, String medicines, String allergies, String specialTreatmeants, String clincVisited, Date dateOfVisit) {
+    public ChildMedicalHistory(String doctersName, String illnessDetected, String cause,
+            String medicines, String allergies, String specialTreatmeants, String clincVisited,
+            Date dateOfVisit) {
         
         this.doctersName = doctersName;
         this.illnessDetected = illnessDetected;

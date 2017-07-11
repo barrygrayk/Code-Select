@@ -40,15 +40,15 @@
                         <h:outputText value="#{temp.destingushingMarks}"/>
                     </p:column> 
                     <f:facet name="footer">
-                       <p:commandButton process="dtChild" value="Delete" action="#{ChildCont.deleteChild()}" icon="ui-icon-remove" style="margin-right: 1050px"/>  
-                       <!--<p:growl id="message" showDetail="true" />
-                        <p:commandButton value="Delete" actionListener="#{ChildCont.deleteChild()}" style="margin-right: 1050px" update="dtChild">
+                       <!--<p:commandButton process="dtChild" value="Delete" action="" icon="ui-icon-remove" style="margin-right: 1050px"/>  -->
+                       <p:growl id="message" showDetail="true" />
+                        <p:commandButton value="Delete" actionListener="#{ChildCont.deleteChild}" style="margin-right: 1050px" update="dtChild">
                             <p:confirm header="Confirmation" message="Are you sure, you want delete selected record(s)?" icon="ui-icon-alert" />
                         </p:commandButton>
-                        <p:confirmDialog global="true">
+                        <p:confirmDialog global="true" showEffect="fade" hideEffect="fade">
                             <p:commandButton value="Yes" type="button" styleClass="ui-confirmdialog-yes" icon="ui-icon-check" />
                             <p:commandButton value="No" type="button" styleClass="ui-confirmdialog-no" icon="ui-icon-close" />
-                        </p:confirmDialog> -->
+                        </p:confirmDialog> 
                     </f:facet>
                 </p:dataTable>
 
