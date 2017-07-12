@@ -3,10 +3,11 @@ package InventoryModels;
 import java.util.Date;
 
 /**
- * 
+ *
  * @author Barry Gray
  */
-public class Inventory implements Stock {
+public class Inventory {
+
     private int id;
     private String description;
     private double quantity;
@@ -16,95 +17,62 @@ public class Inventory implements Stock {
     public Inventory() {
     }
 
-    
-    public Inventory(int id, String desc, double quantity, double lowThresh, Date expireyDate) {
-        this.id = id;
-        this.description = desc;
+    public Inventory(String description, double quantity, double lowThresh, Date expireyDate) {
+        this.description = description;
         this.quantity = quantity;
         this.lowThresh = lowThresh;
         this.expireyDate = expireyDate;
     }
 
-    public Inventory(String desc, double quantity, double lowThresh) {
-        this.description = desc;
+    public Inventory(int id, String description, double quantity, double lowThresh, Date expireyDate) {
+        this.id = id;
+        this.description = description;
         this.quantity = quantity;
         this.lowThresh = lowThresh;
+        this.expireyDate = expireyDate;
     }
-    
 
-    @Override
-    public Date getExpiraryDate() {
+    public int getId() {
+        return id;
+    }
+
+    public void setId(int id) {
+        this.id = id;
+    }
+
+    public String getDescription() {
+        return description;
+    }
+
+    public void setDescription(String description) {
+        this.description = description;
+    }
+
+    public double getQuantity() {
+        return quantity;
+    }
+
+    public void setQuantity(double quantity) {
+        this.quantity = quantity;
+    }
+
+    public double getLowThresh() {
+        return lowThresh;
+    }
+
+    public void setLowThresh(double lowThresh) {
+        this.lowThresh = lowThresh;
+    }
+
+    public Date getExpireyDate() {
         return expireyDate;
     }
 
-    @Override
-    public boolean setstockID(int id) {
-       boolean set = false;
-       if(id>0){
-           this.id = id;
-           set =true;
-       }
-       return set;
+    public void setExpireyDate(Date expireyDate) {
+        this.expireyDate = expireyDate;
     }
+    
+    
 
-    @Override
-    public boolean setDescription(String desc) {
-        boolean set = false;
-        if (desc !=null){
-            this.description = desc;
-            set = true;
-        }
-        return set;
-    }
-
-    @Override
-    public boolean setQuantity(double quantity) {
-       boolean set = false;
-       if (quantity >= 0){
-           this.quantity = quantity;
-           set = true;
-       }
-       return set;
-    }
-
-    @Override
-    public boolean setLowThreshold(double thresh) {
-        boolean set = false;
-         if (thresh>= 0){
-           lowThresh = thresh;
-           set = true;
-       }
-       return set;
-    }
-
-    @Override
-    public boolean setExpirryDate(Date date) {
-        boolean set = false;
-        if (date !=null){
-            expireyDate =date;
-            set = true;
-        }
-        return set;
-    }
-
-    @Override
-    public int getstockID() {
-       return id;
-    }
-
-    @Override
-    public String getDescription() {
-       return description;
-    }
-
-    @Override
-    public double getQuantity() {
-      return quantity;
-    }
-
-    @Override
-    public double getLowThreshold() {
-       return lowThresh;
-    }
 
 }

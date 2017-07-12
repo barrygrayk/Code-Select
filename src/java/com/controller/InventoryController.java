@@ -1,62 +1,72 @@
-
 package com.controller;
 
 import InventoryModels.Inventory;
-import InventoryModels.Stock;
+import com.MenuView.MenuView;
 import com.db.connection.InventorytableConneection;
+import com.validation.MrKaplan;
+import com.validation.TheEqualizer;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
+import javax.annotation.PostConstruct;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.SessionScoped;
-import javax.faces.bean.ViewScoped;
 
 /**
- * 
+ *
  * @author Barry Gray
  */
 @ManagedBean(name = "InventoryCont", eager = true)
 @SessionScoped
-public class InventoryController extends Inventory implements Serializable{
-    private List <Stock> inventory = new ArrayList <>();
-    private Stock slectedStock;
-    private Stock stockItem;
+public class InventoryController extends Inventory implements Serializable {
+
+    private final MenuView feedback = new MenuView();
+    private List<Inventory> inventory = new ArrayList<>();
+    private Inventory selectedStock;
+    private Inventory stockItem;
 
     public InventoryController() {
         super();
     }
-    
 
-    public Stock getSlectedStock() {
-        return slectedStock;
+    @PostConstruct
+    public void init() {
+        getInventory();
     }
 
-    public void setSlectedStock(Stock slectedStock) {
-        this.slectedStock = slectedStock;
+    public Inventory getSlectedStock() {
+        return selectedStock;
     }
-    
 
-    public List<Stock> getInventory() {
+    public void setSlectedStock(Inventory slectedStock) {
+        System.out.println("_________________________________________________");
+        this.selectedStock = slectedStock;
+    }
+
+    public List<Inventory> getInventory() {
+        inventory = new InventorytableConneection().getStockItems();
         return inventory;
     }
 
-    public void setInventory(List<Stock> inventory) {
+    public void setInventory(List<Inventory> inventory) {
         this.inventory = inventory;
     }
-    
-    
-    public void addStockItem (){
-        //perform validationwoith mr kaplin
-        stockItem.setDescription(getDescription());
-        stockItem.setQuantity(getQuantity());
-        stockItem.setLowThreshold(getLowThreshold());
-        stockItem.setExpirryDate(getExpiraryDate());
-        new InventorytableConneection().addStockItem(stockItem);
-        
-        
+
+    public void addStockItem() {
+        MrKaplan validate = new MrKaplan();
+        TheEqualizer eqi = new TheEqualizer();
+        if (validate.isValidInput(getDescription())) {
+            stockItem = new Inventory();
+            stockItem.setDescription(eqi.toUperAndLower(getDescription()));
+            if (getQuantity() > getLowThresh()) {
+                stockItem.setQuantity(getQuantity());
+                stockItem.setLowThresh(getLowThresh());
+                stockItem.setExpireyDate(getExpireyDate());
+                new InventorytableConneection().addStockItem(stockItem);
+            } else {
+                feedback.error("Quantity must be greater than threshhold","");
+            }
+        }
     }
-    
-    
-    
 
 }
