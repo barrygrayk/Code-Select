@@ -28,20 +28,9 @@ public class InventorytableConneection extends DatabaseConnection {
     }
 
     public void addStockItem(Inventory stock) {
-        PreparedStatement insertStock = null;
         String insertSql = "INSERT INTO `inventory`(`Description`,`Quantity`,`lowThreshold`,`expireyDate`) VALUES(?,?,?,?)";
         try {
-            connection = getConnection();
-            insertStock = connection.prepareStatement(insertSql);
-            insertStock.setString(1, stock.getDescription());
-            insertStock.setDouble(2, stock.getQuantity());
-            insertStock.setDouble(3, stock.getLowThresh());
-            Date date = new Date();
-            date = stock.getExpireyDate();
-            java.util.Date utilStartDate = date;
-            java.sql.Date sqlExpiryDate = new java.sql.Date(utilStartDate.getTime());
-            insertStock.setDate(4, sqlExpiryDate);
-            insertStock.execute();
+            setInventoryColumns(insertSql, stock, false).execute();
             feedback.addMessage("Sucess", "Item sucessfully added");
         } catch (ClassNotFoundException | SQLException ex) {
             Logger.getLogger(InventorytableConneection.class.getName()).log(Level.SEVERE, null, ex);
@@ -68,6 +57,7 @@ public class InventorytableConneection extends DatabaseConnection {
                         resultset.getDouble("Quantity"),
                         resultset.getDouble("lowThreshold"),
                         resultset.getDate("expireyDate"));
+                stock.setDaysLeft();
                 stockItems.add(stock);
             }
 
@@ -82,6 +72,62 @@ public class InventorytableConneection extends DatabaseConnection {
             }
         }
         return stockItems;
+    }
+
+    public void updateStockItem(Inventory stock) {
+        String updateSql = "UPDATE `inventory` SET Description=?, Quantity=?,lowThreshold=?,expireyDate=? WHERE idInventory =?";
+        try {
+            setInventoryColumns(updateSql, stock, true).execute();
+            System.out.println("in db " + stock.getDescription());
+            feedback.addMessage("Sucess", "Item sucessfully added");
+        } catch (ClassNotFoundException | SQLException ex) {
+            Logger.getLogger(InventorytableConneection.class.getName()).log(Level.SEVERE, null, ex);
+        }
+
+    }
+
+    public PreparedStatement setInventoryColumns(String query, Inventory stock, boolean update) throws ClassNotFoundException, SQLException {
+        PreparedStatement insertStock = null;
+        connection = getConnection();
+        insertStock = connection.prepareStatement(query);
+        insertStock.setString(1, stock.getDescription());
+        insertStock.setDouble(2, stock.getQuantity());
+        insertStock.setDouble(3, stock.getLowThresh());
+        Date date = new Date();
+        date = stock.getExpireyDate();
+        java.util.Date utilStartDate = date;
+        java.sql.Date sqlExpiryDate = new java.sql.Date(utilStartDate.getTime());
+        insertStock.setDate(4, sqlExpiryDate);
+        if (update) {
+            insertStock.setInt(5, stock.getId());
+        }
+
+        return insertStock;
+    }
+
+    public void deleteStockItem(int id) throws ClassNotFoundException {
+        connection = getConnection();
+        PreparedStatement deleteRecord = null;
+        String deleteItem = " DELETE FROM  `inventory` where  idInventory=?";
+        try {
+            deleteRecord = connection.prepareStatement(deleteItem);
+            deleteRecord.setInt(1, id);
+            deleteRecord.execute();
+            feedback.addMessage("Sucess", "Record has been deleted");
+        } catch (SQLException ex) {
+            Logger.getLogger(StaffTableConnection.class.getName()).log(Level.SEVERE, null, ex);
+            feedback.error("Delete error", ex.getMessage());
+        } finally {
+            try {
+                connection.close();
+                deleteRecord.close();
+            } catch (SQLException ex) {
+                feedback.error("Connection error", ex.getMessage());
+                MenuView out = new MenuView();
+                out.error("Detele error", "No staff member has been selected");
+            }
+        }
+
     }
 
 }

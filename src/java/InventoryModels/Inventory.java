@@ -1,5 +1,6 @@
 package InventoryModels;
 
+import java.time.temporal.ChronoUnit;
 import java.util.Date;
 
 /**
@@ -13,6 +14,26 @@ public class Inventory {
     private double quantity;
     private double lowThresh;
     private Date expireyDate;
+    private int daysLeft;
+    //private int daysLeft
+
+    public int getDaysLeft() {
+        return daysLeft;
+    }
+
+    public void setDaysLeft() {
+        Date d1 = new Date() ;
+        System.out.println("InventoryModels.Inventory.setDaysLeft()"+ d1);
+        // Date diff =new Date(expireyDate.getTime() - d1.getTime());
+        // int days = Days.daysBetween(expireyDate, d1).getDays();
+        //this.daysLeft =diff;
+        //ChronoUnit between = ChronoUnit.DAYS.between(startDate,endDate);
+        final long DAY_IN_MILLIS = 1000 * 60 * 60 * 24;
+
+        int diffInDays = (int) ((expireyDate.getTime() - d1.getTime()) / DAY_IN_MILLIS);
+        daysLeft = diffInDays;
+
+    }
 
     public Inventory() {
     }
@@ -69,10 +90,8 @@ public class Inventory {
     }
 
     public void setExpireyDate(Date expireyDate) {
+
         this.expireyDate = expireyDate;
     }
-    
-    
-
 
 }
