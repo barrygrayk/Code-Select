@@ -5,6 +5,7 @@
       xmlns:p="http://primefaces.org/ui"
       xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
       xmlns:f="http://xmlns.jcp.org/jsf/core">
+
     <ui:composition>
      
         <h:form id="testEditForm">
@@ -25,7 +26,8 @@
                                     <p:inputText id="txtFetchPersonTlfn" value="#{ChildCont.child.intakeDetails.phoneNumber}" />
                                     <p:outputLabel id="droppeddate" value="Date and Time:" />
                                     <p:calendar id="dateDropped"  mask="99/99/9999" pattern="dd/MM/yyyy HH:mm:ss" value="#{ChildCont.child.intakeDetails.dateAndTime}" >
-                                        <p:ajax event="dateSelect" listener="#{ChildCont.onDateTimeSelect}" />
+                                        <!--<p:ajax event="dateSelect" listener="" />-->
+                                        <f:convertDateTime pattern="dd/MM/yyyy HH:mm:ss" />
                                     </p:calendar>
                                 </h:panelGrid>
                             </p:fieldset>
@@ -58,7 +60,7 @@
                                             <p:outputLabel id="IdNumber" value="ID Number:" />
                                             <p:inputText id="txtIdNumber" value="#{ChildCont.child.parentInfo.motherID}" />
                                             <p:outputLabel id="ContactN" value="Contact Number(s):" />
-                                            <p:inputText id="txtContactN" value="#{ChildCont.child.parentInfo.contactNumber}" />
+                                            <p:inputText id="txtContactN" value="#{ChildCont.child.parentInfo.contactNumber}" title="Type only Digits" />
 
                                         </h:panelGrid>
                                         <h:panelGrid columns="2">                                               
@@ -78,7 +80,7 @@
                                     <p:outputLabel id="organisation" value="Organization:" />
                                     <p:inputText id="txtOrg" value="#{ChildCont.child.socialWorkerDetails.organization}" />
                                     <p:outputLabel id="email" value="Email Address:" />
-                                    <p:inputText id="txtEmail" value="#{ChildCont.child.socialWorkerDetails.email}" />
+                                    <p:inputText id="txtEmail" value="#{ChildCont.child.socialWorkerDetails.email}" type="email"/>
                                 </h:panelGrid>
                                 <p:outputLabel id="scc" value="Any Additional Information:" />
                                 <p:inputTextarea rows="2" cols="23" style="align-self: flex-end;" value="#{ChildCont.child.socialWorkerDetails.additionalInfo}"/>
@@ -121,12 +123,12 @@
                                 </h:panelGrid>
                                 <h:panelGrid columns="1" cellpadding="5" cellspacing="5">
                                     <h:panelGrid columns="2" >
-                                    <p:outputLabel id="headCircunference" value="Head CIR:" />
-                                    <p:inputText id="txtHeadCirc" value="#{ChildCont.child.headCir}" />
+                                    <p:outputLabel id="headCircunference" value="Head CIR:"/>
+                                    <p:inputText id="txtHeadCirc" value="#{ChildCont.child.headCir}" type="number" title="Choose a positive value"/>
                                     <p:outputLabel id="Initialheight" value="Height:" />
-                                    <p:inputText id="txtHeight" value="#{ChildCont.child.heightRecorded.height}" />
+                                    <p:inputText id="txtHeight" value="#{ChildCont.child.heightRecorded.height}" type="number" title="Choose a positive value"/>
                                     <p:outputLabel id="Initialweight" value="Weight:" />
-                                    <p:inputText id="txtWeight" value="#{ChildCont.child.weightRecorded.weight}" />
+                                    <p:inputText id="txtWeight" value="#{ChildCont.child.weightRecorded.weight}" type="number" title="Choose a positive value"/>
                                     </h:panelGrid>
                                     <p:panel id="P7" >
                                     <h5><h:outputLabel value="Diet details" /></h5>
@@ -144,11 +146,12 @@
                                 <h:panelGrid columns="2" cellpadding="5">
                                     <p:panel id="P4">
                                         <p:contextMenu>
-                                            <p:menuitem value="Update Illness" onclick="#{ChildCont.child.selectMedicalRecordToUpdate()};PF('dlgUpdate').show()" icon="ui-icon-add"/>
+                                            <p:menuitem value="Update Illness" action="#{ChildCont.child.selectMedicalRecordToUpdate()}" onclick="PF('dlgUpdate').show()" update=":updateDialog" icon="ui-icon-add"/>
+                                            <p:menuitem value="DateTesting" action="#{ChildCont.humorMe()}" />
                                         </p:contextMenu>
-                                        <p:dataList value="#{ChildCont.child.listOfMedicalHistoryRecords}" var="medical" type="ordered">
+                                        <p:dataList id="datalist" value="#{ChildCont.child.listOfMedicalHistoryRecords}" var="medical" type="ordered">
                                             <f:facet name="header">
-                                                List any known Illnesses
+                                                <h:outputLabel value="List any known Illnesses" title="Right Click to Edit"/>  
                                             </f:facet>
                                             #{medical.illnessDetected}
                                         </p:dataList>
@@ -166,42 +169,7 @@
                                     <p:outputLabel id="mrc" value="Medical Report Comments:" />
                                     <p:inputTextarea rows="3" cols="26" style="align-self: flex-end;" value="#{ChildCont.child.childArrivalMedicalReport}" />
                                     
-                                    <p:dialog  header="Update Illness Details" widgetVar="dlgUpdate" resizable="false" responsive="true">
-                                        <h:panelGrid id="medicalIllDialog" columns="2">
-                                            <h:outputText value="Name/Desc:" />
-                                            <p:inputText id="txtIdesc" value="#{ChildCont.child.medicalHistory.illnessDetected}" > 
-                                                <f:ajax listener="#{ChildCont.child.medicalHistory.illnessDetected}" />
-                                            </p:inputText>
-                                            <h:outputText value="Causes:" />
-                                            <p:inputText id="txtCauses" value="#{ChildCont.child.medicalHistory.cause}" />
-                                            <h:outputText value="Treatment:" />
-                                            <p:inputText id="txtTreatment" value="#{ChildCont.child.medicalHistory.medicines}" />
-                                            <h:outputText value="Special Treatment:" />
-                                            <p:inputText id="txtSpecialTreatment" value="#{ChildCont.child.medicalHistory.specialTreatmeants}" />
-                                            <h:outputText value="Allergy:" />
-                                            <p:inputText id="txtAllergy" value="#{ChildCont.child.medicalHistory.allergies}" />
-                                            <h:outputText value="Doctor Seen:" />
-                                            <p:inputText id="txtDoctor" value="#{ChildCont.child.medicalHistory.doctersName}" />
-                                            <h:outputText value="Clinic/Hospital:" />
-                                            <p:inputText id="txtClinic" value="#{ChildCont.child.medicalHistory.clincVisited}" />
-                                            <h:outputText value="Date:" />
-                                            <p:calendar id="dateEvent" value="#{ChildCont.child.medicalHistory.dateOfVisit}" pattern = "dd/MM/yyyy" mask = "true">
-                                                <p:ajax event="dateSelect" listener="#{ChildCont.onDateSelect}" />
-                                            </p:calendar>
-                                            
-                                            <!--<p:row>-->
-                                                <!--<p:commandButton value="Previuos" onclick="" icon="ui-icon-previous">
-                                                    <p:ajax update="medicalIllDialog" resetValues="true" />
-                                                </p:commandButton>-->
-                                                
-                                                <p:commandButton value="Select other record" onclick="#{ChildCont.child.next()}"  oncomplete="PF('dlgUpdate').show()">
-                                                   <p:ajax update="medicalIllDialog" ignoreAutoUpdate="true" resetValues="true" />
-                                                </p:commandButton> 
-                                                <p:commandButton value="Done" onclick="PF('dlgUpdate').hide()" icon="ui-icon-save"/>
-                                            <!--</p:row>-->
-                                                      
-                                        </h:panelGrid>
-                                    </p:dialog>
+
                                 </h:panelGrid>
                               
                             </p:fieldset>
@@ -217,7 +185,7 @@
                             <p:commandButton value="Cancel" onclick="PF('dlgEdit').hide();" update="viewListOfBabies:viewTable">
                                 <p:resetInput target="PanelAdd"/>
                             </p:commandButton>
-                            <p:commandButton value="Update" action="#{ChildCont.updateChild()}" onclick="PF('dlgEdit').hide()" update="viewListOfBabies:viewTable">
+                            <p:commandButton value="Update" action="#{ChildCont.editChild()}" onclick="PF('dlgEdit').hide()" update="viewListOfBabies:viewTable">
                                 <p:resetInput target="PanelAdd"/>
                             </p:commandButton>
                         </p:panel>
@@ -225,6 +193,10 @@
                 </p:tab>
             </p:tabView>
         </h:form>
+           
+           <p:dialog  header="Update Illness Details" widgetVar="dlgUpdate" resizable="false" responsive="true" showEffect="explode" hideEffect="explode">
+                <ui:include src="updateMedicalRecord.xhtml" />
+           </p:dialog>
        
     </ui:composition>
 </html>

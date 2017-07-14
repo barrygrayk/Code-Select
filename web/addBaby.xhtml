@@ -63,7 +63,7 @@
                                             <p:outputLabel id="IdNumber" value="ID Number:" />
                                             <p:inputText id="txtIdNumber" value="#{ChildCont.parentInfo.motherID}" />
                                             <p:outputLabel id="ContactN" value="Contact Number(s):" />
-                                            <p:inputText id="txtContactN" value="#{ChildCont.parentInfo.contactNumber}" />
+                                            <p:inputText id="txtContactN" value="#{ChildCont.parentInfo.contactNumber}" title="Type only Digits" />
 
                                         </h:panelGrid>
                                         <h:panelGrid columns="2">                                               
@@ -83,7 +83,7 @@
                                     <p:outputLabel id="organisation" value="Organization:" />
                                     <p:inputText id="txtOrg" value="#{ChildCont.socialWorkerDetails.organization}" />
                                     <p:outputLabel id="email" value="Email Address:" />
-                                    <p:inputText id="txtEmail" value="#{ChildCont.socialWorkerDetails.email}" />
+                                    <p:inputText id="txtEmail" value="#{ChildCont.socialWorkerDetails.email}" type="email" />
                                 </h:panelGrid>
                                 <p:outputLabel id="scc" value="Any Additional Information:" />
                                 <p:inputTextarea rows="2" cols="23" style="align-self: flex-end;" value="#{ChildCont.socialWorkerDetails.additionalInfo}"/>
@@ -127,11 +127,11 @@
                                 <h:panelGrid columns="1" cellpadding="5" cellspacing="5">
                                     <h:panelGrid columns="2" >
                                     <p:outputLabel id="headCircunference" value="Head CIR:" />
-                                    <p:inputText id="txtHeadCirc" value="#{ChildCont.headCir}" />
+                                    <p:inputText id="txtHeadCirc" value="#{ChildCont.headCir}" type="number" title="Choose a positive value" />
                                     <p:outputLabel id="Initialheight" value="Height:" />
-                                    <p:inputText id="txtHeight" value="#{ChildCont.heightRecorded.height}" />
+                                    <p:inputText id="txtHeight" value="#{ChildCont.heightRecorded.height}" type="number" title="Choose a positive value"  />
                                     <p:outputLabel id="Initialweight" value="Weight:" />
-                                    <p:inputText id="txtWeight" value="#{ChildCont.weightRecorded.weight}" />
+                                    <p:inputText id="txtWeight" value="#{ChildCont.weightRecorded.weight}" type="number" title="Choose a positive value"  />
                                     </h:panelGrid>
                                     <p:panel id="P7" >
                                     <h5><h:outputLabel value="Diet details" /></h5>
@@ -147,13 +147,13 @@
                         </p:fieldset>
                             <p:fieldset id="f4" legend="Medical History Details" style="margin-top:10px; text-align:left">
                                 <h:panelGrid columns="2" cellpadding="5">
-                                    <p:panel id="P4">
+                                    <p:panel id="P4" >
                                         <p:contextMenu>
                                             <p:menuitem value="Add Illness" onclick="PF('dlg').show()" icon="ui-icon-add"/>
                                         </p:contextMenu>
                                         <p:dataList id="IllnessList" value="#{ChildCont.listOfMedicalHistoryRecords}" var="medicalH">
                                             <f:facet name="header">
-                                                List any known Illnesses
+                                                <h:outputLabel value="List any known Illnesses" title="Right Click to Add"/>    
                                             </f:facet>
                                             #{medicalH.illnessDetected}
                                         </p:dataList>

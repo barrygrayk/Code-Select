@@ -77,7 +77,7 @@
                                     <p:menuitem value="Generate report" actionListener="#{menuView.delete}"  ajax="false" icon="ui-icon-close"/>    
                                 </p:submenu>
                                 <p:submenu label="Needs">
-                                    <p:menuitem value="Add needs" actionListener="#{menuView.save}"  icon="ui-icon-disk" />
+                                    <p:menuitem value="Add needs" actionListener="#{menuView.save}"  icon="ui-icon-disk" action="#{Include.setPage('donations')}" update=":content" />
                                     <p:menuitem value="View needs" actionListener="#{menuView.update}"  icon="ui-icon-fa-edit" />
                                 </p:submenu>
                                 <p:separator />

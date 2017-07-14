@@ -14,7 +14,7 @@
                 <div id="div1">
                     <h1>Current Children in Baby Home</h1>
                 </div>
-                <p:growl id="viewListOfChildren" showDetail="true"/>
+                
                 <p:dataTable id="viewTable" var="temp" value="#{ChildCont.listOfChildren}" selectionMode="single"  rowKey="#{temp.babyProfileid}" selection="#{ChildCont.child}" editable="true" editMode="cell" widgetVar="ChildCells" > 
 
                 <p:ajax event="rowSelect" listener="#{ChildCont.onRowSelect}" update="@form"/>
@@ -51,12 +51,19 @@
                 </p:column>
                 
                 <f:facet name="footer">
+                    <p:growl id="viewListOfChildren" showDetail="true"/>
                     <p:row>
       
-                     <p:commandButton process="viewTable" update=":content" icon="ui-icon-search" value="View" action="#{Include.setPage('childProfilePage')}"/>
-                     <p:commandButton icon="ui-icon-add" value="Add" action="#{ChildCont.clearChild()}" onclick="PF('dlgAdd').show()" update=":testEditForm" process="viewListOfBabies" type="submit" />
-                    <p:commandButton icon="ui-icon-edit" value="Edit" onclick="PF('dlgEdit').show()"  update=":testEditForm" process="viewListOfBabies" type="submit" />
-                    <p:commandButton  update=":content" icon="ui-icon-delete" value="Delete" action="#{ChildCont.deleteSingleChild()}" process="@this"/>
+                        <p:commandButton process="viewTable" update=":content" icon="ui-icon-search" value="View" action="#{Include.setPage('childProfilePage')}"/>
+                        <p:commandButton icon="ui-icon-add" value="Add" action="#{ChildCont.clearChild()}" onclick="PF('dlgAdd').show()" update=":testEditForm" process="viewListOfBabies" type="submit" />
+                        <p:commandButton icon="ui-icon-edit" value="Edit" onclick="PF('dlgEdit').show()"  update=":testEditForm" process="viewListOfBabies" type="submit" />
+                        <p:commandButton icon="ui-icon-delete" value="Delete" actionListener="#{ChildCont.deleteSingleChild()}" update="viewTable"> 
+                            <p:confirm header="Confirmation" message="Are you sure, you want delete the selected record?" icon="ui-icon-alert" />
+                        </p:commandButton>
+                        <p:confirmDialog global="true" showEffect="fade" hideEffect="fade">
+                            <p:commandButton value="Yes" type="button" styleClass="ui-confirmdialog-yes" icon="ui-icon-check" />
+                            <p:commandButton value="No" type="button" styleClass="ui-confirmdialog-no" icon="ui-icon-close" />
+                        </p:confirmDialog> 
                     </p:row>
                 </f:facet>
             </p:dataTable>

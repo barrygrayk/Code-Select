@@ -16,10 +16,11 @@ public class ChildMedicalHistory {
     private String specialTreatmeants ;
     private String clincVisited;
     private Date dateOfVisit; 
+    private int id;
 
     public ChildMedicalHistory(String doctersName, String illnessDetected, String cause,
             String medicines, String allergies, String specialTreatmeants, String clincVisited,
-            Date dateOfVisit) {
+            Date dateOfVisit) { 
         
         this.doctersName = doctersName;
         this.illnessDetected = illnessDetected;
@@ -29,6 +30,21 @@ public class ChildMedicalHistory {
         this.specialTreatmeants = specialTreatmeants;
         this.clincVisited = clincVisited;
         this.dateOfVisit = dateOfVisit;
+    }
+    
+    public ChildMedicalHistory(String doctersName, String illnessDetected, String cause,
+            String medicines, String allergies, String specialTreatmeants, String clincVisited,
+            Date dateOfVisit, int id) {
+        
+        this.doctersName = doctersName;
+        this.illnessDetected = illnessDetected;
+        this.cause = cause;
+        this.medicines = medicines;
+        this.allergies = allergies;
+        this.specialTreatmeants = specialTreatmeants;
+        this.clincVisited = clincVisited;
+        this.dateOfVisit = dateOfVisit;
+        this.id = id;
     }
     
     public ChildMedicalHistory(){}
@@ -95,6 +111,14 @@ public class ChildMedicalHistory {
 
     public void setDateOfVisit(Date dateOfVisit) {
         this.dateOfVisit = dateOfVisit;
+    }
+
+    public int getId() {
+        return id;
+    }
+
+    public void setId(int id) {
+        this.id = id;
     }
     
 }

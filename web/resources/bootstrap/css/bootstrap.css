@@ -7134,4 +7134,7 @@ input, textarea {
 
 /*# sourceMappingURL=style.css.map */
 
-
+.chart{
+    padding:15px;
+       margin: auto;
+}

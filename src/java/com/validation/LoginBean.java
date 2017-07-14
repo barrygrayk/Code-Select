@@ -78,7 +78,7 @@ public class LoginBean extends Passwords implements Serializable {
                 salt = auth.getSalt();
             }
         }
-        if (isExpectedPassword(password.toCharArray(), salt, expectedHash)) {
+        if (password!=null&&salt!=null && expectedHash !=null && isExpectedPassword(password.toCharArray(), salt, expectedHash)) {
             HttpSession session = SessionUtils.getSession();
             session.setAttribute("username", username);
             session.setAttribute("LoggedIn", "LoggedIn");

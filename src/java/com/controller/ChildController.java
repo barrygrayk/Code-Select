@@ -34,6 +34,7 @@ import org.primefaces.model.chart.CategoryAxis;
 import org.primefaces.model.chart.ChartSeries;
 import org.primefaces.model.chart.LineChartModel;
 import com.validation.MrKaplan;
+import java.text.DateFormat;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -66,6 +67,7 @@ public class ChildController extends Child implements Serializable{
     private Connection connection, connection2, connection3;
     private UploadedFile file;
     private LineChartModel HeightChart;
+    
     
     private String slectedChild;
     private ArrayList<String> listOfChildrenDropbox = new ArrayList<String>();
@@ -209,7 +211,8 @@ public class ChildController extends Child implements Serializable{
             
             // now intake
             IntakeInfo intakeInfo = new IntakeInfo(rs.getString("droppedBy"), rs.getString("FetchLocation"),
-                    rs.getString("FetchedBy"),rs.getLong("PhoneNumber"), rs.getDate("Date/Time"));
+                    rs.getString("FetchedBy"),rs.getLong("PhoneNumber"), (Date)rs.getObject("Date/Time"));
+            
             
             // now socialWorker
             SocialWorker socialWorker = new SocialWorker(rs.getString("socialworkerName"),rs.getLong("PhoneNumber"),
@@ -278,7 +281,7 @@ public class ChildController extends Child implements Serializable{
         while(rs2.next()){
             medicalHistoryRecords.add(new ChildMedicalHistory(rs2.getString("doctName"), rs2.getString("illnessesDetected"),
                     rs2.getString("reasonForIllnesses"), rs2.getString("medications"), rs2.getString("allergies"), 
-                    rs2.getString("specialTreatments"), rs2.getString("hospitalVisited"), rs2.getDate("dateofVisit")));        
+                    rs2.getString("specialTreatments"), rs2.getString("hospitalVisited"), rs2.getDate("dateofVisit"), rs2.getInt("idbabymedicalhistory")));        
         }
         return medicalHistoryRecords;
     }
@@ -293,7 +296,7 @@ public class ChildController extends Child implements Serializable{
                     super.getMedicalHistory().getSpecialTreatmeants(), super.getMedicalHistory().getClincVisited(),
                     super.getMedicalHistory().getDateOfVisit()));
     }
-    
+        
     // reading staff -attendant from DB "needs to be rethought"
     public ArrayList<String> getCareTakerList() throws ClassNotFoundException, SQLException{
         
@@ -402,6 +405,9 @@ public class ChildController extends Child implements Serializable{
         this.listOfChildren = listOfChildren;
     }
     
+    // validation method 
+    
+    
     // validates data before adding 
     public void addChild() throws SQLException, ClassNotFoundException{
         MrKaplan x = new MrKaplan();
@@ -409,8 +415,37 @@ public class ChildController extends Child implements Serializable{
         if( x.isValidInput(this.getFirstname()) && x.isValidInput(this.getLastname())){
             
             if(x.isValidInput(this.getDestingushingMarks()) && x.isValidInput(this.getPlaceOfBirth())){
-                setChild();
-                messages.save();
+                if(x.isValidInput(this.getGeneralRemarks())  && x.isValidInput(this.getChildArrivalMedicalReport()) && 
+                        x.isValidInput(this.getRequiredDocNote()) &&x.isAnEmail(this.getSocialWorkerDetails().getEmail())){
+                    if(x.isValidInput(this.getIntakeDetails().getPersonWhoDropped()) && x.isValidInput(this.getIntakeDetails().getPersonWhoFetched())){
+                        if(x.isValidInput(this.getParentInfo().getFatherName()) && x.isValidInput(this.getParentInfo().getMotherName()) 
+                                && x.isValidInput(this.getSocialWorkerDetails().getSocialWorkerName()) && x.isNumeric(Double.toString(this.getParentInfo().getContactNumber()))){
+                            if(x.isNumeric(Double.toString(this.getHeadCir())) && x.isNumeric(Double.toString(this.getHeightRecorded().getHeight())) 
+                                    && x.isNumeric(Double.toString(this.getWeightRecorded().getWeight()))){
+                                if(x.isNumeric(Double.toString(this.getSocialWorkerDetails().getPhoneNumber())) 
+                                        && x.isNumeric(Double.toString(this.getIntakeDetails().getPhoneNumber()))){
+                                    //setChild();
+                                    //messages.save();
+                                    if(this.getMedicalHistory()!=null){
+                                        if(x.isValidInput(this.getMedicalHistory().getDoctersName()) && x.isValidInput(this.getMedicalHistory().getAllergies()) 
+                                            &&  x.isValidInput(this.getMedicalHistory().getCause()) &&  x.isValidInput(this.getMedicalHistory().getClincVisited()) 
+                                            &&  x.isValidInput(this.getMedicalHistory().getMedicines()) &&  x.isValidInput(this.getMedicalHistory().getSpecialTreatmeants()) 
+                                            &&  x.isValidInput(this.getMedicalHistory().getIllnessDetected())){
+                                            setChild();
+                                            messages.save();
+                                        } 
+                                    }else{
+                                        setChild();
+                                        messages.save();
+                                        this.clearChild();
+                                    }
+                                }
+                            }
+                           
+                        }
+                    }
+                }
+                
             }
             
         }
@@ -490,7 +525,8 @@ public class ChildController extends Child implements Serializable{
         ps.setString(2,this.getIntakeDetails().getPersonWhoFetched());
         ps.setString(3,this.getIntakeDetails().getFetchLocation());
         ps.setLong(4,this.getIntakeDetails().getPhoneNumber());
-        ps.setDate(5,dateConverter(this.getIntakeDetails().getDateAndTime()));
+        //ps.setDate(5,dateConverter(this.getIntakeDetails().getDateAndTime()));
+        ps.setObject(5, this.getIntakeDetails().getDateAndTime());
         ps.execute();
         
         // to another table- medicalHistory
@@ -532,12 +568,14 @@ public class ChildController extends Child implements Serializable{
     }
     // check selectedCheckBoxes for RequiredDocs
     public int quickCheck(String a, ArrayList<String> vector){
-        
-        for(String curr: vector)
-            if (curr.equals(a)) 
-                return 1;
-        
-        return 0;
+        int value =0;
+        for(String curr: vector){
+            if (curr.equals(a)){
+                value = 1;
+            }
+        } 
+
+        return value;
     }
     // util date to sql date converter
     public java.sql.Date dateConverter(Date utilDate){
@@ -547,7 +585,7 @@ public class ChildController extends Child implements Serializable{
         
         return sqlDate;
     }
-    
+
     public Child getChild() {
         return child;
     }
@@ -598,7 +636,48 @@ public class ChildController extends Child implements Serializable{
         }
        // this.selectedChildren.remove(child);
     }
-    
+    // validate before updating 
+    public void editChild() throws SQLException, ClassNotFoundException{
+        MrKaplan x = new MrKaplan();
+        MenuView messages = new MenuView();
+        if( x.isValidInput(this.child.getFirstname()) && x.isValidInput(this.child.getLastname())){
+            
+            if(x.isValidInput(this.child.getDestingushingMarks()) && x.isValidInput(this.child.getPlaceOfBirth())){
+                if(x.isValidInput(this.child.getGeneralRemarks())  && x.isValidInput(this.child.getChildArrivalMedicalReport()) && 
+                        x.isValidInput(this.child.getRequiredDocNote()) &&x.isAnEmail(this.child.getSocialWorkerDetails().getEmail())){
+                    if(x.isValidInput(this.child.getIntakeDetails().getPersonWhoDropped()) && x.isValidInput(this.child.getIntakeDetails().getPersonWhoFetched())){
+                        if(x.isValidInput(this.child.getParentInfo().getFatherName()) && x.isValidInput(this.child.getParentInfo().getMotherName()) 
+                                && x.isValidInput(this.child.getSocialWorkerDetails().getSocialWorkerName()) && x.isNumeric(Double.toString(this.child.getParentInfo().getContactNumber()))){
+                            if(x.isNumeric(Double.toString(this.child.getHeadCir())) && x.isNumeric(Double.toString(this.child.getHeightRecorded().getHeight())) 
+                                    && x.isNumeric(Double.toString(this.child.getWeightRecorded().getWeight()))){
+                                if(x.isNumeric(Double.toString(this.child.getSocialWorkerDetails().getPhoneNumber())) 
+                                        && x.isNumeric(Double.toString(this.child.getIntakeDetails().getPhoneNumber()))){
+                                    updateChild();
+                                    messages.update();
+                                    /*if(this.getMedicalHistory()!=null){
+                                        if(x.isValidInput(this.child.getMedicalHistory().getDoctersName()) && x.isValidInput(this.child.getMedicalHistory().getAllergies()) 
+                                            &&  x.isValidInput(this.child.getMedicalHistory().getCause()) &&  x.isValidInput(this.child.getMedicalHistory().getClincVisited()) 
+                                            &&  x.isValidInput(this.child.getMedicalHistory().getMedicines()) &&  x.isValidInput(this.child.getMedicalHistory().getSpecialTreatmeants()) 
+                                            &&  x.isValidInput(this.child.getMedicalHistory().getIllnessDetected())){
+                                            updateChild();
+                                            messages.save();
+                                        } 
+                                    }else{
+                                       updateChild();
+                                        messages.update();
+                                        this.child.clearChild();
+                                    }*/
+                                }
+                            }
+                           
+                        }
+                    }
+                }
+                
+            }
+            
+        }
+    }
     // updating a record from the DB
     public void updateChild() throws SQLException {
         
@@ -624,7 +703,7 @@ public class ChildController extends Child implements Serializable{
         ps.setString(5, this.child.getIntakeDetails().getPersonWhoFetched());
         ps.setString(6, this.child.getIntakeDetails().getFetchLocation());
         ps.setLong(7, this.child.getIntakeDetails().getPhoneNumber());
-        ps.setDate(8, dateConverter(this.child.getIntakeDetails().getDateAndTime()));
+        ps.setObject(8, this.child.getIntakeDetails().getDateAndTime());
         //parent information
         ps.setString(9,this.child.getParentInfo().getFatherName());
         ps.setString(10,this.child.getParentInfo().getMotherName());
@@ -660,17 +739,30 @@ public class ChildController extends Child implements Serializable{
         ps.setInt(34, quickCheck("neglect",this.child.getChildArrivalCondition()));
         ps.setInt(35, quickCheck("others",this.child.getChildArrivalCondition()));
         
-        
-        
-        
         ps.executeUpdate();
         
+        for(int i=0; i<this.child.getListOfMedicalHistoryRecords().size();i++){
+            updateChildMedicalRecord(selectedChildID, this.child.getListOfMedicalHistoryRecords().get(i).getId(),
+                    this.child.getListOfMedicalHistoryRecords().get(i));
+        }
     }
     // update medicalHistoryRecord 
-    public void updateChildMedicalRecord(int id) throws SQLException {
+    public void updateChildMedicalRecord(int id, int recordID, ChildMedicalHistory medicalRecord) throws SQLException {
         sql2 = "UPDATE babymedicalhistory SET doctName=?, illnessesDetected=?, reasonForIllnesses=?"
-                + ", medications=?, allergies=?, specialTreatments=?, dateofVisit, hospitalVisited=?"
-                + " WHERE babyprofile_idBabyProfile ="+id;
+                + ", medications=?, allergies=?, specialTreatments=?, dateofVisit=?, hospitalVisited=?"
+                + " WHERE idbabymedicalhistory="+recordID+" AND babyprofile_idBabyProfile ="+id;
+        
+        ps = connection.prepareStatement(sql2);
+        ps.setString(1, medicalRecord.getDoctersName());
+        ps.setString(2, medicalRecord.getIllnessDetected());
+        ps.setString(3,medicalRecord.getCause());
+        ps.setString(4, medicalRecord.getMedicines());
+        ps.setString(5, medicalRecord.getAllergies());
+        ps.setString(6, medicalRecord.getSpecialTreatmeants());
+        ps.setDate(7, dateConverter(medicalRecord.getDateOfVisit()));
+        ps.setString(8, medicalRecord.getClincVisited());
+        
+        ps.executeUpdate();
     }
     
     //updating meals table
@@ -741,7 +833,9 @@ public class ChildController extends Child implements Serializable{
                 
     }
     public void humorMe(){
-        System.out.println("Safado");
+        DateFormat df = new SimpleDateFormat("dd/MM/yyyy HH:mm:ss");
+        
+        System.out.println("Safado: ");
     }
      
     public void onCellEdit(CellEditEvent event) {

@@ -1,0 +1,100 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:f="http://xmlns.jcp.org/jsf/core">
+    <ui:composition>
+        <p:chart id="donationsChart" type="bar" model="#{DonationsCont.combinedModel}" style="height:270px"  class="chart"/>
+
+        <h:form id="donationsForm">
+            <p:dataTable id="donationTable" var="dontions" value="#{DonationsCont.donations}" rowKey="#{dontions.id}"
+                         selection="#{DonationsCont.selectedDonation}" selectionMode="single">
+                <f:facet name="header">
+                    Current needs
+                </f:facet>
+                <p:ajax event="rowSelect" listener="#{DonationsCont.onRowSelect}" update=":donationsForm" process="donationTable"/>
+                <p:ajax event="rowUnselect" listener="#{DonationsCont.onRowUnselect}" update=":donationsForm" process="donationTable"/>   
+                <p:column headerText="Id">
+                    <h:outputText value="#{donations.id}" />
+                </p:column>
+                <p:column headerText="Description">
+                    <h:outputText value="#{dontions.description}" />
+                </p:column>
+                <p:column headerText="Goal">
+                    <h:outputText value="#{dontions.goal}" />
+                </p:column>
+                <p:column headerText="Received">
+                    <h:outputText value="#{dontions.recieved}" />
+                </p:column>
+                <f:facet name="footer">
+                    <p:commandButton   value="Add"  icon="ui-icon-search" oncomplete="PF('editDialog').show()" />
+                    <p:commandButton    icon="ui-icon-search" value="Edit" oncomplete="PF('addDialog').show()" />
+                    <p:commandButton value="Delete" actionListener="#{DonationsCont.deleteDonatedItem()}"  update=":donationsForm" >
+                        <p:confirm header="Confirmation" message="Are you sure, you want delete selected record(s)?" icon="ui-icon-alert" />
+                    </p:commandButton>
+                    <p:confirmDialog global="true">
+                        <p:commandButton value="Yes" type="button" styleClass="ui-confirmdialog-yes" icon="ui-icon-check"  />
+                        <p:commandButton value="No" type="button" styleClass="ui-confirmdialog-no" icon="ui-icon-close" />
+                    </p:confirmDialog>
+                </f:facet>
+            </p:dataTable> 
+            <p:dialog header="Edit" widgetVar="addDialog" showEffect="fade" hideEffect="fade" resizable="false">
+                
+                <h:panelGrid columns="1"  cellpadding="30" class="addStaff">
+                    <h:outputLabel for="Desc" value="Description: " class="addStaff" />
+                    <h:inputText id="Desc" value="#{DonationsCont.description}"  required="true" class="addStaff"/>
+                </h:panelGrid>
+                <h:panelGrid columns="1"  cellpadding="30" class="addStaff">
+                    <h:outputLabel for="goal" value="Goal: " />
+                    <p:spinner id="goal" value="#{DonationsCont.goal}"  required="true"/>
+                </h:panelGrid>
+                <h:panelGrid columns="1"  cellpadding="30" class="addStaff">
+                    <h:outputLabel for="recived" value="Recieved: " />
+                    <p:spinner id="recived" value="#{DonationsCont.recieved}"  rendered="true"/>
+                </h:panelGrid>               
+                <p:panelGrid>
+                    <p:commandButton value="Edit Need" action="#{DonationsCont.editDonationItem()}" update=":donationsForm :donationsChart" />
+                </p:panelGrid>
+            </p:dialog>
+        </h:form>
+        <h:form id="add_Dona">
+            <f:metadata>
+                <f:event type="preRenderView"
+                         listener="#{DonationsCont.loadDonationItem()}"/>
+            </f:metadata>
+            <p:dialog header="Add" widgetVar="editDialog" showEffect="fade" hideEffect="fade" resizable="false">
+                <h:panelGrid columns="1"  cellpadding="30" class="addStaff">
+                    <h:outputLabel for="Desc" value="Description: " />
+                    <h:inputText id="Desc" value="#{DonationsCont.description}"  required="true"/>
+                </h:panelGrid>
+
+                <h:panelGrid columns="1"  cellpadding="30" class="addStaff">
+                    <h:outputLabel for="Goal" value="Goal: " />
+                    <p:spinner id="goal" value="#{DonationsCont.goal}"  required="true"/>
+                </h:panelGrid>
+                <p:panelGrid>
+                    <p:commandButton value="Add Need" action="#{DonationsCont.addDonation()}" update=":donationsForm" />
+                </p:panelGrid>
+
+            </p:dialog>
+
+        </h:form>
+        <h:form id="delete_Stock">
+            <p:dialog header="Delete Record" widgetVar="deleteDialog" showEffect="fade" hideEffect="fade" resizable="false" >
+                <h:panelGrid columns="1"  cellpadding="30" class="addStaff">
+                    <h:outputText value="Are u sure you wamt to delete this record?"/>
+                </h:panelGrid>
+
+                <h:panelGrid columns="2"  cellpadding="30" class="addStaff">
+                    <p:commandButton value="Yes" action="#{InventoryCont.deleteStockItem()}" update=":donationsForm" />
+                    <p:commandButton value="No"  update=":donationsForm" />
+                </h:panelGrid>
+            </p:dialog>
+
+        </h:form>
+
+    </ui:composition>
+</html>
+

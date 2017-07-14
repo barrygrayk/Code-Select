@@ -1,6 +1,6 @@
 package com.controller;
 
-import InventoryModels.Inventory;
+import com.InventoryModels.Inventory;
 import com.MenuView.MenuView;
 import com.db.connection.InventorytableConneection;
 import com.staff.Model.OthantileStaff;
@@ -49,13 +49,10 @@ public class InventoryController extends Inventory implements Serializable {
 
     public void onRowSelect(SelectEvent e) {
         selectedStock = (Inventory) e.getObject();
-        System.out.println("____________Eder_______");
-        System.out.println(selectedStock.getDescription());
     }
 
     public void onRowUnselect(UnselectEvent e) {
         selectedStock = null;
-        System.out.println("____________Rosa_______");
     }
 
     public List<Inventory> getInventory() {
@@ -73,7 +70,6 @@ public class InventoryController extends Inventory implements Serializable {
         if (validate.isValidInput(getDescription())) {
             stockItem = new Inventory();
             stockItem.setDescription(eqi.toUperAndLower(getDescription()));
-
             if (getQuantity() > getLowThresh()) {
                 stockItem.setQuantity(getQuantity());
                 stockItem.setLowThresh(getLowThresh());
@@ -86,14 +82,11 @@ public class InventoryController extends Inventory implements Serializable {
     }
 
     public void loadStockItem() {
-        System.out.println("loading---");
         if (selectedStock != null) {
-            System.out.println("not null---");
             setDescription(selectedStock.getDescription());
             setQuantity(selectedStock.getQuantity());
             setLowThresh(selectedStock.getLowThresh());
             setExpireyDate(selectedStock.getExpireyDate());
-            System.out.println("____" + getDescription());
         }
     }
 
@@ -102,7 +95,6 @@ public class InventoryController extends Inventory implements Serializable {
         TheEqualizer eqi = new TheEqualizer();
         if (validate.isValidInput(getDescription())) {
             stockItem = new Inventory();
-
             stockItem.setDescription(eqi.toUperAndLower(getDescription()));
             if (getQuantity() > getLowThresh()) {
                 stockItem.setId(selectedStock.getId());

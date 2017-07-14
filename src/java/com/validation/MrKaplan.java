@@ -23,17 +23,22 @@ public class MrKaplan {
         return valid;
     }
 
-    public boolean isNumeric(String input) {
+    /*public boolean isNumeric(String input) {
         boolean valid = false;
         if (input.matches("-?\\d+(\\.\\d+)?")) {
 
             valid = true;
         } else {
-            out.error("Input must be numeric", null);
+            out.error("This: "+Double.parseDouble(input)+" input must be numeric", null);
         }
         return valid;
-    }
+    }*/
+    
+    public boolean isNumeric(String input){
+  
+     return (!input.matches("[0-9]+"));
 
+    }
     public boolean isAnEmail(String input) {
         boolean valid = false;
         final Pattern pattern = Pattern.compile("[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\\.[A-Za-z]{2,4}");
@@ -76,7 +81,6 @@ public class MrKaplan {
 
     public boolean isAcceptableString(String input) {
         boolean valid = false;
-        System.out.println("HERE_______________________");
         final Pattern pattern = Pattern.compile("^[A-Za-z-' ]++$");
         if (!pattern.matcher(input).matches()) {
             valid = false;
@@ -94,7 +98,7 @@ public class MrKaplan {
             if (stirngIsWithinRange(input, 2, 60)) {
                 if (isAcceptableString(input)) {
                     valid = true;
-                }
+                } 
             }
         }
         return valid;
@@ -107,7 +111,7 @@ public class MrKaplan {
         if (basicCheck(input)) {
             if (m.find()) {
                 valid = false;
-                out.error(input + " must not have special charecters", input);
+                out.error(input+ " must not have special charecters", input);
             } else {
                 System.out.println("acceptable string");
                 valid = true;
@@ -116,29 +120,20 @@ public class MrKaplan {
 
         return valid;
     }
-
     public boolean basicCheck(String input) {
         boolean valid = false;
+
         if (!isEmpty(input) && !isNull(input) && !isScript(input)) {
             valid = true;
         }
+
         return valid;
     }
 
-    public boolean isValidDate(Date date) {
-        boolean valid = false;
-        Date dt = new Date();
-        boolean before = dt.after(date);
-        if (before) {
-            valid = true;
-        } else {
-            out.error("Date not recorgnised", null);
-        }
-
-        return valid;
-
-    }
-// for update validation 
+    //getAddress()
+    //"\\d+\\s+([a-zA-Z]+|[a-zA-Z]+\\s[a-zA-Z]+)"
+    
+    // for update validation 
     public String getColumId(String id){
         
         //viewListOfBabies:viewTable:2:firstName
@@ -156,6 +151,18 @@ public class MrKaplan {
         System.out.println("Solution: "+columnID);
         return id;
     }
-    //getAddress()
-    //"\\d+\\s+([a-zA-Z]+|[a-zA-Z]+\\s[a-zA-Z]+)"
+    
+    public boolean isValidDate(Date date) {
+        boolean valid = false;
+        Date dt = new Date();
+        boolean before = dt.after(date);
+        if (before) {
+            valid = true;
+        } else {
+            out.error("Date not recorgnised", null);
+        }
+
+        return valid;
+
+    }
 }

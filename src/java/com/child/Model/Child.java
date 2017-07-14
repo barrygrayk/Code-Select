@@ -18,7 +18,7 @@ public class Child extends Person implements Serializable{
     private Weight weightRecorded = new Weight();
     private Height heightRecorded = new Height();
     private ArrayList<Nappies> listOfNappyRecords;
-    private ChildMedicalHistory medicalHistory = new ChildMedicalHistory();
+    protected ChildMedicalHistory medicalHistory = new ChildMedicalHistory();
     protected ArrayList<ChildMedicalHistory> listOfMedicalHistoryRecords = new ArrayList<ChildMedicalHistory>();
     private ArrayList<SleepingRoutine> listOfSleepingRecords;
     private ArrayList<DailyActivities> listOfActivitiesRecorded; 
@@ -295,15 +295,13 @@ public class Child extends Person implements Serializable{
         if(!this.listOfMedicalHistoryRecords.isEmpty()){
             if(currentIndex == -1){
                 currentIndex = this.listOfMedicalHistoryRecords.indexOf(this.medicalHistory);
-                System.out.println("Fics index: "+currentIndex);
             }
             if((currentIndex + 1) < this.listOfMedicalHistoryRecords.size()){
                 currentIndex = currentIndex + 1;
+                System.out.print("new Recordguy: "+currentIndex);
                 selectMedicalRecordToUpdateByIndex(currentIndex);
-                System.out.println("nexttttt"+this.medicalHistory.getIllnessDetected()+"\n indesx:"+currentIndex);
             }else{
                 selectMedicalRecordToUpdate();
-                currentIndex = 0;
             }
         }
     }
@@ -322,6 +320,34 @@ public class Child extends Person implements Serializable{
                 selectMedicalRecordToUpdateByIndex(currentIndex);
             }
         }*/
+    }
+    // update temporary illnessList 
+    public void updateOnTempList(){
+        ChildMedicalHistory altered = new ChildMedicalHistory();
+        if(currentIndex != -1){
+            
+            altered.setIllnessDetected(this.medicalHistory.getIllnessDetected());
+            
+            this.listOfMedicalHistoryRecords.get(currentIndex).setSpecialTreatmeants(this.medicalHistory.getSpecialTreatmeants());
+            this.listOfMedicalHistoryRecords.get(currentIndex).setIllnessDetected(this.medicalHistory.getIllnessDetected());
+            this.listOfMedicalHistoryRecords.get(currentIndex).setClincVisited(this.medicalHistory.getClincVisited());
+            this.listOfMedicalHistoryRecords.get(currentIndex).setDoctersName(this.medicalHistory.getDoctersName());
+            this.listOfMedicalHistoryRecords.get(currentIndex).setDateOfVisit(this.medicalHistory.getDateOfVisit());
+            this.listOfMedicalHistoryRecords.get(currentIndex).setAllergies(this.medicalHistory.getAllergies());
+            this.listOfMedicalHistoryRecords.get(currentIndex).setMedicines(this.medicalHistory.getMedicines());
+            this.listOfMedicalHistoryRecords.get(currentIndex).setCause(this.medicalHistory.getCause());
+           
+        }
+       //x this.listOfMedicalHistoryRecords.add(currentIndex, altered);
+        
+    }
+
+    public int getCurrentIndex() {
+        return currentIndex;
+    }
+
+    public void setCurrentIndex(int currentIndex) {
+        this.currentIndex = currentIndex;
     }
         
     @Override

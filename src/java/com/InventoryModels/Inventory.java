@@ -1,4 +1,4 @@
-package InventoryModels;
+package com.InventoryModels;
 
 import java.time.temporal.ChronoUnit;
 import java.util.Date;

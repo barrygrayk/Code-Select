@@ -1,24 +1,23 @@
 package com.db.connection;
 
-import com.InventoryModels.Inventory;
+import com.Donations.Donations;
 import com.MenuView.MenuView;
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
 /**
  *
- * @author Barry Gray
+ * @author Barry Gray Kapelembe
  */
-public class InventorytableConneection extends DatabaseConnection {
+public class DonationsConnection extends DatabaseConnection { 
 
     private final MenuView feedback = new MenuView();
 
-    public InventorytableConneection() {
+    public DonationsConnection() {
         super();
     }
 
@@ -27,11 +26,11 @@ public class InventorytableConneection extends DatabaseConnection {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 
-    public void addStockItem(Inventory stock) {
-        String insertSql = "INSERT INTO `inventory`(`Description`,`Quantity`,`lowThreshold`,`expireyDate`) VALUES(?,?,?,?)";
+    public void addDonation(Donations donate) {
+        String insertSql = "INSERT INTO .`needs`(`needDescription`,`goal`,`donated`)VALUES(?,?,?);";
         try {
-            setInventoryColumns(insertSql, stock, false).execute();
-            feedback.addMessage("Sucess", "Item sucessfully added");
+            setDonatiosClumns(insertSql, donate, false).execute();
+            feedback.addMessage("Sucess", "Donation sucessfully added");
         } catch (ClassNotFoundException | SQLException ex) {
             Logger.getLogger(InventorytableConneection.class.getName()).log(Level.SEVERE, null, ex);
             feedback.error("database error", ex.getMessage());
@@ -44,21 +43,20 @@ public class InventorytableConneection extends DatabaseConnection {
         }
     }
 
-    public List<Inventory> getStockItems() {
-        List<Inventory> stockItems = new ArrayList<>();
+    public List<Donations> getDonationItems() {
+        List<Donations> donated = new ArrayList<>();
         try {
-            String query = "SELECT * FROM `inventory`";
+            String query = "SELECT * FROM `needs`";
             connection = getConnection();
             statement = connection.createStatement();
             resultset = statement.executeQuery(query);
             while (resultset.next()) {
-                Inventory stock = new Inventory(resultset.getInt("idInventory"),
-                        resultset.getString("Description"),
-                        resultset.getDouble("Quantity"),
-                        resultset.getDouble("lowThreshold"),
-                        resultset.getDate("expireyDate"));
-                stock.setDaysLeft();
-                stockItems.add(stock);
+                Donations donatedItems = new Donations(resultset.getInt("idNeeds"),
+                        resultset.getString("needDescription"),
+                        resultset.getDouble("goal"),
+                        resultset.getDouble("donated"));
+                System.out.println("Getting "+donatedItems.getDescription());
+                donated.add(donatedItems);
             }
 
         } catch (ClassNotFoundException | SQLException ex) {
@@ -71,14 +69,13 @@ public class InventorytableConneection extends DatabaseConnection {
                 feedback.error("Connection error", ex.getMessage());
             }
         }
-        return stockItems;
+        return donated;
     }
 
-    public void updateStockItem(Inventory stock) {
-        String updateSql = "UPDATE `inventory` SET Description=?, Quantity=?,lowThreshold=?,expireyDate=? WHERE idInventory =?";
+    public void updateDonationItem(Donations donate) {
+        String updateSql = "UPDATE `needs` SET needDescription=?, goal=?,donated=? WHERE idNeeds =?";
         try {
-            setInventoryColumns(updateSql, stock, true).execute();
-            System.out.println("in db " + stock.getDescription());
+            setDonatiosClumns(updateSql, donate, true).execute();
             feedback.addMessage("Sucess", "Item sucessfully added");
         } catch (ClassNotFoundException | SQLException ex) {
             Logger.getLogger(InventorytableConneection.class.getName()).log(Level.SEVERE, null, ex);
@@ -86,29 +83,25 @@ public class InventorytableConneection extends DatabaseConnection {
 
     }
 
-    public PreparedStatement setInventoryColumns(String query, Inventory stock, boolean update) throws ClassNotFoundException, SQLException {
+    public PreparedStatement setDonatiosClumns(String query, Donations donate, boolean update) throws ClassNotFoundException, SQLException {
         PreparedStatement insertStock = null;
         connection = getConnection();
         insertStock = connection.prepareStatement(query);
-        insertStock.setString(1, stock.getDescription());
-        insertStock.setDouble(2, stock.getQuantity());
-        insertStock.setDouble(3, stock.getLowThresh());
-        Date date = new Date();
-        date = stock.getExpireyDate();
-        java.util.Date utilStartDate = date;
-        java.sql.Date sqlExpiryDate = new java.sql.Date(utilStartDate.getTime());
-        insertStock.setDate(4, sqlExpiryDate);
+        insertStock.setString(1, donate.getDescription());
+        System.out.println("in db---"+donate.getDescription());
+        insertStock.setDouble(2, donate.getGoal());
+        insertStock.setDouble(3, donate.getRecieved());
         if (update) {
-            insertStock.setInt(5, stock.getId());
+            insertStock.setInt(4, donate.getId());
         }
 
         return insertStock;
     }
 
-    public void deleteStockItem(int id) throws ClassNotFoundException {
+    public void deleteDonationItem(int id) throws ClassNotFoundException {
         connection = getConnection();
         PreparedStatement deleteRecord = null;
-        String deleteItem = " DELETE FROM  `inventory` where  idInventory=?";
+        String deleteItem = " DELETE FROM  `needs` where idNeeds =?";
         try {
             deleteRecord = connection.prepareStatement(deleteItem);
             deleteRecord.setInt(1, id);
