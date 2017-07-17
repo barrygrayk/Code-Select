@@ -8,14 +8,8 @@
 
 
     <ui:composition>
-
-        <f:metadata>
-            <f:event type="preRenderView"
-                     listener="#{InventoryCont.loadStockItem()}"/>
-        </f:metadata>
-        <h:form id="inventoryUpdateForm">
-            <h:panelGrid columns="1"  cellpadding="30" class="addStaff">
-
+        <h:form>
+      <h:panelGrid columns="1"  cellpadding="30" class="addStaff">
                 <h:panelGrid columns="1"  cellpadding="30" class="addStaff">
                     <h:outputLabel value="Description: " />
                     <p:inputText  value="#{InventoryCont.description}" required="true" label="Description"/>
@@ -23,25 +17,26 @@
 
                 <h:panelGrid columns="1"  cellpadding="30" class="addStaff">
                     <h:outputLabel for="quantity" value="Quantity: " />
-                    <p:spinner id="quantity" value="#{InventoryCont.quantity}"  required="true" label="quantity"/>
+                    <p:spinner id="quantity" value="#{InventoryCont.quantity}"  required="true"/>
                 </h:panelGrid>
-                <h:panelGrid columns="1"  cellpadding="30" class="addStaff">
-                    <h:outputLabel for="thresh" value="Re-order quantity: " />
-                    <p:spinner id="thresh" value="#{InventoryCont.lowThresh}"  rendered="true" label="thersh"/>
-                </h:panelGrid>
+
                 <h:panelGrid columns="1"  cellpadding="30" class="addStaff">
                     <p:outputLabel for="unit" value="Units:" />
-                    <p:selectOneMenu id="unit" value="#{InventoryCont.unit}" effect="fold" required="true" label="unit">
+                    <p:selectOneMenu id="unit" value="#{InventoryCont.unit}" effect="fold" required="true">
                         <f:selectItem itemLabel="Select a unit" itemValue="#{InventoryCont.unit}" />
                         <f:selectItems value="#{InventoryCont.units}" />
                     </p:selectOneMenu>
                 </h:panelGrid>
                 <h:panelGrid columns="1"  cellpadding="30" class="addStaff">
-                    <h:outputLabel for="mask"    value="Expirey date: " />
+                    <h:outputLabel for="thresh" value="Re-order quantity: " />
+                    <p:spinner id="thresh" value="#{InventoryCont.lowThresh}"  rendered="true"/>
+                </h:panelGrid>
+                <h:panelGrid columns="1"  cellpadding="30" class="addStaff">
+                    <h:outputLabel for="mask"    value="Expirey date:" />
                     <p:calendar id="mask" value="#{InventoryCont.expireyDate}" pattern="yyyy-MM-dd" mask="true" required="true" label="Expirey date" />
-                </h:panelGrid>                 
+                </h:panelGrid> 
                 <p:panelGrid>
-                    <p:commandButton value="Edit item" action="#{InventoryCont.edittockItem()}" update=":inventoryForm" />
+                    <p:commandButton value="Add item" action="#{InventoryCont.addStockItem()}" update=":inventoryForm" />
                 </p:panelGrid>
             </h:panelGrid>
         </h:form>

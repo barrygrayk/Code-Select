@@ -62,14 +62,12 @@ public class LoginBean extends Passwords implements Serializable {
     }
 
     public String doLogin() throws InvalidKeySpecException, UnsupportedEncodingException {
-        int authCount = 0;
         byte[] expectedHash = null;
         byte[] salt = null;
         System.out.println(authenticatedStaff.size());
         for (Authenticate auth : authenticatedStaff) {
             System.out.println("thatusernam " + auth.getUsername());
             if (auth.getUsername().equals(username)) {
-                authCount++;
                 id = auth.authId();
                 setUsername(auth.getUsername());
                 System.out.println("MATCH________________" + username);

@@ -27,8 +27,20 @@ public class InventoryController extends Inventory implements Serializable {
 
     private final MenuView feedback = new MenuView();
     private List<Inventory> inventory = new ArrayList<>();
+    private ArrayList<String> units = new ArrayList<>();
+
+    public ArrayList<String> getUnits() {
+        return units;
+    }
+
+    public void setUnits(ArrayList<String> units) {
+        this.units = units;
+    }
+
+   
     private Inventory selectedStock;
     private Inventory stockItem;
+  
 
     public InventoryController() {
         super();
@@ -37,6 +49,12 @@ public class InventoryController extends Inventory implements Serializable {
     @PostConstruct
     public void init() {
         getInventory();
+        units.add("Box");
+        units.add("Case");
+        units.add("Gram");
+        units.add("Liter");
+        units.add("Milliliter ");
+        units.add("Kilogram");
     }
 
     public Inventory getSlectedStock() {
@@ -74,6 +92,7 @@ public class InventoryController extends Inventory implements Serializable {
                 stockItem.setQuantity(getQuantity());
                 stockItem.setLowThresh(getLowThresh());
                 stockItem.setExpireyDate(getExpireyDate());
+                stockItem.setUnit(getUnit());
                 new InventorytableConneection().addStockItem(stockItem);
             } else {
                 feedback.error("Quantity must be greater than threshhold", "");
@@ -84,9 +103,11 @@ public class InventoryController extends Inventory implements Serializable {
     public void loadStockItem() {
         if (selectedStock != null) {
             setDescription(selectedStock.getDescription());
+            System.err.println("Yeah loading "+getDescription());
             setQuantity(selectedStock.getQuantity());
             setLowThresh(selectedStock.getLowThresh());
             setExpireyDate(selectedStock.getExpireyDate());
+            setUnit(selectedStock.getUnit());
         }
     }
 
@@ -101,6 +122,7 @@ public class InventoryController extends Inventory implements Serializable {
                 stockItem.setQuantity(getQuantity());
                 stockItem.setLowThresh(getLowThresh());
                 stockItem.setExpireyDate(getExpireyDate());
+                stockItem.setUnit(getUnit());
                 new InventorytableConneection().updateStockItem(stockItem);
             } else {
                 feedback.error("Quantity must be greater than threshhold", "");

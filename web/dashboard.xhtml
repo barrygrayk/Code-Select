@@ -37,35 +37,26 @@
                 </p:layoutUnit>
 
                 <p:layoutUnit position="south" size="50" closable="true" collapsible="true">
-                    <h:form>
-                        <h:commandButton value="logout" action="#{loginBean.doLogOut()}"/>
-
-                    </h:form>
-
                 </p:layoutUnit>
 
                 <p:layoutUnit position="west" size="auto" header="Retract" collapsible="true">
-
                     <h:form>
                         <f:ajax render=":content">
                             <p:growl autoUpdate="true"/>
 
-                            <p:panelMenu style="width:216px">
+                            <p:panelMenu style="width:225px">
 
                                 <p:submenu label="Dashboard"/>
                                 <p:submenu label="Messages">
-                                    <p:menuitem value="Notice board" actionListener="#{menuView.save}" icon="ui-icon-disk" />
+                                    <p:menuitem value="Notice board" actionListener="#{menuView.save}" action="#{Include.setPage('messages')}" update=":content" icon="ui-icon-close" />
                                     <p:menuitem value="Alerts" actionListener="#{menuView.update}"  icon="ui-icon-fa-edit" />
                                 </p:submenu>
 
-                                <p:submenu label="Staff Management">
-                                    <p:menuitem id="adssd" value="Staff manger" actionListener="#{menuView.save}" action="#{Include.setPage('staffManager')}" icon="ui-icon-disk" update=":content"/>
-                                    <p:menuitem id="ps" value="View Staff" actionListener="#{menuView.save}" action="#{Include.setPage('viewStaff')}" icon="ui-icon-disk" update=":content">
+                                <p:submenu label="Staff Management" >
+                                    <p:menuitem id="adssd" value="Staff manager" actionListener="#{menuView.save}" action="#{Include.setPage('staffManager')}" icon="fa fa-fw fa-edit" update=":content"/>
+                                    <p:menuitem id="ps" value="View Staff" actionListener="#{menuView.save}" action="#{Include.setPage('viewStaff')}" icon="fa-plus-square-o" update=":content">
                                         <f:param name="navParam" value="viewStaff" />
                                     </p:menuitem>
-                                    <p:menuitem id="add" value="Add staff" actionListener="#{menuView.save}" action="#{Include.setPage('addStaff')}" icon="ui-icon-disk" update=":content"/>
-                                    <p:menuitem value="View All" actionListener="#{menuView.update}"  action="#{Include.setPage('viewAllStaff')}" icon="ui-icon-disk" update=":content" />
-                                    <p:menuitem value="Edit Staff" actionListener="#{menuView.update}"  icon="ui-icon-fa-edit" />
                                 </p:submenu>
                                 <p:submenu label="Baby tracker">
                                     <p:menuitem value="View child profiles" actionListener="#{menuView.delete}" action="#{Include.setPage('viewbaby')}" update=":content" icon="ui-icon-close"/>
@@ -97,17 +88,14 @@
                         </f:ajax>
                     </h:form>
                 </p:layoutUnit>
-
                 <p:layoutUnit position="center">
                     <div align="center"> 
-
                         <h:panelGroup id="content" layout="block">
-                            <hr/>
+                           
                             <ui:include src="#{Include.page}.xhtml" />
-                            <hr/>
+                       
                         </h:panelGroup>
                     </div>
-
                 </p:layoutUnit>
 
             </p:layout>

@@ -460,7 +460,7 @@ public class ChildController extends Child implements Serializable{
                 + "`distinguishingMarks`,`form36`,`clinicCard`,`birthCertificate`,`medicalReport`,"
                 + "`requiredDocsComment`,`medicalReportComments`,`abuse`,`neglect`,`others`,`generalRemarks`,`headCir`) "
                 + "VALUES(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)";
-        ps = connection.prepareStatement(sql);  
+        ps = connection.prepareStatement(sql,Statement.RETURN_GENERATED_KEYS);  
      
         ps.setString(1,this.getFirstname());
         ps.setString(2,this.getLastname());
@@ -839,17 +839,15 @@ public class ChildController extends Child implements Serializable{
     }
      
     public void onCellEdit(CellEditEvent event) {
-        
         MrKaplan x = new MrKaplan();
         Object oldValue = event.getOldValue();
         Object selectedChildID = event.getRowKey();
         String columnName = event.getColumn().getColumnKey();
-        
         System.out.println("velho"+oldValue);
         System.out.println("Novo"+selectedChildID);
         System.out.println("Coluna: "+ x.getColumId(columnName));
     }
-        
+     
     public void chooseCar() {
         Map<String,Object> options = new HashMap<String, Object>();
         options.put("resizable", false);
@@ -860,10 +858,8 @@ public class ChildController extends Child implements Serializable{
      
     public void onCarChosen(SelectEvent event) {
         Child car = (Child) event.getObject();
-        FacesMessage message = new FacesMessage(FacesMessage.SEVERITY_INFO, "Child Selected", "Id:" + car.getBabyProfileid());
-         
+        FacesMessage message = new FacesMessage(FacesMessage.SEVERITY_INFO, "Child Selected", "Id:" + car.getBabyProfileid());  
         FacesContext.getCurrentInstance().addMessage(null, message);
     }
-    
-    
+  
 }

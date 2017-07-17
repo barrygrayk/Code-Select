@@ -5,8 +5,13 @@
       xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
       xmlns:p="http://primefaces.org/ui"
       xmlns:f="http://xmlns.jcp.org/jsf/core">
+    <f:metadata>
+        <f:event type="preRenderView"
+                 listener="#{InventoryCont.loadStockItem()}"/>
+    </f:metadata>
     <ui:composition>
-        
+
+
         <h:form id="inventoryForm">
             <p:dataTable id="Stock" var="stock" value="#{InventoryCont.inventory}" rowKey="#{stock.id}"
                          selection="#{InventoryCont.slectedStock}" selectionMode="single">
@@ -15,29 +20,31 @@
                 </f:facet>
                 <p:ajax event="rowSelect" listener="#{InventoryCont.onRowSelect}" update=":inventoryForm" process="Stock"/>
                 <p:ajax event="rowUnselect" listener="#{InventoryCont.onRowUnselect}" update=":inventoryForm" process="Stock"/>   
-                <p:column headerText="Id">
-                    <h:outputText value="#{stock.id}" />
-                </p:column>
+
                 <p:column headerText="Description">
                     <h:outputText value="#{stock.description}" />
                 </p:column>
                 <p:column headerText="Quantity">
                     <h:outputText value="#{stock.quantity}" />
                 </p:column>
+                <p:column headerText="Units">
+                    <h:outputText value="#{stock.unit}" />
+                </p:column>
+
                 <p:column headerText="Re-order level">
                     <h:outputText value="#{stock.lowThresh}" />
                 </p:column>
                 <p:column headerText="Expiry Date">
                     <h:outputText value="#{stock.expireyDate}" />
                 </p:column>
-                <p:column headerText="Expiring in">
+                <p:column headerText="Expiring in (Days)">
                     <h:outputText value="#{stock.daysLeft}" />
                 </p:column>
                 <f:facet name="footer">
 
-                    <p:commandButton   value="Add"  icon="ui-icon-search" oncomplete="PF('editDialog').show()" />
-                    <p:commandButton    icon="ui-icon-search" value="Edit" oncomplete="PF('addDialog').show()" />
-                     <p:commandButton value="Delete" actionListener="#{InventoryCont.deleteStockItem()}"  update=":inventoryForm" >
+                    <p:commandButton   value="Edit"  icon="ui-icon-search" oncomplete="PF('editDialog').show()"  update=":inventoryUpdateForm"/>
+                    <p:commandButton    icon="ui-icon-search" value="Add" oncomplete="PF('addDialog').show()" />
+                    <p:commandButton value="Delete" actionListener="#{InventoryCont.deleteStockItem()}"  update=":inventoryForm" >
                         <p:confirm header="Confirmation" message="Are you sure, you want delete selected record(s)?" icon="ui-icon-alert" />
                     </p:commandButton>
                     <p:confirmDialog global="true">
@@ -47,71 +54,20 @@
                 </f:facet>
             </p:dataTable> 
 
-            <p:dialog header="Edit" widgetVar="addDialog" showEffect="fade" hideEffect="fade" resizable="false">
-                <h:panelGrid columns="1"  cellpadding="30" class="addStaff">
-                    <h:outputLabel for="Desc" value="Description: " />
-                    <h:inputText id="Desc" value="#{InventoryCont.description}"  required="true"/>
-                </h:panelGrid>
-
-                <h:panelGrid columns="1"  cellpadding="30" class="addStaff">
-                    <h:outputLabel for="quantity" value="Quantity: " />
-                    <p:spinner id="quantity" value="#{InventoryCont.quantity}"  required="true"/>
-                </h:panelGrid>
-                <h:panelGrid columns="1"  cellpadding="30" class="addStaff">
-                    <h:outputLabel for="thresh" value="Re-order quantity: " />
-                    <p:spinner id="thresh" value="#{InventoryCont.lowThresh}"  rendered="true"/>
-                </h:panelGrid>
-                <h:panelGrid columns="1"  cellpadding="30" class="addStaff">
-                    <h:outputLabel for="mask"    value="Expirey date: *" />
-                    <p:calendar id="mask" value="#{InventoryCont.expireyDate}" pattern="yyyy-MM-dd" mask="true" required="true" label="Expirey date" />
-                </h:panelGrid>                 
-                <p:panelGrid>
-                    <p:commandButton value="Edit item" action="#{InventoryCont.edittockItem()}" update=":inventoryForm" />
-                </p:panelGrid>
-            </p:dialog>
-        </h:form>
-        <h:form id="add_Stock">
-            <f:metadata>
-                <f:event type="preRenderView"
-                         listener="#{InventoryCont.loadStockItem()}"/>
-            </f:metadata>
-            <p:dialog header="Add" widgetVar="editDialog" showEffect="fade" hideEffect="fade" resizable="false">
-                <h:panelGrid columns="1"  cellpadding="30" class="addStaff">
-                    <h:outputLabel for="Desc" value="Description: " />
-                    <h:inputText id="Desc" value="#{InventoryCont.description}"  required="true"/>
-                </h:panelGrid>
-
-                <h:panelGrid columns="1"  cellpadding="30" class="addStaff">
-                    <h:outputLabel for="quantity" value="Quantity: " />
-                    <p:spinner id="quantity" value="#{InventoryCont.quantity}"  required="true"/>
-                </h:panelGrid>
-                <h:panelGrid columns="1"  cellpadding="30" class="addStaff">
-                    <h:outputLabel for="thresh" value="Re-order quantity: " />
-                    <p:spinner id="thresh" value="#{InventoryCont.lowThresh}"  rendered="true"/>
-                </h:panelGrid>
-                <h:panelGrid columns="1"  cellpadding="30" class="addStaff">
-                    <h:outputLabel for="mask"    value="Expirey date: *" />
-                    <p:calendar id="mask" value="#{InventoryCont.expireyDate}" pattern="yyyy-MM-dd" mask="true" required="true" label="Expirey date" />
-                </h:panelGrid>                 
-                <p:panelGrid>
-                    <p:commandButton value="Add item" action="#{InventoryCont.addStockItem()}" update=":inventoryForm" />
-                </p:panelGrid>
-            </p:dialog>
 
         </h:form>
-        <h:form id="delete_Stock">
-            <p:dialog header="Delete Record" widgetVar="deleteDialog" showEffect="fade" hideEffect="fade" resizable="false" >
-                <h:panelGrid columns="1"  cellpadding="30" class="addStaff">
-                    <h:outputText value="Are u sure you wamt to delete this record?"/>
-                </h:panelGrid>
 
-                <h:panelGrid columns="2"  cellpadding="30" class="addStaff">
-                    <p:commandButton value="Yes" action="#{InventoryCont.deleteStockItem()}" update=":inventoryForm" />
-                    <p:commandButton value="No"  update=":inventoryForm" />
-                </h:panelGrid>
-            </p:dialog>
+        <p:dialog header="Edit" widgetVar="editDialog" showEffect="fade" hideEffect="fade" resizable="false">
+            <ui:include src="updateInventory.xhtml" />
 
-        </h:form>
+        </p:dialog>
+
+        <p:dialog header="Add" widgetVar="addDialog" showEffect="fade" hideEffect="fade" resizable="false">
+
+            <ui:include src="addInventory.xhtml" />
+        </p:dialog>
+
+
 
     </ui:composition>
 </html>

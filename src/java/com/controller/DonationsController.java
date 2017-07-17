@@ -42,7 +42,6 @@ public class DonationsController extends Donations implements Serializable {
     public void init() {
         getDonations();
         createCombinedModel();
-
     }
 
     public CartesianChartModel getCombinedModel() {
@@ -121,6 +120,7 @@ public class DonationsController extends Donations implements Serializable {
             donatedItem.setGoal(getGoal());
             donatedItem.setRecieved(getRecieved());
             new DonationsConnection().addDonation(donatedItem);
+            clear();
 
         }
     }
@@ -144,6 +144,7 @@ public class DonationsController extends Donations implements Serializable {
             donatedItem.setGoal(getGoal());
             donatedItem.setRecieved(getRecieved());
             new DonationsConnection().updateDonationItem(donatedItem);
+            
 
         }
     }
@@ -156,6 +157,12 @@ public class DonationsController extends Donations implements Serializable {
                 Logger.getLogger(InventoryController.class.getName()).log(Level.SEVERE, null, ex);
             }
         }
+    }
+
+    private void clear() {
+        setDescription(null);
+        setGoal(0);
+        setRecieved(0);
     }
 
 }

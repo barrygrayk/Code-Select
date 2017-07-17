@@ -28,7 +28,7 @@ public class InventorytableConneection extends DatabaseConnection {
     }
 
     public void addStockItem(Inventory stock) {
-        String insertSql = "INSERT INTO `inventory`(`Description`,`Quantity`,`lowThreshold`,`expireyDate`) VALUES(?,?,?,?)";
+        String insertSql = "INSERT INTO `inventory`(`Description`,`Quantity`,`lowThreshold`,`expireyDate`,`units`) VALUES(?,?,?,?,?)";
         try {
             setInventoryColumns(insertSql, stock, false).execute();
             feedback.addMessage("Sucess", "Item sucessfully added");
@@ -57,6 +57,7 @@ public class InventorytableConneection extends DatabaseConnection {
                         resultset.getDouble("Quantity"),
                         resultset.getDouble("lowThreshold"),
                         resultset.getDate("expireyDate"));
+                stock.setUnit( resultset.getString("units"));
                 stock.setDaysLeft();
                 stockItems.add(stock);
             }
@@ -75,13 +76,21 @@ public class InventorytableConneection extends DatabaseConnection {
     }
 
     public void updateStockItem(Inventory stock) {
-        String updateSql = "UPDATE `inventory` SET Description=?, Quantity=?,lowThreshold=?,expireyDate=? WHERE idInventory =?";
+        String updateSql = "UPDATE `inventory` SET Description=?,Quantity=?,lowThreshold=?,expireyDate=?,units=? WHERE idInventory=?";
         try {
             setInventoryColumns(updateSql, stock, true).execute();
             System.out.println("in db " + stock.getDescription());
+            //connection.commit();
             feedback.addMessage("Sucess", "Item sucessfully added");
         } catch (ClassNotFoundException | SQLException ex) {
             Logger.getLogger(InventorytableConneection.class.getName()).log(Level.SEVERE, null, ex);
+        } finally {
+            try {
+                connection.close();
+            } catch (SQLException ex) {
+                Logger.getLogger(StaffTableConnection.class.getName()).log(Level.SEVERE, null, ex);
+                feedback.error("Connection error", ex.getMessage());
+            }
         }
 
     }
@@ -98,8 +107,10 @@ public class InventorytableConneection extends DatabaseConnection {
         java.util.Date utilStartDate = date;
         java.sql.Date sqlExpiryDate = new java.sql.Date(utilStartDate.getTime());
         insertStock.setDate(4, sqlExpiryDate);
+        insertStock.setString(5, stock.getUnit());
         if (update) {
-            insertStock.setInt(5, stock.getId());
+            insertStock.setInt(6, stock.getId());
+            System.out.println("ID at update__ " + stock.getId());
         }
 
         return insertStock;
