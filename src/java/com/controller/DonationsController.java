@@ -53,13 +53,10 @@ public class DonationsController extends Donations implements Serializable {
         BarChartSeries donation = new BarChartSeries();
         LineChartSeries traget = new LineChartSeries();
         for (Donations done : donations) {
-
             donation.setLabel("Received");
             donation.set(done.getDescription(), done.getRecieved());
-
             traget.setLabel("Goals");
             traget.set(done.getDescription(), done.getGoal());
-
         }
         combinedModel.addSeries(donation);
         combinedModel.addSeries(traget);

@@ -8,6 +8,7 @@ import java.io.UnsupportedEncodingException;
 
 import java.security.spec.InvalidKeySpecException;
 import java.sql.SQLException;
+import java.util.Iterator;
 
 import java.util.List;
 import java.util.logging.Level;
@@ -20,7 +21,6 @@ import javax.faces.context.FacesContext;
 import javax.servlet.http.HttpSession;
 
 //import javax.ws.rs.Path;
-
 /**
  *
  * @author Barry Gray Kapelembe
@@ -30,6 +30,7 @@ import javax.servlet.http.HttpSession;
 //@Path("/login")
 public class LoginBean extends Passwords implements Serializable {
 //us MrKaplan for error checking
+
     private String password;
     private String username;
     private String fullname;
@@ -64,19 +65,16 @@ public class LoginBean extends Passwords implements Serializable {
     public String doLogin() throws InvalidKeySpecException, UnsupportedEncodingException {
         byte[] expectedHash = null;
         byte[] salt = null;
-        System.out.println(authenticatedStaff.size());
         for (Authenticate auth : authenticatedStaff) {
-            System.out.println("thatusernam " + auth.getUsername());
             if (auth.getUsername().equals(username)) {
                 id = auth.authId();
                 setUsername(auth.getUsername());
-                System.out.println("MATCH________________" + username);
                 fullname = staffDB.getFullname(id);
                 expectedHash = auth.getHashedPassword();
                 salt = auth.getSalt();
             }
         }
-        if (password!=null&&salt!=null && expectedHash !=null && isExpectedPassword(password.toCharArray(), salt, expectedHash)) {
+        if (password != null && salt != null && expectedHash != null && isExpectedPassword(password.toCharArray(), salt, expectedHash)) {
             HttpSession session = SessionUtils.getSession();
             session.setAttribute("username", username);
             session.setAttribute("LoggedIn", "LoggedIn");
@@ -90,7 +88,6 @@ public class LoginBean extends Passwords implements Serializable {
     }
 
     public String doLogOut() {
-        System.out.println("__________________________________com.validation.LoginBean.doLogOut()");
         HttpSession hs = SessionUtils.getSession();
         hs.invalidate();
 

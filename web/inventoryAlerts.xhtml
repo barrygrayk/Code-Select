@@ -1,0 +1,27 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:p="http://primefaces.org/ui">
+      
+    <ui:composition>
+        <h:form id="alertForm">
+            <p:dataTable id="Alert" var="alerts" value="#{msgCont.alerts}" selection="#{msgCont.selectedAlerts}" rowKey="#{alerts.id}" style="margin-bottom:0" >
+                <p:column selectionMode="multiple" style="width:30px;text-align:center"/>
+                <p:column style="width:150px" >
+                    <h:outputText value="#{alerts.itemName}"  />
+                </p:column>
+                <p:column >
+                    <h:outputText value="#{alerts.desc}" />
+                </p:column> 
+            </p:dataTable>
+            <p:contextMenu for="Alert">
+                <p:menuitem value="View" actionListener="#{menuView.save}"  icon="ui-icon-disk"/>
+                <p:menuitem value="Delete"  action="#{msgCont.delete()}" icon="ui-icon-arrowrefresh-1-w" update=":alertForm"/>
+            </p:contextMenu>
+        </h:form>
+    </ui:composition>
+
+</html>
+
