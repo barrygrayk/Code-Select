@@ -7,7 +7,7 @@ import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 import javax.faces.bean.ManagedBean;
-import javax.faces.bean.ViewScoped;
+import javax.faces.bean.SessionScoped;
 import org.primefaces.event.SelectEvent;
 import org.primefaces.event.UnselectEvent;
 
@@ -16,11 +16,20 @@ import org.primefaces.event.UnselectEvent;
  * @author Barry Gray
  */
 @ManagedBean(name = "msgCont", eager = true)
-@ViewScoped
+@SessionScoped
 public class MessagesController extends InventoryAlerts implements Serializable {
 
     private List<InventoryAlerts> alerts = new ArrayList<>();
     private List<InventoryAlerts> selectedAlerts = new ArrayList<>();
+    private String text="Click clear";
+
+    public String getText() {
+        return text;
+    }
+
+    public void setText(String text) {
+        this.text = text;
+    }
 
     public List<InventoryAlerts> getSelectedAlerts() {
         return selectedAlerts;

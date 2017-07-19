@@ -9,9 +9,11 @@
         <p:layout >
             <p:layoutUnit position="west" size="auto" header="Messages" collapsible="true">
                 <h:form>
+                    <p:commandButton value="Compose" oncomplete="PF('composeDialog').show()"/>
+                </h:form>
+                <h:form>
                     <f:ajax render=":alertsContent">
                         <p:growl autoUpdate="true"/>
-                        <p:commandButton value="Compose"/>
                         <p:menu toggleable="true">
                             <p:submenu label="Inbox">
                                 <p:menuitem value="Alerts" icon="ui-icon-arrowrefresh-1-w"  action="#{MsgNav.setPage('inventoryAlerts')}" />
@@ -21,12 +23,29 @@
                         </p:menu>
                     </f:ajax>
                 </h:form>
-
             </p:layoutUnit>
-
             <p:layoutUnit position="center">
+                <p:dialog header="Compose" widgetVar="composeDialog" showEffect="fade" hideEffect="fade" resizable="false">
+                    <h:form>  
+                        <h:panelGrid columns="2"  cellpadding="30" class="addStaff">
+                            <h:outputLabel for="mask"    value="To: * " />
+                            <p:selectOneMenu id="name" value="#{StaffMembers.staffName}" effect="fold" required="true" >
+                                <f:selectItem itemLabel="Select staff" itemValue="#{StaffMembers.staffName}" />
+                                <f:selectItems value="#{StaffMembers.staffMemberNames}" />
+                            </p:selectOneMenu>
+                        </h:panelGrid>
+                        <p:editor id="editor" widgetVar="editorWidget" value="#{msgCont.text}" width="600" />
+                        <h:panelGrid columns="2" style="margin-top: 10px">
+                            <p:commandButton value="Send" update="display"  oncomplete="PF('dlg').show()" icon="ui-icon-disk" />
+                            <p:commandButton value="Clear" type="button" onclick="PF('editorWidget').clear();" icon="ui-icon-close" />
+                        </h:panelGrid>
+                        <p:dialog header="Content" widgetVar="dlg" showEffect="fade" hideEffect="fade">
+                            <h:outputText id="display" value="#{msgCont .text}" escape="false" />
+                        </p:dialog>
+                    </h:form> 
+                </p:dialog>
                 <h:panelGroup id="alertsContent" layout="block">
-                     <ui:include src="#{MsgNav.page}.xhtml" />
+                    <ui:include src="#{MsgNav.page}.xhtml" />
                 </h:panelGroup>
             </p:layoutUnit>
         </p:layout>
