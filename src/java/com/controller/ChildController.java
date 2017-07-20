@@ -12,6 +12,7 @@ import com.child.Model.Nappies;
 import com.child.Model.ParentInfo;
 import com.child.Model.SleepingRoutine;
 import com.child.Model.SocialWorker;
+import com.child.Model.Temperature;
 import com.child.Model.Weight;
 import java.io.Serializable;
 import java.sql.Connection;
@@ -28,13 +29,8 @@ import javax.faces.context.FacesContext;
 import org.primefaces.event.SelectEvent;
 import org.primefaces.event.UnselectEvent;
 import org.primefaces.model.UploadedFile;
-import org.primefaces.model.chart.Axis;
-import org.primefaces.model.chart.AxisType;
-import org.primefaces.model.chart.CategoryAxis;
-import org.primefaces.model.chart.ChartSeries;
-import org.primefaces.model.chart.LineChartModel;
 import com.validation.MrKaplan;
-import java.text.DateFormat;
+import java.sql.Time;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -44,6 +40,11 @@ import javax.annotation.PostConstruct;
 import javax.faces.bean.SessionScoped;
 import org.primefaces.context.RequestContext;
 import org.primefaces.event.CellEditEvent;
+import org.primefaces.model.chart.Axis;
+import org.primefaces.model.chart.AxisType;
+import org.primefaces.model.chart.CategoryAxis;
+import org.primefaces.model.chart.LineChartModel;
+import org.primefaces.model.chart.LineChartSeries;
 
 /**
  *
@@ -58,7 +59,6 @@ public class ChildController extends Child implements Serializable{
     private ArrayList <Child> selectedChildren;
     private ArrayList<String> careTakerList;
     private Child child;
-    private DailyActivities currentActivity;
     
     private PreparedStatement ps;
     private Statement stmt, stmt2, stmt3;
@@ -66,8 +66,9 @@ public class ChildController extends Child implements Serializable{
     private String sql, sql2, sql3;
     private Connection connection, connection2, connection3;
     private UploadedFile file;
-    private LineChartModel HeightChart;
+    private DailyActivities activity;
     
+    private LineChartModel heightChart, temperatureChart;
     
     private String slectedChild;
     private ArrayList<String> listOfChildrenDropbox = new ArrayList<String>();
@@ -111,38 +112,6 @@ public class ChildController extends Child implements Serializable{
         }
         
     }
-    public LineChartModel getHeightChart() {
-        return HeightChart;
-    }
-     
-    private void createLineChart() {
-         
-        HeightChart = initHeightModel();
-        HeightChart.setTitle("Height Chart");
-        HeightChart.setLegendPosition("e");
-        HeightChart.setShowPointLabels(true);
-        HeightChart.getAxes().put(AxisType.X, new CategoryAxis("Years"));
-        Axis yAxis = HeightChart.getAxis(AxisType.Y);
-        yAxis.setLabel("Height(mm)");
-        yAxis.setMin(0);
-        yAxis.setMax(2);
-    }
-     
-    private LineChartModel initHeightModel() {
-        LineChartModel heightModel = new LineChartModel();
- 
-        ChartSeries heightDevelopment = new ChartSeries();
-        heightDevelopment.setLabel("Height");
-        heightDevelopment.set("2017", 0.3);
-        heightDevelopment.set("2018", 1.2);
-        heightDevelopment.set("2019", 1.7);
-        heightDevelopment.set("2020", 1.9);
-        heightDevelopment.set("2021", 2);
- 
-        heightModel.addSeries(heightDevelopment);
-         
-        return heightModel;
-    }
 
     public ChildController() throws SQLException, ClassNotFoundException {
         connection = new DBConnection().getConnection();
@@ -158,7 +127,7 @@ public class ChildController extends Child implements Serializable{
         sql = null;
         sql2 = null;
         sql3 = null;
-        createLineChart();
+        activity = new DailyActivities();
     }
     
     //reading children details from DB
@@ -188,7 +157,7 @@ public class ChildController extends Child implements Serializable{
             Double headCircumference = rs.getDouble("headCir");
             
             // Required Docs
-            ArrayList docsRequired = new ArrayList<>();            
+            ArrayList<String> docsRequired = new ArrayList<String>();            
             if(rs.getInt("clinicCard")==1)
                 docsRequired.add("clinicCard");     
             if(rs.getInt("form36")==1)
@@ -200,7 +169,7 @@ public class ChildController extends Child implements Serializable{
             String docsNeededNote = rs.getString("requiredDocsComment");
             
             //Medical History 
-            ArrayList childArrivalCondtion = new ArrayList<>();  
+            ArrayList<String> childArrivalCondtion = new ArrayList<String>();  
             if(rs.getInt("abuse")==1)
                 childArrivalCondtion.add("abuse");     
             if(rs.getInt("neglect")==1)
@@ -212,7 +181,6 @@ public class ChildController extends Child implements Serializable{
             // now intake
             IntakeInfo intakeInfo = new IntakeInfo(rs.getString("droppedBy"), rs.getString("FetchLocation"),
                     rs.getString("FetchedBy"),rs.getLong("PhoneNumber"), (Date)rs.getObject("Date/Time"));
-            
             
             // now socialWorker
             SocialWorker socialWorker = new SocialWorker(rs.getString("socialworkerName"),rs.getLong("PhoneNumber"),
@@ -310,10 +278,10 @@ public class ChildController extends Child implements Serializable{
     }
     // reading list of child's nappies from DB
     public ArrayList<Nappies> getListOfNappiesDb() throws ClassNotFoundException, SQLException{
-        Date dateOfNappyChange = new Date();
+        
         ArrayList<Nappies> currentNappiesRecord = new ArrayList<Nappies>();
         
-        sql = "SELECT idbabynappys, nappyWet, nappyDirty, nappyChangeTime FROM babynappys WHERE babynappys.idbabynappys ="+this.child.getBabyProfileid();
+        sql = "SELECT idbabynappys, nappyWet, nappyDirty, nappyChangeTime, date FROM babynappys WHERE BabyProfile_idBabyProfile ="+this.child.getBabyProfileid();
         rs = stmt.executeQuery(sql);
         
         while(rs.next()){
@@ -323,32 +291,28 @@ public class ChildController extends Child implements Serializable{
           nappyRecord.setConditionDry(rs.getBoolean("NappyDirty"));
           nappyRecord.setConditionWet(rs.getBoolean("nappyWet"));
           nappyRecord.setNappyChangeTime(rs.getTime("nappyChangeTime"));
+          nappyRecord.setDateRecorded(rs.getDate("date"));
           currentNappiesRecord.add(nappyRecord);
         }
         this.child.setlistOfNappyRecords(currentNappiesRecord);
-        // validation required
+        
         return this.child.getlistOfNappyRecords();
     }
     
     // reading list of child's meals from DB
     public ArrayList<Meals> getListOfMealsHadDb()throws ClassNotFoundException, SQLException{
         
-        Date dateOfMealIntake = new Date();
-        ArrayList<Meals> currentMealsList = new ArrayList<Meals>();
-       
-        sql = "SELECT idBabyMeals, typeOfMeal, time, BabyMealsComment FROM babymeals WHERE babymeals.BabyProfile_idBabyProfile ="+this.child.getBabyProfileid();
+        ArrayList<Meals> currentMealsList = new ArrayList<Meals>();  
+        sql = "SELECT idBabyMeals, typeOfMeal, date, time, BabyMealsComment FROM babymeals WHERE babymeals.BabyProfile_idBabyProfile ="+this.child.getBabyProfileid();
         rs = stmt.executeQuery(sql);
         
         while(rs.next()){
-            
             Meals meal = new Meals();
-            int idMeal = rs.getInt("idBabyMeals");
-            dateOfMealIntake= rs.getTime("time");
-            
-            meal.setMealID(idMeal);
+            meal.setMealID(rs.getInt("idBabyMeals"));
             meal.setMealDescription(rs.getString("typeOfMeal"));
             meal.setCommentOnEating(rs.getString("BabyMealsComment"));
-            meal.setMealIntakeTime(dateOfMealIntake);
+            meal.setMealIntakeTime(rs.getTime("time"));
+            meal.setMealDateRecorded(rs.getDate("date"));
             currentMealsList.add(meal);
         }
         this.child.setlistOfMealsHad(currentMealsList);
@@ -364,7 +328,6 @@ public class ChildController extends Child implements Serializable{
         
         ArrayList<DailyActivities> currentActivityList = new ArrayList<DailyActivities>();
        
-        
         while(rs.next()){
             
             DailyActivities activity = new DailyActivities();
@@ -378,7 +341,6 @@ public class ChildController extends Child implements Serializable{
             currentActivityList.add(activity); 
         }
         this.child.setListOfActivitiesRecorded(currentActivityList);
-        this.currentActivity = currentActivityList.get(0);
         return this.child.getListOfActivitiesRecorded();
     }
     
@@ -399,6 +361,43 @@ public class ChildController extends Child implements Serializable{
         }
         this.child.setListOfSleepingRecords(currentListOfSleepRoutine);
         return this.child.getListOfSleepingRecords();
+    }
+    
+    // get list of height records 
+        public ArrayList<Height> getListOfAllHeightRecords()throws ClassNotFoundException, SQLException{
+        
+        ArrayList<Height> currentListOfHeightRecords = new ArrayList<Height>();
+        
+        sql = "SELECT idbabyheight, date, babyheight FROM babyheight WHERE babyheight.BabyProfile_idBabyProfile="+this.child.getBabyProfileid();
+        rs = stmt.executeQuery(sql);
+        while(rs.next()){
+            Height currentHeight = new Height();
+            currentHeight.setHeightID(rs.getInt("idbabyheight"));
+            currentHeight.setDateRecorded(rs.getDate("date"));
+            currentHeight.setHeight(rs.getDouble("babyheight"));
+            currentListOfHeightRecords.add(currentHeight); 
+        }
+        this.child.setListOfHeightRecords(currentListOfHeightRecords);
+        return this.child.getListOfHeightRecords();
+    }
+    
+    // get list of Temperature records 
+    public ArrayList<Temperature> getListOfAllTemperatureRecords()throws ClassNotFoundException, SQLException{
+        
+        ArrayList<Temperature> currentListOfTemperatureRecords = new ArrayList<Temperature>();
+        
+        sql2 = "SELECT idBabyTemperature, babyTemperature, date, time FROM babytemperature WHERE babytemperature.BabyProfile_idBabyProfile="+this.child.getBabyProfileid();
+        rs = stmt.executeQuery(sql2);
+        while(rs.next()){
+            Temperature currentTemperature = new Temperature();
+            currentTemperature.setTemperatureId(rs.getInt("idBabyTemperature"));
+            currentTemperature.setTemperatureReading(rs.getDouble("babyTemperature"));
+            currentTemperature.setTemperatureDate(rs.getDate("date"));
+            currentTemperature.setTemperatureTime(rs.getTime("time"));
+            currentListOfTemperatureRecords.add(currentTemperature); 
+        }
+        this.child.setlistOfTempRecorded(currentListOfTemperatureRecords);
+        return this.child.getlistOfTempRecorded();
     }
     
     public void setListOfChildren(ArrayList<Child> listOfChildren) {
@@ -621,11 +620,42 @@ public class ChildController extends Child implements Serializable{
         ps.execute();
     }
     
+    // delete Child meals 
+    public void deleteSelectedMeal() throws SQLException{
+        sql2 = "DELETE FROM babymeals WHERE BabyProfile_idBabyProfile="+this.child.getBabyProfileid()+""
+                + " AND idBabyMeals="+this.child.getMealRecorded().getMealID();
+        ps= connection.prepareStatement(sql2);
+        ps.execute();
+    }
+    
+    // delete Child sleep record 
+        public void deleteSleepRecord() throws SQLException{
+        sql2 = "DELETE FROM babysleeptime WHERE BabyProfile_idBabyProfile="+this.child.getBabyProfileid()+""
+                + " AND idbabysleeptime="+this.child.getSleepRecorded().getSleepingRoutineID();
+        ps= connection.prepareStatement(sql2);
+        ps.execute();
+    }
+    // delete Child nappy record 
+    public void deleteNappyRecord() throws SQLException{
+        sql2 = "DELETE FROM babynappys WHERE BabyProfile_idBabyProfile="+this.child.getBabyProfileid()+""
+                + " AND idbabynappys="+this.child.getNappyRecorded().getNappyId();
+        ps= connection.prepareStatement(sql2);
+        ps.execute();
+    } 
+    
+    // delete Child Activity record 
+    public void deleteActivityRecord() throws SQLException{
+        sql2 = "DELETE FROM babyactivities WHERE BabyProfile_idBabyProfile="+this.child.getBabyProfileid()+""
+                + " AND idbabyactivity="+this.child.getActivityrecorded().getActivityID();
+        ps= connection.prepareStatement(sql2);
+        ps.execute();
+    }
+    
     // dataTable, event handler methods
     public void onRowSelection(SelectEvent e){
         child = (Child) e.getObject();
         this.selectedChildren.add(child);
-        System.out.printf("List size: "+selectedChildren.size());
+        
     }
     
     public void onRowUnselection(UnselectEvent e){
@@ -766,26 +796,91 @@ public class ChildController extends Child implements Serializable{
     }
     
     //updating meals table
-        /*public void updateChildMeals() throws SQLException {
-        
-        Date date = new Date();
-        date= this.currentDate;
-        java.util.Date convert = date;
-        java.sql.Date sqlDate = new  java.sql.Date(convert.getTime());
-        
+    public void updateChildMeals() throws SQLException {
+         
         int selectedChildID = this.child.getBabyProfileid();
-        sql = "UPDATE babymeals SET typeOfMeal=?, time=?, BabyMealsComment=? WHERE idBabyProfile ="+selectedChildID;
+        sql2 = "UPDATE babymeals SET typeOfMeal=?, date=?, time=?, BabyMealsComment=? "
+                + "WHERE BabyProfile_idBabyProfile ="+selectedChildID+" AND idBabyMeals ="+this.child.getMealRecorded().getMealID();
         
-        ps = connection.prepareStatement(sql);
-        ps.setString(1,this.child.getFirstname());
-        ps.setString(2, this.child.getLastname());
-        ps.setString(3,this.child.getDestingushingMarks());
+        ps = connection.prepareStatement(sql2);
+        ps.setString(1,this.child.getMealRecorded().getMealDescription());
+        ps.setDate(2, dateConverter(this.child.getMealRecorded().getMealDateRecorded()));
+        ps.setTime(3,timeConverter(this.child.getMealRecorded().getMealIntakeTime()));
+        ps.setString(4,this.child.getMealRecorded().getCommentOnEating());
         ps.executeUpdate();    
-    }*/
+    }
+    
+    //updating sleeping record table
+    public void updateChildSleepTime() throws SQLException {
+         
+        int selectedChildID = this.child.getBabyProfileid();
+        sql2 = "UPDATE babysleeptime SET sleeptime=?, waketime=?, Date=? "
+                + "WHERE BabyProfile_idBabyProfile ="+selectedChildID+" AND "
+                + "idbabysleeptime ="+this.child.getSleepRecorded().getSleepingRoutineID();
+        
+        ps = connection.prepareStatement(sql2);
+        ps.setTime(1,timeConverter(this.child.getSleepRecorded().getSleepingTime()));
+        ps.setTime(2, timeConverter(this.child.getSleepRecorded().getWakingTime()));
+        ps.setDate(3,dateConverter(this.child.getSleepRecorded().getDateRecorded()));
+        ps.executeUpdate();    
+    }
+    
+    //updating nappycondition record
+    public void updateChildNappyCondition() throws SQLException {
+         
+        int selectedChildID = this.child.getBabyProfileid();
+        sql2 = "UPDATE babynappys SET nappyWet=?, NappyDirty=?, nappyChangeTime=?, date=? "
+                + "WHERE BabyProfile_idBabyProfile ="+selectedChildID+" AND "
+                + "idbabynappys ="+this.child.getNappyRecorded().getNappyId();
+        
+        ps = connection.prepareStatement(sql2);
+        ps.setBoolean(1,this.child.getNappyRecorded().isConditionWet());
+        ps.setBoolean(2, this.child.getNappyRecorded().isConditionDry());
+        ps.setTime(3,timeConverter(this.child.getNappyRecorded().getNappyChangeTime()));
+        ps.setDate(4, dateConverter(this.child.getNappyRecorded().getDateRecorded()));
+        ps.executeUpdate();    
+    }
+    
+    //updating ldailyactivities record
+    public void updateChildDailyActitvy() throws SQLException {
+         
+        int selectedChildID = this.child.getBabyProfileid();
+        sql2 = "UPDATE babyactivities SET date=?, time=?, activity=?, activityStatus=?, comment=? "
+                + "WHERE BabyProfile_idBabyProfile ="+selectedChildID+" AND "
+                + "idbabyactivity ="+this.child.getActivityrecorded().getActivityID();
+        
+        ps = connection.prepareStatement(sql2);
+        ps.setDate(1,dateConverter(this.child.getActivityrecorded().getDateRecorded()));
+        ps.setTime(2,timeConverter(this.child.getActivityrecorded().getActivityOccuringTime()));
+         ps.setString(3,this.child.getActivityrecorded().getTitle());
+        ps.setString(4,this.child.getActivityrecorded().getStatus());
+        ps.setString(5,this.child.getActivityrecorded().getComment());
+        ps.executeUpdate();    
+    }
+    
+   public java.sql.Time timeConverter( Date date ){
+        Time sqlTime;
+            if(date == null){
+                sqlTime = null;
+            }else{
+                sqlTime = new Time(date.getTime());
+     }
+       return sqlTime;     
+    }
     
     // dataTable event handlers for updating 
     public void onRowSelect(SelectEvent e){
         this.child = (Child) e.getObject();
+        try {
+            getListOfAllHeightRecords();
+            getListOfAllTemperatureRecords();
+        } catch (ClassNotFoundException ex) {
+            Logger.getLogger(ChildController.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (SQLException ex) {
+            Logger.getLogger(ChildController.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        createChartHeightModel();
+        createChartTemperatureModel();
     }
     
     public void onRowUnselect(UnselectEvent e){
@@ -809,14 +904,6 @@ public class ChildController extends Child implements Serializable{
         }
     }
 
-    public DailyActivities getCurrentActivity() {
-        return currentActivity;
-    }
-
-    public void setCurrentActivity(DailyActivities currentActivity) {
-        this.currentActivity = currentActivity;
-    }
-    
     public void onDateSelect(SelectEvent event) {
         FacesContext facesContext = FacesContext.getCurrentInstance();
         SimpleDateFormat format = new SimpleDateFormat("dd/MM/yyyy");
@@ -832,22 +919,22 @@ public class ChildController extends Child implements Serializable{
         System.out.println("Test DAte:"+ (Date)event.getObject());
                 
     }
-    public void humorMe(){
-        DateFormat df = new SimpleDateFormat("dd/MM/yyyy HH:mm:ss");
-        
-        System.out.println("Safado: ");
+    public void humorMe(){      
+        System.out.println("Safado ID: "+this.child.getlistOfTempRecorded().size());
     }
      
     public void onCellEdit(CellEditEvent event) {
+        
         MrKaplan x = new MrKaplan();
         Object oldValue = event.getOldValue();
         Object selectedChildID = event.getRowKey();
         String columnName = event.getColumn().getColumnKey();
+        
         System.out.println("velho"+oldValue);
         System.out.println("Novo"+selectedChildID);
         System.out.println("Coluna: "+ x.getColumId(columnName));
     }
-     
+        
     public void chooseCar() {
         Map<String,Object> options = new HashMap<String, Object>();
         options.put("resizable", false);
@@ -858,8 +945,106 @@ public class ChildController extends Child implements Serializable{
      
     public void onCarChosen(SelectEvent event) {
         Child car = (Child) event.getObject();
-        FacesMessage message = new FacesMessage(FacesMessage.SEVERITY_INFO, "Child Selected", "Id:" + car.getBabyProfileid());  
+        FacesMessage message = new FacesMessage(FacesMessage.SEVERITY_INFO, "Child Selected", "Id:" + car.getBabyProfileid());
+         
         FacesContext.getCurrentInstance().addMessage(null, message);
     }
-  
+    
+    public void onRowDblClckSelect(final SelectEvent event) {
+        this.child.setMealRecorded((Meals) event.getObject());
+    }
+    
+    public void onRowDblClckSelectSleep(final SelectEvent event) {
+        this.child.setSleepRecorded((SleepingRoutine) event.getObject());
+    }
+    
+    public void onRowDblClckSelectNappy(final SelectEvent event) {
+        this.child.setNappyRecorded((Nappies) event.getObject());
+
+    }
+    
+    public void onRowDblClckSelectActivity(final SelectEvent event) {
+        this.child.setActivityrecorded((DailyActivities) event.getObject());       
+    }
+
+    
+    public DailyActivities getActivity() {
+        return activity;
+    }
+
+    public void setActivity(DailyActivities activity) {
+        this.activity = activity;
+    }
+    // year format 
+    public String yearConverter(Date date){
+        SimpleDateFormat yearFormat = new SimpleDateFormat("yyyy");
+        return yearFormat.format(date);
+    }
+    // chart methods
+    private LineChartModel initHeightModel() {
+        
+        LineChartModel model = new LineChartModel();
+        
+        LineChartSeries heightValues = new LineChartSeries();
+        heightValues.setLabel("Heights");
+        this.child.getListOfHeightRecords().forEach((currHeight) -> {
+            heightValues.set(yearConverter(currHeight.getDateRecorded()),currHeight.getHeight());
+        });    
+         
+        model.addSeries(heightValues);
+          
+        return model;
+    }
+    
+    private LineChartModel initTemperatureModel() {
+        
+        LineChartModel tempModel = new LineChartModel();
+        
+        LineChartSeries temperatureValues = new LineChartSeries();
+        temperatureValues.setLabel("Temperature");
+        this.child.getlistOfTempRecorded().forEach((currTemperature) -> {
+            temperatureValues.set(yearConverter(currTemperature.getTemperatureDate()),currTemperature.getTemperatureReading());
+        }); 
+        
+        tempModel.addSeries(temperatureValues); 
+        
+        return tempModel;
+    }
+    
+    public void createChartHeightModel(){
+        
+        heightChart = initHeightModel();
+        heightChart.setTitle("Height Chart");
+        heightChart.setLegendPosition("e");
+        heightChart.getAxes().put(AxisType.X, new CategoryAxis("Years"));
+        Axis yAxis = heightChart.getAxis(AxisType.Y);
+        yAxis.setMin(0);
+        yAxis.setMax(20);
+        yAxis.setLabel("Heght(mm)");
+        yAxis.setMin(0);
+        yAxis.setMax(3);    
+    }
+    
+    public void createChartTemperatureModel(){
+        
+        temperatureChart = initTemperatureModel();
+        temperatureChart.setTitle("Temperature Chart");
+        temperatureChart.setLegendPosition("e");
+        temperatureChart.getAxes().put(AxisType.X, new CategoryAxis("Weeks"));
+        Axis yAxisTemp = temperatureChart.getAxis(AxisType.Y);
+        yAxisTemp.setMin(0);
+        yAxisTemp.setMax(20);
+        yAxisTemp.setLabel("Temperature(Celsius)");
+        yAxisTemp.setMin(0);
+        yAxisTemp.setMax(3);      
+    }
+
+    public LineChartModel getHeightChart() {
+        return heightChart;
+    }
+
+    public LineChartModel getTemperatureChart() {
+        return temperatureChart;
+    }
+    
 }

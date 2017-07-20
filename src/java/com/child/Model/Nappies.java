@@ -12,6 +12,7 @@ public class Nappies {
     private boolean conditionWet;
     private boolean conditionDry;
     private Date nappyChangeTime;
+    private Date dateRecorded;
     
     public int getNappyId() {
         return nappyId;
@@ -43,6 +44,14 @@ public class Nappies {
 
     public void setConditionDry(boolean conditionDry) {
         this.conditionDry = conditionDry;
+    }
+
+    public Date getDateRecorded() {
+        return dateRecorded;
+    }
+
+    public void setDateRecorded(Date dateRecorded) {
+        this.dateRecorded = dateRecorded;
     }
     
 

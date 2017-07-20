@@ -4,7 +4,7 @@ import java.util.Date;
 
 /**
  * 
- * @author Barry Gray Kapelembe 
+ * @author efsan1 
  */
 public class Meals {
     
@@ -12,6 +12,7 @@ public class Meals {
     private int mealID;
     private String commentOnEating;
     private Date mealIntakeTime;
+    private Date mealDateRecorded;
 
     public Meals(){
     }
@@ -50,6 +51,14 @@ public class Meals {
 
     public void setCommentOnEating(String commentOnEating) {
         this.commentOnEating = commentOnEating;
+    }
+
+    public Date getMealDateRecorded() {
+        return mealDateRecorded;
+    }
+
+    public void setMealDateRecorded(Date mealDateRecorded) {
+        this.mealDateRecorded = mealDateRecorded;
     }
 
 }

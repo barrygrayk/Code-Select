@@ -3,6 +3,7 @@ package com.controller;
 import com.MenuView.MenuView;
 import com.Messages.InventoryAlerts;
 import com.db.connection.AlertsTableConnection;
+import com.staff.Model.Message;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
@@ -22,6 +23,16 @@ public class MessagesController extends InventoryAlerts implements Serializable 
     private List<InventoryAlerts> alerts = new ArrayList<>();
     private List<InventoryAlerts> selectedAlerts = new ArrayList<>();
     private String text="Click clear";
+    private String subject; 
+
+    public String getSubject() {
+        return subject;
+    }
+
+    public void setSubject(String subject) {
+        this.subject = subject;
+    }
+    
 
     public String getText() {
         return text;
@@ -36,7 +47,6 @@ public class MessagesController extends InventoryAlerts implements Serializable 
     }
 
     public void setSelectedAlerts(List<InventoryAlerts> selectedAlerts) {
-        System.out.println("88888888888888888888888888888");
         this.selectedAlerts = selectedAlerts;
     }
     private InventoryAlerts selectedAlert;
@@ -44,8 +54,6 @@ public class MessagesController extends InventoryAlerts implements Serializable 
     public void onRowSelect(SelectEvent e) {
         selectedAlert = (InventoryAlerts) e.getObject();
         selectedAlerts.add(selectedAlert);
-
-        System.out.println("88888888888888888888888888888" + selectedAlerts.size());
     }
 
     public void onRowUnselect(UnselectEvent e) {
@@ -79,7 +87,15 @@ public class MessagesController extends InventoryAlerts implements Serializable 
         for (InventoryAlerts alrt : selectedAlerts) {
             con.deleteStockItem(alrt.getId());
         }
-
+    }
+    
+    public void sendMessage (){
+        Message msg  = new Message();
+        
+        
+        
+        
+        
     }
 
 }

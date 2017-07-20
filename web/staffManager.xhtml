@@ -8,19 +8,77 @@
       xmlns:h="http://xmlns.jcp.org/jsf/html">
 
     <ui:composition>
-        <h2 align="center"> Staff manager</h2>
+     
         <h:panelGrid columns="1" cellpadding="30" columnClasses="no-border, no-border" >
 
             <p:panel>
                 <hr/>
-                <h4 align="center"> Task Tracker </h4>
-                <hr/>
-                <p:timeline id="timeline" value="#{customTimelineView.model}" 
-                            editable="true" eventMargin="15" eventMarginAxis="0" 
-                            start="#{customTimelineView.start}" 
-                            end="#{customTimelineView.end}" 
-                            showNavigation="true" showButtonNew="true" 
-                            axisOnTop="true" stackEvents="false"/> 
+                <h:form>
+                    <p:growl id="messages" showDetail="true" />
+
+                    <h:panelGrid columnClasses="value" style="margin: auto">
+                        <h3 style="margin-top: 0">Event and Task Scheduler</h3>
+                        <p:schedule id="schedule" value="#{Scheduler.eventModel}" widgetVar="myschedule" timeZone="GMT+2">
+
+                            <p:ajax event="dateSelect" listener="#{Scheduler.onDateSelect}" update="eventDetails" oncomplete="PF('eventDialog').show();" />
+                            <p:ajax event="eventSelect" listener="#{Scheduler.onEventSelect}" update="eventDetails" oncomplete="PF('eventDialog').show();" />
+                            <p:ajax event="eventMove" listener="#{Scheduler.onEventMove}" update="messages" />
+                            <p:ajax event="eventResize" listener="#{Scheduler.onEventResize}" update="messages" />
+
+                        </p:schedule>
+
+                   
+                    </h:panelGrid>
+
+                    <p:dialog widgetVar="eventDialog" header="Event Details" showEffect="clip" hideEffect="clip">
+                        <h:panelGrid id="eventDetails" columns="2">
+                            <p:outputLabel for="title" value="Titles:" />
+                            <p:inputText id="title" value="#{Scheduler.event.title}" required="true" />
+
+                            <p:outputLabel for="from" value="From:" />
+                            <p:calendar id="from" value="#{Scheduler.event.startDate}" timeZone="GMT+2" pattern="dd/MM/yyyy HH:mm"/>
+
+                            <p:outputLabel for="to" value="To:" />
+                            <p:calendar id="to" value="#{Scheduler.event.endDate}" timeZone="GMT+2" pattern="dd/MM/yyyy HH:mm"/>
+
+                            <p:outputLabel for="allDay" value="All Day:" />
+                            <h:selectBooleanCheckbox id="allDay" value="#{Scheduler.event.allDay}" />
+
+                            <p:commandButton type="reset" value="Reset" />
+                            <p:commandButton id="addButton" value="Save" actionListener="#{Scheduler.addEvent}" oncomplete="PF('myschedule').update();PF('eventDialog').hide();" />
+                        </h:panelGrid>
+                    </p:dialog>    
+                </h:form>
+
+                <script type="text/javascript">
+                    PrimeFaces.locales['tr'] = {
+                        closeText: 'kapat',
+                        prevText: 'geri',
+                        nextText: 'ileri',
+                        currentText: 'bugün',
+                        monthNames: ['Ocak', 'Şubat', 'Mart', 'Nisan', 'Mayıs', 'Haziran',
+                            'Temmuz', 'Ağustos', 'Eylül', 'Ekim', 'Kasım', 'Aralık'],
+                        monthNamesShort: ['Oca', 'Şub', 'Mar', 'Nis', 'May', 'Haz',
+                            'Tem', 'Ağu', 'Eyl', 'Eki', 'Kas', 'Ara'],
+                        dayNames: ['Pazar', 'Pazartesi', 'Salı', 'Çarşamba', 'Perşembe', 'Cuma', 'Cumartesi'],
+                        dayNamesShort: ['Pz', 'Pt', 'Sa', 'Ça', 'Pe', 'Cu', 'Ct'],
+                        dayNamesMin: ['Pz', 'Pt', 'Sa', 'Ça', 'Pe', 'Cu', 'Ct'],
+                        weekHeader: 'Hf',
+                        firstDay: 1,
+                        isRTL: false,
+                        showMonthAfterYear: false,
+                        yearSuffix: '',
+                        month: 'Ay',
+                        week: 'Hafta',
+                        day: 'Gün',
+                        allDayText: 'Tüm Gün'
+                    };
+                </script>
+                <style type="text/css">
+                    .value {
+                        width: 800px;
+                    }
+                </style>
             </p:panel>
             <hr/>
             <h4 align="center"> Shift Management </h4>
@@ -79,21 +137,8 @@
                         </p:dialog>
                     </h:form>
                 </p:panel>
-                <p:panel toggleable="true" >
 
-                    <h:form>
-                        <p:calendar id="inline" value="#{StaffMembers.date}" mode="inline" />
-                        <p:outputLabel for="inline" value="#{StaffMembers.date}" />
-                    </h:form>
-                </p:panel>
-                <p:panel>
-                    <p:dataList value="#{StaffMembers.allStaffMemebers}" var="staff" type="ordered" >
-                        <f:facet name="header">
-                            Up coming events 
-                        </f:facet>
-                        #{staff.roleName}
-                    </p:dataList>
-                </p:panel>
+           
             </h:panelGrid>
 
         </h:panelGrid>

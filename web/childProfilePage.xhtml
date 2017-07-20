@@ -49,33 +49,31 @@
                             </p:panelGrid>
                         
                         </p:column>
-                        
+                 <!--       
                         <p:panel style="width: 230px">  
-                            <h:outputText value="Height Chart"/>
-                              <p:chart type="line" model="#{chartView.lineModel1}" style="height:175px; width:180px"/>
+                            <p:chart type="line" model="#{ChildCont.heightChart}" style="height:175px; width:180px"/>
                         </p:panel>
                             
                          <p:column>
                              <p:panel style="width: 230px">
-                            <h:outputText value="Temperature Chart" />
-                             <p:chart type="line" model="#{chartView.lineModel1}" style="height:175px; width:180px"/>
+                                 <p:chart type="line" model="#{ChildCont.temperatureChart}" style="height:175px; width:180px"/>
                             </p:panel>
                         </p:column>
                         
                         <p:column> 
                             <p:panel style="width: 230px">
                             <h:outputText value="Weight chart" />
-                             <p:chart type="line" model="#{chartView.lineModel1}" style="height:175px; width:180px"/>
+                         <p:chart type="bar" model="#{chartView.lineModel1}" style="height:175px; width:180px"/>
                              </p:panel>
-                        </p:column>
+                       </p:column>-->
                               
-                        
+                       
                     </p:panelGrid>
                     
                     <p:panelGrid id="secondPanel" columns="2" style="width: 1000px;">
                         <p:column >
                             <p:dataTable id="mealsTb" var="temp" value="#{ChildCont.getListOfMealsHadDb()}" selectionMode="single"  rowKey="#{temp.mealID}" selection="#{temp.mealID}">
-                                
+                                <p:ajax event="rowDblselect" onsuccess="PF('dlgUpdateMeal').show()" listener="#{ChildCont.onRowDblClckSelect}" update=":updateBabyMeals:babyMealsUpdate" global="false" />
                                 <p:column headerText="Meal Type">
                                     <h:outputText value="#{temp.mealDescription}" />
                                 </p:column>
@@ -87,29 +85,11 @@
                                 <p:column headerText="Comments">
                                     <h:outputText value="#{temp.commentOnEating}" />
                                 </p:column>
-                                <f:facet name="footer">
-                                    <p:commandButton value="Edit" type="button" onclick="PF('dlg').show()" update="@form" oncomplete="PF('dlg').hide();"/>
-                                </f:facet>
                             </p:dataTable>
-                            <p:dialog header="Update Meal Record" widgetVar="dlg" resizable="false" responsive="true">
-                                <h:panelGrid columns="1">
-                                <p:row id="updateColumnMeals" >
-                                <h:outputText value="Meal Type:" />
-                                <p:inputText id="txtMealType" value="Rice" />
-                                </p:row>
-                                <p:row id="updateColumnTime" >
-                                <h:outputText value="Time:" />
-                                <p:inputText id="txtMealTime" value="13:45" />
-                                </p:row>
-                                <h:outputText value="Comments:" />
-                                <p:inputText id="txtMealComment" value="afedfsdf" />
-                                <p:commandButton value="Update" action="#{ChildCont.humorMe()}" icon="ui-icon-update"/>
-                                </h:panelGrid>
-                            </p:dialog>
                         </p:column>
                         <p:column>
                             <p:dataTable id="nappyTb" var="temp" value="#{ChildCont.getListOfNappiesDb()}" selectionMode="single"  rowKey="#{temp.nappyId}" selection="#{temp.nappyId}">
-                                
+                                <p:ajax event="rowDblselect" onsuccess="PF('dlgUpdateNappy').show()" listener="#{ChildCont.onRowDblClckSelectNappy}" update=":updateBabyNappy:NappyPanelGrid" global="false" />
                                 <p:column headerText="Nappy Wet">
                                     <h:outputText value="#{temp.conditionWet}" />
                                 </p:column>
@@ -136,18 +116,19 @@
                                 </p:column>
                             </p:dataTable>
                         </p:column>
-                        <p:column>
-                            <h4><h:outputLabel value="List of Activities" /></h4>
-                            <p:selectOneListbox id="dailyActivitiesList" value="#{ChildCont.currentActivity}" var="list" onclick="#{ChildCont.humorMe()}">
-                                <f:selectItems value="#{ChildCont.listOfActivitiesDb}" var="c" itemValue="#{c}" itemLabel="#{c.title}"/>
-                                <p:column>
-                                    <h:outputText value="#{list.title}" />
+                        
+                        <p:column>  
+                            <p:dataTable id="dtActivities" var="temp" value="#{ChildCont.listOfActivitiesDb}" selectionMode="single" rowKey="#{temp.activityID}" style="width: 162px">
+                                <p:ajax event="rowDblselect" onsuccess="PF('dlgUpdateActivity').show()" listener="#{ChildCont.onRowDblClckSelectActivity}" update=":updateBabyActivity:ActivityPanelGrid"  global="false" />
+                                <p:column headerText="List of Activities"> 
+                                    <h:outputText value="#{temp.title}" />
                                 </p:column>
-                              
-                            </p:selectOneListbox>
+                            </p:dataTable>   
                         </p:column>
+                        
                         <p:column>
                             <p:dataTable id="dtSleepRoutine" var="temp" value="#{ChildCont.getListOfSleepingRoutineDb()}" selectionMode="single"  rowKey="#{temp.sleepingRoutineID}" selection="#{temp.sleepingRoutineID}">
+                                <p:ajax event="rowDblselect" onsuccess="PF('dlgUpdateSleep').show()" listener="#{ChildCont.onRowDblClckSelectSleep}" update=":updateSleepRecordForm:sleepPanelGrid" global="false" />
                                 <p:column headerText="Sleeping Time">
                                     <h:outputText value="#{temp.sleepingTime}" />
                                 </p:column>
@@ -170,9 +151,9 @@
                             <h:form enctype="multipart/form-data">
                                 <p:growl id="messages" showDetail="true" />
  
-                                <p:fileUpload value="#{fileUploadView.file}" mode="simple"/>
+                                <p:fileUpload value="#{ChildCont.humorMe()}" mode="simple"/>
  
-                                <p:commandButton value="Save" ajax="false" actionListener="#{ChildCont.upload}" disabled="true" />
+                                <p:commandButton value="Save" ajax="false" actionListener="#{ChildCont.upload()}" disabled="true" />
                             </h:form>
                         </p:column>
                         <p:column>
@@ -182,7 +163,19 @@
 
                 </div>
 
-            </h:form>       
+            </h:form>
+            <p:dialog  header="Update Meal Record" widgetVar="dlgUpdateMeal" resizable="false" responsive="true" showEffect="explode" hideEffect="explode">
+                <ui:include src="updateBabyMeals.xhtml" />
+            </p:dialog>
+            <p:dialog  header="Update Sleep Record" widgetVar="dlgUpdateSleep" resizable="false" responsive="true" showEffect="explode" hideEffect="explode">
+                <ui:include src="updateBabySleep.xhtml" />
+            </p:dialog>
+            <p:dialog  header="Update Nappy Record" widgetVar="dlgUpdateNappy" resizable="false" responsive="true" showEffect="explode" hideEffect="explode">
+                <ui:include src="updateBabyNappy.xhtml" />
+            </p:dialog>
+            <p:dialog  header="Update Activity Record" widgetVar="dlgUpdateActivity" resizable="false" responsive="true" showEffect="explode" hideEffect="explode">
+                <ui:include src="updateBabyActivity.xhtml" />
+            </p:dialog>
         </ui:composition>
 
    <!-- </h:body>-->

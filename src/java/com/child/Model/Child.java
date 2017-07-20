@@ -12,27 +12,35 @@ import java.util.Date;
  */
 public class Child extends Person implements Serializable{
     
+    private double headCir;
+    private int babyProfileid;
+    private int currentIndex = -1;
     private String destingushingMarks;
-    private ArrayList<Temperature> listOfTempRecorded;
+    private String requiredDocNote, ChildArrivalMedicalReport, generalRemarks;
+    
+    // arrayList 
     private ArrayList<Meals> listOfMealsHad;
+    private ArrayList<Height> listOfHeightRecords;
+    private ArrayList<Nappies> listOfNappyRecords;
+    private ArrayList<Temperature> listOfTempRecorded;
+    private ArrayList<SleepingRoutine> listOfSleepingRecords;
+    private ArrayList childRequiredDocs,childArrivalCondition;
+    private ArrayList<DailyActivities> listOfActivitiesRecorded;
+    protected ArrayList<ChildMedicalHistory> listOfMedicalHistoryRecords = new ArrayList<ChildMedicalHistory>();
+    
+    //temporary objects
+    private Meals mealRecorded = new Meals();
     private Weight weightRecorded = new Weight();
     private Height heightRecorded = new Height();
-    private ArrayList<Nappies> listOfNappyRecords;
-    protected ChildMedicalHistory medicalHistory = new ChildMedicalHistory();
-    protected ArrayList<ChildMedicalHistory> listOfMedicalHistoryRecords = new ArrayList<ChildMedicalHistory>();
-    private ArrayList<SleepingRoutine> listOfSleepingRecords;
-    private ArrayList<DailyActivities> listOfActivitiesRecorded; 
-    private int babyProfileid;
-    private double headCir;
-    private ArrayList childRequiredDocs,childArrivalCondition;
-    private String requiredDocNote, ChildArrivalMedicalReport, generalRemarks;
+    private Nappies nappyRecorded = new Nappies();
     private ParentInfo parentInfo = new ParentInfo();
-    private SocialWorker socialWorkerDetails = new SocialWorker();
     protected IntakeInfo intakeDetails = new IntakeInfo();
-    private int currentIndex = -1;
-    
-    private ArrayList<Object> spreadProperties;
-    
+    private SocialWorker socialWorkerDetails = new SocialWorker();
+    private DailyActivities activityrecorded = new DailyActivities();
+    private SleepingRoutine sleepRecorded = new SleepingRoutine();
+    protected ChildMedicalHistory medicalHistory = new ChildMedicalHistory();
+
+    //clear child Object 
     public void clearChild(){
         this.destingushingMarks = null;
         super.setLastname(null);
@@ -65,6 +73,7 @@ public class Child extends Person implements Serializable{
     }
     public Child(){
     }
+    
     public Child(String destingushingMarks, String firstname, String lastname) {
         super(firstname, lastname);
         this.destingushingMarks = destingushingMarks;
@@ -76,7 +85,6 @@ public class Child extends Person implements Serializable{
         this.babyProfileid = babyProfileid;
     }
     
-
     public int getBabyProfileid() {
         return babyProfileid;
     }
@@ -84,8 +92,7 @@ public class Child extends Person implements Serializable{
     public void setBabyProfileid(int babyProfileid) {
         this.babyProfileid = babyProfileid;
     }
-    
-
+   
     public ChildMedicalHistory getMedicalHistory() {
         return medicalHistory;
     }
@@ -133,7 +140,6 @@ public class Child extends Person implements Serializable{
         }
     }*/
     
-
     public Weight getWeightRecorded() {
         return weightRecorded;
     }
@@ -235,15 +241,6 @@ public class Child extends Person implements Serializable{
         this.parentInfo = parentInfo;
     }
 
-    public ArrayList<Object> getSpreadProperties() {
-        return spreadProperties;
-    }
-
-    public void setSpreadProperties(ArrayList<Object> spreadProperties) {
-        
-        this.spreadProperties = spreadProperties;
-    }
-
     public SocialWorker getSocialWorkerDetails() {
         return socialWorkerDetails;
     }
@@ -267,6 +264,46 @@ public class Child extends Person implements Serializable{
     public void setHeightRecorded(Height heightRecorded) {
         this.heightRecorded = heightRecorded;
     }
+
+    public Meals getMealRecorded() {
+        return mealRecorded;
+    }
+
+    public void setMealRecorded(Meals mealRecorded) {
+        this.mealRecorded = mealRecorded;
+    }
+
+    public SleepingRoutine getSleepRecorded() {
+        return sleepRecorded;
+    }
+
+    public void setSleepRecorded(SleepingRoutine sleepRecorded) {
+        this.sleepRecorded = sleepRecorded;
+    }
+
+    public Nappies getNappyRecorded() {
+        return nappyRecorded;
+    }
+
+    public void setNappyRecorded(Nappies nappyRecorded) {
+        this.nappyRecorded = nappyRecorded;
+    }
+
+    public DailyActivities getActivityrecorded() {
+        return activityrecorded;
+    }
+
+    public void setActivityrecorded(DailyActivities activityrecorded) {
+        this.activityrecorded = activityrecorded;
+    }
+
+    public ArrayList<Height> getListOfHeightRecords() {
+        return listOfHeightRecords;
+    }
+
+    public void setListOfHeightRecords(ArrayList<Height> listOfHeightRecords) {
+        this.listOfHeightRecords = listOfHeightRecords;
+    }
     
     // select medicalRecord to update
     public void selectMedicalRecordToUpdateByIndex(int i){
@@ -281,8 +318,7 @@ public class Child extends Person implements Serializable{
             this.medicalHistory.setMedicines(this.listOfMedicalHistoryRecords.get(i).getMedicines());
             this.medicalHistory.setSpecialTreatmeants(this.listOfMedicalHistoryRecords.get(i).getSpecialTreatmeants());
             this.medicalHistory.setDateOfVisit(this.listOfMedicalHistoryRecords.get(i).getDateOfVisit());
-            
-            
+             
         }
     }
     // load first medicalRecord to update: default
@@ -298,7 +334,6 @@ public class Child extends Person implements Serializable{
             }
             if((currentIndex + 1) < this.listOfMedicalHistoryRecords.size()){
                 currentIndex = currentIndex + 1;
-                System.out.print("new Recordguy: "+currentIndex);
                 selectMedicalRecordToUpdateByIndex(currentIndex);
             }else{
                 selectMedicalRecordToUpdate();
@@ -337,9 +372,7 @@ public class Child extends Person implements Serializable{
             this.listOfMedicalHistoryRecords.get(currentIndex).setMedicines(this.medicalHistory.getMedicines());
             this.listOfMedicalHistoryRecords.get(currentIndex).setCause(this.medicalHistory.getCause());
            
-        }
-       //x this.listOfMedicalHistoryRecords.add(currentIndex, altered);
-        
+        }   
     }
 
     public int getCurrentIndex() {
@@ -355,4 +388,6 @@ public class Child extends Person implements Serializable{
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 
+    
+    
 }

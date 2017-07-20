@@ -120,25 +120,19 @@ public class StaffController extends OthantileStaff implements Serializable {
     private int id;
 
     public List<OthantileStaff> getSelectedStaffMembers() {
-        System.out.println("____________selection_______geting");
-
         return selectedStaffMembers;
     }
 
     public void setSelectedStaffMembers(List<OthantileStaff> staff) {
-        System.out.println("____________selection_______setting");
-
         this.selectedStaffMembers = staff;
     }
 
     public void onRowSelect(SelectEvent e) {
         selectedsatff = (OthantileStaff) e.getObject();
-        System.out.println("____________Eder_______");
     }
 
     public void onRowUnselect(UnselectEvent e) {
         selectedsatff = null;
-        System.out.println("____________Rosa_______");
     }
 
     public OthantileStaff getSelectedsatff() {
@@ -174,7 +168,6 @@ public class StaffController extends OthantileStaff implements Serializable {
         roles.add("Intern");
         shiftTypes.add("Single (8hrs)");
         shiftTypes.add("double (16hrs)");
-
         List<OthantileStaff> staffList = getAllStaffMemebers();
         shifts   = getShifts();
         System.out.println(shifts.size());
@@ -185,7 +178,6 @@ public class StaffController extends OthantileStaff implements Serializable {
 
     public List<Shift> getShifts() {
          shifts = new StaffTableConnection().getAllShifts();
-         
          for (OthantileStaff stf:staff){
              for(Shift sh:shifts){
                  if (stf.getStaffID() == sh.shitID()){
@@ -193,7 +185,6 @@ public class StaffController extends OthantileStaff implements Serializable {
                  }    
              } 
          }
-        //boolean contains = staff.contains(shifts.get(0));
         return shifts;
     }
 
@@ -320,19 +311,12 @@ public class StaffController extends OthantileStaff implements Serializable {
                 Shift assignShift = new OthantileShift(fKey, shitDate, shiftTime);
                 assignShift.setShiftndTime(shift);
                 new StaffTableConnection().assignAShift(assignShift);
-                // System.out.println(assignShift.getShiftEndTime());
-                // System.out.println(getFirstname());
-                // System.out.println(assignShift.getShiftDate() + " " + assignShift.getShiftTime());
             } else {
                 out.error("Shit error", "No staff members found");
             }
-
         } else {
-
             out.error("Shit error", "No staff members found");
-
         }
-
     }
 
     public void search() {

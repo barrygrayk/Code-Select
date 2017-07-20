@@ -1,6 +1,5 @@
 package com.child.Model;
 
-import java.sql.Time;
 import java.util.Date;
 
 /**
@@ -11,7 +10,7 @@ public class DailyActivities {
     
     private int activityID;
     private Date dateRecorded;
-    private Time activityOccuringTime;
+    private Date activityOccuringTime;
     private String title;
     private String status;
     private String comment;
@@ -32,11 +31,11 @@ public class DailyActivities {
         this.dateRecorded = dateRecorded;
     }
 
-    public Time getActivityOccuringTime() {
+    public Date getActivityOccuringTime() {
         return activityOccuringTime;
     }
 
-    public void setActivityOccuringTime(Time activityOccuringTime) {
+    public void setActivityOccuringTime(Date activityOccuringTime) {
         this.activityOccuringTime = activityOccuringTime;
     }
 

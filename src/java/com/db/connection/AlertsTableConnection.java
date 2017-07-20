@@ -2,6 +2,7 @@ package com.db.connection;
 
 import com.MenuView.MenuView;
 import com.Messages.InventoryAlerts;
+import com.staff.Model.Message;
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
 import java.util.ArrayList;
@@ -71,10 +72,28 @@ public class AlertsTableConnection extends DatabaseConnection {
         }
 
     }
+    
 
     @Override
     boolean recordValidator() {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
+    
+    
+    public void sendMessage (Message msg){
+        String insertMsgQeury = "INSERT INTO .`message`(,`body`,`onthantilestaff_staffID`,`subject`)VALUES(?,?,?);";
+        PreparedStatement sendMessage= null;
+        try {
+            connection = getConnection();
+            sendMessage = connection.prepareStatement(insertMsgQeury);
+            sendMessage.setString(1,msg.getDescription());
+            sendMessage.setInt(2,msg.getId());
+            sendMessage.setString(3, msg.getSubject());
+            sendMessage.execute();
+            feedback.addMessage("Sucess", "Message sent");
+        } catch (ClassNotFoundException | SQLException ex) {
+            Logger.getLogger(AlertsTableConnection.class.getName()).log(Level.SEVERE, null, ex);
+        }     
     }
 
 }

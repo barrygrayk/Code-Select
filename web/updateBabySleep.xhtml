@@ -1,0 +1,39 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:f="http://xmlns.jcp.org/jsf/core">
+        
+    <ui:composition>
+       
+        <h:form id="updateSleepRecordForm">
+            <h:panelGrid id="sleepPanelGrid" columns="2">
+                
+                <p:outputLabel value="Sleep Start time:" />
+                <p:calendar id="txtSleepTime" value="#{ChildCont.child.sleepRecorded.sleepingTime}" pattern="HH:mm:ss" timeOnly="true"/>
+                
+                <p:outputLabel value="Wake up time:" />
+                <p:calendar id="txtWakeTime" value="#{ChildCont.child.sleepRecorded.wakingTime}" pattern="HH:mm:ss" timeOnly="true"/>
+                
+                <p:outputLabel value="Date:" />
+                <p:calendar id="sleepDate" value="#{ChildCont.child.sleepRecorded.dateRecorded}" pattern = "dd/MM/yyyy" mask = "true"/>
+                  
+                <p:commandButton value="Cancel" onclick="PF('dlgUpdateSleep').hide()" icon="ui-icon-cancel"/>
+                    <p:panel id="btnDeleteAndUpdate">
+                        <p:commandButton value="Delete" actionListener="#{ChildCont.deleteSleepRecord()}" icon="ui-icon-update" oncomplete="PF('dlgUpdateSleep').hide()" update=":childProfile:dtSleepRoutine">
+                            <p:confirm header="Confirmation" message="Are you sure, you want delete the selected record?" icon="ui-icon-alert" />
+                        </p:commandButton>
+                        <p:confirmDialog global="true" showEffect="fade" hideEffect="fade">
+                            <p:commandButton value="Yes" type="button" styleClass="ui-confirmdialog-yes" icon="ui-icon-check" />
+                            <p:commandButton value="No" type="button" styleClass="ui-confirmdialog-no" icon="ui-icon-close" />
+                        </p:confirmDialog> 
+                        <p:commandButton value="Update" action="#{ChildCont.updateChildSleepTime()}" icon="ui-icon-update" oncomplete="PF('dlgUpdateSleep').hide()" update=":childProfile:dtSleepRoutine"/>
+                    </p:panel>
+            </h:panelGrid>
+        </h:form> 
+    </ui:composition>
+   
+</html>
+

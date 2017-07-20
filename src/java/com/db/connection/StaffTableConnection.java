@@ -3,8 +3,10 @@ package com.db.connection;
 import com.Email.IEmail;
 import com.Email.SendEmail;
 import com.MenuView.MenuView;
+import com.staff.Model.AnEvent;
 import com.staff.Model.Authenticate;
 import com.staff.Model.Authentication;
+import com.staff.Model.Event;
 import com.staff.Model.OthantileShift;
 import com.staff.Model.OthantileStaff;
 import com.staff.Model.Shift;
@@ -214,17 +216,13 @@ public class StaffTableConnection extends DatabaseConnection {
         connection = getConnection();
         PreparedStatement ps = null;
         ps = connection.prepareStatement(query, Statement.RETURN_GENERATED_KEYS);
-        Date date = new Date();
-        date = staff.getDateOfBirth();
-        java.util.Date utilStartDate = date;
-        java.sql.Date sqlStartDate = new java.sql.Date(utilStartDate.getTime());
         ps.setString(1, staff.getFirstname());
         ps.setString(2, staff.getLastname());
         String g = Character.toString(staff.getGender());
         ps.setString(3, g);
         ps.setString(4, staff.getAddress());
         ps.setString(5, staff.getPlaceOfBirth());
-        ps.setDate(6, sqlStartDate);
+        ps.setDate(6, toSqlDate(staff.getDateOfBirth()));
         ps.setString(7, staff.getEmailAddress());
         if (update) {
             ps.setInt(8, staff.getStaffID());
@@ -300,16 +298,7 @@ public class StaffTableConnection extends DatabaseConnection {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 
-    // task asignmnet 
-    public void getTaskes() {
-
-    }
-
-    public void getShifts() {
-    }
-
     public int getAccountStatus(String status) {
-        //String [] statusArray = {"Pending activaton","Pending reset","Active"};
         int statusIndex = 4;
         switch (status) {
             case "Pending activaton":
@@ -353,7 +342,6 @@ public class StaffTableConnection extends DatabaseConnection {
         ps.setString(4, auth.getUsername());
         ps.execute();
         feedback.addMessage(auth.getUsername(), "Account has been sucessfully activated");
-
     }
 
     public String getFullname(int id) {
@@ -364,12 +352,10 @@ public class StaffTableConnection extends DatabaseConnection {
             if (resultset.next()) {
                 fullname = resultset.getString("firstName") + " " + resultset.getString("LastName");
             }
-
         } catch (ClassNotFoundException | SQLException ex) {
             Logger.getLogger(StaffTableConnection.class.getName()).log(Level.SEVERE, null, ex);
             feedback.error("Read error", ex.getMessage());
         }
-
         return fullname;
     }
 
@@ -377,7 +363,6 @@ public class StaffTableConnection extends DatabaseConnection {
         String USER_NAME = "barry.kapelembeg";  // GMail user name (just the part before "@gmail.com")
         String PASSWORD = "06Yarg9595"; // GMail password
         String RECIPIENT = sendTo;
-        //https://stackoverflow.com/questions/46663/how-can-i-send-an-email-by-java-application-using-gmail-yahoo-or-hotmail/47452#47452
         String from = USER_NAME;
         String pass = PASSWORD;
         String[] to = {RECIPIENT}; // list of recipient email addresses
@@ -389,7 +374,6 @@ public class StaffTableConnection extends DatabaseConnection {
 
     //TO Do authenticatio algorithm 
     public void assignAShift(Shift shift) {
-
         String shiftInsertQuery = "INSERT INTO `othantileShifts` (`shiftdate`,`shiftStartTime`,`shiftEndTime`,`status`,`onthantilestaff_staffID`) VALUES (?,?,?,?,?)";
         try {
             connection = getConnection();
@@ -402,14 +386,9 @@ public class StaffTableConnection extends DatabaseConnection {
     }
 
     public PreparedStatement setOthantileShiftColumns(Shift shift, String query) throws ClassNotFoundException, SQLException {
-
         PreparedStatement ps = null;
         ps = connection.prepareStatement(query);
-        Date date = new Date();
-        date = shift.getShiftDate();
-        java.util.Date utilStartDate = date;
-        java.sql.Date sqlStartDate = new java.sql.Date(utilStartDate.getTime());
-        ps.setDate(1, sqlStartDate);
+        ps.setDate(1, toSqlDate(shift.getShiftDate()));
         Time starTime = new Time(shift.getShiftTime().getTime());
         ps.setTime(2, starTime);
         Time endTime = new Time(shift.getShiftEndTime().getTime());
@@ -420,7 +399,6 @@ public class StaffTableConnection extends DatabaseConnection {
     }
 
     public List<Shift> getAllShifts() {
-
         String shiftQuery = "SELECT * FROM `othantileShifts`";
         List<Shift> allShifts = new ArrayList<>();
         try {
@@ -434,9 +412,6 @@ public class StaffTableConnection extends DatabaseConnection {
                 shifts.setStatus(resultset.getString("status"));
                 allShifts.add(shifts);
             }
-            System.out.println("_____"
-                    + allShifts.size());
-
         } catch (ClassNotFoundException | SQLException ex) {
             Logger.getLogger(StaffTableConnection.class.getName()).log(Level.SEVERE, null, ex);
             feedback.error("Read error", ex.getMessage());
@@ -448,5 +423,71 @@ public class StaffTableConnection extends DatabaseConnection {
             }
         }
         return allShifts;
+    }
+
+    public void addAnEvent(Event anEvent) {
+        String insertEventQuery = "INSERT INTO .`Events`(`title`,`startdatetime`,`endDateTime`,`isAllDate`)VALUES(?,?,?,?)";
+        PreparedStatement insertEventPs = null;
+        try {
+            insertEventPs = getConnection().prepareStatement(insertEventQuery);
+            insertEventPs.setString(1, anEvent.getEventTitl());
+            insertEventPs.setTimestamp(2, toSqlDateTime(anEvent.getStartDateTime()));
+            insertEventPs.setTimestamp(3, toSqlDateTime(anEvent.getEndDateTime()));
+            if (anEvent.getIsAllDayEvent()) {
+                insertEventPs.setString(4, "true");
+            } else {
+                insertEventPs.setString(4, "false");
+            }
+            insertEventPs.execute();
+            feedback.addMessage("Event has been added", "Success");
+        } catch (ClassNotFoundException | SQLException ex) {
+            Logger.getLogger(StaffTableConnection.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }
+
+    public List<Event> getAllEvents() {
+        String shiftQuery = "SELECT * FROM `Events`";
+        List<Event> allEvents;
+        allEvents = new ArrayList<>();
+        try {
+            getResultSet(shiftQuery);
+            while (resultset.next()) {
+                Event events = new AnEvent();
+                events.setId(resultset.getInt("idEvents"));
+                events.setEventTitle(resultset.getString("title"));
+                events.setStartDateTime(resultset.getTimestamp("startdatetime"));
+                events.setEndDateTime(resultset.getTimestamp("endDateTime"));
+                if (resultset.getString("isAllDate").equals("true")) {
+                    events.setAllDaEvent(true);
+                } else {
+                    events.setAllDaEvent(false);
+                }
+                allEvents.add(events);
+            }
+        } catch (ClassNotFoundException | SQLException ex) {
+            Logger.getLogger(StaffTableConnection.class.getName()).log(Level.SEVERE, null, ex);
+            feedback.error("Read error", ex.getMessage());
+        } finally {
+            try {
+                connection.close();
+            } catch (SQLException ex) {
+                feedback.error("Connection error", ex.getMessage());
+            }
+        }
+        return allEvents;
+    }
+
+    public java.sql.Date toSqlDate(Date util) {
+        Date date = util;
+        java.util.Date utilStartDate = date;
+        java.sql.Date sqlDate = new java.sql.Date(utilStartDate.getTime());
+        return sqlDate;
+    }
+
+    public java.sql.Timestamp toSqlDateTime(Date util) {
+        Date date = util;
+        java.util.Date utilStartDate = date;
+        java.sql.Timestamp sqlDate = new java.sql.Timestamp(utilStartDate.getTime());
+        return sqlDate;
     }
 }

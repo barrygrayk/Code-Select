@@ -1,6 +1,5 @@
 package com.child.Model;
 
-import java.sql.Time;
 import java.util.Date;
 
 /**
@@ -10,8 +9,8 @@ import java.util.Date;
 public class SleepingRoutine {
     
     private int sleepingRoutineID;
-    private Time sleepingTime;
-    private Time wakingTime;
+    private Date sleepingTime;
+    private Date wakingTime;
     private Date dateRecorded;
 
     public int getSleepingRoutineID() {
@@ -22,19 +21,19 @@ public class SleepingRoutine {
         this.sleepingRoutineID = sleepingRoutineID;
     }
 
-    public Time getSleepingTime() {
+    public Date getSleepingTime() {
         return sleepingTime;
     }
 
-    public void setSleepingTime(Time sleepingTime) {
+    public void setSleepingTime(Date sleepingTime) {
         this.sleepingTime = sleepingTime;
     }
 
-    public Time getWakingTime() {
+    public Date getWakingTime() {
         return wakingTime;
     }
 
-    public void setWakingTime(Time wakingTime) {
+    public void setWakingTime(Date wakingTime) {
         this.wakingTime = wakingTime;
     }
 

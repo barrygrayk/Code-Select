@@ -153,14 +153,14 @@ public class MrKaplan {
     }
     
     public boolean isValidDate(Date date) {
-        boolean valid = false;
+        boolean valid = true;
         Date dt = new Date();
         boolean before = dt.after(date);
-        if (before) {
+       /* if (before) {
             valid = true;
         } else {
             out.error("Date not recorgnised", null);
-        }
+        }*/
 
         return valid;
 

@@ -9,6 +9,7 @@ import java.util.Date;
  */
 public class Height {
     
+    private int heightID;
     private double height;
     private Date dateRecorded;
 
@@ -33,6 +34,14 @@ public class Height {
 
     public void setDateRecorded(Date dateRecorded) {
         this.dateRecorded = dateRecorded;
+    }
+
+    public int getHeightID() {
+        return heightID;
+    }
+
+    public void setHeightID(int heightID) {
+        this.heightID = heightID;
     }
     
 }

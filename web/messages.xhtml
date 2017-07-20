@@ -34,6 +34,8 @@
                                 <f:selectItems value="#{StaffMembers.staffMemberNames}" />
                             </p:selectOneMenu>
                         </h:panelGrid>
+                        <p:watermark for="username" value="Subject" />
+                        <p:inputText id="subject" value="#{msgCont.subject}"/>
                         <p:editor id="editor" widgetVar="editorWidget" value="#{msgCont.text}" width="600" />
                         <h:panelGrid columns="2" style="margin-top: 10px">
                             <p:commandButton value="Send" update="display"  oncomplete="PF('dlg').show()" icon="ui-icon-disk" />

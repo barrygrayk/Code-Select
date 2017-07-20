@@ -40,26 +40,27 @@
                 </p:layoutUnit>
 
                 <p:layoutUnit position="west" size="auto" header="Retract" collapsible="true">
-                    <h:form>
+                    <h:form styleClass="wrapper">
                         
                         <f:ajax render=":content">
                             <p:growl autoUpdate="true"/>
                        
-                            <p:panelMenu style="width:225px" >
+                            <p:panelMenu style="width:230px" styleClass="sidebar-nav">
 
-                                <p:submenu label="Dashboard" style="text-decoration: none;"/>
-                                <p:submenu label="Messages">
-                                    <p:menuitem value="Notice board" actionListener="#{menuView.save}" action="#{Include.setPage('messages')}" update=":content" icon="ui-icon-close" />
+                                <p:submenu label="Dashboard" style="text-decoration: none;" styleClass="sidebar-brand"/>
+                                <p:submenu label="Messages" styleClass="sidebar-brand">
+                                    <p:menuitem styleClass="sidebar-item" value="Notice board" actionListener="#{menuView.save}" action="#{Include.setPage('messages')}" update=":content" icon="ui-icon-close" />
                                     <p:menuitem value="Alerts" actionListener="#{menuView.update}"  icon="ui-icon-fa-edit" />
                                 </p:submenu>
-
-                                <p:submenu label="Staff Management" >
+                                
+                                <p:submenu label="Staff Management" styleClass="sidebar-brand">
                                     <p:menuitem id="adssd" value="Staff manager" actionListener="#{menuView.save}" action="#{Include.setPage('staffManager')}" icon="fa fa-fw fa-edit" update=":content"/>
                                     <p:menuitem id="ps" value="View Staff" actionListener="#{menuView.save}" action="#{Include.setPage('viewStaff')}" icon="fa-plus-square-o" update=":content">
                                         <f:param name="navParam" value="viewStaff" />
                                     </p:menuitem>
                                 </p:submenu>
-                                <p:submenu label="Baby tracker">
+                                
+                                <p:submenu label="Baby tracker" styleClass="sidebar-brand">
                                     <p:menuitem value="View child profiles" actionListener="#{menuView.delete}" action="#{Include.setPage('viewbaby')}" update=":content" icon="ui-icon-close"/>
                                     <p:menuitem value="Add baby profile" actionListener="#{menuView.delete}" action="#{Include.setPage('addBaby')}" update=":content" icon="ui-icon-close"/>
                                     <p:menuitem value="Edit baby profile" actionListener="#{menuView.delete}" action="#{Include.setPage('editBaby')}"  update=":content" icon="fa-edit"/>
@@ -68,12 +69,14 @@
                                     <p:menuitem value="Capture data" actionListener="#{menuView.delete}"  ajax="false" icon="ui-icon-close"/>
                                     <p:menuitem value="Generate report" actionListener="#{menuView.delete}"  ajax="false" icon="ui-icon-close"/>    
                                 </p:submenu>
-                                <p:submenu label="Needs">
+                                
+                                <p:submenu label="Needs" styleClass="sidebar-brand">
                                     <p:menuitem value="Add needs" actionListener="#{menuView.save}"  icon="ui-icon-disk" action="#{Include.setPage('donations')}" update=":content" />
                                     <p:menuitem value="View needs" actionListener="#{menuView.update}"  icon="ui-icon-fa-edit" />
                                 </p:submenu>
+                                
                                 <p:separator />
-                                <p:submenu label="Inventory" >
+                                <p:submenu label="Inventory" styleClass="sidebar-brand">
                                     <p:menuitem value="Add inventory" actionListener="#{menuView.save}" action="#{Include.setPage('inventory')}" update=":content" icon="ui-icon-disk" />
                                     <p:menuitem value="Edit stock levels" actionListener="#{menuView.update}"  icon="ui-icon-fa-edit" />
                                     <p:submenu label="Links" icon="ui-icon-extlink">
