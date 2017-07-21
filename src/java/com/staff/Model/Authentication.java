@@ -14,7 +14,7 @@ public class Authentication implements Authenticate {
     private String userName;
     private String token;
 
-    String[] statusArray = {"Pending activaton", "Pending reset", "Active"};
+    String[] statusArray = {"Pending activaton", "Pending reset", "Active","Deactivated"};
     String status;
 
     public Authentication() {
@@ -74,7 +74,7 @@ public class Authentication implements Authenticate {
     @Override
     public boolean setStatus(int status) {
         boolean set = false;
-        if (status >= 0 && status <= 2) {
+        if (status >= 0 && status <= 3) {
             this.status = statusArray[status];
             set = true;
         }

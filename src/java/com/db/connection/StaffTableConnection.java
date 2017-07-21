@@ -175,6 +175,9 @@ public class StaffTableConnection extends DatabaseConnection {
         try {
             setOthantileStaffColumns(staff, updateStaffQuery, true).execute();
             setOthantileRoleColumns(staff, updateRoles, staff.getStaffID()).execute();
+            if (staff.getAuthcateDetails().getStatus().equals("Active")||staff.getAuthcateDetails().getStatus().equals("Deactivated")){
+                updateAuthStatus(staff.getAuthcateDetails());
+            }
             feedback.addMessage("Success", staff.getFirstname() + "'s bio has been updated");
         } catch (SQLException ex) {
             Logger.getLogger(StaffTableConnection.class.getName()).log(Level.SEVERE, null, ex);
@@ -225,6 +228,7 @@ public class StaffTableConnection extends DatabaseConnection {
         ps.setDate(6, toSqlDate(staff.getDateOfBirth()));
         ps.setString(7, staff.getEmailAddress());
         if (update) {
+
             ps.setInt(8, staff.getStaffID());
         }
         return ps;
@@ -273,8 +277,7 @@ public class StaffTableConnection extends DatabaseConnection {
             String gender = resultset.getString("gender");
             String address = resultset.getString("address");
             String placeOfBirth = resultset.getString("placeOfBirth");
-            Date date = new Date();
-            date = resultset.getDate("dateOfBirth");
+            Date date = resultset.getDate("dateOfBirth");
             String email = resultset.getString("emailAddress");
             char gnd = gender.charAt(0);
             OthantileStaff st = new OthantileStaff(user_id, firstname, lastname, gnd, address, placeOfBirth, date, email);
@@ -286,9 +289,6 @@ public class StaffTableConnection extends DatabaseConnection {
             auth.setStatus(getAccountStatus(resultset.getString("status")));
             st.setAuthcateDetails((Authentication) auth);
             members.add(st);
-            //    String [] statusArray = {"Pending activaton","Pending reset","Active"};
-
-            //      "INSERT INTO .`stafflogins` (`passwordSalt`,`passwordHash`,`userName`,`OnthantileStaff_staffID`,`status` ) VALUES (?,?,?,?,?)";
         }
         return members;
     }
@@ -308,6 +308,9 @@ public class StaffTableConnection extends DatabaseConnection {
                 statusIndex = 1;
                 break;
             case "Active":
+                statusIndex = 2;
+                break;
+            case "Deactivated":
                 statusIndex = 2;
                 break;
         }
@@ -342,6 +345,16 @@ public class StaffTableConnection extends DatabaseConnection {
         ps.setString(4, auth.getUsername());
         ps.execute();
         feedback.addMessage(auth.getUsername(), "Account has been sucessfully activated");
+    }
+    
+        public void updateAuthStatus(Authenticate auth) throws ClassNotFoundException, SQLException {
+        connection = getConnection();
+        String updateAuthfQuery = "UPDATE stafflogins SET status=? WHERE userName =?";
+        PreparedStatement ps = null;
+        ps = connection.prepareStatement(updateAuthfQuery);
+        ps.setString(1, auth.getStatus());
+        ps.setString(2, auth.getUsername());
+        ps.execute();
     }
 
     public String getFullname(int id) {

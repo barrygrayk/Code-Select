@@ -42,6 +42,16 @@ public class StaffController extends OthantileStaff implements Serializable {
     private List<String> roles = new ArrayList<>();
     private String role;
     private OthantileStaff selectedsatff;
+    private String accountStatus;
+
+    public String getAccountStatus() {
+        return accountStatus;
+    }
+
+    public void setAccountStatus(String accountStatus) {
+        this.accountStatus = accountStatus;
+    }
+    
 
     public List<String> getShiftTypes() {
         return shiftTypes;
@@ -178,13 +188,11 @@ public class StaffController extends OthantileStaff implements Serializable {
 
     public List<Shift> getShifts() {
          shifts = new StaffTableConnection().getAllShifts();
-         for (OthantileStaff stf:staff){
-             for(Shift sh:shifts){
-                 if (stf.getStaffID() == sh.shitID()){
-                     sh.setNames(stf.getFirstname()+" "+stf.getLastname());
-                 }    
-             } 
-         }
+         staff.forEach((stf) -> {
+             shifts.stream().filter((sh) -> (stf.getStaffID() == sh.shitID())).forEachOrdered((sh) -> {
+                 sh.setNames(stf.getFirstname()+" "+stf.getLastname());
+             });
+        });
         return shifts;
     }
 
@@ -232,8 +240,6 @@ public class StaffController extends OthantileStaff implements Serializable {
         return staff;
     }
     
-
-
     public void loasSaffMember() {
         if (selectedsatff != null) {
             int iddd = selectedsatff.getStaffID();
@@ -264,6 +270,7 @@ public class StaffController extends OthantileStaff implements Serializable {
                     eqi.toUperAndLower(getAddress()), eqi.toUperAndLower(getPlaceOfBirth()), getDateOfBirth(), getEmailAddress().toLowerCase());
             staff.setAccessLevel(assignAccessLevel(role));
             staff.setRoleName(role);
+            staff.setAuthcateDetails(selectedsatff.getAuthcateDetails());
             new StaffTableConnection().updateStaffMember(staff);
         }
         return "viewStaff";

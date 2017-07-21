@@ -34,15 +34,7 @@
                     <p:selectOneRadio id="Gender" value="#{StaffMembers.gender}" required="true" label="Gender">
                         <f:selectItem itemLabel="Male" itemValue="M" />
                         <f:selectItem itemLabel="Female" itemValue="F" />
-
-
                     </p:selectOneRadio>
-                    <!-- <h:outputText value="Gender: *" />
-                     <p:selectOneButton value="#{StaffMembers.gender}" rendered="true">
-                        <f:selectItem itemLabel="Male" itemValue="M" />
-                        <f:selectItem itemLabel="Female" itemValue="F" />
-                    </p:selectOneButton>-->
-
                 </h:panelGrid>
                 <h:panelGrid columns="1"  cellpadding="30" class="addStaff">
                     <h:outputLabel value="Address:* " />
@@ -57,8 +49,6 @@
                     <p:calendar id="mask" value="#{StaffMembers.dateOfBirth}" pattern="yyyy-MM-dd" mask="true" required="true" label="Date of birth" />
                 </h:panelGrid>
                 <h:panelGrid columns="1"  cellpadding="30" class="addStaff">
-                    <!--<h:outputLabel value="Email " />
-                    <p:inputText value="#{StaffMembers.emailAddress}" required="true" label="Email "/>-->
                     <h:outputLabel value="Email:* " />
                     <p:inputText id="email" value="#{StaffMembers.emailAddress}" required="true" label="Email" validatorMessage="#{StaffMembers.emailAddress} Email Not valid">
                         <f:validateRegex pattern="[\w\.-]*[a-zA-Z0-9_]@[\w\.-]*[a-zA-Z0-9]\.[a-zA-Z][a-zA-Z\.]*[a-zA-Z]" />
@@ -72,13 +62,19 @@
                         <f:selectItems value="#{StaffMembers.roles}" />
                     </p:selectOneMenu>
                 </h:panelGrid>
+                <h:panelGrid columns="2" style="padding:10px" cellpadding="5">
+                    <p:outputLabel for="status" value="Change status: " />
+                    <p:selectOneRadio id="status" value="#{StaffMembers.accountStatus}">
+                        <f:selectItem itemLabel="Deactivate" itemValue="Deactivate" />
+                        <f:selectItem itemLabel="Reset account" itemValue="Reset account" />
+                    </p:selectOneRadio>
+                </h:panelGrid>
 
-                <div align="center"> 
+                <h:panelGrid columns="2" style="margin: 0 auto" cellpadding="5">
                     <h:inputHidden value="#{StaffMembers.staffID}"/>
                     <p:commandButton value="Update" action="#{Include.setPage(StaffMembers.updateStaffRecord())}" update=":viewForm" />
-                    
 
-                </div>
+                </h:panelGrid>
             </h:panelGrid>
         </h:form>
     </ui:composition>
