@@ -3,6 +3,7 @@ package com.validation;
 import com.MenuView.MenuView;
 import com.db.connection.StaffTableConnection;
 import com.staff.Model.Authenticate;
+import java.io.PrintStream;
 import java.io.Serializable;
 import java.io.UnsupportedEncodingException;
 
@@ -32,8 +33,14 @@ public class LoginBean extends Passwords implements Serializable {
 //us MrKaplan for error checking
 
     private String password;
+
+    public String getRole() {
+        return role;
+    }
     private String username;
     private String fullname;
+    private String role;
+    private String status;
     private int id;
     private static final long serialVersionUID = 1094801825228386363L;
     private List<Authenticate> authenticatedStaff;
@@ -63,6 +70,7 @@ public class LoginBean extends Passwords implements Serializable {
     }
 
     public String doLogin() throws InvalidKeySpecException, UnsupportedEncodingException {
+        String page = "";
         byte[] expectedHash = null;
         byte[] salt = null;
         for (Authenticate auth : authenticatedStaff) {
@@ -70,21 +78,48 @@ public class LoginBean extends Passwords implements Serializable {
                 id = auth.authId();
                 setUsername(auth.getUsername());
                 fullname = staffDB.getFullname(id);
+                status = auth.getStatus();
+                role = staffDB.getRole(id);
+                System.out.println(role);
                 expectedHash = auth.getHashedPassword();
                 salt = auth.getSalt();
             }
         }
         if (password != null && salt != null && expectedHash != null && isExpectedPassword(password.toCharArray(), salt, expectedHash)) {
-            HttpSession session = SessionUtils.getSession();
-            session.setAttribute("username", username);
-            session.setAttribute("LoggedIn", "LoggedIn");
-            return "dashboard.xhtml?faces-redirect=true";
+
+            switch (status) {
+                case "Pending activaton":
+                    FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_WARN,
+                            fullname + "'s account has not been activated",
+                            "Please check your mail for the activation link or contact admin for help"));
+                    break;
+                case "Pending reset":
+                    FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_WARN,
+                            fullname + "'s account has not been reset",
+                            "Please check your mail for the reset link or contact admin for help"));
+                    break;
+                case "Active":
+                    if (role.equals("Admin")) {
+                        HttpSession session = SessionUtils.getSession();
+                        session.setAttribute("username", username);
+                        session.setAttribute("LoggedIn", "LoggedIn");
+                        page = "dashboard.xhtml?faces-redirect=true";
+                    } else {
+                        feedBack.error("Access denied ", fullname + " you do not have enough rights to view requested page");
+                    }
+                    break;
+                case "Deactivated":
+                    feedBack.errorMessage(fullname + " Your account has been deactivated please contact admin for help");
+                    break;
+            }
+
         } else {
             FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_WARN,
                     "Incorrect Username and Passowrd",
                     "Please enter correct username and Password"));
             return "login";
         }
+        return page;
     }
 
     public String doLogOut() {

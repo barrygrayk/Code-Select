@@ -169,14 +169,31 @@ public class StaffTableConnection extends DatabaseConnection {
     }
 
     public void updateStaffMember(OthantileStaff staff) throws ClassNotFoundException {
-        connection = getConnection();
         String updateStaffQuery = "UPDATE onthantilestaff SET firstName=?, LastName=?,gender=?,address=?,placeOfBirth=?,dateOfBirth=?, emailAddress=? WHERE staffID =?";
         String updateRoles = "UPDATE `staffroles`SET roleName=?, accessLevel=? WHERE OnthantileStaff_staffID =?";
         try {
             setOthantileStaffColumns(staff, updateStaffQuery, true).execute();
             setOthantileRoleColumns(staff, updateRoles, staff.getStaffID()).execute();
-            if (staff.getAuthcateDetails().getStatus().equals("Active")||staff.getAuthcateDetails().getStatus().equals("Deactivated")){
-                updateAuthStatus(staff.getAuthcateDetails());
+            if (staff.getAuthcateDetails().getStatus().equals("Pending reset") || staff.getAuthcateDetails().getStatus().equals("Deactivated")) {
+                AuthTokens jwt = new JJWT();
+                String token = "";
+                Authenticate auth = new Authentication();
+                auth = staff.getAuthcateDetails();
+                if (staff.getAuthcateDetails().getStatus().equals("Pending reset")) {
+                    System.out.println("_____" + staff.getAuthcateDetails());
+                    token = jwt.creatJWt(staff.getStaffID() + "", "OthantileWebApplication", staff.getAuthcateDetails().getUsername(), 0L);
+                    auth.setToken(token);
+                    String body = "Dear " + staff.getFirstname() + staff.getLastname() + ", " + "\n" + "\nWelcome to Othantile Childrens Ministries. "
+                            + "Your account has been"
+                            + " sucessfully created. Your account details are as follows:\n" + "\n"
+                            + "User name: " + staff.getAuthcateDetails().getUsername() + "\n" + "Role: " + staff.getRoleName()
+                            + "\nFollow the link below to activate your accout.\n"
+                            + "\nhttp://localhost:8080/OnthatileWebApplication/faces/register.xhtml?token=" + token;
+                    sendEmailToStaff(staff.getEmailAddress(), "Othantile Staff Account", body);
+                    updateAuthStatus(auth);
+                }else{
+                     updateAuthStatus(auth,"UPDATE stafflogins SET status=? WHERE userName =?");
+                } 
             }
             feedback.addMessage("Success", staff.getFirstname() + "'s bio has been updated");
         } catch (SQLException ex) {
@@ -287,6 +304,7 @@ public class StaffTableConnection extends DatabaseConnection {
             auth.setSalt(resultset.getBytes("passwordSalt"));
             auth.sethashPassword(resultset.getBytes("passwordHash"));
             auth.setStatus(getAccountStatus(resultset.getString("status")));
+            auth.setStatus(getAccountStatus(resultset.getString("token")));
             st.setAuthcateDetails((Authentication) auth);
             members.add(st);
         }
@@ -311,7 +329,7 @@ public class StaffTableConnection extends DatabaseConnection {
                 statusIndex = 2;
                 break;
             case "Deactivated":
-                statusIndex = 2;
+                statusIndex = 3;
                 break;
         }
         return statusIndex;
@@ -346,17 +364,27 @@ public class StaffTableConnection extends DatabaseConnection {
         ps.execute();
         feedback.addMessage(auth.getUsername(), "Account has been sucessfully activated");
     }
-    
-        public void updateAuthStatus(Authenticate auth) throws ClassNotFoundException, SQLException {
+
+    public void updateAuthStatus(Authenticate auth) throws ClassNotFoundException, SQLException {
         connection = getConnection();
-        String updateAuthfQuery = "UPDATE stafflogins SET status=? WHERE userName =?";
+        String updateAuthfQuery = "UPDATE stafflogins SET status=?, token=? WHERE userName =?";
+        PreparedStatement ps = null;
+        ps = connection.prepareStatement(updateAuthfQuery);
+        ps.setString(1, auth.getStatus());
+        ps.setString(2, auth.getToken());
+        ps.setString(3, auth.getUsername());
+        ps.execute();
+    }
+
+    public void updateAuthStatus(Authenticate auth, String query) throws ClassNotFoundException, SQLException {
+        connection = getConnection();
+        String updateAuthfQuery =query;
         PreparedStatement ps = null;
         ps = connection.prepareStatement(updateAuthfQuery);
         ps.setString(1, auth.getStatus());
         ps.setString(2, auth.getUsername());
         ps.execute();
     }
-
     public String getFullname(int id) {
         String fullnameQuery = "SELECT `firstName`,`LastName` FROM `onthantilestaff`  WHERE staffID =?";
         String fullname = "";
@@ -370,6 +398,20 @@ public class StaffTableConnection extends DatabaseConnection {
             feedback.error("Read error", ex.getMessage());
         }
         return fullname;
+    }
+     public String getRole(int id) {
+        String roleQuery = "SELECT `roleName` FROM `staffroles`  WHERE OnthantileStaff_staffID =?";
+        String role = "";
+        try {
+            getResultSet(id, roleQuery);
+            if (resultset.next()) {
+                role = resultset.getString("roleName");
+            }
+        } catch (ClassNotFoundException | SQLException ex) {
+            Logger.getLogger(StaffTableConnection.class.getName()).log(Level.SEVERE, null, ex);
+            feedback.error("Read error", ex.getMessage());
+        }
+        return role;
     }
 
     public void sendEmailToStaff(String sendTo, String emailSubject, String emailBody) {
@@ -387,7 +429,8 @@ public class StaffTableConnection extends DatabaseConnection {
 
     //TO Do authenticatio algorithm 
     public void assignAShift(Shift shift) {
-        String shiftInsertQuery = "INSERT INTO `othantileShifts` (`shiftdate`,`shiftStartTime`,`shiftEndTime`,`status`,`onthantilestaff_staffID`) VALUES (?,?,?,?,?)";
+        String shiftInsertQuery = "INSERT INTO `othantileShifts` (`shiftdate`,`shiftStartTime`,`shiftEndTime`,`status`,`onthantilestaff_staffID`)"
+                + " VALUES (?,?,?,?,?)";
         try {
             connection = getConnection();
             setOthantileShiftColumns(shift, shiftInsertQuery).execute();

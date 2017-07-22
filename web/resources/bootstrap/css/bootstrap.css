@@ -6975,6 +6975,20 @@ div.timeline-event-selected {
     padding:  5px;
 }
 
+.sidedarLogo{
+    display: block;
+    width: 130px;
+    height: auto;
+    margin: auto;
+    padding:  5px;
+}
+.sidedarLogo:hover{
+    display: block;
+    width: 135px;
+    height: auto;
+    margin: auto;
+    padding:  5px;
+}
 .username{
     padding: 5px;   
 }
@@ -7139,57 +7153,6 @@ input, textarea {
     margin: auto;
 }
 
-/*
-
-.sidebar-nav {
-    margin: 0;
-    padding: 0;
-    list-style: none;
+.user{
+    padding: 10px;
 }
-
-.sidebar-nav li {
-    text-indent: 20px;
-
-}
-
-.sidebar-nav li a {
-    display: block;
-    text-decoration: none;
-    color: #1AA11A;
-}
-
-.sidebar-nav li a:hover {
-    text-decoration: none;
-    color: #245269;
-    background: rgba(255,255,255,0.2);
-}
-
-.sidebar-nav li a:active,
-.sidebar-nav li a:focus {
-    text-decoration: none;
-}
-
-.sidebar-nav > .sidebar-brand {
-    line-height: 60px;
-    background-color: #269abc;
-}
-.sidebar-nav > .sidebar-brand a {
-    color: #101010;
-    text-align: center;
-    text-decoration: none;
-    background-color: #269abc;
-}
-.sidebar-nav > .sidebar-brand p {
-    color: #101010;
-    text-align: center;
-    text-decoration: none;
-    background-color: #269abc;
-}
-
-.sidebar-nav > .sidebar-brand p:hover {
-
-    background-color: #269abc;
-}
-
-
-*/

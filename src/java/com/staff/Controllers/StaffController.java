@@ -42,7 +42,7 @@ public class StaffController extends OthantileStaff implements Serializable {
     private List<String> roles = new ArrayList<>();
     private String role;
     private OthantileStaff selectedsatff;
-    private String accountStatus;
+    private String accountStatus = "Default";
 
     public String getAccountStatus() {
         return accountStatus;
@@ -51,7 +51,6 @@ public class StaffController extends OthantileStaff implements Serializable {
     public void setAccountStatus(String accountStatus) {
         this.accountStatus = accountStatus;
     }
-    
 
     public List<String> getShiftTypes() {
         return shiftTypes;
@@ -179,19 +178,20 @@ public class StaffController extends OthantileStaff implements Serializable {
         shiftTypes.add("Single (8hrs)");
         shiftTypes.add("double (16hrs)");
         List<OthantileStaff> staffList = getAllStaffMemebers();
-        shifts   = getShifts();
+        shifts = getShifts();
         System.out.println(shifts.size());
         staffList.forEach((sta) -> {
             staffMemberNames.add(sta.getFirstname() + " " + sta.getLastname());
         });
+        accountStatus = "Default";
     }
 
     public List<Shift> getShifts() {
-         shifts = new StaffTableConnection().getAllShifts();
-         staff.forEach((stf) -> {
-             shifts.stream().filter((sh) -> (stf.getStaffID() == sh.shitID())).forEachOrdered((sh) -> {
-                 sh.setNames(stf.getFirstname()+" "+stf.getLastname());
-             });
+        shifts = new StaffTableConnection().getAllShifts();
+        staff.forEach((stf) -> {
+            shifts.stream().filter((sh) -> (stf.getStaffID() == sh.shitID())).forEachOrdered((sh) -> {
+                sh.setNames(stf.getFirstname() + " " + stf.getLastname());
+            });
         });
         return shifts;
     }
@@ -239,7 +239,7 @@ public class StaffController extends OthantileStaff implements Serializable {
         staff = new StaffTableConnection().getStaffMemebers();
         return staff;
     }
-    
+
     public void loasSaffMember() {
         if (selectedsatff != null) {
             int iddd = selectedsatff.getStaffID();
@@ -264,14 +264,28 @@ public class StaffController extends OthantileStaff implements Serializable {
     public String updateStaffRecord() throws ClassNotFoundException, SQLException {
         MrKaplan validate = new MrKaplan();
         TheEqualizer eqi = new TheEqualizer();
-        if (validate.isValidInput(getFirstname()) && validate.isValidInput(getLastname()) && validate.isAcceptableAddress(getAddress())
+        if (validate.isValidInput(getFirstname()) && validate.isValidInput(getLastname())
+                && validate.isAcceptableAddress(getAddress())
                 && validate.isAcceptableAddress(getPlaceOfBirth()) && validate.isValidDate(getDateOfBirth())) {
-            OthantileStaff staff = new OthantileStaff(selectedsatff.getStaffID(), eqi.toUperAndLower(getFirstname()), eqi.toUperAndLower(getLastname()), getGender(),
+            OthantileStaff staff = new OthantileStaff(selectedsatff.getStaffID(), eqi.toUperAndLower(getFirstname()),
+                    eqi.toUperAndLower(getLastname()), getGender(),
                     eqi.toUperAndLower(getAddress()), eqi.toUperAndLower(getPlaceOfBirth()), getDateOfBirth(), getEmailAddress().toLowerCase());
             staff.setAccessLevel(assignAccessLevel(role));
             staff.setRoleName(role);
-            staff.setAuthcateDetails(selectedsatff.getAuthcateDetails());
+            Authenticate auth = new Authentication();
+            System.out.println("1 " + accountStatus);
+            if (accountStatus != null) {
+                if (accountStatus.equals("Deactivate")) {
+                    auth = selectedsatff.getAuthcateDetails();
+                    auth.setStatus(3);
+                } else {
+                    auth = selectedsatff.getAuthcateDetails();
+                    auth.setStatus(1);
+                }
+            }
+            staff.setAuthcateDetails((Authentication) auth);
             new StaffTableConnection().updateStaffMember(staff);
+            accountStatus = "Default";
         }
         return "viewStaff";
     }

@@ -38,9 +38,9 @@
                 <f:facet name="footer">
                     <p:commandButton process="staff"  icon="ui-icon-search" value="View All" action="#{Include.setPage('viewAllStaff')}" update=":content"/>
                     <p:commandButton process="staff"  icon="ui-icon-search" value="View" oncomplete="PF('multiCarDialog').show()" />
-                    <p:commandButton id="add_" value="Add" icon="ui-icon-extlink" type="button" onclick="PF('dlg1').show()" oncomplete="PF('dig').hide();" />
+                    <p:commandButton id="add_" value="Add" icon="fa fa-plus" type="button" onclick="PF('dlg1').show()" oncomplete="PF('dig').hide();"  />
                     <p:commandButton id="dialog" value="Edit" icon="fa fa-fw fa-edit" type="button" onclick="PF('dlg').show()" update=":viewForm" oncomplete="PF('dig').hide();" />
-                    <p:commandButton value="Delete" actionListener="#{StaffMembers.deleteStaffMember()}"  update=":viewForm" >
+                    <p:commandButton value="Delete" actionListener="#{StaffMembers.deleteStaffMember()}"  update=":viewForm"  type="button" icon="fa fa-fw fa-remove" >
                         <p:confirm header="Confirmation" message="Are you sure, you want delete selected record(s)?" icon="ui-icon-alert" />
                     </p:commandButton>
                     <p:confirmDialog global="true">

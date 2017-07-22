@@ -1,10 +1,4 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package com.validation;
-
 import com.MenuView.MenuView;
 import com.db.connection.StaffTableConnection;
 import com.staff.Model.Authenticate;
@@ -12,30 +6,24 @@ import com.staff.Model.Authentication;
 import java.io.Serializable;
 import java.security.spec.InvalidKeySpecException;
 import java.sql.SQLException;
-import java.util.Arrays;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import javax.annotation.PostConstruct;
+import javax.faces.application.FacesMessage;
 import javax.faces.bean.ManagedBean;
-
 import javax.faces.bean.ViewScoped;
-
 import javax.faces.context.FacesContext;
 import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpSession;
-
 /**
  *
  * @author Barry Gray
  */
 @ManagedBean(name = "RegisterStaff", eager = true)
 @ViewScoped
-
 public class RegisterBean extends Passwords implements Serializable {
-
     private List<Authenticate> authenticatedStaff;
     private StaffTableConnection staffDB;
     private final MenuView feedBack = new MenuView();
@@ -87,7 +75,6 @@ public class RegisterBean extends Passwords implements Serializable {
 
     @PostConstruct
     public void init() {
-        System.out.println("int-------");
         HttpServletRequest origRequest = (HttpServletRequest) FacesContext.getCurrentInstance().getExternalContext().getRequest();
         System.out.println(origRequest.getQueryString());
         try {
@@ -100,7 +87,7 @@ public class RegisterBean extends Passwords implements Serializable {
             for (Authenticate auth : authenticatedStaff) {
                 System.out.println(auth.getUsername());
                 if (auth.getToken().equals(token)) {
-                    if (jwt.getSubject().equals(auth.getUsername())) {
+                    if ( (!auth.getStatus().endsWith("Deactivated")) && jwt.getSubject().equals(auth.getUsername()) ) {
                         if (!auth.getStatus().equals("Active")) {
                             username = auth.getUsername();
                             fullname = staffDB.getFullname(auth.authId());
@@ -108,7 +95,8 @@ public class RegisterBean extends Passwords implements Serializable {
                         } else {
                             message = "This token is already active. Contact admistration for a new token";
                         }
-
+                    }else{
+                        message = "Token could not be validated.This account has been deactivated";
                     }
                 }
             }
@@ -116,12 +104,10 @@ public class RegisterBean extends Passwords implements Serializable {
         } catch (ClassNotFoundException ex) {
             Logger.getLogger(LoginBean.class.getName()).log(Level.SEVERE, null, ex);
             feedBack.error("Database Error", ex.getMessage());
-
         } catch (SQLException ex) {
             Logger.getLogger(LoginBean.class.getName()).log(Level.SEVERE, null, ex);
             feedBack.error("Read Error", ex.getMessage());
         }
-        System.out.println("Done-----------");
     }
 
     public String getMessage() {
@@ -133,14 +119,10 @@ public class RegisterBean extends Passwords implements Serializable {
     }
 
     public String activate() throws InvalidKeySpecException {
-        System.out.println("activting-------");
         String goTo =   "";
-
         if (checkLength() && checkEquality()) {
             byte[] salt = getNextSalt();
             byte[] hashed = hash(password.toCharArray(), salt);
-            System.out.println(salt);
-            System.out.println(hashed);
             Authenticate auth = new Authentication();
             auth.setSalt(salt);
             auth.sethashPassword(hashed);
@@ -148,14 +130,17 @@ public class RegisterBean extends Passwords implements Serializable {
             auth.setStatus(2);
             try {
                 staffDB.updatePassword(auth);
+                    FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO,
+                            fullname + "'s account activated",
+                            "Account has been sucessfully activated"));
                goTo =  "login.xhtml?faces-redirect=true";
-                //setDisable(true);
+              
+               //setDisable(true);
             } catch (ClassNotFoundException | SQLException ex) {
                 Logger.getLogger(RegisterBean.class.getName()).log(Level.SEVERE, null, ex);
                 feedBack.error("Database Error", ex.getMessage());
             }
         }
-        
         return goTo;
     }
 
@@ -190,11 +175,10 @@ public class RegisterBean extends Passwords implements Serializable {
             valid = true;
         } else {
             feedBack.error("Password strenght", "Password miss match");
-
         }
         return valid;
     }
-
+    
     @Override
     void getAuthenticationDetails() {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
