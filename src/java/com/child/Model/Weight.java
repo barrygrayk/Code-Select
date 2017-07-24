@@ -8,6 +8,7 @@ import java.util.Date;
  */
 public class Weight {
     
+    private int weightId;
     private double weight;
     private Date dateRecorded;
 
@@ -32,6 +33,14 @@ public class Weight {
 
     public void setDateRecorded(Date dateRecorded) {
         this.dateRecorded = dateRecorded;
+    }
+
+    public int getWeightId() {
+        return weightId;
+    }
+
+    public void setWeightId(int weightId) {
+        this.weightId = weightId;
     }
     
     // needs rethinking

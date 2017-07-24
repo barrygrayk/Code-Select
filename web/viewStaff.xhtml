@@ -9,17 +9,34 @@
     <ui:composition>
         <h:form id="viewForm">   
             <h3>Staff Members</h3>
+           
 
-            <p:dataTable id="staff" var="temp" value="#{StaffMembers.allStaffMemebers}"   selectionMode="single" rowKey="#{temp.staffID}" selection="#{StaffMembers.selectedsatff}">
+            <p:dataTable id="staff" var="temp" value="#{StaffMembers.allStaffMemebers}"  paginatorTemplate="{Exporters}" selectionMode="single" rowKey="#{temp.staffID}" selection="#{StaffMembers.selectedsatff}">
                 <f:facet name="header">
                     <p:outputPanel>
                         <h:outputText value="Search all fields:" />
                         <p:inputText id="globalFilter"  style="width:150px" placeholder="Enter keyword"/>
                     </p:outputPanel>
+
+
                 </f:facet>
+                <h:outputText value="export" />
+                <f:facet name="{Exporters}">
+                    <h:commandLink>
+                        <span class="fa fa-file-excel-o"  />
+                        
+                        <p:dataExporter type="xls" target="staff" fileName="Staff members" />
+                    </h:commandLink>
+                    <h:commandLink>
+                        <h:outputText value="export" />
+                        <span class="fa fa-file-pdf-o"  />
+                        <p:dataExporter type="pdf" target="staff" fileName="Staff members"/>
+                    </h:commandLink>
+                </f:facet> 
+
                 <!--Ajax Ed -->
-                    <p:ajax event="rowSelect" listener="#{StaffMembers.onRowSelect}" update=":viewForm" process="staff"/>
-                    <p:ajax event="rowUnselect" listener="#{StaffMembers.onRowUnselect}" update=":viewForm" process="staff"/>   
+                <p:ajax event="rowSelect" listener="#{StaffMembers.onRowSelect}" update=":viewForm" process="staff"/>
+                <p:ajax event="rowUnselect" listener="#{StaffMembers.onRowUnselect}" update=":viewForm" process="staff"/>   
                 <p:column headerText="First name" >
                     <h:outputText value="#{temp.firstname}" />
                 </p:column>

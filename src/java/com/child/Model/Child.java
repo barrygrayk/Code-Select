@@ -15,11 +15,13 @@ public class Child extends Person implements Serializable{
     private double headCir;
     private int babyProfileid;
     private int currentIndex = -1;
+    private String photography;
     private String destingushingMarks;
     private String requiredDocNote, ChildArrivalMedicalReport, generalRemarks;
     
     // arrayList 
     private ArrayList<Meals> listOfMealsHad;
+    private ArrayList<Weight> listOfWeightRecords;
     private ArrayList<Height> listOfHeightRecords;
     private ArrayList<Nappies> listOfNappyRecords;
     private ArrayList<Temperature> listOfTempRecorded;
@@ -304,6 +306,22 @@ public class Child extends Person implements Serializable{
     public void setListOfHeightRecords(ArrayList<Height> listOfHeightRecords) {
         this.listOfHeightRecords = listOfHeightRecords;
     }
+
+    public ArrayList<Weight> getListOfWeightRecords() {
+        return listOfWeightRecords;
+    }
+
+    public void setListOfWeightRecords(ArrayList<Weight> listOfWeightRecords) {
+        this.listOfWeightRecords = listOfWeightRecords;
+    }
+
+    public String getPhotography() {
+        return photography;
+    }
+
+    public void setPhotography(String photography) {
+        this.photography = photography;
+    }
     
     // select medicalRecord to update
     public void selectMedicalRecordToUpdateByIndex(int i){
@@ -388,6 +406,9 @@ public class Child extends Person implements Serializable{
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 
-    
+    @Override
+    public String toString(){
+        return super.getFirstname();
+    }
     
 }

@@ -1,7 +1,7 @@
 package com.validation;
 
 import java.io.IOException;
-import java.io.Serializable;
+import java.io.Serializable;0
 import javax.servlet.Filter;
 import javax.servlet.FilterChain;
 import javax.servlet.FilterConfig;
@@ -12,7 +12,7 @@ import javax.servlet.annotation.WebFilter;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
-
+/*
 @WebFilter(filterName = "AuthFilter", urlPatterns = {"*.xhtml"})
 public class UrlFilter implements Filter, Serializable {
     private String url;

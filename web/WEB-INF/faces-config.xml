@@ -59,7 +59,7 @@
         <navigation-case>
             <from-outcome>#{Include.page}.xhtml</from-outcome>
             <to-view-id>/viewStaff.xhtml</to-view-id>
-             <redirect/>
+            <redirect/>
         </navigation-case>
     </navigation-rule>
     

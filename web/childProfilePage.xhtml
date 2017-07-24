@@ -19,26 +19,33 @@
                 <div id="ComponentsRow1">
                     <p:panelGrid id="optionPanel" columns="3" style="width: 1000px;">
                         <p:column width="300px">
-                            <p:selectOneMenu id="searchChildAdvance" value="#{ChildCont.slectedChild}" style="width: 50px;">
-                                <f:selectItem itemLabel="Select a child" itemValue="#{ChildCont.slectedChild}"/>
-                                <f:selectItems value="#{ChildCont.listOfChildrenDropbox }"/>
+                            <p:selectOneMenu id="searchChildAdvance" value="#{ChildCont.selectedChild}" style="width: 50px;">
+                                <f:selectItem itemLabel="Select a child" itemValue="#{ChildCont.selectedChild}"/>
+                                <f:selectItems value="#{ChildCont.listOfChildren}" />
+                                <p:ajax id="currentPage" update="@form" listener="#{ChildCont.getSelectedChildObject()}"/>
                             </p:selectOneMenu>
                         </p:column>
                         <p:column width="300px">
                             <h:outputText value="Alerts/Reminders"/>
                         </p:column>
                         <p:column width="300px">
-                            <p:calendar id="button"  showOn="button" style="text-align: right;" />
+                            <p:calendar id="button" showOn="button" pattern = "dd/MM/yyyy" value="#{ChildCont.searchDate}" mask = "true" style="text-align: right;">
+                                <p:ajax event="dateSelect" listener="#{ChildCont.onDateSelect}" update="mealsTb"/>
+                                <p:ajax event="dateSelect" listener="#{ChildCont.onDateSelect}" update="dtActivities"/>
+                                <p:ajax event="dateSelect" listener="#{ChildCont.onDateSelect}" update="dtSleepRoutine"/>
+                                <p:ajax event="dateSelect" listener="#{ChildCont.onDateSelect}" update="nappyTb"/>
+                                <p:ajax event="dateSelect" listener="#{ChildCont.onDateSelect}" update="temperatureChart"/>
+                            </p:calendar>
                             <p:commandButton value="Previous" ajax="false"/>
-                            <p:commandButton value="Next" ajax="false"/>
+                            <p:commandButton value="Next" action="#{ChildCont.humorMe()}" update="mealsTb"/>
                         </p:column>
                     </p:panelGrid>
-                    
+                   
                     <p:panelGrid id="topPanel" columns="4" style="width: 1000px; height: 50px">
                         <p:column >
                             <p:panelGrid columns="2" style="width: 210px; height: 100px">
                                 <f:facet name="header">
-                                    <h:graphicImage  width="110px" height="100px" name="/images/baby5.jpg" />
+                                    <h:graphicImage  width="110px" height="100px" name="#{ChildCont.child.photography}" />
                                 </f:facet>
                                 
                                 <p:column width="150px">
@@ -49,30 +56,30 @@
                             </p:panelGrid>
                         
                         </p:column>
-                 <!--       
+                        
                         <p:panel style="width: 230px">  
                             <p:chart type="line" model="#{ChildCont.heightChart}" style="height:175px; width:180px"/>
                         </p:panel>
                             
                          <p:column>
                              <p:panel style="width: 230px">
-                                 <p:chart type="line" model="#{ChildCont.temperatureChart}" style="height:175px; width:180px"/>
+                                 <p:chart id="temperatureChart" type="line" model="#{ChildCont.temperatureChart}" style="height:175px; width:180px"/>
                             </p:panel>
                         </p:column>
                         
                         <p:column> 
                             <p:panel style="width: 230px">
-                            <h:outputText value="Weight chart" />
-                         <p:chart type="bar" model="#{chartView.lineModel1}" style="height:175px; width:180px"/>
+                            <!--<h:outputText value="Weight chart" />-->
+                            <p:chart type="bar" model="#{ChildCont.weightChart}" style="height:175px; width:180px"/>
                              </p:panel>
-                       </p:column>-->
+                        </p:column>
                               
-                       
+                        
                     </p:panelGrid>
                     
                     <p:panelGrid id="secondPanel" columns="2" style="width: 1000px;">
                         <p:column >
-                            <p:dataTable id="mealsTb" var="temp" value="#{ChildCont.getListOfMealsHadDb()}" selectionMode="single"  rowKey="#{temp.mealID}" selection="#{temp.mealID}">
+                            <p:dataTable id="mealsTb" var="temp" value="#{ChildCont.getListOfMealsHadDb()}" selectionMode="single"  rowKey="#{temp.mealID}" >
                                 <p:ajax event="rowDblselect" onsuccess="PF('dlgUpdateMeal').show()" listener="#{ChildCont.onRowDblClckSelect}" update=":updateBabyMeals:babyMealsUpdate" global="false" />
                                 <p:column headerText="Meal Type">
                                     <h:outputText value="#{temp.mealDescription}" />
@@ -88,7 +95,7 @@
                             </p:dataTable>
                         </p:column>
                         <p:column>
-                            <p:dataTable id="nappyTb" var="temp" value="#{ChildCont.getListOfNappiesDb()}" selectionMode="single"  rowKey="#{temp.nappyId}" selection="#{temp.nappyId}">
+                            <p:dataTable id="nappyTb" var="temp" value="#{ChildCont.getListOfNappiesDb()}" selectionMode="single"  rowKey="#{temp.nappyId}">
                                 <p:ajax event="rowDblselect" onsuccess="PF('dlgUpdateNappy').show()" listener="#{ChildCont.onRowDblClckSelectNappy}" update=":updateBabyNappy:NappyPanelGrid" global="false" />
                                 <p:column headerText="Nappy Wet">
                                     <h:outputText value="#{temp.conditionWet}" />
@@ -127,7 +134,7 @@
                         </p:column>
                         
                         <p:column>
-                            <p:dataTable id="dtSleepRoutine" var="temp" value="#{ChildCont.getListOfSleepingRoutineDb()}" selectionMode="single"  rowKey="#{temp.sleepingRoutineID}" selection="#{temp.sleepingRoutineID}">
+                            <p:dataTable id="dtSleepRoutine" var="temp" value="#{ChildCont.getListOfSleepingRoutineDb()}" selectionMode="single"  rowKey="#{temp.sleepingRoutineID}">
                                 <p:ajax event="rowDblselect" onsuccess="PF('dlgUpdateSleep').show()" listener="#{ChildCont.onRowDblClckSelectSleep}" update=":updateSleepRecordForm:sleepPanelGrid" global="false" />
                                 <p:column headerText="Sleeping Time">
                                     <h:outputText value="#{temp.sleepingTime}" />

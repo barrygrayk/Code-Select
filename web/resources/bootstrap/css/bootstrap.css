@@ -1603,7 +1603,7 @@ pre code {
         width: 1170px;
     }
 }
-.container-fluid {
+.navbar-collapse collapse {
     padding-right: 15px;
     padding-left: 15px;
     margin-right: auto;
@@ -6977,15 +6977,15 @@ div.timeline-event-selected {
 
 .sidedarLogo{
     display: block;
-    width: 130px;
-    height: auto;
+    width: 98px;
+    height: 50px;
     margin: auto;
     padding:  5px;
 }
 .sidedarLogo:hover{
     display: block;
-    width: 135px;
-    height: auto;
+    width: 105px;
+    height: 55px;
     margin: auto;
     padding:  5px;
 }
@@ -7156,3 +7156,80 @@ input, textarea {
 .user{
     padding: 10px;
 }
+
+/*Sentinal*/
+.layout-header-widgets {
+    margin: 0px;
+    padding: 0px;
+    position: absolute;
+    right: 10px;
+    top: 6px;
+}
+
+
+element.style {
+}
+
+.Fs14 {
+    font-size: 14px !important;
+}
+
+.white {
+    color: #ffffff;
+}
+
+.layout-header-widgets {
+    margin: 0px;
+    padding: 0px;
+    position: absolute;
+    right: 10px;
+    top: 6px;
+}
+
+
+.white {
+    color: #ffffff !important;
+}
+user agent stylesheet
+ul, menu, dir {
+    display: block;
+    list-style-type: disc;
+    -webkit-margin-before: 1em;
+    -webkit-margin-after: 1em;
+    -webkit-margin-start: 0px;
+    -webkit-margin-end: 0px;
+    -webkit-padding-start: 40px;
+}
+Inherited from div#layout-header.Unselectable.fontRegular
+
+.Unselectable {
+    -webkit-touch-callout: none;
+    -webkit-user-select: none;
+    -khtml-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    user-select: none;
+}
+.fontRegular {
+    font-family: 'titillium_webregular' !important;
+}
+
+.fontRegular {
+    font-family: 'titillium_webregular' !important;
+}
+
+a, div, span, input, textarea, li, strong, button {
+    outline: none;
+    text-decoration: none;
+    -webkit-tap-highlight-color: rgba(0,0,0,0);
+    -webkit-tap-highlight-color: rgba(0,0,0,0);
+    -webkit-touch-callout: none;
+}
+
+
+.marker .ui-icon-closethick{
+    background-position: -16px -80px;
+}
+
+
+

@@ -11,7 +11,7 @@
       xmlns:ui="http://xmlns.jcp.org/jsf/facelets">-->
 
     <f:view contentType="text/html">
-        <h:head>
+        <h:head >
             <f:facet name="first">
 
                 <meta content='text/html; charset=UTF-8' http-equiv="Content-Type"/>
@@ -33,11 +33,12 @@
 
             <p:layout fullPage="true">
 
+                <p:layoutUnit position="north" size="50" resizable="true" closable="true" collapsible="true" >
 
-                <p:layoutUnit position="south" size="50" closable="true" collapsible="true">
+                    <ui:include src="header.xhtml" />
                 </p:layoutUnit>
 
-                <p:layoutUnit position="west" size="auto" header="Dash" collapsible="true" style="padding: 2px" >
+                <p:layoutUnit position="west" size="auto" header="Dash" collapsible="true" style="padding: 2px" styleClass="marker" >
                     <h:form styleClass="wrapper">
 
                         <f:ajax render=":content">
@@ -51,8 +52,7 @@
                             </div>
 
 
-
-                            <p:menu style="width:230px; margin:auto"  styleClass="sidebar-nav" toggleable="true"  > 
+                            <p:menu style="width:230px; margin:auto"  toggleable="true" styleClass="marker"    > 
 
                                 <p:submenu label="Dashboard" style="padding:8px" styleClass="sidebar-brand" icon="fa fa-home">
                                     <p:menuitem value="Summary" actionListener="#{menuView.update}"  icon="fa fa-pie-chart" />
@@ -74,13 +74,8 @@
                                 </p:submenu>
 
                                 <p:submenu label="Baby Tracker" styleClass="sidebar-brand" style="padding:8px" icon="fa fa-child">
-                                    <p:menuitem value="View child profiles" actionListener="#{menuView.delete}" action="#{Include.setPage('viewbaby')}" update=":content" icon="ui-icon-close"/>
-                                    <p:menuitem value="Add baby profile" actionListener="#{menuView.delete}" action="#{Include.setPage('addBaby')}" update=":content" icon="ui-icon-close"/>
-                                    <p:menuitem value="Edit baby profile" actionListener="#{menuView.delete}" action="#{Include.setPage('editBaby')}"  update=":content" icon="fa-edit"/>
-                                    <p:menuitem value="Delete baby profile" actionListener="#{menuView.delete}" action="#{Include.setPage('deleteBaby')}" update=":content" icon="fa-edit"/>
-                                    <p:menuitem value="Child Profile" actionListener="#{menuView.delete}" action="#{Include.setPage('childProfilePage')}" update=":content" icon="fa-edit"/>
-                                    <p:menuitem value="Capture data" actionListener="#{menuView.delete}"  ajax="false" icon="ui-icon-close"/>
-                                    <p:menuitem value="Generate report" actionListener="#{menuView.delete}"  ajax="false" icon="ui-icon-close"/>    
+                                    <p:menuitem value="View child profile" actionListener="#{menuView.delete}" action="#{Include.setPage('viewbaby')}" update=":content" icon="fa fa-smile-o"/>
+                                   
                                 </p:submenu>
 
                                 <p:submenu label="Donations" styleClass="sidebar-brand" style="padding:8px" icon="fa fa-money">

@@ -30,6 +30,7 @@ import org.primefaces.event.SelectEvent;
 import org.primefaces.event.UnselectEvent;
 import org.primefaces.model.UploadedFile;
 import com.validation.MrKaplan;
+import java.io.IOException;
 import java.sql.Time;
 import java.util.HashMap;
 import java.util.List;
@@ -38,10 +39,14 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.annotation.PostConstruct;
 import javax.faces.bean.SessionScoped;
+import javax.faces.context.ExternalContext;
+import javax.servlet.http.HttpServletRequest;
 import org.primefaces.context.RequestContext;
 import org.primefaces.event.CellEditEvent;
 import org.primefaces.model.chart.Axis;
 import org.primefaces.model.chart.AxisType;
+import org.primefaces.model.chart.BarChartModel;
+import org.primefaces.model.chart.BarChartSeries;
 import org.primefaces.model.chart.CategoryAxis;
 import org.primefaces.model.chart.LineChartModel;
 import org.primefaces.model.chart.LineChartSeries;
@@ -69,42 +74,16 @@ public class ChildController extends Child implements Serializable{
     private DailyActivities activity;
     
     private LineChartModel heightChart, temperatureChart;
+    private BarChartModel weightChart;
     
-    private String slectedChild;
-    private ArrayList<String> listOfChildrenDropbox = new ArrayList<String>();
-
-    public String getSlectedChild() {
-        System.out.println("____Get___"+ slectedChild);
-
-        return slectedChild;
-    }
-
-    public void setSlectedChild(String slectedChild) {
-        this.slectedChild = slectedChild;
-                System.out.println("___set____"+ this.slectedChild);
-
-    }
-
-    public ArrayList<String> getListOfChildrenDropbox() {
-        return listOfChildrenDropbox;
-    }
-
-    public void setListOfChildrenDropbox(ArrayList<String> listOfChildrenDropbox) {
-        this.listOfChildrenDropbox = listOfChildrenDropbox;
-    }
+    private String selectedChild;
+    private Date searchDate;
     
     
     @PostConstruct 
     public void init(){
-        List <Child> childList = new ArrayList <> ();
         try {
-        childList = this.getlistOfChildren();
-        
-        for(Child child: childList){
-            listOfChildrenDropbox.add(child.getFirstname() +" " +  child.getLastname() );
-                  
-        }
-       
+            getlistOfChildren();
         } catch (ClassNotFoundException ex) {
             Logger.getLogger(ChildController.class.getName()).log(Level.SEVERE, null, ex);
         } catch (SQLException ex) {
@@ -127,6 +106,7 @@ public class ChildController extends Child implements Serializable{
         sql = null;
         sql2 = null;
         sql3 = null;
+        searchDate = new Date();
         activity = new DailyActivities();
     }
     
@@ -280,8 +260,12 @@ public class ChildController extends Child implements Serializable{
     public ArrayList<Nappies> getListOfNappiesDb() throws ClassNotFoundException, SQLException{
         
         ArrayList<Nappies> currentNappiesRecord = new ArrayList<Nappies>();
-        
-        sql = "SELECT idbabynappys, nappyWet, nappyDirty, nappyChangeTime, date FROM babynappys WHERE BabyProfile_idBabyProfile ="+this.child.getBabyProfileid();
+        if(getSearchDate().equals(null)){
+            sql = "SELECT idbabynappys, nappyWet, nappyDirty, nappyChangeTime, date FROM babynappys WHERE BabyProfile_idBabyProfile ="+this.child.getBabyProfileid();
+        }else{
+            sql = "SELECT idbabynappys, nappyWet, nappyDirty, nappyChangeTime, date FROM babynappys WHERE"
+                    + " BabyProfile_idBabyProfile ="+this.child.getBabyProfileid()+" AND babynappys.date ='"+dateConverter(getSearchDate())+"'";
+        }
         rs = stmt.executeQuery(sql);
         
         while(rs.next()){
@@ -302,8 +286,14 @@ public class ChildController extends Child implements Serializable{
     // reading list of child's meals from DB
     public ArrayList<Meals> getListOfMealsHadDb()throws ClassNotFoundException, SQLException{
         
-        ArrayList<Meals> currentMealsList = new ArrayList<Meals>();  
+        ArrayList<Meals> currentMealsList = new ArrayList<Meals>(); 
+        if(getSearchDate().equals(null)){
+        
         sql = "SELECT idBabyMeals, typeOfMeal, date, time, BabyMealsComment FROM babymeals WHERE babymeals.BabyProfile_idBabyProfile ="+this.child.getBabyProfileid();
+        }else{
+            sql = "SELECT idBabyMeals, typeOfMeal, date, time, BabyMealsComment FROM babymeals "
+                    + "WHERE babymeals.BabyProfile_idBabyProfile ="+this.child.getBabyProfileid()+" AND babymeals.date ='"+dateConverter(getSearchDate())+"'";
+        }
         rs = stmt.executeQuery(sql);
         
         while(rs.next()){
@@ -316,14 +306,18 @@ public class ChildController extends Child implements Serializable{
             currentMealsList.add(meal);
         }
         this.child.setlistOfMealsHad(currentMealsList);
-        this.child.verifyListOfMealsHad();
         return this.child.getListOfMealsHad();
     }
     
     // reading records of child's daily activities
     public ArrayList<DailyActivities> getListOfActivitiesDb()throws ClassNotFoundException, SQLException{
         
-        sql = "SELECT idbabyactivity, date, time, activity, activityStatus, comment FROM babyactivities WHERE babyactivities.BabyProfile_idBabyProfile="+this.child.getBabyProfileid();
+        if(getSearchDate().equals(null)){
+            sql = "SELECT idbabyactivity, date, time, activity, activityStatus, comment FROM babyactivities WHERE babyactivities.BabyProfile_idBabyProfile="+this.child.getBabyProfileid();
+        }else{
+            sql = "SELECT idbabyactivity, date, time, activity, activityStatus, comment FROM babyactivities "
+                    + "WHERE babyactivities.BabyProfile_idBabyProfile="+this.child.getBabyProfileid()+" AND babyactivities.date ='"+dateConverter(getSearchDate())+"'";
+        }
         rs = stmt.executeQuery(sql);
         
         ArrayList<DailyActivities> currentActivityList = new ArrayList<DailyActivities>();
@@ -348,8 +342,12 @@ public class ChildController extends Child implements Serializable{
     public ArrayList<SleepingRoutine> getListOfSleepingRoutineDb()throws ClassNotFoundException, SQLException{
         
         ArrayList<SleepingRoutine> currentListOfSleepRoutine = new ArrayList<SleepingRoutine>();
-        
-        sql = "SELECT idbabysleeptime, sleeptime, waketime, Date FROM babysleeptime WHERE babysleeptime.BabyProfile_idBabyProfile="+this.child.getBabyProfileid();
+        if(getSearchDate().equals(null)){
+            sql = "SELECT idbabysleeptime, sleeptime, waketime, Date FROM babysleeptime WHERE babysleeptime.BabyProfile_idBabyProfile="+this.child.getBabyProfileid();
+        }else{
+            sql = "SELECT idbabysleeptime, sleeptime, waketime, Date FROM babysleeptime WHERE"
+                    + " babysleeptime.BabyProfile_idBabyProfile="+this.child.getBabyProfileid()+" AND babysleeptime.Date ='"+dateConverter(getSearchDate())+"'";
+        }
         rs = stmt.executeQuery(sql);
         while(rs.next()){
             SleepingRoutine currentRoutine = new SleepingRoutine();
@@ -385,8 +383,12 @@ public class ChildController extends Child implements Serializable{
     public ArrayList<Temperature> getListOfAllTemperatureRecords()throws ClassNotFoundException, SQLException{
         
         ArrayList<Temperature> currentListOfTemperatureRecords = new ArrayList<Temperature>();
-        
-        sql2 = "SELECT idBabyTemperature, babyTemperature, date, time FROM babytemperature WHERE babytemperature.BabyProfile_idBabyProfile="+this.child.getBabyProfileid();
+        if(getSearchDate().equals(null)){
+            sql2 = "SELECT idBabyTemperature, babyTemperature, date, time FROM babytemperature WHERE babytemperature.BabyProfile_idBabyProfile="+this.child.getBabyProfileid();
+        }else{
+             sql2 = "SELECT idBabyTemperature, babyTemperature, date, time FROM babytemperature WHERE"
+                     + " babytemperature.BabyProfile_idBabyProfile="+this.child.getBabyProfileid();//+" AND babyTemperature.date ='"+dateConverter(getSearchDate())+"'";
+        }
         rs = stmt.executeQuery(sql2);
         while(rs.next()){
             Temperature currentTemperature = new Temperature();
@@ -398,6 +400,24 @@ public class ChildController extends Child implements Serializable{
         }
         this.child.setlistOfTempRecorded(currentListOfTemperatureRecords);
         return this.child.getlistOfTempRecorded();
+    }
+    
+    // get list of Temperature records 
+    public ArrayList<Weight> getListOfAllWeightRecords()throws ClassNotFoundException, SQLException{
+        
+        ArrayList<Weight> currentListOfWeightRecords = new ArrayList<Weight>();
+        
+        sql2 = "SELECT idBabyWeight, weight, date FROM babyweight WHERE babyweight.BabyProfile_idBabyProfile="+this.child.getBabyProfileid();
+        rs = stmt.executeQuery(sql2);
+        while(rs.next()){
+            Weight currentWeight = new Weight();
+            currentWeight.setWeightId(rs.getInt("idBabyWeight"));
+            currentWeight.setWeight(rs.getDouble("weight"));
+            currentWeight.setDateRecorded(rs.getDate("date"));
+            currentListOfWeightRecords.add(currentWeight); 
+        }
+        this.child.setListOfWeightRecords(currentListOfWeightRecords);
+        return this.child.getListOfWeightRecords();
     }
     
     public void setListOfChildren(ArrayList<Child> listOfChildren) {
@@ -857,8 +877,39 @@ public class ChildController extends Child implements Serializable{
         ps.setString(5,this.child.getActivityrecorded().getComment());
         ps.executeUpdate();    
     }
+
+    public String getSelectedChild() {
+        return selectedChild;
+    }
+
+    public void setSelectedChild(String selectedChild) {
+        this.selectedChild = selectedChild;
+    }
     
-   public java.sql.Time timeConverter( Date date ){
+    public void getSelectedChildObject() throws ClassNotFoundException, SQLException{
+        for(int i = 0 ; i<getlistOfChildren().size();i++){
+            if(getlistOfChildren().get(i).getFirstname().equals(getSelectedChild())){
+                this.child = getlistOfChildren().get(i); 
+                getListOfAllHeightRecords();
+                createChartHeightModel();
+                getListOfAllTemperatureRecords();
+                createChartTemperatureModel();
+                getListOfAllWeightRecords();
+                createChartWeightModel();
+                humorMe();
+            }
+        }
+    }
+
+    public Date getSearchDate() {
+        return searchDate;
+    }
+
+    public void setSearchDate(Date searchDate) {
+        this.searchDate = searchDate;
+    }
+    
+    public java.sql.Time timeConverter( Date date ){
         Time sqlTime;
             if(date == null){
                 sqlTime = null;
@@ -871,9 +922,11 @@ public class ChildController extends Child implements Serializable{
     // dataTable event handlers for updating 
     public void onRowSelect(SelectEvent e){
         this.child = (Child) e.getObject();
+        humorMe();
         try {
             getListOfAllHeightRecords();
             getListOfAllTemperatureRecords();
+            getListOfAllWeightRecords();
         } catch (ClassNotFoundException ex) {
             Logger.getLogger(ChildController.class.getName()).log(Level.SEVERE, null, ex);
         } catch (SQLException ex) {
@@ -881,6 +934,7 @@ public class ChildController extends Child implements Serializable{
         }
         createChartHeightModel();
         createChartTemperatureModel();
+        createChartWeightModel();
     }
     
     public void onRowUnselect(UnselectEvent e){
@@ -916,11 +970,20 @@ public class ChildController extends Child implements Serializable{
         facesContext.addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "Date and Time Selected",
                 format.format(event.getObject())));
         super.intakeDetails.setDateAndTime((Date)event.getObject());
-        System.out.println("Test DAte:"+ (Date)event.getObject());
+        
                 
     }
-    public void humorMe(){      
-        System.out.println("Safado ID: "+this.child.getlistOfTempRecorded().size());
+    public String humorMe(){     
+        /*ExternalContext ec = FacesContext.getCurrentInstance().getExternalContext();
+        ec.redirect(((HttpServletRequest) ec.getRequest()).getRequestURI());
+        System.out.println("Safado selecionou: "+this.getSelectedChild());
+        return "childProfilePage.xhtml?faces-redirect=true";*/
+        System.out.println("Test DAte:"+ dateConverter(this.getSearchDate()));
+        if(this.child.getBabyProfileid()==1)
+            this.child.setPhotography("/images/baby5.jpg");
+        else 
+            this.child.setPhotography("/images/baby1.jpg");
+        return "";
     }
      
     public void onCellEdit(CellEditEvent event) {
@@ -1011,6 +1074,21 @@ public class ChildController extends Child implements Serializable{
         return tempModel;
     }
     
+    private BarChartModel initWeightModel() {
+      
+        BarChartModel model = new BarChartModel();
+ 
+        BarChartSeries weightValues = new BarChartSeries();
+        weightValues.setLabel("Weight");
+        this.child.getListOfWeightRecords().forEach((currWeight) -> {
+            weightValues.set(yearConverter(currWeight.getDateRecorded()), currWeight.getWeight());
+        }); 
+ 
+        model.addSeries(weightValues);
+        
+        return model;
+    }
+    
     public void createChartHeightModel(){
         
         heightChart = initHeightModel();
@@ -1038,7 +1116,24 @@ public class ChildController extends Child implements Serializable{
         yAxisTemp.setMin(0);
         yAxisTemp.setMax(3);      
     }
+    
+    private void createChartWeightModel() {
+        
+        weightChart = initWeightModel(); 
+        
+        weightChart.setTitle("Weight Chart");
+        weightChart.setLegendPosition("ne");
+         
+        Axis xAxis = weightChart.getAxis(AxisType.X);
+        xAxis.setLabel("Weeks");
+         
+        Axis yAxis = weightChart.getAxis(AxisType.Y);
+        yAxis.setLabel("Kilograms(Kg)");
+        yAxis.setMin(0);
+        yAxis.setMax(50);
 
+    }
+    
     public LineChartModel getHeightChart() {
         return heightChart;
     }
@@ -1046,5 +1141,13 @@ public class ChildController extends Child implements Serializable{
     public LineChartModel getTemperatureChart() {
         return temperatureChart;
     }
-    
+
+    public BarChartModel getWeightChart() {
+        return weightChart;
+    }
+    //update charts
+    public void refreshChartS(){
+        initTemperatureModel();
+        createChartTemperatureModel();
+    }
 }
