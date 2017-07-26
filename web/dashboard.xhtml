@@ -33,12 +33,10 @@
 
             <p:layout fullPage="true">
 
-                <p:layoutUnit position="north" size="50" resizable="true" closable="true" collapsible="true" >
 
-                    <ui:include src="header.xhtml" />
-                </p:layoutUnit>
 
                 <p:layoutUnit position="west" size="auto" header="Dash" collapsible="true" style="padding: 2px" styleClass="marker" >
+
                     <h:form styleClass="wrapper">
 
                         <f:ajax render=":content">
@@ -75,7 +73,7 @@
 
                                 <p:submenu label="Baby Tracker" styleClass="sidebar-brand" style="padding:8px" icon="fa fa-child">
                                     <p:menuitem value="View child profile" actionListener="#{menuView.delete}" action="#{Include.setPage('viewbaby')}" update=":content" icon="fa fa-smile-o"/>
-                                   
+
                                 </p:submenu>
 
                                 <p:submenu label="Donations" styleClass="sidebar-brand" style="padding:8px" icon="fa fa-money">
@@ -95,7 +93,12 @@
                     </h:form>
                 </p:layoutUnit>
                 <p:layoutUnit position="center">
+                 
+
+                        <ui:include src="header.xhtml" />
+                  
                     <div align="center"> 
+
                         <h:panelGroup id="content" layout="block">
 
                             <ui:include src="#{Include.page}.xhtml" />

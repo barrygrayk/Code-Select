@@ -91,6 +91,7 @@ public class MessagesController extends InventoryAlerts implements Serializable 
     
     public void sendMessage (){
         Message msg  = new Message();  
+        
     }
 
 }

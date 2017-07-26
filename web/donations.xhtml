@@ -6,7 +6,7 @@
       xmlns:p="http://primefaces.org/ui"
       xmlns:f="http://xmlns.jcp.org/jsf/core">
     <ui:composition>
-        <p:chart id="donationsChart" type="bar" model="#{DonationsCont.combinedModel}" style="height:270px;"   class="chart"/>
+       <p:chart id="donationsChart" type="bar" model="#{DonationsCont.combinedModel}" style="height:270px;" class="chart"/>
 
         <h:form id="donationsForm">
             <p:dataTable id="donationTable" var="dontions" value="#{DonationsCont.donations}" rowKey="#{dontions.id}"

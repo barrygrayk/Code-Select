@@ -1,0 +1,97 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:p="http://primefaces.org/ui">
+    <h:head>
+
+    </h:head>
+    <f:facet name="first">
+
+        <meta content='text/html; charset=UTF-8' http-equiv="Content-Type"/>
+        <meta name="viewport" content="width=device-width, initial-scale=1" />
+        <title>Application request</title>     
+    </f:facet>
+    <f:facet name="middle">
+        <h:outputStylesheet name="bootstrap/css/bootstrap.css" />
+        <h:outputStylesheet library="font-awesome" name="css/font-awesome.min.css" />
+
+        <h:outputScript library="primefaces" name="jquery/jquery.js" />
+    </f:facet>
+    <h:body>
+
+
+        <div id="fh5co-main">
+            <div class="fh5co-more-contact">
+                <div class="fh5co-narrow-content">
+
+
+                    <div class="fh5co-narrow-content animate-box" data-animate-effect="fadeInLeft">
+
+                        <div class="row">
+                            <div class="col-md-4">
+                                <h2>Apply </h2>
+                            </div>
+                        </div>
+                        <h:form>
+                            <p:growl autoUpdate="true"/>
+                            <div class="row">
+                
+                                <div class="col-md-12">
+                                    <div class="row">
+                                        <div class="col-md-6">
+                                            <div class="form-group">
+                                                <p:watermark for="FirstName" value="First name" />
+                                                <p:inputText id="FirstName" class="form-control" required="true" label="First name" value="#{Apply.firstname}"/>
+                                            </div>
+                                            <div class="form-group">
+                                                <p:watermark for="Lastname" value="Last name" />
+                                                <p:inputText id="Lastname" class="form-control" required="true" label="Lastname" value="#{Apply.lastname}"/>
+                                            </div>
+                                            <div class="form-group">
+                                                <p:watermark for="email" value="Email Address" />
+                                                <p:inputText id="email" class="form-control" required="true" label="Email address" value="#{Apply.emailAddress}"/>
+                                            </div>
+                                            <div class="form-group">
+                                                <h:panelGrid columns="2">
+                                                    <h:panelGrid>
+                                                        <p:selectOneMenu label="Country code" required="true" class="form-control" id="country" value="#{Apply.country}" style="width:60px; margin: 2px" filter="true" filterMatchMode="startsWith" panelStyle="width:auto">
+                                                            <p:ajax listener="#{Apply.onCountryChange()}"  update="Phone"  />
+                                                            <f:selectItem  class="form-control" itemLabel="Select Country" itemValue="#{Apply.country}" noSelectionOption="true"/>
+                                                            <f:selectItems value="#{Apply.countries}" />
+                                                        </p:selectOneMenu>
+                                                    </h:panelGrid>
+                                                    <h:panelGrid>
+                                                        <p:watermark for="Phone" value="Phone number" />
+                                                        <p:inputText id="Phone" class="form-control" value="#{Apply.code}" rendered="true" label="Phone number" />
+                                                    </h:panelGrid>
+                                                </h:panelGrid>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-6">
+                                            <div class="form-group">
+
+                                                <p:watermark for="message" value="Tell us why you are applying" />
+                                                <p:inputTextarea  id="message" rows="7" cols="30"  class="form-control"  autoResize="false" />
+
+                                            </div>
+                                            <div class="form-group">
+                                                <p:commandButton  class="btn btn-primary btn-md" value="Apply"/>
+
+                                            </div>
+                                        </div>
+
+                                    </div>
+                                </div>
+
+                            </div>
+                        </h:form>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+    </h:body>
+</html>
+
