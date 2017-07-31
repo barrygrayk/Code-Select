@@ -607,6 +607,7 @@
   content: "\f092";
 }
 .fa-upload:before {
+    width: 100px;
   content: "\f093";
 }
 .fa-lemon-o:before {

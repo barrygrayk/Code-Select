@@ -25,9 +25,8 @@
                                     <p:outputLabel id="fetchPersonTlfn" value="Phone Number:"/>
                                     <p:inputText id="txtFetchPersonTlfn" value="#{ChildCont.child.intakeDetails.phoneNumber}" />
                                     <p:outputLabel id="droppeddate" value="Date and Time:" />
-                                    <p:calendar id="dateDropped"  mask="99/99/9999" pattern="dd/MM/yyyy HH:mm:ss" value="#{ChildCont.child.intakeDetails.dateAndTime}" >
-                                        <!--<p:ajax event="dateSelect" listener="" />-->
-                                        <f:convertDateTime pattern="dd/MM/yyyy HH:mm:ss" />
+                                    <p:calendar id="dateDropped" pattern="dd/MM/yyyy HH:mm:ss" value="#{ChildCont.child.intakeDetails.dateAndTime}" >
+                                     
                                     </p:calendar>
                                 </h:panelGrid>
                             </p:fieldset>

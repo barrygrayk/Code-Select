@@ -10,34 +10,41 @@
     </h:head>
     <h:body>-->
         <ui:composition>
-            <h:form id="childProfile">
-                
-                <div id="Title" align="left" style="padding-left: 20px">
-                    <h1> Onthantile's Baby Profile</h1>
-                </div>
+            <h:form id="childProfile" enctype="multipart/form-data">                
                 <p:growl id="childProfilePage" showDetail="true"/>
                 <div id="ComponentsRow1">
+                    <p:toolbar>
+                        <p:toolbarGroup align="left">
+                            <h:graphicImage  width="130px" height="100px" name="/images/Logo.png" />
+                            <h:graphicImage  width="130px" height="100px" name="/images/logo1.png" />
+                        </p:toolbarGroup>
+
+                        <p:toolbarGroup align="right" >      
+                            <h1> Onthantile's Baby Profile</h1>            
+                        </p:toolbarGroup>
+                    </p:toolbar>
                     <p:panelGrid id="optionPanel" columns="3" style="width: 1000px;">
                         <p:column width="300px">
-                            <p:selectOneMenu id="searchChildAdvance" value="#{ChildCont.selectedChild}" style="width: 50px;">
-                                <f:selectItem itemLabel="Select a child" itemValue="#{ChildCont.selectedChild}"/>
+                           <p:selectOneMenu id="searchChildAdvance" value="#{ChildCont.selectedChild}" style="width: 50px;">
+                                <f:selectItem itemLabel="Select different Child to view" itemValue="" />
                                 <f:selectItems value="#{ChildCont.listOfChildren}" />
                                 <p:ajax id="currentPage" update="@form" listener="#{ChildCont.getSelectedChildObject()}"/>
                             </p:selectOneMenu>
                         </p:column>
                         <p:column width="300px">
-                            <h:outputText value="Alerts/Reminders"/>
-                        </p:column>
-                        <p:column width="300px">
-                            <p:calendar id="button" showOn="button" pattern = "dd/MM/yyyy" value="#{ChildCont.searchDate}" mask = "true" style="text-align: right;">
+                            <p:outputLabel value="View date:"/>
+                            <p:calendar id="button" showOn="button" placeholder="View date" pattern = "dd/MM/yyyy" value="#{ChildCont.searchDate}" mask = "true" style="text-align: right;">
                                 <p:ajax event="dateSelect" listener="#{ChildCont.onDateSelect}" update="mealsTb"/>
                                 <p:ajax event="dateSelect" listener="#{ChildCont.onDateSelect}" update="dtActivities"/>
                                 <p:ajax event="dateSelect" listener="#{ChildCont.onDateSelect}" update="dtSleepRoutine"/>
                                 <p:ajax event="dateSelect" listener="#{ChildCont.onDateSelect}" update="nappyTb"/>
-                                <p:ajax event="dateSelect" listener="#{ChildCont.onDateSelect}" update="temperatureChart"/>
+                                
                             </p:calendar>
-                            <p:commandButton value="Previous" ajax="false"/>
-                            <p:commandButton value="Next" action="#{ChildCont.humorMe()}" update="mealsTb"/>
+                            <p:commandButton value="Medical History" onclick="PF('dlgManageMedicalH').show()"  update=":mangeMedicalHistoryDialog"  type="submit"/>
+                            <p:commandButton value="Upload File(s)" actionListener="#{ChildCont.upload()}" update="mealsTb"/>
+                        </p:column>
+                        <p:column width="300px">
+                            <h:outputText value="Anomalies detected" style=" "/>
                         </p:column>
                     </p:panelGrid>
                    
@@ -45,25 +52,32 @@
                         <p:column >
                             <p:panelGrid columns="2" style="width: 210px; height: 100px">
                                 <f:facet name="header">
-                                    <h:graphicImage  width="110px" height="100px" name="#{ChildCont.child.photography}" />
+                                    <h:graphicImage  width="110px" height="100px" name="/images/#{ChildCont.child.photography}" />
                                 </f:facet>
                                 
                                 <p:column width="150px">
-                                    <h4><h:outputText value="Name: #{ChildCont.child.firstname} #{ChildCont.child.lastname}"/></h4>
-                                    <h4><h:outputText value="Birth: #{ChildCont.child.dateOfBirth}" /></h4>                                  
-                                    <h4><h:outputText value="Unique Marker: #{ChildCont.child.destingushingMarks}" /></h4>
+                                    <h4><p:outputLabel value="Name: #{ChildCont.child.firstname} #{ChildCont.child.lastname}"/></h4>
+                                    <h4><p:outputLabel value="Birth: #{ChildCont.child.dateOfBirth}" /></h4>                                  
+                                    <h4><p:outputLabel value="Distinction: #{ChildCont.child.destingushingMarks}" /></h4>
                                 </p:column>
                             </p:panelGrid>
                         
                         </p:column>
                         
                         <p:panel style="width: 230px">  
-                            <p:chart type="line" model="#{ChildCont.heightChart}" style="height:175px; width:180px"/>
+                            <p:chart type="line" model="#{ChildCont.heightChart}" style="height:175px; width:180px" responsive="true"/>
+                            <p:contextMenu>
+                                <p:menuitem value="Maximized Height View" onclick="PF('dlgHeightChart').show()" update=":viewHeightChart:PanelHeight" icon="ui-icon-view"/>
+                                <p:menuitem value="Maximized Weight View" onclick="PF('dlgWeightChart').show()" update=":viewWeightChart:PanelWeight" icon="ui-icon-view"/>
+                                 <p:menuitem value="Maximized Temperature View" onclick="PF('dlgTemperatureChart').show()" update=":viewTemperatureChart:PanelTemperature" icon="ui-icon-view"/>
+                            </p:contextMenu>
                         </p:panel>
                             
                          <p:column>
                              <p:panel style="width: 230px">
-                                 <p:chart id="temperatureChart" type="line" model="#{ChildCont.temperatureChart}" style="height:175px; width:180px"/>
+                                 <p:chart id="temperatureChart" type="line" model="#{ChildCont.temperatureChart}" style="height:175px; width:180px">
+                                     
+                                 </p:chart>
                             </p:panel>
                         </p:column>
                         
@@ -147,30 +161,54 @@
                     </p:panelGrid>
                     
                     <p:panelGrid id="bottomP" columns="4" style="width: 1000px;">
-                        <p:column>
-                            <h:outputText value="Medical Report" />
-                        </p:column>
-                        <p:column>
-                            <h:outputText value="Anomalies" />
-                        </p:column>
+           
                         <p:column>
                             <h:outputText value="Uploading Document" />
-                            <h:form enctype="multipart/form-data">
-                                <p:growl id="messages" showDetail="true" />
- 
-                                <p:fileUpload value="#{ChildCont.humorMe()}" mode="simple"/>
- 
-                                <p:commandButton value="Save" ajax="false" actionListener="#{ChildCont.upload()}" disabled="true" />
-                            </h:form>
+                           
+                                
+                            <div id="uploadPerfilPhoto" >
+                                
+                                <h:inputFile id="files" style="" value="#{ChildCont.perfilImage}">
+                                    
+                                    <f:passThroughAttribute name="accept" value="image/png/jpeg"/>
+                                    <f:ajax event="change" listener="#{ChildCont.uploadProfilePhoto}"  execute="@form" render="@form" />
+                                </h:inputFile>
+                                
+                            </div>   
+                            
+                                <!--<h:commandButton value="Upload Photo" actionListener="">
+                                    <f:ajax execute="@form" render="@form"/>
+                                </h:commandButton>-->
+                                
                         </p:column>
-                        <p:column>
-                            <h:outputText value="Adoption" />
+                        <p:column >
+                            <p:fileUpload value="#{ChildCont.file}" oncomplete="#{ChildCont.uploadFile()}" mode="simple" skinSimple="true"/>
                         </p:column>
-                    </p:panelGrid>
 
+                    </p:panelGrid>
+                    
                 </div>
 
             </h:form>
+            <style type="text/css">
+                #uploadPerfilPhoto{
+                    border: 1px solid #DDD;
+                    width: 100px; 
+                    height: 80px;
+                    
+                    background: url("#{resources['primefaces-start:images/uploadPhotoIcon.png']}");
+                    background-image: url("/images/uploadPhotoIcon.png");
+                    background-repeat: no-repeat;
+                    background-size: 100% 100%;
+                    
+                   
+                }
+                #uploadPerfilPhoto input[type='file']{
+                    width: 100%;
+                    height: 100%;
+                    opacity: 0;
+                }
+            </style>
             <p:dialog  header="Update Meal Record" widgetVar="dlgUpdateMeal" resizable="false" responsive="true" showEffect="explode" hideEffect="explode">
                 <ui:include src="updateBabyMeals.xhtml" />
             </p:dialog>
@@ -182,6 +220,18 @@
             </p:dialog>
             <p:dialog  header="Update Activity Record" widgetVar="dlgUpdateActivity" resizable="false" responsive="true" showEffect="explode" hideEffect="explode">
                 <ui:include src="updateBabyActivity.xhtml" />
+            </p:dialog>
+            <p:dialog  header="Manage Medical History" widgetVar="dlgManageMedicalH" resizable="false" responsive="true" showEffect="explode" hideEffect="explode">
+                <ui:include src="manageBabyMedicalHistory.xhtml" />
+            </p:dialog>
+            <p:dialog  header="Height Chart View" widgetVar="dlgHeightChart" resizable="false" responsive="true" showEffect="explode" hideEffect="explode">
+                <ui:include src="heightChartBigView.xhtml" />
+            </p:dialog>
+            <p:dialog  header="Temperature Chart View" widgetVar="dlgTemperatureChart" resizable="false" responsive="true" showEffect="explode" hideEffect="explode">
+                <ui:include src="temperatureChartBigView.xhtml" />
+            </p:dialog>
+            <p:dialog  header="Weight Chart View" widgetVar="dlgWeightChart" resizable="false" responsive="true" showEffect="explode" hideEffect="explode">
+                <ui:include src="weightChartBigView.xhtml" />
             </p:dialog>
         </ui:composition>
 

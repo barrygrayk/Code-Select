@@ -28,26 +28,29 @@ import javax.faces.bean.ManagedBean;
 import javax.faces.context.FacesContext;
 import org.primefaces.event.SelectEvent;
 import org.primefaces.event.UnselectEvent;
-import org.primefaces.model.UploadedFile;
 import com.validation.MrKaplan;
-import java.io.IOException;
+import java.io.File;
+import java.io.FileOutputStream;
+import java.io.InputStream;
 import java.sql.Time;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.annotation.PostConstruct;
 import javax.faces.bean.SessionScoped;
-import javax.faces.context.ExternalContext;
-import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.Part;
+//
 import org.primefaces.context.RequestContext;
 import org.primefaces.event.CellEditEvent;
+import org.primefaces.event.ItemSelectEvent;
+import org.primefaces.model.UploadedFile;
 import org.primefaces.model.chart.Axis;
 import org.primefaces.model.chart.AxisType;
 import org.primefaces.model.chart.BarChartModel;
 import org.primefaces.model.chart.BarChartSeries;
 import org.primefaces.model.chart.CategoryAxis;
+import org.primefaces.model.chart.ChartSeries;
 import org.primefaces.model.chart.LineChartModel;
 import org.primefaces.model.chart.LineChartSeries;
 
@@ -70,7 +73,6 @@ public class ChildController extends Child implements Serializable{
     private ResultSet rs, rs2, rs3;
     private String sql, sql2, sql3;
     private Connection connection, connection2, connection3;
-    private UploadedFile file;
     private DailyActivities activity;
     
     private LineChartModel heightChart, temperatureChart;
@@ -78,7 +80,9 @@ public class ChildController extends Child implements Serializable{
     
     private String selectedChild;
     private Date searchDate;
-    
+    private Part perfilImage;
+    private UploadedFile file;
+
     
     @PostConstruct 
     public void init(){
@@ -135,6 +139,10 @@ public class ChildController extends Child implements Serializable{
             String placeOfBirth = rs.getString("placeOfBirth");
             String generalRemarks = rs.getString("generalRemarks");
             Double headCircumference = rs.getDouble("headCir");
+            String photo ="default.png";
+            if(rs.getString("profilePhoto") != null){
+                photo = rs.getString("profilePhoto");
+            }
             
             // Required Docs
             ArrayList<String> docsRequired = new ArrayList<String>();            
@@ -184,7 +192,7 @@ public class ChildController extends Child implements Serializable{
             
             listOfChildren.add(new Child(id,fName,lName,gender,dateOfBirth, placeOfBirth,distinguishMarks,docsRequired,
                     childArrivalCondtion, docsNeededNote, medicalReport, intakeInfo,socialWorker,parentInfo,
-                    generalRemarks, weight, height, headCircumference, getListOfMedicalHystoryDb(id)));
+                    generalRemarks, weight, height, headCircumference, getListOfMedicalHystoryDb(id),photo));
              
         }
         return listOfChildren;
@@ -387,7 +395,7 @@ public class ChildController extends Child implements Serializable{
             sql2 = "SELECT idBabyTemperature, babyTemperature, date, time FROM babytemperature WHERE babytemperature.BabyProfile_idBabyProfile="+this.child.getBabyProfileid();
         }else{
              sql2 = "SELECT idBabyTemperature, babyTemperature, date, time FROM babytemperature WHERE"
-                     + " babytemperature.BabyProfile_idBabyProfile="+this.child.getBabyProfileid();//+" AND babyTemperature.date ='"+dateConverter(getSearchDate())+"'";
+                     + " babytemperature.BabyProfile_idBabyProfile="+this.child.getBabyProfileid();//+" AND babyTemperature.date <='"+dateConverter(getSearchDate())+"'";
         }
         rs = stmt.executeQuery(sql2);
         while(rs.next()){
@@ -479,7 +487,7 @@ public class ChildController extends Child implements Serializable{
                 + "`distinguishingMarks`,`form36`,`clinicCard`,`birthCertificate`,`medicalReport`,"
                 + "`requiredDocsComment`,`medicalReportComments`,`abuse`,`neglect`,`others`,`generalRemarks`,`headCir`) "
                 + "VALUES(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)";
-        ps = connection.prepareStatement(sql,Statement.RETURN_GENERATED_KEYS);  
+        ps = connection.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS);  
      
         ps.setString(1,this.getFirstname());
         ps.setString(2,this.getLastname());
@@ -585,6 +593,7 @@ public class ChildController extends Child implements Serializable{
         ps.execute();
         
     }
+    
     // check selectedCheckBoxes for RequiredDocs
     public int quickCheck(String a, ArrayList<String> vector){
         int value =0;
@@ -596,6 +605,7 @@ public class ChildController extends Child implements Serializable{
 
         return value;
     }
+    
     // util date to sql date converter
     public java.sql.Date dateConverter(Date utilDate){
         
@@ -877,7 +887,17 @@ public class ChildController extends Child implements Serializable{
         ps.setString(5,this.child.getActivityrecorded().getComment());
         ps.executeUpdate();    
     }
-
+    
+    //upload profile photo into DB
+    public void setProfilePhoto(String photo) throws SQLException, ClassNotFoundException{
+        sql3 = "UPDATE babyprofile SET profilePhoto=? "
+                + "WHERE idBabyProfile ="+this.child.getBabyProfileid();
+         
+        ps = connection.prepareStatement(sql3);
+        ps.setString(1,photo);
+        ps.executeUpdate(); 
+    }
+    
     public String getSelectedChild() {
         return selectedChild;
     }
@@ -896,7 +916,7 @@ public class ChildController extends Child implements Serializable{
                 createChartTemperatureModel();
                 getListOfAllWeightRecords();
                 createChartWeightModel();
-                humorMe();
+               
             }
         }
     }
@@ -922,7 +942,7 @@ public class ChildController extends Child implements Serializable{
     // dataTable event handlers for updating 
     public void onRowSelect(SelectEvent e){
         this.child = (Child) e.getObject();
-        humorMe();
+        
         try {
             getListOfAllHeightRecords();
             getListOfAllTemperatureRecords();
@@ -942,22 +962,6 @@ public class ChildController extends Child implements Serializable{
         child = null;
     }
 
-    // uploading a thing
-    public UploadedFile getFile() {
-        return file;
-    }
- 
-    public void setFile(UploadedFile file) {
-        this.file = file;
-    }
-     
-    public void upload() {
-        if(file != null) {
-            FacesMessage message = new FacesMessage("Succesful", file.getFileName() + " is uploaded.");
-            FacesContext.getCurrentInstance().addMessage(null, message);
-        }
-    }
-
     public void onDateSelect(SelectEvent event) {
         FacesContext facesContext = FacesContext.getCurrentInstance();
         SimpleDateFormat format = new SimpleDateFormat("dd/MM/yyyy");
@@ -973,17 +977,63 @@ public class ChildController extends Child implements Serializable{
         
                 
     }
+    // upload files 
+
+    public UploadedFile getFile() {
+        return file;
+    }
+
+    public void setFile(UploadedFile file) {
+        this.file = file;
+    }
+    public void uploadFile() {
+        if(file != null) {
+            FacesMessage message = new FacesMessage("Succesful", file.getFileName() + " is uploaded.");
+            FacesContext.getCurrentInstance().addMessage(null, message);
+        }
+    }
+    // uploading profile photo
+    public Part getPerfilImage() {
+        return perfilImage;
+    }
+
+    public void setPerfilImage(Part perfilImage) {
+        this.perfilImage = perfilImage;
+    }
+    
+    public void uploadProfilePhoto(){
+        try{
+            
+            InputStream in =  perfilImage.getInputStream();
+            String photoName = this.child.getBabyProfileid()+""+perfilImage.getSubmittedFileName();
+            File file = new File("/home/gray/Documents/NetBeansProjects/OnthantileWebApplication/web/resources/images/"+photoName);
+            
+            file.createNewFile(); 
+            FileOutputStream out = new FileOutputStream(file);
+            
+            byte[] buffer = new byte[1024];
+            int lenght;
+            
+            while((lenght=in.read(buffer))>0){
+                out.write(buffer,0,lenght);
+            }
+            out.close();
+            in.close();
+            setProfilePhoto(photoName);
+            
+        }catch(Exception e){
+            e.printStackTrace(System.out);
+        }
+    }
+    
     public String humorMe(){     
         /*ExternalContext ec = FacesContext.getCurrentInstance().getExternalContext();
         ec.redirect(((HttpServletRequest) ec.getRequest()).getRequestURI());
         System.out.println("Safado selecionou: "+this.getSelectedChild());
         return "childProfilePage.xhtml?faces-redirect=true";*/
         System.out.println("Test DAte:"+ dateConverter(this.getSearchDate()));
-        if(this.child.getBabyProfileid()==1)
-            this.child.setPhotography("/images/baby5.jpg");
-        else 
-            this.child.setPhotography("/images/baby1.jpg");
-        return "";
+
+        return "Rosaaaa";
     }
      
     public void onCellEdit(CellEditEvent event) {
@@ -1108,6 +1158,7 @@ public class ChildController extends Child implements Serializable{
         temperatureChart = initTemperatureModel();
         temperatureChart.setTitle("Temperature Chart");
         temperatureChart.setLegendPosition("e");
+        temperatureChart.setShowDatatip(true);
         temperatureChart.getAxes().put(AxisType.X, new CategoryAxis("Weeks"));
         Axis yAxisTemp = temperatureChart.getAxis(AxisType.Y);
         yAxisTemp.setMin(0);
@@ -1145,6 +1196,17 @@ public class ChildController extends Child implements Serializable{
     public BarChartModel getWeightChart() {
         return weightChart;
     }
+    
+    // select event 
+    /*public void itemSelect(ItemSelectEvent event){
+        
+        FacesMessage msg = new FacesMessage(FacesMessage.SEVERITY_INFO, "Item selected", "Item Value: "
+				+ ((LineChartSeries) temperatureChart.getSeries().get(event.getSeriesIndex())).getData().get(event.getItemIndex())
+				+ ", Series name:" + ((LineChartSeries) temperatureChart.getSeries().get(event.getSeriesIndex())).getLabel());
+
+		FacesContext.getCurrentInstance().addMessage(event.getComponent().getClientId(), msg);
+                System.out.println("Crazy"+ ((LineChartSeries) temperatureChart.getSeries().get(event.getSeriesIndex())).getLabel());
+    }*/
     //update charts
     public void refreshChartS(){
         initTemperatureModel();

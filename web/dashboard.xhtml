@@ -30,61 +30,50 @@
         </h:head>
 
         <h:body>
-
             <p:layout fullPage="true">
-
-
-
                 <p:layoutUnit position="west" size="auto" header="Dash" collapsible="true" style="padding: 2px" styleClass="marker" >
 
                     <h:form styleClass="wrapper">
 
                         <f:ajax render=":content">
                             <p:growl autoUpdate="true"/>
-                            <h:graphicImage class="sidedarLogo" value="resources/images/logo.png" />
-                            <div class="user">
-                                <span class="fa fa-user-secret"  />
-                                <p:outputLabel value="#{Login.fullname}" style="text-align: center;padding: 2px; margin-left: 25% "/> <br/>
-                                <span class="fa fa-magic" />
-                                <p:outputLabel value="#{Login.role}" style="text-align: center;padding: 2px; inline-box-align: last;margin-left: 25%"/>
+                     
+                            <div class="w3-card-2 w3-round w3-white">
+                                <div class="w3-container">
+                                    <p class="w3-center"><h:graphicImage value="resources/images/avatar6.png" class="w3-circle" style="height:106px;width:106px" alt="Avatar" /></p>
+                                    <hr/>
+                                    <p><i class="fa fa-user-secret fa-fw w3-margin-right w3-text-theme"></i> #{Login.fullname}</p>
+                                    <p><i class="fa fa-magic fa-fw w3-margin-right w3-text-theme"></i>#{Login.role}</p>
+                                </div>
                             </div>
-
-
-                            <p:menu style="width:230px; margin:auto"  toggleable="true" styleClass="marker"    > 
-
+                     
+                            <p:menu style="width:235px; margin:auto"  toggleable="true" styleClass="marker"    > 
                                 <p:submenu label="Dashboard" style="padding:8px" styleClass="sidebar-brand" icon="fa fa-home">
                                     <p:menuitem value="Summary" actionListener="#{menuView.update}"  icon="fa fa-pie-chart" />
                                 </p:submenu>
                                 <p:submenu label="Intern Applications" styleClass="sidebar-brand" style="padding:10px" icon="fa fa-pencil-square-o">
-                                    <p:menuitem styleClass="sidebar-item" value="Inbox" actionListener="#{menuView.save}" update=":content" icon="fa fa-inbox" />
+                                    <p:menuitem styleClass="sidebar-item" value="Inbox" actionListener="#{menuView.save}" update=":content" icon="fa fa-inbox" action="#{Include.setPage('internAppInbox')}"/>
                                     <p:menuitem value="Progress" actionListener="#{menuView.update}"  icon="fa fa-list-ol"   />
                                 </p:submenu>
                                 <p:submenu label="Messages" styleClass="sidebar-brand" style="padding:10px" icon="fa fa-envelope">
                                     <p:menuitem styleClass="sidebar-item" value="Notice board" actionListener="#{menuView.save}"  action="#{Include.setPage('messages')}" update=":content" icon="fa fa-bullhorn" />
                                     <p:menuitem value="Alerts" actionListener="#{menuView.update}"  icon="fa fa-warning"   />
                                 </p:submenu>
-
                                 <p:submenu label="Staff Management" styleClass="sidebar-brand" style="padding:8px" icon="fa fa-users">
                                     <p:menuitem id="adssd" value="Staff manager" actionListener="#{menuView.save}" action="#{Include.setPage('staffManager')}" icon="fa fa-user" update=":content"/>
                                     <p:menuitem id="ps" value="View Staff" actionListener="#{menuView.save}" action="#{Include.setPage('viewStaff')}" icon="fa fa-user-plus" update=":content">
                                         <f:param name="navParam" value="viewStaff" />
                                     </p:menuitem>
                                 </p:submenu>
-
                                 <p:submenu label="Baby Tracker" styleClass="sidebar-brand" style="padding:8px" icon="fa fa-child">
                                     <p:menuitem value="View child profile" actionListener="#{menuView.delete}" action="#{Include.setPage('viewbaby')}" update=":content" icon="fa fa-smile-o"/>
-
                                 </p:submenu>
-
                                 <p:submenu label="Donations" styleClass="sidebar-brand" style="padding:8px" icon="fa fa-money">
                                     <p:menuitem value="Add needs" actionListener="#{menuView.save}"  icon="fa fa-plus-square-o" action="#{Include.setPage('donations')}" update=":content" />
                                 </p:submenu>
-
-
                                 <p:submenu label="Inventory" styleClass="sidebar-brand" style="padding:8px" icon="fa fa-shopping-cart">
                                     <p:menuitem value="Manage inventory" actionListener="#{menuView.save}" action="#{Include.setPage('inventory')}" update=":content" icon="fa fa-clipboard" />
                                 </p:submenu>
-
                                 <p:submenu label="Settings" styleClass="sidebar-brand" style="padding:8px" icon="fa fa-gears">
                                     <p:menuitem value="Logout" actionListener="#{menuView.save}" action="#{Login.doLogOut()}"  icon="fa fa-sign-out" />
                                 </p:submenu>
@@ -93,24 +82,15 @@
                     </h:form>
                 </p:layoutUnit>
                 <p:layoutUnit position="center">
-                 
-
-                        <ui:include src="header.xhtml" />
-                  
+                    <ui:include src="header.xhtml" />
                     <div align="center"> 
-
                         <h:panelGroup id="content" layout="block">
-
                             <ui:include src="#{Include.page}.xhtml" />
-
                         </h:panelGroup>
                     </div>
                 </p:layoutUnit>
-
             </p:layout>
-
         </h:body>
-
     </f:view>
 </html>
 

@@ -9,7 +9,7 @@ import java.util.Random;
 public class Authentication implements Authenticate {
 
     private int id;
-    private byte [] hashedPassword;
+    private String hashedPassword;
     private byte[] salt;
     private String userName;
     private String token;
@@ -18,7 +18,7 @@ public class Authentication implements Authenticate {
     String status;
 
     public Authentication() {
-        hashedPassword = "testing".getBytes();
+        hashedPassword = "testing";
         userName = null;
         salt = "testing".getBytes();
         status = statusArray[0];
@@ -42,7 +42,7 @@ public class Authentication implements Authenticate {
     }
 
     @Override
-    public boolean sethashPassword(byte [] hash) {
+    public boolean sethashPassword(String hash) {
         boolean set = false;
         if (hash != null) {
             this.hashedPassword = hash;
@@ -52,7 +52,7 @@ public class Authentication implements Authenticate {
     }
 
     @Override
-    public byte [] getHashedPassword() {
+    public String getHashedPassword() {
         return hashedPassword;
     }
 

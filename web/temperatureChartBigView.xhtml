@@ -1,0 +1,38 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:f="http://xmlns.jcp.org/jsf/core">
+
+    <ui:composition>
+        
+        <h:form id="viewTemperatureChart">
+            <div class="ui-g">
+                <div class="ui-g-12" style="width: 500px">
+                    <p:panel id="PanelTemperature" style="width: 858px" >
+                        <p:chart type="line" model="#{ChildCont.temperatureChart}" style="height:400px; width:800px"/>
+                    </p:panel>
+                </div>
+                <div class="ui-g-12">
+                    <p:panel  >
+                        <p:panelGrid columns="3">
+                            <p:commandButton value="Update" >
+                                <p:resetInput target="PanelTemperature"/>
+                            </p:commandButton>
+                            <p:commandButton value="Delete" >
+                                <p:resetInput target="PanelTemperature"/>
+                            </p:commandButton>
+                            <p:commandButton value="Cancel" >
+                                <p:resetInput target="PanelTemperature"/>
+                            </p:commandButton>
+                        </p:panelGrid>
+                    </p:panel>
+                </div>
+            </div>    
+        </h:form> 
+    </ui:composition>
+   
+</html>
+

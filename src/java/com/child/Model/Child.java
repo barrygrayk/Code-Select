@@ -54,7 +54,7 @@ public class Child extends Person implements Serializable{
             ArrayList childArrivalCondition, String requiredDocNote, String ChildArrivalMedicalReport ,
             IntakeInfo intakeDetails, SocialWorker socialWorkerDetails, ParentInfo parentInfo, String generalRemarks,
             Weight weightRecorded, Height heightRecorded, double headCir, 
-            ArrayList<ChildMedicalHistory> listOfMedicalHistoryRecords) {
+            ArrayList<ChildMedicalHistory> listOfMedicalHistoryRecords, String photography) {
         
         super(firstname, lastname, gender, placeOfBirth, dateOfBirth);
         this.destingushingMarks =  destingushingMarks;
@@ -71,6 +71,7 @@ public class Child extends Person implements Serializable{
         this.heightRecorded = heightRecorded;
         this.headCir = headCir;
         this.listOfMedicalHistoryRecords = listOfMedicalHistoryRecords;
+        this.photography = photography;
         
     }
     public Child(){

@@ -18,6 +18,7 @@
 
                     <h:panelGrid columnClasses="value" style="margin: auto">
                         <h3 style="margin-top: 0">Event and Task Scheduler</h3>
+                        
                         <p:schedule id="schedule" value="#{Scheduler.eventModel}" widgetVar="myschedule" timeZone="GMT+2">
 
                             <p:ajax event="dateSelect" listener="#{Scheduler.onDateSelect}" update="eventDetails" oncomplete="PF('eventDialog').show();" />

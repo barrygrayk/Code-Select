@@ -1,0 +1,68 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:p="http://primefaces.org/ui">
+    <h:head>
+        <title>Applications inbox</title>
+    </h:head>
+    <ui:composition>
+        <p:growl id="growl" sticky="true" showDetail="true" life="3000" />
+        <h:form id="alertForm">
+            <p:dataTable id="Alert" var="apply" value="#{Apply.applicants}"  selectionMode="single" rowKey="#{apply.id}" style="margin-bottom:0" selection="#{Apply.selectedApplicant}" >
+                <p:ajax event="rowSelect" listener="#{Apply.onRowSelect}" update=":alertForm" process="Alert"/>
+                <p:ajax event="rowUnselect" listener="#{Apply.onRowUnselect}" update=":alertForm" process="Alert"/>  
+                <p:column  style="width:30px;text-align:center"/>
+                <p:column style="width:150px"  >
+                    <h:outputText value="#{apply.firstname} #{apply.lastname}" title="Right click" />
+                </p:column>
+                <p:column >
+                    <h:outputText value="#{apply.applicationStatus}" title="Right click"/>
+                </p:column> 
+            </p:dataTable>
+            <p:contextMenu for="Alert">
+                <p:menuitem value="View"   oncomplete="PF('dlg').show()"  icon="ui-icon-disk" update=":log"/>
+                <p:menuitem value="Delete"  action="#{msgCont.delete()}" icon="ui-icon-arrowrefresh-1-w" update=":alertForm"/>
+            </p:contextMenu>
+        </h:form>
+
+
+        <p:dialog id="log" header="Apllication Request form" widgetVar="dlg" minimizable="true" maximizable="true">
+            <div class="ui-g">
+                <div class="ui-g-8 ui-g-nopad">
+                    <div class="ui-g-6">
+                        <h:outputLabel value="First name :"/>
+                        <h:outputLabel id="fNam" value="#{Apply.selectedApplicant.firstname}"/>
+                    </div>
+                    <div class="ui-g-6">
+                        <h:outputLabel for="lName" value="Last name: "/>
+                        <h:outputLabel id="lName" value="#{Apply.selectedApplicant.lastname}"/>
+                    </div>
+                    <div class="ui-g-12">
+                        <h:outputLabel for="phone" value="Phone number: "/>
+                        <h:outputLabel id="phone" value="#{Apply.selectedApplicant.phoneNumber}"/>
+                    </div>
+                    <div class="ui-g-12">
+                        <h:outputLabel for="email" value="Email address: "/>
+                        <h:outputLabel id="email" value="#{Apply.selectedApplicant.emailAddress}"/>
+                    </div>
+                </div>
+                <div class="ui-g-4">
+                    <p>Reason for applying</p>
+
+                    <h:outputText value="#{Apply.selectedApplicant.motivationForApllication}"/>
+                </div>
+            </div>
+            <h:form>
+                <p:commandButton value="Accept"  update="growl" class="btn btn-success" icon="fa fa-thumbs-up" style="margin:1px" action="#{Apply.acceptRequst()}"/>
+                <p:commandButton value="Reject" class="btn btn-danger" icon="fa fa-thumbs-down" style="margin:1px"/>
+
+            </h:form>
+
+
+
+        </p:dialog>
+    </ui:composition>
+</html>
+

@@ -14,9 +14,9 @@ public interface Authenticate {
 
     boolean createUsername(String firstname, String lastname);
 
-    boolean sethashPassword(byte [] hash);
+    boolean sethashPassword(String  hash);
 
-    byte [] getHashedPassword();
+    String getHashedPassword();
 
     boolean setSalt(byte[] salt);
 

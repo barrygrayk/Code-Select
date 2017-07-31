@@ -1,27 +1,45 @@
 package com.controller;
 
-import com.applicants.Model.ApplicationRequest;
+import com.Messages.InventoryAlerts;
+import com.applicants.Model.Applicant;
+import com.db.connection.InternAplicationTableConnection;
 import com.validation.MrKaplan;
+import com.validation.TheEqualizer;
 import java.io.Serializable;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Map;
 import java.util.TreeMap;
 import javax.annotation.PostConstruct;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.SessionScoped;
+import org.primefaces.event.SelectEvent;
+import org.primefaces.event.UnselectEvent;
+
 /**
  *
  * @author Barry Gray
  */
-@ManagedBean(name = "Apply")
+@ManagedBean(name = "Apply", eager = true)
 @SessionScoped
-public class InternApplicationController extends ApplicationRequest implements Serializable{
+public class InternApplicationController extends Applicant implements Serializable {
 
-        private String country;
-        private TreeMap<String, String> countries = new TreeMap();
-    private String code="";
+    private String country;
+    private Applicant selectedApplicant;
+    private TreeMap<String, String> countries = new TreeMap();
+    private String code = "";
+    private List<Applicant> applicants = new ArrayList<>();
 
     public InternApplicationController() {
         super();
+    }
+
+    public Applicant getSelectedApplicant() {
+        return selectedApplicant;
+    }
+
+    public void setSelectedApplicant(Applicant selectedApplicant) {
+        this.selectedApplicant = selectedApplicant;
     }
 
     @PostConstruct
@@ -258,12 +276,13 @@ public class InternApplicationController extends ApplicationRequest implements S
     }
 
     public void onCountryChange() {
-        if(country!=null){
-              code = "+"+country;
-        }else{
-            code="";
+        if (country != null) {
+            code = "+" + country;
+        } else {
+            code = "";
         }
     }
+
     public String getCode() {
         return code;
     }
@@ -271,17 +290,46 @@ public class InternApplicationController extends ApplicationRequest implements S
     public void setCode(String code) {
         this.code = code;
     }
-    
-    public void sendRequst (){
-        MrKaplan validate = new MrKaplan ();
-        if (validate.isValidInput(getEmailAddress())&&validate.isValidInput(getLastname()) && validate.isAnEmail(getEmailAddress())){
-            
+
+    public void onRowSelect(SelectEvent e) {
+        System.err.println("------------");
+        selectedApplicant = (Applicant) e.getObject();
+        System.out.println(selectedApplicant.getMotivationForApllication());
+
+    }
+
+    public void onRowUnselect(UnselectEvent e) {
+        selectedApplicant = null;
+    }
+
+    public List<Applicant> getApplicants() {
+        applicants = new InternAplicationTableConnection().getApplicants();
+        return applicants;
+    }
+
+    public void setApplicants(List<Applicant> applicants) {
+        this.applicants = applicants;
+    }
+
+    public void sendRequst() {
+        System.out.println("Here");
+        MrKaplan validate = new MrKaplan();
+        TheEqualizer sanitise = new TheEqualizer();
+        if (validate.isValidInput(getFirstname()) && validate.isValidInput(getLastname())) {
+            Applicant application = new Applicant();
+            application.setFirstname(sanitise.toUperAndLower(getFirstname()));
+            application.setLastname(sanitise.toUperAndLower(getLastname()));
+            application.setEmailAddress(getEmailAddress());
+            application.setPhoneNumber(code);
+            application.setMotivationForApllication(getMotivationForApllication());
+            System.out.println("-----cont---------");
+            new InternAplicationTableConnection().sendApllicationRequest(application);
+            System.out.println("-----Cont--Done-------");
         }
-        
-        
-        
     }
     
-    
+    public void acceptRequst (){
+        new InternAplicationTableConnection().sendAcceRequest(selectedApplicant);
+    }
 
 }

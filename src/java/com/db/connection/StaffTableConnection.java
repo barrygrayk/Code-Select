@@ -78,7 +78,8 @@ public class StaffTableConnection extends DatabaseConnection {
                     + " sucessfully created. Your account details are as follows:\n" + "\n"
                     + "User name: " + staff.getAuthcateDetails().getUsername() + "\n" + "Role: " + staff.getRoleName()
                     + "\nFollow the link below to activate your accout.\n"
-                    + "\nhttp://localhost:8080/OnthatileWebApplication/faces/register.xhtml?token=" + token;
+                    + "\nhttp://onthatilewebapplication.j.layershift.co.uk/faces/register.xhtml?token=" + token;
+            //http://localhost:8080/OnthatileWebApplication/faces/register.xhtml
             sendEmailToStaff(staff.getEmailAddress(), "Othantile Staff Account", body);
             feedback.addMessage("Sucess", staff.getFirstname() + "'s bio has been added");
         } catch (SQLException ex) {
@@ -188,7 +189,7 @@ public class StaffTableConnection extends DatabaseConnection {
                             + " sucessfully created. Your account details are as follows:\n" + "\n"
                             + "User name: " + staff.getAuthcateDetails().getUsername() + "\n" + "Role: " + staff.getRoleName()
                             + "\nFollow the link below to activate your accout.\n"
-                            + "\nhttp://localhost:8080/OnthatileWebApplication/faces/register.xhtml?token=" + token;
+                            + "\nhttp://onthatilewebapplication.j.layershift.co.uk/faces/register.xhtml?token=" + token;
                     sendEmailToStaff(staff.getEmailAddress(), "Othantile Staff Account", body);
                     updateAuthStatus(auth);
                 }else{
@@ -264,7 +265,7 @@ public class StaffTableConnection extends DatabaseConnection {
         PreparedStatement ps = null;
         ps = connection.prepareStatement(query);
         ps.setBytes(1, staff.getAuthcateDetails().getSalt());
-        ps.setBytes(2, staff.getAuthcateDetails().getHashedPassword());
+        ps.setString(2, staff.getAuthcateDetails().getHashedPassword());
         ps.setString(3, staff.getAuthcateDetails().getUsername());
         ps.setInt(4, fkey);
         ps.setString(5, staff.getAuthcateDetails().getStatus());
@@ -302,7 +303,7 @@ public class StaffTableConnection extends DatabaseConnection {
             Authenticate auth = new Authentication();
             auth.setUsername(resultset.getString("userName"));
             auth.setSalt(resultset.getBytes("passwordSalt"));
-            auth.sethashPassword(resultset.getBytes("passwordHash"));
+            auth.sethashPassword(resultset.getString("passwordHash"));
             auth.setStatus(getAccountStatus(resultset.getString("status")));
             auth.setStatus(getAccountStatus(resultset.getString("token")));
             st.setAuthcateDetails((Authentication) auth);
@@ -344,7 +345,7 @@ public class StaffTableConnection extends DatabaseConnection {
             auth.setAuthId(resultset.getInt("OnthantileStaff_staffID"));
             auth.setUsername(resultset.getString("userName"));
             auth.setSalt(resultset.getBytes("passwordSalt"));
-            auth.sethashPassword(resultset.getBytes("passwordHash"));
+            auth.sethashPassword(resultset.getString("passwordHash"));
             auth.setStatus(getAccountStatus(resultset.getString("status")));
             auth.setToken(resultset.getString("token"));
             authenticatedStaff.add(auth);
@@ -358,7 +359,7 @@ public class StaffTableConnection extends DatabaseConnection {
         PreparedStatement ps = null;
         ps = connection.prepareStatement(updateAuthfQuery);
         ps.setBytes(1, auth.getSalt());
-        ps.setBytes(2, auth.getHashedPassword());
+        ps.setString(2, auth.getHashedPassword());
         ps.setString(3, auth.getStatus());
         ps.setString(4, auth.getUsername());
         ps.execute();

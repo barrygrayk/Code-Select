@@ -13,7 +13,7 @@ import javax.faces.bean.SessionScoped;
 @SessionScoped
 
 public class Applicant extends Person {
-    
+    private String applicationStatus;
     private String city;
     private String zipCode;
     private String maritalStatus;
@@ -22,10 +22,44 @@ public class Applicant extends Person {
     private EducationAndQualification formation;
     private ApplicantMedicalHistory healthRecord;
     private WorkExperience experience;
-
+    private String motivationForApllication;
+    private int id;
+    
     public Applicant(String firstname, String lastname, char gender, String phoneNumber, String address, String placeOfBirth, Date dateOfBirth, String emailAddress) {
         super(firstname, lastname, gender, phoneNumber, address, placeOfBirth, dateOfBirth, emailAddress);
     }
+
+    public Applicant() {
+    }
+
+    public String getApplicationStatus() {
+        return applicationStatus;
+    }
+
+    public void setApplicationStatus(String applicationStatus) {
+        this.applicationStatus = applicationStatus;
+    }
+
+    public int getId() {
+        return id;
+    }
+
+    public void setId(int id) {
+        this.id = id;
+    }
+    
+    
+
+    public String getMotivationForApllication() {
+        return motivationForApllication;
+    }
+
+    public void setMotivationForApllication(String motivationForApllication) {
+        this.motivationForApllication = motivationForApllication;
+    }
+    
+    
+   
     
     public void setCity(String city) {
         this.city = city;

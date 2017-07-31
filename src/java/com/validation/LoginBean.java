@@ -3,6 +3,7 @@ package com.validation;
 import com.MenuView.MenuView;
 import com.db.connection.StaffTableConnection;
 import com.staff.Model.Authenticate;
+import java.io.IOException;
 import java.io.PrintStream;
 import java.io.Serializable;
 import java.io.UnsupportedEncodingException;
@@ -18,6 +19,7 @@ import javax.annotation.PostConstruct;
 import javax.faces.application.FacesMessage;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.SessionScoped;
+import javax.faces.context.ExternalContext;
 import javax.faces.context.FacesContext;
 import javax.servlet.http.HttpSession;
 
@@ -54,24 +56,20 @@ public class LoginBean extends Passwords implements Serializable {
     @PostConstruct
     public void init() {
         try {
-
             staffDB = new StaffTableConnection();
             authenticatedStaff = staffDB.getAuthenticatedStaff();
-
         } catch (ClassNotFoundException ex) {
             Logger.getLogger(LoginBean.class.getName()).log(Level.SEVERE, null, ex);
             feedBack.error("Database Error", ex.getMessage());
-
         } catch (SQLException ex) {
             Logger.getLogger(LoginBean.class.getName()).log(Level.SEVERE, null, ex);
             feedBack.error("Read Error", ex.getMessage());
         }
-        System.out.println("int____" + authenticatedStaff.size());
     }
 
     public String doLogin() throws InvalidKeySpecException, UnsupportedEncodingException {
         String page = "";
-        byte[] expectedHash = null;
+        String expectedHash = null;
         byte[] salt = null;
         for (Authenticate auth : authenticatedStaff) {
             if (auth.getUsername().equals(username)) {
@@ -85,18 +83,18 @@ public class LoginBean extends Passwords implements Serializable {
                 salt = auth.getSalt();
             }
         }
-        if (password != null && salt != null && expectedHash != null && isExpectedPassword(password.toCharArray(), salt, expectedHash)) {
+        if (password != null && salt != null && expectedHash != null && getSecurePassword(password, salt).equals(expectedHash)) {
 
             switch (status) {
                 case "Pending activaton":
                     FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_WARN,
                             fullname + "'s account has not been activated",
-                            "Please check your mail for the activation link or contact admin for help"));
+                            "Please check your mail for the activation link or contact admin for help: othantile@admin.com"));
                     break;
                 case "Pending reset":
                     FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_WARN,
                             fullname + "'s account has not been reset",
-                            "Please check your mail for the reset link or contact admin for help"));
+                            "Please check your mail for the reset link or contact admin for help: othantile@admin.com"));
                     break;
                 case "Active":
                     if (role.equals("Admin")) {
@@ -105,11 +103,11 @@ public class LoginBean extends Passwords implements Serializable {
                         session.setAttribute("LoggedIn", "LoggedIn");
                         page = "dashboard.xhtml?faces-redirect=true";
                     } else {
-                        feedBack.error("Access denied ", fullname + " you do not have enough rights to view requested page");
+                        feedBack.error("Access denied ", fullname + " you do not have enough rights to view requested page. Please contact admin: othantile@admin.com");
                     }
                     break;
                 case "Deactivated":
-                    feedBack.errorMessage(fullname + " Your account has been deactivated please contact admin for help");
+                    feedBack.errorMessage(fullname + " Your account has been deactivated please contact admin for help: othantile@admin.com");
                     break;
             }
 
@@ -122,11 +120,23 @@ public class LoginBean extends Passwords implements Serializable {
         return page;
     }
 
+    public void apply() throws IOException {
+        ExternalContext context = FacesContext.getCurrentInstance().getExternalContext();
+        context.redirect(context.getRequestContextPath() + "internApplicationRequest.xhtml");
+        
+    }
+
+    public void forgot() {
+        FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_WARN,
+                "Forgot password?",
+                "Please contact admin for password recovery: othantile@admin.com"));
+    }
+
     public String doLogOut() {
         HttpSession hs = SessionUtils.getSession();
         hs.invalidate();
 
-        return "login.xhtml";
+        return "login.xhtml?faces-redirect=true";
     }
 
     public String getPassWord() {

@@ -1,0 +1,148 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:f="http://xmlns.jcp.org/jsf/core">
+        
+    <ui:composition>
+        
+        <h:form id="mangeMedicalHistoryDialog">
+            
+                <p:row>
+                    <p:panel id="p0" style="margin-right: 750px">
+                        <p:outputLabel value="View date:"/>
+                        <p:calendar id="button" showOn="button" placeholder="View date" pattern = "dd/MM/yyyy" value="#{ChildCont.searchDate}" mask = "true" style="text-align: right;">
+
+                        </p:calendar>
+                    </p:panel>
+                </p:row>
+                
+                
+                    <div class="ui-g">
+                        <div class="ui-g-6">
+                            <p:toolbar>
+                                <p:toolbarGroup align="left">
+                                    <h4> Appointment Details</h4>
+                                </p:toolbarGroup>
+                            </p:toolbar>
+                            <p:panel>
+                            <p:dataTable id="manageMedicalHTb" var="temp" value="#{ChildCont.child.listOfMedicalHistoryRecords}" selectionMode="single"  rowKey="#{temp.id}" >
+
+                                <p:column headerText="Consultation Reason">
+                                    <h:outputText value="#{temp.cause}" />
+                                </p:column>
+
+                                <p:column headerText="Hospital Name">
+                                    <h:outputText value="#{temp.clincVisited}" />
+                                </p:column>
+
+                                <p:column headerText="Doctor Name">
+                                    <h:outputText value="#{temp.doctersName}" />
+                                </p:column>
+                            </p:dataTable>
+                            </p:panel>
+                        </div>
+                        <div class="ui-g-6">
+                            <p:toolbar>
+                                <p:toolbarGroup align="left">
+                                    <h4> Child's Established Perfil</h4>
+                                </p:toolbarGroup>
+                            </p:toolbar>
+                            <p:panel>
+                            <p:panelGrid id="PanelPerfil" columns="4">
+                                <p:outputLabel id="currentWeight" value="Current Weight:" />
+                                <p:inputText id="txtCurrWeight" value="" style="width: 100px"/>
+                                <p:outputLabel id="ChronicIllness" value="Suffers from:" />
+                                <p:inputText id="txtChronicIllness" value="" style="width: 100px"/>
+                                <p:outputLabel id="AllergicTo" value="Allergic to:" />
+                                <p:inputText id="txtAllergicTo" value="" style="width: 100px"/>
+                                <p:outputLabel id="BloodType" value="Blood Type:" />
+                                <p:inputText id="txtBloodType" value=""   style="width: 100px" disabled="true"/>
+                                <p:outputLabel id="Age" value="Age:" />
+                                <p:inputText id="txtAge" value="" style="width: 100px" disabled="true"/>
+                                <p:commandButton value="Update">
+                                    <p:resetInput target="PanelPerfil"/>
+                                </p:commandButton>
+                                <p:commandButton value="Delete">
+                                    <p:resetInput target="PanelPerfil"/>
+                                </p:commandButton>
+                            </p:panelGrid>
+                            </p:panel>
+                        </div>
+                        <div class="ui-g-6">
+                            <p:toolbar>
+                                <p:toolbarGroup align="left">
+                                     <h4> Consultation Summary</h4>
+                                </p:toolbarGroup>
+                            </p:toolbar>
+                            <p:panel >
+                            
+                                <p:column>
+                                    
+                                    <p:selectOneMenu id="ListOfIllness" value="#{ChildCont.selectedChild}" style=" padding-right: 0px;">
+                                        <f:selectItem itemLabel="Select different Child to view" itemValue="#{ChildCont.selectedChild}"/>
+                                        <f:selectItems value="#{ChildCont.listOfChildren}" />
+                                        <p:ajax id="currentPage" update="@form" listener="#{ChildCont.getSelectedChildObject()}"/>
+                                    </p:selectOneMenu>
+                           
+                                </p:column>
+                                <p:column>
+                                    <p:panelGrid columns="2">
+                                        <p:outputLabel value="Suggested Treatment"/>
+                                        <p:inputText id="txtSuggestedTreatment" />
+
+                                        <p:outputLabel value="Start Date:"/>
+                                        <p:calendar id="TreatmentStart" showOn="button" placeholder="View date" pattern = "dd/MM/yyyy" value="#{ChildCont.searchDate}" mask = "true" style="text-align: right;"/>
+
+                                        <p:outputLabel value="End Date:"/>
+                                        <p:calendar id="TreatmentEnd" showOn="button" placeholder="View date" pattern = "dd/MM/yyyy" value="#{ChildCont.searchDate}" mask = "true" style="text-align: right;"/>
+                                    </p:panelGrid> 
+                                </p:column>
+                                <p:row>
+                                      <p:commandButton value="Add">
+                                    <p:resetInput target="PanelPerfil"/>
+                                </p:commandButton>
+                                  <p:commandButton value="Update">
+                                    <p:resetInput target="PanelPerfil"/>
+                                </p:commandButton>
+                                <p:commandButton value="Delete">
+                                    <p:resetInput target="PanelPerfil"/>
+                                </p:commandButton>
+                                </p:row>
+                           
+                            </p:panel>
+                        </div>
+                        <div class="ui-g-6">
+                            <p:toolbar>
+                                <p:toolbarGroup align="left">
+                                     <h4> Supporting Documents/ Evidence</h4>
+                                </p:toolbarGroup>
+                            </p:toolbar>
+                            <p:panel>
+                                <p:panelGrid columns="3">
+                                    <p:outputLabel id="doctorFeedback" value="Doctor Feedback:" />
+                                    <p:inputTextarea rows="4" cols="26" style="align-self: flex-end;"  />
+                                    <p:dataTable id="manageExamListTb" var="temp" value="#{ChildCont.child.listOfMedicalHistoryRecords}" selectionMode="single"  rowKey="#{temp.id}" >
+                                        <p:column headerText="List of Exams done">
+                                            <h:outputText value="#{temp.cause}" />
+                                        </p:column>
+                                    </p:dataTable>
+                                    <p:outputLabel value="Add Evidence:" />
+                                    <p:row>
+                                    <p:fileUpload value="#{ChildCont.file}" oncomplete="#{ChildCont.uploadFile()}" mode="simple" skinSimple="true"/>
+                                    <p:commandButton value="Upload Chosen File(s)" />
+                                    </p:row>
+                                </p:panelGrid>
+                            </p:panel>
+                        </div>
+                    </div>
+
+            
+               
+        </h:form> 
+    </ui:composition>
+   
+</html>
+

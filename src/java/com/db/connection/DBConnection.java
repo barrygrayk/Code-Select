@@ -28,9 +28,9 @@ public class DBConnection {
     private Statement stmt = null;
     private ResultSet rs = null;
     public DBConnection() {
-        this.dbUserName = "onthatileDB";
-        this.dbPassWord = "adminServer";
-        conString = "jdbc:mysql://localhost:3306/onthatile children's ministries";
+        this.dbUserName = "root";
+        this.dbPassWord = "plgwNen8Or";
+        conString = "httpnode156430-codeselect.j.layershift.co.uk /onthatile children's ministries";
     }
     public Connection getConnection() throws ClassNotFoundException {
         System.out.println("yessssssss");
