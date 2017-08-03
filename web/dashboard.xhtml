@@ -21,7 +21,7 @@
             <f:facet name="middle">
                 <h:outputStylesheet name="bootstrap/css/bootstrap.css" />
                 <h:outputStylesheet library="font-awesome" name="css/font-awesome.min.css" />
-
+                <link rel="icon" type="image/x-icon" href="#{resource['images/favicon.ico']}" />
                 <h:outputScript library="primefaces" name="jquery/jquery.js" />
                 <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.0/jquery.min.js" />
 
@@ -31,13 +31,10 @@
 
         <h:body>
             <p:layout fullPage="true">
-                <p:layoutUnit position="west" size="auto" header="Dash" collapsible="true" style="padding: 2px" styleClass="marker" >
-
+                <p:layoutUnit position="west" size="auto" header="Dash" collapsible="true" style="padding: 2px" styleClass="marker"  >
                     <h:form styleClass="wrapper">
-
                         <f:ajax render=":content">
-                            <p:growl autoUpdate="true"/>
-                     
+                            <p:growl autoUpdate="true" showDetail="true"/>
                             <div class="w3-card-2 w3-round w3-white">
                                 <div class="w3-container">
                                     <p class="w3-center"><h:graphicImage value="resources/images/avatar6.png" class="w3-circle" style="height:106px;width:106px" alt="Avatar" /></p>
@@ -46,10 +43,9 @@
                                     <p><i class="fa fa-magic fa-fw w3-margin-right w3-text-theme"></i>#{Login.role}</p>
                                 </div>
                             </div>
-                     
-                            <p:menu style="width:235px; margin:auto"  toggleable="true" styleClass="marker"    > 
+                            <p:menu style="width:235px; margin:auto"   toggleable="true" styleClass="marker"> 
                                 <p:submenu label="Dashboard" style="padding:8px" styleClass="sidebar-brand" icon="fa fa-home">
-                                    <p:menuitem value="Summary" actionListener="#{menuView.update}"  icon="fa fa-pie-chart" />
+                                    <p:menuitem value="Summary" actionListener="#{menuView.update}"  icon="fa fa-pie-chart"  action="#{Include.setPage('default')}"/>
                                 </p:submenu>
                                 <p:submenu label="Intern Applications" styleClass="sidebar-brand" style="padding:10px" icon="fa fa-pencil-square-o">
                                     <p:menuitem styleClass="sidebar-item" value="Inbox" actionListener="#{menuView.save}" update=":content" icon="fa fa-inbox" action="#{Include.setPage('internAppInbox')}"/>
@@ -60,7 +56,8 @@
                                     <p:menuitem value="Alerts" actionListener="#{menuView.update}"  icon="fa fa-warning"   />
                                 </p:submenu>
                                 <p:submenu label="Staff Management" styleClass="sidebar-brand" style="padding:8px" icon="fa fa-users">
-                                    <p:menuitem id="adssd" value="Staff manager" actionListener="#{menuView.save}" action="#{Include.setPage('staffManager')}" icon="fa fa-user" update=":content"/>
+                                    <p:menuitem id="adsd" value="Event manager" actionListener="#{menuView.save}" action="#{Include.setPage('staffManager')}" icon="fa fa-user" update=":content"/>
+                                    <p:menuitem id="adssd" value="Shifts" actionListener="#{menuView.save}" action="#{Include.setPage('staffManager')}" icon="fa fa-user" update=":content"/>
                                     <p:menuitem id="ps" value="View Staff" actionListener="#{menuView.save}" action="#{Include.setPage('viewStaff')}" icon="fa fa-user-plus" update=":content">
                                         <f:param name="navParam" value="viewStaff" />
                                     </p:menuitem>

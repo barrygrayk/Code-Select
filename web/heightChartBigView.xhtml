@@ -4,15 +4,16 @@
       xmlns:h="http://xmlns.jcp.org/jsf/html"
       xmlns:p="http://primefaces.org/ui"
       xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
-      xmlns:f="http://xmlns.jcp.org/jsf/core">
+      xmlns:ct="http://www.chartistjsf.org/charts">
 
     <ui:composition>
+      
         
-        <h:form id="viewHeightChart">
+        <h:form id="viewHeightChart" enctype="multipart/form-data">
             <div class="ui-g">
                 <div class="ui-g-12" style="width: 500px">
                     <p:panel id="PanelHeight" style="width: 858px" >
-                        <p:chart type="line" model="#{ChildCont.heightChart}" style="height:400px; width:800px"/>
+                        <ct:chart type="line" model="#{ChildCont.heightChart}" style="height:400px; width:800px"/>
                     </p:panel>
                 </div>
                 <div class="ui-g-12">

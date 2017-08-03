@@ -16,10 +16,10 @@ public final class DBConnection{
     
     // non-default constructor
     public DBConnection() throws SQLException {
-       /*this.dbUserName = "root";
+      /*this.dbUserName = "root";
         this.dbPassword = "password";
         connLink= "jdbc:mysql://localhost:3306/onthatile children's ministries";*/
-       this.dbUserName = "root";
+      this.dbUserName = "root";
         this.dbPassword = "codeselect";
         connLink = "jdbc:mysql://node156446-onthatilewebapplication.j.layershift.co.uk/onthatilechildrensministries";
        

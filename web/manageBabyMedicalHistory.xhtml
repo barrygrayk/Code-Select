@@ -28,7 +28,7 @@
                                 </p:toolbarGroup>
                             </p:toolbar>
                             <p:panel>
-                            <p:dataTable id="manageMedicalHTb" var="temp" value="#{ChildCont.child.listOfMedicalHistoryRecords}" selectionMode="single"  rowKey="#{temp.id}" >
+                                <p:dataTable id="manageMedicalHTb" var="temp" value="#{ChildCont.child.listOfMedicalHistoryRecords}" selectionMode="single"  rowKey="#{temp.id}" rows="5" scrollable="true" scrollHeight="150" >
 
                                 <p:column headerText="Consultation Reason">
                                     <h:outputText value="#{temp.cause}" />
@@ -80,7 +80,7 @@
                             <p:panel >
                             
                                 <p:column>
-                                    
+                                    <p:outputLabel value="Detected Illness(es): "/>
                                     <p:selectOneMenu id="ListOfIllness" value="#{ChildCont.selectedChild}" style=" padding-right: 0px;">
                                         <f:selectItem itemLabel="Select different Child to view" itemValue="#{ChildCont.selectedChild}"/>
                                         <f:selectItems value="#{ChildCont.listOfChildren}" />
@@ -124,8 +124,8 @@
                                 <p:panelGrid columns="3">
                                     <p:outputLabel id="doctorFeedback" value="Doctor Feedback:" />
                                     <p:inputTextarea rows="4" cols="26" style="align-self: flex-end;"  />
-                                    <p:dataTable id="manageExamListTb" var="temp" value="#{ChildCont.child.listOfMedicalHistoryRecords}" selectionMode="single"  rowKey="#{temp.id}" >
-                                        <p:column headerText="List of Exams done">
+                                    <p:dataTable id="manageExamListTb" var="temp" value="#{ChildCont.child.listOfMedicalHistoryRecords}" selectionMode="single"  rowKey="#{temp.id}" scrollable="true" scrollHeight="60" >
+                                        <p:column headerText="Exams done" footerText="">
                                             <h:outputText value="#{temp.cause}" />
                                         </p:column>
                                     </p:dataTable>

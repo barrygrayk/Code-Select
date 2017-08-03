@@ -13,7 +13,7 @@
             <p:dataTable id="Alert" var="apply" value="#{Apply.applicants}"  selectionMode="single" rowKey="#{apply.id}" style="margin-bottom:0" selection="#{Apply.selectedApplicant}" >
                 <p:ajax event="rowSelect" listener="#{Apply.onRowSelect}" update=":alertForm" process="Alert"/>
                 <p:ajax event="rowUnselect" listener="#{Apply.onRowUnselect}" update=":alertForm" process="Alert"/>  
-                <p:column  style="width:30px;text-align:center"/>
+               
                 <p:column style="width:150px"  >
                     <h:outputText value="#{apply.firstname} #{apply.lastname}" title="Right click" />
                 </p:column>

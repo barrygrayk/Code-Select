@@ -15,39 +15,25 @@
                     <h1>Current Children in Baby Home</h1>
                 </div>
                 
-                <p:dataTable id="viewTable" var="temp" value="#{ChildCont.listOfChildren}" selectionMode="single"  rowKey="#{temp.babyProfileid}" selection="#{ChildCont.child}" editable="true" editMode="cell" widgetVar="ChildCells" > 
+                <p:dataTable id="viewTable" var="temp" value="#{ChildCont.listOfChildren}" selectionMode="single"  rowKey="#{temp.babyProfileid}" selection="#{ChildCont.child}" > 
 
                 <p:ajax event="rowSelect" listener="#{ChildCont.onRowSelect}" update="@form"/>
                 <p:ajax event="rowUnselect" listener="#{ChildCont.onRowUnselect}" update="@form"/>
-                
-                <p:ajax event="cellEdit" listener="#{ChildCont.onCellEdit}" update="@form" />
-               
+                          
                 <p:column headerText="Child ID">
                     <h:outputText value="#{temp.babyProfileid}" />
                 </p:column>
                 
                 <p:column headerText="First Name" id="firstName">
-                    <p:cellEditor>
-                        <f:facet name="output"><h:outputText  value="#{temp.firstname}"/></f:facet>
-                        <f:facet name="input"><p:inputText  value="#{temp.firstname}"/></f:facet>
-                    </p:cellEditor>
-                    
+                    <h:outputText  value="#{temp.firstname}"/>                 
                 </p:column>
                 
                 <p:column headerText="Last Name" id="lastName">
-                    <p:cellEditor>
-                        <f:facet name="output"> <h:outputText  value="#{temp.lastname}"/></f:facet>
-                        <f:facet name="input"> <p:inputText  value="#{temp.lastname}"/></f:facet>
-                    </p:cellEditor>
-                   
+                    <h:outputText  value="#{temp.lastname}"/>                  
                 </p:column>
                 
                 <p:column headerText="Distinguish Mark" id="distinguishingMarks">
-                    <p:cellEditor>
-                        <f:facet name="output"><h:outputText value="#{temp.destingushingMarks}"/></f:facet>
-                        <f:facet name="input"><p:inputText value="#{temp.destingushingMarks}"/></f:facet>
-                    </p:cellEditor>
-                    
+                    <h:outputText value="#{temp.destingushingMarks}"/>                    
                 </p:column>
                 
                 <f:facet name="footer">
@@ -55,9 +41,9 @@
                     <p:row>
       
                         <p:commandButton process="viewTable" update=":content" icon="ui-icon-search" value="View" action="#{Include.setPage('childProfilePage')}" />
-                        <p:commandButton icon="ui-icon-add" value="Add" action="#{ChildCont.clearChild()}" onclick="PF('dlgAdd').show()" update=":testEditForm" process="viewListOfBabies" type="submit" />
-                        <p:commandButton icon="ui-icon-edit" value="Edit" onclick="PF('dlgEdit').show()"  update=":testEditForm" process="viewListOfBabies" type="submit" />
-                        <p:commandButton icon="ui-icon-delete" value="Delete" actionListener="#{ChildCont.deleteSingleChild()}" update="viewTable"> 
+                        <p:commandButton icon="fa fa-plus" value="Add" action="#{ChildCont.clearChild()}" onclick="PF('dlgAdd').show()" update=":testEditForm" process="viewListOfBabies"  />
+                        <p:commandButton icon="fa fa-fw fa-edit" value="Edit" onclick="PF('dlgEdit').show()"  update=":testEditForm" process="viewListOfBabies"  />
+                        <p:commandButton icon="fa fa-fw fa-remove" value="Delete" actionListener="#{ChildCont.deleteSingleChild()}" update="viewTable"> 
                             <p:confirm header="Confirmation" message="Are you sure, you want delete the selected record?" icon="ui-icon-alert" />
                         </p:commandButton>
                         <p:confirmDialog global="true" showEffect="fade" hideEffect="fade">
@@ -72,10 +58,10 @@
             </h:form>
              
             <!--This for the pop up menus-->
-            <p:dialog header="Create a Child Record" widgetVar="dlgAdd"   resizable="false" responsive="true" showEffect="explode" hideEffect="explode">
+            <p:dialog header="Create a Child Record" widgetVar="dlgAdd"   resizable="false" responsive="true" showEffect="explode" hideEffect="explode" modal="true" appendTo="@(body)">
                 <ui:include src="addBaby.xhtml" />
             </p:dialog>
-            <p:dialog header="Update a Child Record" widgetVar="dlgEdit"  resizable="false" responsive="true" showEffect="explode" hideEffect="explode" >
+            <p:dialog header="Update a Child Record" widgetVar="dlgEdit"  resizable="false" responsive="true" showEffect="explode" hideEffect="explode" modal="true" appendTo="@(body)">
                 <ui:include src="updateBaby.xhtml" />
             </p:dialog>
             <!-- This needs to be  rethought-->

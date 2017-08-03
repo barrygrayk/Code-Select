@@ -12,7 +12,7 @@
             <h3>Staff Members</h3>
            
 
-            <p:dataTable id="staff" var="temp" value="#{StaffMembers.allStaffMemebers}"  paginatorTemplate="{Exporters}" selectionMode="single" rowKey="#{temp.staffID}" selection="#{StaffMembers.selectedsatff}">
+            <p:dataTable id="staff" var="temp" value="#{StaffMembers.allStaffMemebers}" class="table table-striped table-bordered dt-responsive nowrap" paginatorTemplate="{Exporters}" selectionMode="single" rowKey="#{temp.staffID}" selection="#{StaffMembers.selectedsatff}">
                 <f:facet name="header">
                     <p:outputPanel>
                         <h:outputText value="Search all fields:" />
@@ -56,8 +56,8 @@
                 <f:facet name="footer">
                     <p:commandButton process="staff"  icon="ui-icon-search" value="View All" action="#{Include.setPage('viewAllStaff')}" update=":content"/>
                     <p:commandButton process="staff"  icon="ui-icon-search" value="View" oncomplete="PF('multiCarDialog').show()" />
-                    <p:commandButton id="add_" value="Add" icon="fa fa-plus" type="button" onclick="PF('dlg1').show()" oncomplete="PF('dig').hide();"  />
-                    <p:commandButton id="dialog" value="Edit" icon="fa fa-fw fa-edit" type="button" onclick="PF('dlg').show()" update=":viewForm" oncomplete="PF('dig').hide();" />
+                    <p:commandButton id="add_" value="Add" icon="fa fa-plus" type="button" onclick="PF('dig1').show()" oncomplete="PF('dig1').hide();"  />
+                    <p:commandButton id="dialog" value="Edit" icon="fa fa-fw fa-edit" type="button" onclick="PF('dig').show()" update=":viewForm"  />
                     <p:commandButton value="Delete" actionListener="#{StaffMembers.deleteStaffMember()}"  update=":viewForm"  type="button" icon="fa fa-fw fa-remove" >
                         <p:confirm header="Confirmation" message="Are you sure, you want delete selected record(s)?" icon="ui-icon-alert" />
                     </p:commandButton>
@@ -67,7 +67,7 @@
                     </p:confirmDialog>
                 </f:facet>
             </p:dataTable>
-            <p:dialog header="Update Record" widgetVar="dlg" resizable="false" responsive="true">
+            <p:dialog header="Update Record" widgetVar="dig" resizable="false" responsive="true">
                 <ui:include src="updateStaff.xhtml" />
             </p:dialog>
             <p:dialog header="Bio dialog" widgetVar="multiCarDialog" modal="true" appendTo="@(body)" showEffect="fade" hideEffect="fade" resizable="false" width="auto">
@@ -122,8 +122,7 @@
                 </p:fieldset>
             </p:dialog>
         </h:form>
-        <p:dialog header="Add Record" widgetVar="dlg1" resizable="false" responsive="true" >
-      
+        <p:dialog header="Add Record" widgetVar="dig1" modal="true" resizable="false" responsive="true" appendTo="@(body)" >
             <ui:include src="addStaff.xhtml" />
         </p:dialog>
     </ui:composition>

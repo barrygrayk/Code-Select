@@ -43,16 +43,19 @@ import javax.servlet.http.Part;
 //
 import org.primefaces.context.RequestContext;
 import org.primefaces.event.CellEditEvent;
-import org.primefaces.event.ItemSelectEvent;
 import org.primefaces.model.UploadedFile;
-import org.primefaces.model.chart.Axis;
-import org.primefaces.model.chart.AxisType;
-import org.primefaces.model.chart.BarChartModel;
-import org.primefaces.model.chart.BarChartSeries;
-import org.primefaces.model.chart.CategoryAxis;
-import org.primefaces.model.chart.ChartSeries;
-import org.primefaces.model.chart.LineChartModel;
-import org.primefaces.model.chart.LineChartSeries;
+import org.chartistjsf.model.chart.Axis;
+import org.chartistjsf.model.chart.AxisType;
+import org.chartistjsf.model.chart.BarChartModel;
+import org.chartistjsf.model.chart.BarChartSeries;
+import javafx.scene.chart.CategoryAxis;
+import org.chartistjsf.model.chart.ChartSeries;
+import org.chartistjsf.model.chart.LineChartModel;
+import org.chartistjsf.model.chart.LineChartSeries;
+import org.chartistjsf.model.chart.AspectRatio;
+
+
+import org.primefaces.event.ItemSelectEvent;
 
 /**
  *
@@ -75,7 +78,7 @@ public class ChildController extends Child implements Serializable{
     private Connection connection, connection2, connection3;
     private DailyActivities activity;
     
-    private LineChartModel heightChart, temperatureChart;
+    private LineChartModel heightChart, temperatureChart, temperatureChartM;
     private BarChartModel weightChart;
     
     private String selectedChild;
@@ -1006,7 +1009,7 @@ public class ChildController extends Child implements Serializable{
             
             InputStream in =  perfilImage.getInputStream();
             String photoName = this.child.getBabyProfileid()+""+perfilImage.getSubmittedFileName();
-            File file = new File("/home/gray/Documents/NetBeansProjects/OnthantileWebApplication/web/resources/images/"+photoName);
+            File file = new File("/Users/efsan1/NetBeansProjects/OnthatileWebApplication/web/resources/images/"+photoName);
             
             file.createNewFile(); 
             FileOutputStream out = new FileOutputStream(file);
@@ -1099,12 +1102,16 @@ public class ChildController extends Child implements Serializable{
         LineChartModel model = new LineChartModel();
         
         LineChartSeries heightValues = new LineChartSeries();
-        heightValues.setLabel("Heights");
+        heightValues.setName("Heights(mm)");
         this.child.getListOfHeightRecords().forEach((currHeight) -> {
-            heightValues.set(yearConverter(currHeight.getDateRecorded()),currHeight.getHeight());
+            model.addLabel(yearConverter(currHeight.getDateRecorded()));
+            heightValues.set(currHeight.getHeight());
         });    
          
         model.addSeries(heightValues);
+        model.setAnimateAdvanced(true);
+	model.setShowTooltip(true);
+        model.setAspectRatio(AspectRatio.GOLDEN_SECTION);
           
         return model;
     }
@@ -1114,75 +1121,85 @@ public class ChildController extends Child implements Serializable{
         LineChartModel tempModel = new LineChartModel();
         
         LineChartSeries temperatureValues = new LineChartSeries();
-        temperatureValues.setLabel("Temperature");
+        temperatureValues.setName("Temperature(Celsius)");
         this.child.getlistOfTempRecorded().forEach((currTemperature) -> {
-            temperatureValues.set(yearConverter(currTemperature.getTemperatureDate()),currTemperature.getTemperatureReading());
+            tempModel.addLabel(yearConverter(currTemperature.getTemperatureDate()));
+            temperatureValues.set(currTemperature.getTemperatureReading());
         }); 
         
         tempModel.addSeries(temperatureValues); 
+        tempModel.setAnimateAdvanced(true);
+	tempModel.setShowTooltip(true);
+        tempModel.setAspectRatio(AspectRatio.GOLDEN_SECTION);
         
         return tempModel;
     }
     
+    private LineChartModel reInitTemperatureModel() {
+        
+        LineChartModel tempModel = new LineChartModel();
+        
+        LineChartSeries temperatureValues = new LineChartSeries();
+        temperatureValues.setName("Temperature(Celsius)");
+        this.child.getlistOfTempRecorded().forEach((currTemperature) -> {
+            tempModel.addLabel(yearConverter(currTemperature.getTemperatureDate()));
+            temperatureValues.set(currTemperature.getTemperatureReading());
+        }); 
+        
+        tempModel.addSeries(temperatureValues); 
+        tempModel.setAnimateAdvanced(true);
+	tempModel.setShowTooltip(true);
+        tempModel.setAspectRatio(AspectRatio.GOLDEN_SECTION);
+        
+        return tempModel;
+    }
     private BarChartModel initWeightModel() {
       
         BarChartModel model = new BarChartModel();
+        model.setAspectRatio(AspectRatio.GOLDEN_SECTION);
  
         BarChartSeries weightValues = new BarChartSeries();
-        weightValues.setLabel("Weight");
+        weightValues.setName("Weight");
         this.child.getListOfWeightRecords().forEach((currWeight) -> {
-            weightValues.set(yearConverter(currWeight.getDateRecorded()), currWeight.getWeight());
+            model.addLabel(yearConverter(currWeight.getDateRecorded()));
+            weightValues.set(currWeight.getWeight());
         }); 
  
         model.addSeries(weightValues);
+        model.setShowTooltip(true);
+        model.setSeriesBarDistance(15);
+        model.setAnimateAdvanced(true);
         
         return model;
     }
     
     public void createChartHeightModel(){
         
-        heightChart = initHeightModel();
-        heightChart.setTitle("Height Chart");
-        heightChart.setLegendPosition("e");
-        heightChart.getAxes().put(AxisType.X, new CategoryAxis("Years"));
+        heightChart = initHeightModel();    
         Axis yAxis = heightChart.getAxis(AxisType.Y);
-        yAxis.setMin(0);
-        yAxis.setMax(20);
-        yAxis.setLabel("Heght(mm)");
-        yAxis.setMin(0);
-        yAxis.setMax(3);    
+        yAxis.setShowLabel(true); 
     }
     
     public void createChartTemperatureModel(){
-        
+
         temperatureChart = initTemperatureModel();
-        temperatureChart.setTitle("Temperature Chart");
-        temperatureChart.setLegendPosition("e");
-        temperatureChart.setShowDatatip(true);
-        temperatureChart.getAxes().put(AxisType.X, new CategoryAxis("Weeks"));
         Axis yAxisTemp = temperatureChart.getAxis(AxisType.Y);
-        yAxisTemp.setMin(0);
-        yAxisTemp.setMax(20);
-        yAxisTemp.setLabel("Temperature(Celsius)");
-        yAxisTemp.setMin(0);
-        yAxisTemp.setMax(3);      
+        yAxisTemp.setShowLabel(true); 
+    }
+    
+    public void reCreateChartTemperatureModel(){
+
+        temperatureChartM = reInitTemperatureModel();
+        Axis yAxisTemp = temperatureChartM.getAxis(AxisType.Y);
+        yAxisTemp.setShowLabel(true); 
     }
     
     private void createChartWeightModel() {
         
         weightChart = initWeightModel(); 
-        
-        weightChart.setTitle("Weight Chart");
-        weightChart.setLegendPosition("ne");
-         
         Axis xAxis = weightChart.getAxis(AxisType.X);
-        xAxis.setLabel("Weeks");
-         
-        Axis yAxis = weightChart.getAxis(AxisType.Y);
-        yAxis.setLabel("Kilograms(Kg)");
-        yAxis.setMin(0);
-        yAxis.setMax(50);
-
+        xAxis.setShowGrid(false);     
+        //Axis yAxis = weightChart.getAxis(AxisType.Y);
     }
     
     public LineChartModel getHeightChart() {
@@ -1195,6 +1212,14 @@ public class ChildController extends Child implements Serializable{
 
     public BarChartModel getWeightChart() {
         return weightChart;
+    }
+
+    public LineChartModel getTemperatureChartM() {
+        return temperatureChartM;
+    }
+
+    public void setTemperatureChartM(LineChartModel temperatureChartM) {
+        this.temperatureChartM = temperatureChartM;
     }
     
     // select event 

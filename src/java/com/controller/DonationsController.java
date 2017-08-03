@@ -10,11 +10,17 @@ import com.validation.TheEqualizer;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Random;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.annotation.PostConstruct;
+import javax.faces.application.FacesMessage;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.SessionScoped;
+import javax.faces.context.FacesContext;
+import org.chartistjsf.model.chart.AspectRatio;
+import org.chartistjsf.model.chart.ChartSeries;
+import org.primefaces.event.ItemSelectEvent;
 import org.primefaces.event.SelectEvent;
 import org.primefaces.event.UnselectEvent;
 import org.primefaces.model.chart.Axis;
@@ -41,7 +47,8 @@ public class DonationsController extends Donations implements Serializable {
     @PostConstruct
     public void init() {
         getDonations();
-        createCombinedModel();
+        //createCombinedModel();
+        createBarModel2();
     }
 
     public CartesianChartModel getCombinedModel() {
@@ -52,11 +59,23 @@ public class DonationsController extends Donations implements Serializable {
         combinedModel = new BarChartModel();
         BarChartSeries donation = new BarChartSeries();
         LineChartSeries traget = new LineChartSeries();
-        for (Donations done : donations) {
+
+        if (donations.size() > 0) {
+            donations.stream().map((done) -> {
+                donation.setLabel("Received");
+                donation.set(done.getDescription(), done.getRecieved());
+             
+                return done;
+            }).forEachOrdered((done) -> {
+                traget.setLabel("Goals");
+                traget.set(done.getDescription(), done.getGoal());
+            });
+        } else {
+            System.out.println("Here");
             donation.setLabel("Received");
-            donation.set(done.getDescription(), done.getRecieved());
+            donation.set("", 1);
             traget.setLabel("Goals");
-            traget.set(done.getDescription(), done.getGoal());
+            traget.set("", 1);
         }
         combinedModel.addSeries(donation);
         combinedModel.addSeries(traget);
@@ -69,10 +88,56 @@ public class DonationsController extends Donations implements Serializable {
         yAxis.setMin(0);
         yAxis.setMax(50);
     }
+    private org.chartistjsf.model.chart.BarChartModel barChartModel;
+
+    public void createBarModel2() {
+        Random random = new Random();
+        barChartModel = new org.chartistjsf.model.chart.BarChartModel();
+        barChartModel.setAspectRatio(AspectRatio.GOLDEN_SECTION);
+        org.chartistjsf.model.chart.BarChartSeries series1 = new org.chartistjsf.model.chart.BarChartSeries();
+        series1.setName("Recieved");
+        org.chartistjsf.model.chart.BarChartSeries series2 = new org.chartistjsf.model.chart.BarChartSeries();
+        series2.setName("Goal");
+        for (Donations don : donations) {
+            barChartModel.addLabel(don.getDescription());
+            series1.set(don.getRecieved());
+            series2.set(don.getGoal());
+        }
+        org.chartistjsf.model.chart.Axis xAxis = barChartModel.getAxis(org.chartistjsf.model.chart.AxisType.X);
+        xAxis.setShowGrid(false);
+        barChartModel.addSeries(series1);
+        barChartModel.addSeries(series2);
+        barChartModel.setShowTooltip(true);
+        barChartModel.setSeriesBarDistance(15);
+        barChartModel.setAnimateAdvanced(true);
+    }
+
+    /**
+     * @return the barChartModel
+     */
+    public org.chartistjsf.model.chart.BarChartModel getBarChartModel() {
+        return barChartModel;
+    }
+
+    /**
+     * @param barChartModel the barChartModel to set
+     */
+    public void setBarChartModel(org.chartistjsf.model.chart.BarChartModel barChartModel) {
+        this.barChartModel = barChartModel;
+    }
+
+    public void barItemSelect(ItemSelectEvent event) {
+      /*  FacesMessage msg = new FacesMessage(FacesMessage.SEVERITY_INFO, "Item selected", "Item Value: "
+                + ((ChartSeries) barChartModel.getSeries().get(event.getSeriesIndex())).getData().get(
+                        event.getItemIndex()) + ", Series name:"
+                + ((ChartSeries) barChartModel.getSeries().get(event.getSeriesIndex())).getName());
+        FacesContext.getCurrentInstance().addMessage(event.getComponent().getClientId(), msg);*/
+    }
 
     public List<Donations> getDonations() {
         donations = new DonationsConnection().getDonationItems();
-        createCombinedModel();
+        //createCombinedModel();
+        createBarModel2();
         return donations;
     }
 
@@ -117,8 +182,6 @@ public class DonationsController extends Donations implements Serializable {
             donatedItem.setGoal(getGoal());
             donatedItem.setRecieved(getRecieved());
             new DonationsConnection().addDonation(donatedItem);
-            clear();
-
         }
     }
 
@@ -127,6 +190,7 @@ public class DonationsController extends Donations implements Serializable {
             setDescription(selectedDonation.getDescription());
             setGoal(selectedDonation.getGoal());
             setRecieved(selectedDonation.getRecieved());
+            System.out.println();
 
         }
     }
@@ -141,8 +205,7 @@ public class DonationsController extends Donations implements Serializable {
             donatedItem.setGoal(getGoal());
             donatedItem.setRecieved(getRecieved());
             new DonationsConnection().updateDonationItem(donatedItem);
-            
-
+            clear();
         }
     }
 

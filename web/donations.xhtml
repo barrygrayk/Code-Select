@@ -4,9 +4,16 @@
       xmlns:h="http://xmlns.jcp.org/jsf/html"
       xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
       xmlns:p="http://primefaces.org/ui"
+      xmlns:ct="http://www.chartistjsf.org/charts"
       xmlns:f="http://xmlns.jcp.org/jsf/core">
+
     <ui:composition>
-       <p:chart id="donationsChart" type="bar" model="#{DonationsCont.combinedModel}" style="height:270px;" class="chart"/>
+
+        <ct:chart id="barChart" type="bar" model="#{DonationsCont.barChartModel}" style="height:300px">
+            <p:ajax event="itemSelect" listener="#{DonationsCont.barItemSelect}" />
+        </ct:chart>
+
+        
 
         <h:form id="donationsForm">
             <p:dataTable id="donationTable" var="dontions" value="#{DonationsCont.donations}" rowKey="#{dontions.id}"
@@ -27,8 +34,8 @@
                     <h:outputText value="#{dontions.recieved}" />
                 </p:column>
                 <f:facet name="footer">
-                    <p:commandButton    icon="ui-icon-search" value="Add" oncomplete="PF('addDialog').show()" />
-                    <p:commandButton   value="Edit"  icon="ui-icon-search" oncomplete="PF('editDialog').show()" update="updateDonation" />
+                    <p:commandButton    icon="ui-icon-search" value="Add" oncomplete="PF('addDialog').show()"  />
+                    <p:commandButton   value="Edit"  icon="ui-icon-search" oncomplete="PF('editDialog').show()" update=":donationsForm :updateDonation" />
                     <p:commandButton value="Delete" actionListener="#{DonationsCont.deleteDonatedItem()}"  update=":donationsForm" >
                         <p:confirm header="Confirmation" message="Are you sure, you want delete selected record(s)?" icon="ui-icon-alert" />
                     </p:commandButton>
@@ -43,7 +50,7 @@
             <ui:include src="addDonation.xhtml" /> 
         </p:dialog>
 
-        <p:dialog header="Add" widgetVar="editDialog" showEffect="fade" hideEffect="fade" resizable="false">
+        <p:dialog header="Edit need" widgetVar="editDialog" showEffect="fade" hideEffect="fade" resizable="false">
             <ui:include src="updateDonation.xhtml" /> 
         </p:dialog>
 
