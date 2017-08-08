@@ -6,6 +6,7 @@ import com.db.connection.InternAplicationTableConnection;
 import com.db.connection.StaffTableConnection;
 import com.staff.Model.Authenticate;
 import com.staff.Model.Authentication;
+import java.io.IOException;
 import java.io.Serializable;
 import java.security.NoSuchAlgorithmException;
 import java.security.NoSuchProviderException;
@@ -20,6 +21,7 @@ import javax.annotation.PostConstruct;
 import javax.faces.application.FacesMessage;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.ViewScoped;
+import javax.faces.context.ExternalContext;
 import javax.faces.context.FacesContext;
 import javax.servlet.http.HttpServletRequest;
 
@@ -143,8 +145,10 @@ public class RegisterBean extends Passwords implements Serializable {
         this.message = message;
     }
 
-    public String goToLoginPag() {
-        return "login.xhtml?faces-redirect=true";
+    public void goToLoginPag() throws IOException {
+        ExternalContext context = FacesContext.getCurrentInstance().getExternalContext();
+        context.redirect(context.getRequestContextPath() + "/faces/login.xhtml");
+        //return "login.xhtml?faces-redirect=true";
     }
 
     public String activate() throws InvalidKeySpecException, NoSuchAlgorithmException, NoSuchProviderException, ClassNotFoundException, SQLException {
@@ -161,9 +165,11 @@ public class RegisterBean extends Passwords implements Serializable {
                 auth.setAuthId(id);
                 auth.setToken(token);
                 new InternAplicationTableConnection().setApplicantAuthDetails(auth);
+                
             } else {
                 staffDB.updatePassword(auth);
             }
+            message = "Hello "+ fullname+ " Click login button to sign into your account";
             FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO,
                     fullname + "'s account activated",
                     "Account has been sucessfully activated"));
@@ -182,18 +188,16 @@ public class RegisterBean extends Passwords implements Serializable {
 
     private boolean checkLength() {
         boolean valid = false;
-        final Pattern pattern = Pattern.compile("^(?=.*[0-9])(?=.*[a-z])(?=.*[A-Z])(?=.*[@#$%^&+=])(?=\\S+$).{8,}$");
+        // "((?=.*\\d)(?=.*[a-zA-Z])(?=.*[~'!@#$%?\\\\/&*\\]|\\[=()}\"{+_:;,.><'-])).{8,}"
+        //((?=.*\\\\d)(?=.*[a-zA-Z])(?=.*[~'!@#$%?\\\\\\\\/&*\\\\]|\\\\[=()}\\\"{+_:;,.><'-])).{8,}
+        //^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[$@$!%*?&])[A-Za-z\d$@$!%*?&]{8,}
+        //(?=.*?\\\\d)(?=.*?[a-zA-Z])(?=.*?[^\\\\w]).{8,}
+        final Pattern pattern = Pattern.compile("^(?=.*[a-z])(?=.*[A-Z])(?=.*\\d)(?=.*[$@$!%*?&])[A-Za-z\\d$@$!%*?&]{8,}");
         Matcher mat = pattern.matcher(password);
         if (mat.matches()) {
             valid = true;
         } else {
-            feedBack.error("Password strenght", "Your password should contain:\n "
-                    + "A digit at least once."
-                    + "\nA lower case letter at least once."
-                    + "\nAn upper case letter must least once."
-                    + "\nA special character at least once  e.g (@,-._)"
-                    + "\nNo whitespace allowed in the entire string."
-                    + "\nMust be at least 8 characters long.");
+            feedBack.error("Password strenght", "Minimum eight characters, at least one uppercase letter, one lowercase letter, one number and one special character");
         }
         return valid;
     }

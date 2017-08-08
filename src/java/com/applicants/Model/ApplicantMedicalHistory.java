@@ -8,8 +8,6 @@ import javax.faces.bean.SessionScoped;
  *
  * @author efsan1
  */
-@ManagedBean (name= "ApplicantMedicalHistory", eager= true)
-@SessionScoped
 
 public class ApplicantMedicalHistory {
     
@@ -21,6 +19,20 @@ public class ApplicantMedicalHistory {
     private String dietaryRestricton;
     private boolean physicalHandicaps; 
     private String handicapsDesc;
+    private int id;
+
+    public int getId() {
+        return id;
+    }
+
+    public void setId(int id) {
+        this.id = id;
+    }
+
+    public ApplicantMedicalHistory() {
+    }
+    
+    
 
     public boolean isCurrentMedicalCondions() {
         return currentMedicalCondions;

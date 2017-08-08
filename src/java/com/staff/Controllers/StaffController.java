@@ -2,7 +2,6 @@ package com.staff.Controllers;
 
 import com.MenuView.MenuView;
 import com.db.connection.StaffTableConnection;
-import com.navigation.Bean;
 import com.staff.Model.Authenticate;
 import com.staff.Model.Authentication;
 import com.staff.Model.OthantileShift;
@@ -31,18 +30,15 @@ import org.primefaces.event.UnselectEvent;
 @ViewScoped
 public class StaffController extends OthantileStaff implements Serializable {
 
-    private List<String> staffMemberNames = new ArrayList();
-    private String staffName;
+    private List<String> staffMemberNames = new ArrayList(), roles = new ArrayList<>();
     private Date date, shitDate, shiftTime;
     private int staffiid;
-    private List<Shift> shifts = new ArrayList<>();
-    private List<OthantileStaff> staff = new ArrayList<>();
-    private List<OthantileStaff> selectedStaffMembers = new ArrayList<>();
-    private List<OthantileStaff> searchStaff = new ArrayList<>();
-    private List<String> roles = new ArrayList<>();
-    private String role;
+    private List<Shift> shifts = new ArrayList<>(), futureShifts = new ArrayList<>(), shiftHistory = new ArrayList<>(),
+            currentShift = new ArrayList<>();
+    private List<OthantileStaff> staff = new ArrayList<>(), selectedStaffMembers = new ArrayList<>(), searchStaff = new ArrayList<>();
+    private String role, accountStatus = "Default", staffName;
     private OthantileStaff selectedsatff;
-    private String accountStatus = "Default";
+    private int shitID;
 
     public String getAccountStatus() {
         return accountStatus;
@@ -70,6 +66,75 @@ public class StaffController extends OthantileStaff implements Serializable {
 
     public void setShiftTime(Date shiftTime) {
         this.shiftTime = shiftTime;
+    }
+
+    public int getShiftID() {
+        return shitID;
+    }
+
+    public void setShiftID(int shitID) {
+        this.shitID = shitID;
+    }
+    
+
+    public List<Shift> getFutureShifts() {
+      /*  for (OthantileStaff staffM : staff) {
+            for (Shift shift : shifts) {
+                if (staffM.getStaffID() == shift.shitID()) {
+                    shift.setNames(staffM.getFirstname() + " " + staffM.getLastname());
+                    if (shift.getShiftDate().after(new Date())) {
+                        futureShifts.add(shift);
+                    }
+                }
+            }
+        }*/
+        return futureShifts;
+    }
+
+    public void setFutureShifts(List<Shift> futureShifts) {
+        this.futureShifts = futureShifts;
+    }
+
+    public List<Shift> getShiftHistory() {
+    /* List<Shift> tmpFutureShifts = new ArrayList<>(), tempShiftHistory = new ArrayList<>(),
+        for (OthantileStaff staffM : staff) {
+            for (Shift shiftM : shifts) {
+                if (staffM.getStaffID() == shiftM.shitID()) {
+                    shiftM.setNames(staffM.getFirstname() + " " + staffM.getLastname());
+                    if (shiftM.getShiftDate().before(new Date())) {
+                        shiftHistory.add(shiftM);
+                    }
+                }
+            }
+        }*/
+        return shiftHistory;
+    }
+
+    public void setShiftHistory(List<Shift> shiftHistory) {
+        this.shiftHistory = shiftHistory;
+    }
+
+    public List<Shift> getCurrentShift() {
+       /*  SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+        for (OthantileStaff staff : staff) {
+            for (Shift shift : shifts) {
+                if (staff.getStaffID() == shift.shitID()) {
+                    shift.setNames(staff.getFirstname() + " " + staff.getLastname());
+                    System.out.println(shift.getShiftDate()+" " +sdf.format(new Date()));
+                    if (shift.getShiftDate().equals(sdf.format(new Date()))) {
+                          shift.setNames(staff.getFirstname() + " " + staff.getLastname());
+                        currentShift.add(shift);
+                    }
+                }
+
+            }
+
+        }*/
+        return currentShift;
+    }
+
+    public void setCurrentShift(List<Shift> currentShift) {
+        this.currentShift = currentShift;
     }
 
     public void setShiftTypes(List<String> shiftTypes) {
@@ -172,13 +237,14 @@ public class StaffController extends OthantileStaff implements Serializable {
     public void init() {
         shiftTime = new Date();
         roles = new ArrayList<>();
-        roles.add("Admin");
+     roles.add("Admin");
         roles.add("Caregiver");
         roles.add("Intern");
         shiftTypes.add("Single (8hrs)");
         shiftTypes.add("double (16hrs)");
         List<OthantileStaff> staffList = getAllStaffMemebers();
-        shifts = getShifts();
+        shifts = new StaffTableConnection().getAllShifts();
+        setAllShifts();
         System.out.println(shifts.size());
         staffList.forEach((sta) -> {
             staffMemberNames.add(sta.getFirstname() + " " + sta.getLastname());
@@ -186,14 +252,23 @@ public class StaffController extends OthantileStaff implements Serializable {
         accountStatus = "Default";
     }
 
-    public List<Shift> getShifts() {
-        shifts = new StaffTableConnection().getAllShifts();
-        staff.forEach((stf) -> {
-            shifts.stream().filter((sh) -> (stf.getStaffID() == sh.shitID())).forEachOrdered((sh) -> {
-                sh.setNames(stf.getFirstname() + " " + stf.getLastname());
-            });
-        });
-        return shifts;
+    public void setAllShifts() {
+        TheEqualizer eqi = new TheEqualizer();
+        Date date =eqi.dateFormatter("dd/MM/yyyy", new Date());
+        for (OthantileStaff staff : staff) {
+            for (Shift shift : shifts) {
+                if (staff.getStaffID() == shift.shitID()) {
+                    shift.setNames(staff.getFirstname() + " " + staff.getLastname());
+                    if (shift.getShiftDate().after(date)){
+                        futureShifts.add(shift);
+                    } else if (shift.getShiftDate().before(date)) {
+                        shiftHistory.add(shift);
+                    } else if (shift.getShiftDate().equals(date)){
+                        currentShift.add(shift);
+                    }
+                }
+            }
+        }
     }
 
     public void setShifts(List<Shift> shifts) {

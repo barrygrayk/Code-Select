@@ -2,15 +2,13 @@
 package com.applicants.Model;
 
 import java.util.Date;
-import javax.faces.bean.ManagedBean;
-import javax.faces.bean.SessionScoped;
+
 
 /**
  *
  * @author efsan1
  */
-@ManagedBean (name= "WorkExperience", eager= true)
-@SessionScoped
+
 
 public class WorkExperience {
     
@@ -18,10 +16,21 @@ public class WorkExperience {
     private String jobTitle;
     private Date jobDuration;
     private String reasonForLeaving;
+    private int id;
 
     public String getNameOfEmployer() {
         return nameOfEmployer;
     }
+
+    public int getId() {
+        return id;
+    }
+
+    public void setId(int id) {
+        this.id = id;
+    }
+    
+    
 
     public void setNameOfEmployer(String nameOfEmployer) {
         this.nameOfEmployer = nameOfEmployer;

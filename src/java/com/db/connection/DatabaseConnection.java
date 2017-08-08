@@ -13,7 +13,7 @@ import java.util.List;
  */
 public abstract class DatabaseConnection {
 
-    private String conString;
+    private final String conString;
     private final String dbUserName;
     private final String dbPassWord;
     protected Connection connection = null;
@@ -21,13 +21,13 @@ public abstract class DatabaseConnection {
     protected ResultSet resultset = null;
 
     public DatabaseConnection() {
-       /* this.dbUserName = "root";
+       this.dbUserName = "root";
         this.dbPassWord = "password";
-        conString = "jdbc:mysql://localhost:3306/onthatile children's ministries";*/
+        conString = "jdbc:mysql://localhost:3306/onthatile children's ministries";
         
-      this.dbUserName = "root";
+      /*this.dbUserName = "root";
         this.dbPassWord = "codeselect";
-        conString = "jdbc:mysql://node156446-onthatilewebapplication.j.layershift.co.uk/onthatilechildrensministries";
+        conString = "jdbc:mysql://node156446-onthatilewebapplication.j.layershift.co.uk/onthatilechildrensministries";*/
         //jdbc:mysql://node156446-onthatilewebapplication.j.layershift.co.uk/onthatilechildrensministries
         // "https://node156430-codeselect.j.layershift.co.uk/db_structure.php?server=1&db=onthatile+children%27s+ministries";
         //String URL = "jdbc:mysql://mysql{node_id}-{environment_name}.{hoster_domain}/{dbname}"

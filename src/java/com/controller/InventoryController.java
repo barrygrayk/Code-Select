@@ -103,10 +103,10 @@ public class InventoryController extends Inventory implements Serializable {
     public void loadStockItem() {
         if (selectedStock != null) {
             setDescription(selectedStock.getDescription());
-            System.err.println("Yeah loading "+getDescription());
             setQuantity(selectedStock.getQuantity());
             setLowThresh(selectedStock.getLowThresh());
             setExpireyDate(selectedStock.getExpireyDate());
+             System.out.println(getUnit()+"====================================================");
             setUnit(selectedStock.getUnit());
         }
     }

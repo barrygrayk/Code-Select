@@ -2,15 +2,12 @@ package com.applicants.Model;
 
 import com.staff.Model.Person;
 import java.util.Date;
-import javax.faces.bean.ManagedBean;
-import javax.faces.bean.SessionScoped;
+
 
 /**
  *
  * @author efsan1
  */
-@ManagedBean (name= "Applicant", eager= true)
-@SessionScoped
 
 public class Applicant extends Person {
     private String applicationStatus;

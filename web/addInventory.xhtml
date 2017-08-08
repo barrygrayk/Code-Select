@@ -29,7 +29,7 @@
                 </h:panelGrid>
                 <h:panelGrid columns="1"  cellpadding="30" class="addStaff">
                     <h:outputLabel for="thresh" value="Re-order quantity: " />
-                    <p:spinner id="thresh" value="#{InventoryCont.lowThresh}"  rendered="true"/>
+                    <p:spinner id="thresh" value="#{InventoryCont.lowThresh}"  rendered="true" min="0"  />
                 </h:panelGrid>
                 <h:panelGrid columns="1"  cellpadding="30" class="addStaff">
                     <h:outputLabel for="mask"    value="Expirey date:" />

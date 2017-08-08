@@ -81,66 +81,7 @@
                     }
                 </style>
             </p:panel>
-            <hr/>
-            <h4 align="center"> Shift Management </h4>
-            <hr/>
-            <h:panelGrid columns="3" cellpadding="10"  columnClasses="no-border, no-border"  >
-                <p:panel>
-
-                    <h:form id="shiftform">
-                        <p:dataTable id="shifts" var="temp" value="#{StaffMembers.shifts}" draggableRows="true" styleClass="myTable">
-                            <p:column headerText="Names">
-                                <h:outputText value="#{temp.name}" />
-                            </p:column>
-                            <p:column headerText="Shift Date">
-                                <h:outputText value="#{temp.shiftDate}" />
-                            </p:column>
-                            <p:column headerText="Shift Time">
-                                <h:outputText value="#{temp.shiftTime}" />
-                            </p:column>
-                            <p:column headerText="Shift end time">
-                                <h:outputText value="#{temp.shiftEndTime}" />
-                            </p:column>
-                            <p:column headerText="Status">
-                                <h:outputText value="#{temp.status}" />
-                                <f:facet name="footer">
-                                    <p:commandButton id="add_" value="Assign Shift" icon="ui-icon-extlink" type="button" onclick="PF('dlg1').show()" oncomplete="PF('dig').hide();" />
-                                </f:facet>
-                            </p:column>
-                        </p:dataTable>
-                        <p:dialog header="Assign shift" widgetVar="dlg1" resizable="false" responsive="true">
-                            <h:form>
-                                <h:panelGrid columns="2"  cellpadding="30" class="addStaff">
-                                    <h:outputLabel for="mask"    value="Select staff:* " />
-                                    <p:selectOneMenu id="name" value="#{StaffMembers.staffName}" effect="fold" required="true" >
-                                        <f:selectItem itemLabel="Select staff" itemValue="#{StaffMembers.staffName}" />
-                                        <f:selectItems value="#{StaffMembers.staffMemberNames}" />
-                                    </p:selectOneMenu>
-                                </h:panelGrid>
-                                <h:panelGrid columns="2"  cellpadding="30" class="addStaff">
-                                    <h:outputLabel for="mask"    value="Shift Date: * " />
-                                    <p:calendar id="mask" value="#{StaffMembers.shitDate}" pattern="yyyy-MM-dd" mask="true" required="true" label="shift date" />
-                                </h:panelGrid>
-                                <h:panelGrid columns="2"  cellpadding="30" class="addStaff">
-                                    <p:outputLabel for="time" value="Shift time: *"  />
-                                    <p:calendar id="time" value="#{StaffMembers.shiftTime}" pattern="HH:mm" timeOnly="true"  />
-                                </h:panelGrid>
-                                <h:panelGrid columns="2"  cellpadding="30" class="addStaff">
-                                    <h:outputLabel for="mask"    value="Shift type: * " />
-                                    <p:selectOneMenu id="shift" value="#{StaffMembers.shift}" effect="fold" required="true" >
-                                        <f:selectItem itemLabel="Duration: " itemValue="#{StaffMembers.shift}" />
-                                        <f:selectItems value="#{StaffMembers.shiftTypes}" />
-                                    </p:selectOneMenu>
-                                </h:panelGrid>
-                                <p:commandButton value="Assign" action="#{StaffMembers.assignShift()}" update=":shiftform"/>
-                            </h:form>
-
-                        </p:dialog>
-                    </h:form>
-                </p:panel>
-
-           
-            </h:panelGrid>
+          
 
         </h:panelGrid>
 

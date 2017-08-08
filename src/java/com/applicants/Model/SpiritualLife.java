@@ -1,21 +1,19 @@
 
 package com.applicants.Model;
 
-import javax.faces.bean.ManagedBean;
-import javax.faces.bean.SessionScoped;
+
 
 /**
  *
  * @author efsan1
  */
-@ManagedBean (name= "SpiritualLife", eager= true)
-@SessionScoped
 
 public class SpiritualLife {
     
     private boolean beliefInChrist;
     private String churchName;
     private String testimony;
+    private int id;
     
     public boolean isBeliefInChrist() {
         return beliefInChrist;
@@ -25,6 +23,14 @@ public class SpiritualLife {
         this.beliefInChrist = beliefInChrist;
     }
 
+    public int getId() {
+        return id;
+    }
+
+    public void setId(int id) {
+        this.id = id;
+    }
+    
     public String getChurchName() {
         return churchName;
     }

@@ -27,8 +27,8 @@
                 </p:toolbar>
                 <p:panelGrid id="optionPanel" columns="3" style="width: 1000px;">
                     <p:column width="300px">
-                        <p:selectOneMenu id="searchChildAdvance" value="#{ChildCont.selectedChild}" style="width: 50px;"  filter="true" filterMatchMode="startsWith">
-                            <f:selectItem itemLabel="Select different Child to view" itemValue="" />
+                        <p:selectOneMenu id="searchChildAdvance" value="#{ChildCont.selectedChild}" style="width: 30px;"  filter="true" filterMatchMode="startsWith">
+                            <f:selectItem itemLabel="Select Child" itemValue="" />
                             <f:selectItems value="#{ChildCont.listOfChildren}" />
                             <p:ajax id="currentPage" update="@form" listener="#{ChildCont.getSelectedChildObject()}"/>
                             <p:ajax id="tempGraph" update=":temperatureChartId" />

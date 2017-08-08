@@ -4,18 +4,13 @@ import com.MenuView.MenuView;
 import com.db.connection.StaffTableConnection;
 import com.staff.Model.Authenticate;
 import java.io.IOException;
-import java.io.PrintStream;
 import java.io.Serializable;
 import java.io.UnsupportedEncodingException;
-
 import java.security.spec.InvalidKeySpecException;
 import java.sql.SQLException;
-import java.util.Iterator;
-
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import javax.annotation.PostConstruct;
 import javax.faces.application.FacesMessage;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.SessionScoped;
@@ -53,9 +48,10 @@ public class LoginBean extends Passwords implements Serializable {
         super();
     }
 
-    @PostConstruct
+ 
     public void init() {
         try {
+      
             staffDB = new StaffTableConnection();
             authenticatedStaff = staffDB.getAuthenticatedStaff();
         } catch (ClassNotFoundException ex) {

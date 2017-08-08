@@ -10,9 +10,9 @@
     <ui:composition>
         <h:form id="viewForm">   
             <h3>Staff Members</h3>
-           
 
-            <p:dataTable id="staff" var="temp" value="#{StaffMembers.allStaffMemebers}" class="table table-striped table-bordered dt-responsive nowrap" paginatorTemplate="{Exporters}" selectionMode="single" rowKey="#{temp.staffID}" selection="#{StaffMembers.selectedsatff}">
+
+            <p:dataTable id="staff" var="temp" value="#{StaffMembers.allStaffMemebers}" paginatorTemplate="{Exporters}" selectionMode="single" rowKey="#{temp.staffID}" selection="#{StaffMembers.selectedsatff}">
                 <f:facet name="header">
                     <p:outputPanel>
                         <h:outputText value="Search all fields:" />
@@ -25,7 +25,7 @@
                 <f:facet name="{Exporters}">
                     <h:commandLink>
                         <span class="fa fa-file-excel-o"  />
-                        
+
                         <p:dataExporter type="xls" target="staff" fileName="Staff members" />
                     </h:commandLink>
                     <h:commandLink>
@@ -67,6 +67,10 @@
                     </p:confirmDialog>
                 </f:facet>
             </p:dataTable>
+            <p:blockUI block="staff" trigger="staff">
+                LOADING<br />
+                <p:graphicImage name="resources/images/loading.gif"/>
+            </p:blockUI>
             <p:dialog header="Update Record" widgetVar="dig" resizable="false" responsive="true">
                 <ui:include src="updateStaff.xhtml" />
             </p:dialog>

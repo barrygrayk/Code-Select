@@ -102,8 +102,7 @@ public class InventorytableConneection extends DatabaseConnection {
         insertStock.setString(1, stock.getDescription());
         insertStock.setDouble(2, stock.getQuantity());
         insertStock.setDouble(3, stock.getLowThresh());
-        Date date = new Date();
-        date = stock.getExpireyDate();
+        Date date = stock.getExpireyDate();
         java.util.Date utilStartDate = date;
         java.sql.Date sqlExpiryDate = new java.sql.Date(utilStartDate.getTime());
         insertStock.setDate(4, sqlExpiryDate);

@@ -3,15 +3,13 @@ package com.applicants.Model;
 
 import java.util.ArrayList;
 import java.util.Date;
-import javax.faces.bean.ManagedBean;
-import javax.faces.bean.SessionScoped;
+
 
 /**
  *
  * @author efsan1
  */
-@ManagedBean (name= "EducationAndQualification", eager= true)
-@SessionScoped
+
 public class EducationAndQualification {
     
     private String highestQualification;

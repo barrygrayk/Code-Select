@@ -24,6 +24,7 @@
             <div class="col-md-4 col-md-offset-4">
 
                 <h:form id="reg" class="fh5co-form animate-box" >
+
                     <h:graphicImage class="logo" value="resources/images/logo.png" />
                     <div class="form-group">
                         <div class="alert alert-success" role="alert">#{RegisterStaff.message} #{RegisterStaff.fullname} </div>
@@ -34,20 +35,23 @@
                     </div>
                     <div class="form-group">
                         <p:watermark for="password" value="Password" />
-                        <p:password id="password"  class="form-control" title="Must be 8 characters long,No spacs,Contain upcase,lower,digit and special characters" required="true" label="password" value="#{RegisterStaff.password}"  disabled="#{RegisterStaff.disable}"/>
+                        <p:password id="password"  class="form-control" feedback="true"  promptLabel="Minimum eight characters, at least one uppercase letter, one lowercase letter, one number and one special character"  required="true" label="password" value="#{RegisterStaff.password}"  disabled="#{RegisterStaff.disable}"/>
                     </div>
                     <div class="form-group">
                         <p:watermark for="Re-password" value="Re-type Password" />
-                        <p:password id="Re-password"  class="form-control"  required="true" label="password" value="#{RegisterStaff.rePassword}" disabled="#{RegisterStaff.disable}" />
+                        <p:password id="Re-password"  class="form-control"   required="true" label="password" value="#{RegisterStaff.rePassword}" disabled="#{RegisterStaff.disable}" />
                     </div>
 
                     <div class="form-group">
-                        Sign in: <p:commandLink update="growl" value="Login" action="#{RegisterStaff.goToLoginPag()}"/>
-                    </div>
-
-                    <div class="form-group">
-                        <p:commandButton value="Activate" class="btn btn-primary" update="growl reg" action="#{RegisterStaff.activate()}" disabled="#{RegisterStaff.disable}">
-                        </p:commandButton>
+                        <div class="ui-g">
+                            <div class="ui-g-6">
+                                <p:commandButton value="Activate"  style="margin:auto" class="btn btn-primary"  icon="fa fa-power-off" update="growl reg" action="#{RegisterStaff.activate()}" disabled="#{RegisterStaff.disable}"/>
+                            </div>
+                            <div class="ui-g-6">
+                                <p:commandButton value="Login" style="margin:auto" class="btn btn-primary"  icon="fa fa-sign-in" update="growl reg" action="#{RegisterStaff.goToLoginPag()}"/>
+                            </div>
+                        </div>
+                        
                     </div>
                 </h:form>
             </div>

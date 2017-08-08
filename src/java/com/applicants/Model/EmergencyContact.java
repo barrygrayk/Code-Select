@@ -10,17 +10,26 @@ import javax.faces.bean.SessionScoped;
  *
  * @author efsan1
  */
-@ManagedBean (name= "EmergencyContact", eager= true)
-@SessionScoped
+
 
 public class EmergencyContact extends Person {
     
     private String relationship;
+    private int id;
 
     public EmergencyContact(String firstname, String lastname, String phoneNumber,  String emailAddress) {
         super(firstname, lastname, phoneNumber,  emailAddress);
     }
 
+    public int getId() {
+        return id;
+    }
+
+    public void setId(int id) {
+        this.id = id;
+    }
+
+    
     public String getRelationship() {
         return relationship;
     }

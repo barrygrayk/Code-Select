@@ -5,30 +5,21 @@
       xmlns:ui="http://java.sun.com/jsf/facelets"
       xmlns:p="http://primefaces.org/ui">
     <a href="WEB-INF/faces-config.xml"></a>
-    <!--<html xmlns="http://www.w3.org/1999/xhtml"
-      xmlns:h="http://xmlns.jcp.org/jsf/html"
-      xmlns:p="http://primefaces.org/ui"
-      xmlns:ui="http://xmlns.jcp.org/jsf/facelets">-->
-
     <f:view contentType="text/html">
         <h:head >
             <f:facet name="first">
-
                 <meta content='text/html; charset=UTF-8' http-equiv="Content-Type"/>
                 <meta name="viewport" content="width=device-width, initial-scale=1" />
                 <title>Onthatile Dashboard</title>      
             </f:facet>
             <f:facet name="middle">
-                <h:outputStylesheet name="bootstrap/css/bootstrap.css" />
+                    <h:outputStylesheet name="bootstrap/css/bootstrap.css" />
                 <h:outputStylesheet library="font-awesome" name="css/font-awesome.min.css" />
                 <link rel="icon" type="image/x-icon" href="#{resource['images/favicon.ico']}" />
                 <h:outputScript library="primefaces" name="jquery/jquery.js" />
                 <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.0/jquery.min.js" />
-
-
             </f:facet>
         </h:head>
-
         <h:body>
             <p:layout fullPage="true">
                 <p:layoutUnit position="west" size="auto" header="Dash" collapsible="true" style="padding: 2px" styleClass="marker"  >
@@ -55,10 +46,10 @@
                                     <p:menuitem styleClass="sidebar-item" value="Notice board" actionListener="#{menuView.save}"  action="#{Include.setPage('messages')}" update=":content" icon="fa fa-bullhorn" />
                                     <p:menuitem value="Alerts" actionListener="#{menuView.update}"  icon="fa fa-warning"   />
                                 </p:submenu>
-                                <p:submenu label="Staff Management" styleClass="sidebar-brand" style="padding:8px" icon="fa fa-users">
-                                    <p:menuitem id="adsd" value="Event manager" actionListener="#{menuView.save}" action="#{Include.setPage('staffManager')}" icon="fa fa-user" update=":content"/>
-                                    <p:menuitem id="adssd" value="Shifts" actionListener="#{menuView.save}" action="#{Include.setPage('staffManager')}" icon="fa fa-user" update=":content"/>
-                                    <p:menuitem id="ps" value="View Staff" actionListener="#{menuView.save}" action="#{Include.setPage('viewStaff')}" icon="fa fa-user-plus" update=":content">
+                                <p:submenu label="Staff Management" styleClass="sidebar-brand" style="padding:8px" icon="fa fa-group">
+                                    <p:menuitem id="adsd" value="Event manager" actionListener="#{menuView.save}" action="#{Include.setPage('eventManager')}" icon="fa fa-calendar" update=":content"/>
+                                    <p:menuitem id="adssd" value="Shifts manager" actionListener="#{menuView.save}" action="#{Include.setPage('shiftManager')}" icon="fa fa-clock-o" update=":content"/>
+                                    <p:menuitem id="ps" value="Staff manager" actionListener="#{menuView.save}" action="#{Include.setPage('viewStaff')}" icon="fa fa-user-plus" update=":content">
                                         <f:param name="navParam" value="viewStaff" />
                                     </p:menuitem>
                                 </p:submenu>
