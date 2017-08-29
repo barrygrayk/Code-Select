@@ -106,6 +106,7 @@ public class ChartDataBean {
 	 * @return the lineModel
 	 */
 	public LineChartModel getLineModel() {
+      
 		return lineModel;
 	}
 

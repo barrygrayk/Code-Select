@@ -58,7 +58,7 @@
                     <p:commandButton process="staff"  icon="ui-icon-search" value="View" oncomplete="PF('multiCarDialog').show()" />
                     <p:commandButton id="add_" value="Add" icon="fa fa-plus" type="button" onclick="PF('dig1').show()" oncomplete="PF('dig1').hide();"  />
                     <p:commandButton id="dialog" value="Edit" icon="fa fa-fw fa-edit" type="button" onclick="PF('dig').show()" update=":viewForm"  />
-                    <p:commandButton value="Delete" actionListener="#{StaffMembers.deleteStaffMember()}"  update=":viewForm"  type="button" icon="fa fa-fw fa-remove" >
+                    <p:commandButton value="Delete" actionListener="#{StaffMembers.deleteStaffMember()}"  update=":viewForm" icon="fa fa-fw fa-remove" >
                         <p:confirm header="Confirmation" message="Are you sure, you want delete selected record(s)?" icon="ui-icon-alert" />
                     </p:commandButton>
                     <p:confirmDialog global="true">
@@ -67,10 +67,7 @@
                     </p:confirmDialog>
                 </f:facet>
             </p:dataTable>
-            <p:blockUI block="staff" trigger="staff">
-                LOADING<br />
-                <p:graphicImage name="resources/images/loading.gif"/>
-            </p:blockUI>
+     
             <p:dialog header="Update Record" widgetVar="dig" resizable="false" responsive="true">
                 <ui:include src="updateStaff.xhtml" />
             </p:dialog>

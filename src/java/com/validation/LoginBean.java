@@ -1,6 +1,7 @@
 package com.validation;
 
 import com.MenuView.MenuView;
+import com.db.connection.InternAplicationTableConnection;
 import com.db.connection.StaffTableConnection;
 import com.staff.Model.Authenticate;
 import java.io.IOException;
@@ -29,31 +30,30 @@ import javax.servlet.http.HttpSession;
 public class LoginBean extends Passwords implements Serializable {
 //us MrKaplan for error checking
 
-    private String password;
-
     public String getRole() {
         return role;
     }
-    private String username;
-    private String fullname;
-    private String role;
-    private String status;
+    private String username, fullname, role, status, password;
     private int id;
+    private String expectedHash = null;
+    private byte[] salt = null;
     private static final long serialVersionUID = 1094801825228386363L;
-    private List<Authenticate> authenticatedStaff;
+    private List<Authenticate> authenticatedStaff, authenticatedApplicant;
     private StaffTableConnection staffDB;
+    private InternAplicationTableConnection ApplicantDB;
     private final MenuView feedBack = new MenuView();
 
     public LoginBean() {
         super();
     }
 
- 
     public void init() {
         try {
-      
+
             staffDB = new StaffTableConnection();
+            ApplicantDB = new InternAplicationTableConnection();
             authenticatedStaff = staffDB.getAuthenticatedStaff();
+            authenticatedApplicant =ApplicantDB.getAuthenticatedApplicant();
         } catch (ClassNotFoundException ex) {
             Logger.getLogger(LoginBean.class.getName()).log(Level.SEVERE, null, ex);
             feedBack.error("Database Error", ex.getMessage());
@@ -65,22 +65,12 @@ public class LoginBean extends Passwords implements Serializable {
 
     public String doLogin() throws InvalidKeySpecException, UnsupportedEncodingException {
         String page = "";
-        String expectedHash = null;
-        byte[] salt = null;
-        for (Authenticate auth : authenticatedStaff) {
-            if (auth.getUsername().equals(username)) {
-                id = auth.authId();
-                setUsername(auth.getUsername());
-                fullname = staffDB.getFullname(id);
-                status = auth.getStatus();
-                role = staffDB.getRole(id);
-                System.out.println(role);
-                expectedHash = auth.getHashedPassword();
-                salt = auth.getSalt();
-            }
+        if (username.contains("@")) {
+            setAuthApplicant();
+        } else {
+            setAuthStaff();
         }
         if (password != null && salt != null && expectedHash != null && getSecurePassword(password, salt).equals(expectedHash)) {
-
             switch (status) {
                 case "Pending activaton":
                     FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_WARN,
@@ -93,13 +83,21 @@ public class LoginBean extends Passwords implements Serializable {
                             "Please check your mail for the reset link or contact admin for help: othantile@admin.com"));
                     break;
                 case "Active":
-                    if (role.equals("Admin")) {
+                    if (username.contains("@")) {
+                        HttpSession session = SessionUtils.getSession();
+                        session.setAttribute("username", username);
+                          session.setAttribute("id", id);
+                      
+                        
+                        page = "apply.xhtml?faces-redirect=true";
+                    } else if (role.equals("Admin")) {
                         HttpSession session = SessionUtils.getSession();
                         session.setAttribute("username", username);
                         session.setAttribute("LoggedIn", "LoggedIn");
                         page = "dashboard.xhtml?faces-redirect=true";
                     } else {
-                        feedBack.error("Access denied ", fullname + " you do not have enough rights to view requested page. Please contact admin: othantile@admin.com");
+                        feedBack.error("Access denied ", fullname + " you do not have enough rights to view requested page."
+                                + " Please contact admin: othantile@admin.com");
                     }
                     break;
                 case "Deactivated":
@@ -116,10 +114,37 @@ public class LoginBean extends Passwords implements Serializable {
         return page;
     }
 
+    private void setAuthStaff() {
+        for (Authenticate auth : authenticatedStaff) {
+            if (auth.getUsername().equals(username)) {
+                id = auth.authId();
+                setUsername(auth.getUsername());
+                fullname = staffDB.getFullname(id);
+                status = auth.getStatus();
+                role = staffDB.getRole(id);
+                expectedHash = auth.getHashedPassword();
+                salt = auth.getSalt();
+            }
+        }
+    }
+
+    private void setAuthApplicant() {
+        for (Authenticate auth : authenticatedApplicant) {
+            if (auth.getUsername().equals(username)) {
+                id = auth.authId();
+                setUsername(auth.getUsername());
+                fullname = ApplicantDB.getFullname(id);
+                status = auth.getStatus();
+                expectedHash = auth.getHashedPassword();
+                salt = auth.getSalt();
+            }
+        }
+    }
+
     public void apply() throws IOException {
         ExternalContext context = FacesContext.getCurrentInstance().getExternalContext();
         context.redirect(context.getRequestContextPath() + "internApplicationRequest.xhtml");
-        
+
     }
 
     public void forgot() {

@@ -75,10 +75,9 @@ public class StaffController extends OthantileStaff implements Serializable {
     public void setShiftID(int shitID) {
         this.shitID = shitID;
     }
-    
 
     public List<Shift> getFutureShifts() {
-      /*  for (OthantileStaff staffM : staff) {
+        /* for (OthantileStaff staffM : staff) {
             for (Shift shift : shifts) {
                 if (staffM.getStaffID() == shift.shitID()) {
                     shift.setNames(staffM.getFirstname() + " " + staffM.getLastname());
@@ -96,7 +95,7 @@ public class StaffController extends OthantileStaff implements Serializable {
     }
 
     public List<Shift> getShiftHistory() {
-    /* List<Shift> tmpFutureShifts = new ArrayList<>(), tempShiftHistory = new ArrayList<>(),
+        /* List<Shift> tmpFutureShifts = new ArrayList<>(), tempShiftHistory = new ArrayList<>(),
         for (OthantileStaff staffM : staff) {
             for (Shift shiftM : shifts) {
                 if (staffM.getStaffID() == shiftM.shitID()) {
@@ -115,21 +114,22 @@ public class StaffController extends OthantileStaff implements Serializable {
     }
 
     public List<Shift> getCurrentShift() {
-       /*  SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+       //setAllShifts();
+      /*  List <Shift> tempCurrentSHift = new ArrayList<>();
+        TheEqualizer eqi = new TheEqualizer();
+        Date date = eqi.dateFormatter("dd/MM/yyyy", new Date());
         for (OthantileStaff staff : staff) {
             for (Shift shift : shifts) {
                 if (staff.getStaffID() == shift.shitID()) {
                     shift.setNames(staff.getFirstname() + " " + staff.getLastname());
-                    System.out.println(shift.getShiftDate()+" " +sdf.format(new Date()));
-                    if (shift.getShiftDate().equals(sdf.format(new Date()))) {
-                          shift.setNames(staff.getFirstname() + " " + staff.getLastname());
-                        currentShift.add(shift);
+                    if (shift.getShiftDate().equals(date)) {
+                        tempCurrentSHift.add(shift);
                     }
                 }
-
             }
-
-        }*/
+        }
+        currentShift =tempCurrentSHift;
+*/
         return currentShift;
     }
 
@@ -237,7 +237,7 @@ public class StaffController extends OthantileStaff implements Serializable {
     public void init() {
         shiftTime = new Date();
         roles = new ArrayList<>();
-     roles.add("Admin");
+        roles.add("Admin");
         roles.add("Caregiver");
         roles.add("Intern");
         shiftTypes.add("Single (8hrs)");
@@ -253,22 +253,26 @@ public class StaffController extends OthantileStaff implements Serializable {
     }
 
     public void setAllShifts() {
+        List<Shift> tmpFutureShifts = new ArrayList<>(), tempShiftHistory = new ArrayList<>(), tempCurrentShift = new ArrayList();
         TheEqualizer eqi = new TheEqualizer();
-        Date date =eqi.dateFormatter("dd/MM/yyyy", new Date());
+        Date date = eqi.dateFormatter("dd/MM/yyyy", new Date());
         for (OthantileStaff staff : staff) {
             for (Shift shift : shifts) {
                 if (staff.getStaffID() == shift.shitID()) {
                     shift.setNames(staff.getFirstname() + " " + staff.getLastname());
-                    if (shift.getShiftDate().after(date)){
+                    if (shift.getShiftDate().after(date)) {
                         futureShifts.add(shift);
                     } else if (shift.getShiftDate().before(date)) {
                         shiftHistory.add(shift);
-                    } else if (shift.getShiftDate().equals(date)){
+                    } else if (shift.getShiftDate().equals(date)) {
                         currentShift.add(shift);
                     }
                 }
             }
         }
+        /*currentShift = tempCurrentShift;
+        futureShifts = tmpFutureShifts;
+        shiftHistory = tempShiftHistory;*/
     }
 
     public void setShifts(List<Shift> shifts) {

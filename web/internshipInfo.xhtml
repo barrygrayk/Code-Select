@@ -1,0 +1,59 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:f="http://xmlns.jcp.org/jsf/core">
+    <ui:composition>
+
+        <center>
+               <h2 style="margin-top: 0;color:black"> Internship Information </h2>
+            <h:form class="form-style-9">
+             
+
+                <ul>
+                    <li>
+                        <p:watermark for="start" value="Desired Start Intership Date" />
+                        <p:calendar id="start" value="#{Apply.startDate}" pattern="dd-MM-yyyy"  
+                                    class="field-style field-split align-left" style="margin-right:  5px "  styleClass="dateTimeFieldLeft">
+                              <p:ajax event="dateSelect" listener="#{Apply.onEndDateChange()}"  update="intrnLenght"/>
+                        </p:calendar>
+                        <p:watermark for="end" value="Desired End Intership Date" />
+                        <p:calendar id="end" value="#{Apply.endDate}" pattern="dd-MM-yyyy"  
+                                    class="field-style field-split align-right" style="margin-left:  10px "  styleClass="dateTimeField" >
+                            <p:ajax event="dateSelect" listener="#{Apply.onEndDateChange()}"  update="intrnLenght"/>
+                        </p:calendar>
+                    </li>
+                    <li>
+                        <p:outputLabel value="Length of Intership: " style="margin-right:  5px" />
+                        <p:outputLabel id="intrnLenght" value="#{Apply.duration}"  style="margin-left:  2px"/>
+                    </li>
+                    <li>
+                        <p:selectOneMenu id="hearAbout" value="#{Apply.heardFrom}" style="width:49%; margin-right: 5px;" class="drop field-split align-left">
+                            <f:selectItem itemLabel="How Did You Hear about the Intership s ? " itemValue="#{Apply.heardFrom}" noSelectionOption="true" />
+                            <f:selectItems value="#{Apply.heardFromList}" />
+                        </p:selectOneMenu>
+
+                    </li>
+                    <li>
+                        <p:watermark for="goals" value="Why you wish to intern	with Onthatile Children’s Ministries and	
+                                     What your	goals are for the internship?" />
+                        <p:inputTextarea  id="goals" rows="7" cols="30"  class="field-style" 
+                                          counter="display" maxlength="1000" counterTemplate="{0} characters remaining." 
+                                          autoResize="false"   value="#{Apply.goal}" label="Message"/>
+                        <h:outputText id="display" />
+                    </li>
+                    <li>
+
+                        <p:commandButton  value="Save"   icon="fa fa-save" class="btn btn-primary btn-md" action="#{Apply.saveInternApplicationInfo()}"/>
+                    </li>
+
+
+                </ul>
+            </h:form>
+        </center>
+
+    </ui:composition>
+</html>
+

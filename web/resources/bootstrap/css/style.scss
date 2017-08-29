@@ -131,7 +131,7 @@ div.bhoechie-tab div.bhoechie-tab-content:not(.active){
     box-sizing: border-box;
     -webkit-box-sizing: border-box;
     -moz-box-sizing:border-box;
-    padding:8px;
+    padding:1px;
     outline: none;
     border: 1px solid #B0CFE0;
     -webkit-transition: all 0.30s ease-in-out;
@@ -167,6 +167,18 @@ div.bhoechie-tab div.bhoechie-tab-content:not(.active){
     -webkit-box-sizing: border-box;
     -moz-box-sizing: border-box;
     padding: 8px;
+    outline: none;
+    border: 1px solid #B0CFE0;
+    -webkit-transition: all 0.30s ease-in-out;
+    -moz-transition: all 0.30s ease-in-out;
+    -ms-transition: all 0.30s ease-in-out;
+    -o-transition: all 0.30s ease-in-out;
+
+}.form-style-9 ul li  .drop{
+    box-sizing: border-box;
+    -webkit-box-sizing: border-box;
+    -moz-box-sizing: border-box;
+    padding:4px;
     outline: none;
     border: 1px solid #B0CFE0;
     -webkit-transition: all 0.30s ease-in-out;
@@ -477,4 +489,9 @@ body.navbar-more-show  {
     .navbar-nav.mobile-bar > li > a > span.menu-icon {
         display: none;
     }
+}
+
+div[id="growlForm1:growlRight_container"] {
+    position:absolute;
+    top:100px;
 }

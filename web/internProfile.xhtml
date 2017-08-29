@@ -1,0 +1,76 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:p="http://primefaces.org/ui">
+    <ui:composition>
+        <center>
+      
+
+
+                <div class="container">
+                    <div class="row profile">
+                        <div class="col-md-3">
+                            <div class="profile-sidebar">
+                                <!-- SIDEBAR USERPIC -->
+                                <div class="profile-userpic">
+                                    <h:graphicImage value="resources/images/avatar6.png" class="w3-circle" style="height:106px;width:106px" alt="Avatar" />
+                                </div>
+                                <!-- END SIDEBAR USERPIC -->
+                                <!-- SIDEBAR USER TITLE -->
+                                <div class="profile-usertitle">
+                                    <div class="profile-usertitle-name">
+                                        #{Login.fullname}
+                                    </div>
+
+                                </div>
+                                <div class="profile-usermenu">
+                                    <ul class="nav">
+
+                                        <li>
+                                            <a href="#">
+                                                <i class="fa fa-envelope"></i>
+                                                #{Login.username} </a>
+                                        </li>
+                                        <li>
+                                            <a href="#" target="_blank">
+                                                <i class="fa fa-tasks">
+
+                                                </i>
+                                                Intern Tasks 
+                                            </a>
+                                            <p:accordionPanel multiple="true">
+                                                <p:tab title="Part I">
+                                                    <h:panelGrid columns="2" cellpadding="10">
+
+                                                        <h:outputText
+                                                            value="The story begins as Don Vito Corleone..." />
+                                                    </h:panelGrid>
+                                                </p:tab>
+                                                <p:tab title="Part II">
+                                                    <h:panelGrid columns="2" cellpadding="10">
+
+                                                        <h:outputText value="Francis Ford Coppola's legendary..." />
+                                                    </h:panelGrid>
+                                                </p:tab>
+                                                <p:tab title="Part III">
+                                                    <h:panelGrid columns="2" cellpadding="10">
+
+                                                        <h:outputText value="After a break of more than 15 years...." />
+                                                    </h:panelGrid>
+                                                </p:tab>
+                                            </p:accordionPanel>
+                                        </li>
+                                    </ul>
+                                </div>
+                                <!-- END MENU -->
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+        </center>
+    </ui:composition>
+</html>
+

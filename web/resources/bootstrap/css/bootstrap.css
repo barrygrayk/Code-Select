@@ -7713,9 +7713,44 @@ hr{border:0;border-top:1px solid #eee;margin:20px 0}
 .w3-border-black,.w3-hover-border-black:hover{border-color:#000!important}
 .w3-border-grey,.w3-hover-border-grey:hover,.w3-border-gray,.w3-hover-border-gray:hover{border-color:#bbb!important}
 
-.ui-selectionemenu-trigger.ui-state-default.ui-corner-right{
-    padding: 100px;
-    width: 20px;
+
+
+.dateTimeFieldLeft input {
+
+
+    margin-left: -8px !important;
+    width:49%;
+    box-sizing: border-box;
+    -webkit-box-sizing: border-box;
+    -moz-box-sizing:border-box;
+    padding:8px;
+    outline: none;
+    border: 1px solid #B0CFE0;
+    -webkit-transition: all 0.30s ease-in-out;
+    -moz-transition: all 0.30s ease-in-out;
+    -ms-transition: all 0.30s ease-in-out;
+    -o-tranition: all 0.30s ease-of-out;
 }
+
+.dateTimeField input{
+
+
+    margin-right: -8px !important;
+    width:49%;
+    box-sizing: border-box;
+    -webkit-box-sizing: border-box;
+    -moz-box-sizing:border-box;
+    padding:8px;
+    outline: none;
+    border: 1px solid #B0CFE0;
+    -webkit-transition: all 0.30s ease-in-out;
+    -moz-transition: all 0.30s ease-in-out;
+    -ms-transition: all 0.30s ease-in-out;
+    -o-tranition: all 0.30s ease-of-out;
+}
+
+
+
+
 
 

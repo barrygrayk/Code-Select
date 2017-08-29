@@ -3,10 +3,10 @@
 <html xmlns="http://www.w3.org/1999/xhtml"
       xmlns:h="http://xmlns.jcp.org/jsf/html"
       xmlns:p="http://primefaces.org/ui"
-      xmlns:f="http://xmlns.jcp.org/jsf/core">
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets">
     <h:head>
         <f:facet name="first">
-
             <meta content='text/html; charset=UTF-8' http-equiv="Content-Type"/>
             <meta name="viewport" content="width=device-width, initial-scale=1" />
             <title>Intern Web Application</title>      
@@ -17,6 +17,8 @@
             <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
             <h:outputScript  name="bootstrap/js/script.js" />
             <h:outputStylesheet name="bootstrap/css/style.scss" />
+            <h:outputStylesheet name="bootstrap/css/bootstrap.css" />
+            <h:outputStylesheet name="bootstrap/css/dashboard.css" />
             <h:outputStylesheet library="font-awesome" name="css/font-awesome.min.css" />
             <link rel="icon" type="image/x-icon" href="#{resource['images/favicon.ico']}" />
             <h:outputScript library="primefaces" name="jquery/jquery.js" />
@@ -25,455 +27,100 @@
 
 
     <h:body>
+        
+        <p:growl sticky="true" showDetail="true" life="1000"  autoUpdate="true"/>
 
-        <div class="navbar-more-overlay"></div>
-
-        <nav class="navbar navbar-inverse navbar-fixed-top animate">
-
-
-
-            <div class="container navbar-more visible-xs">
-                <form class="navbar-form navbar-left" role="search">
-                    <div class="form-group">
-                        <div class="input-group">
-                            <input type="text" class="form-control" placeholder="Search for..."/>
-                            <span class="input-group-btn">
-                                <button class="btn btn-default" type="submit">Submit</button>
-                            </span>
-                        </div>
-                    </div>
-                </form>
-
-                <ul class="nav navbar-nav">
-                    <li>
-
-                    </li>
-                </ul>
-            </div>
-
-
-
-            <div class="container">
-                <div class="navbar-header hidden-xs">
-                    <a class="navbar-brand" href="#">Onthatile Children's Ministries  |  Intern Application</a>
-                </div>
-
-                <ul class="nav navbar-nav navbar-right mobile-bar">
-                    <li>
-                        <a href="#">
-                            <span class="menu-icon fa fa-home"></span>
-                            Home
-                        </a>
-                    </li>
-                    <li>
-                        <a href="#">
-                            <span class="menu-icon fa fa-info"></span>
-                            <span class="hidden-xs">Intership Downloads</span>
-                            <span class="visible-xs">Intership Downloads</span>
-                        </a>
-                    </li>
-
-                    <li class="hidden-xs">
-                        <a href="#">
-                            <span class="menu-icon fa fa-bell-o"></span>
-                            Indox
-                        </a>
-                    </li>
-                    <li>
-                        <a href="#">
-                            <span class="menu-icon fa fa-phone"></span>
-                            <span class="hidden-xs">Contact</span>
-                            <span class="visible-xs">Contact</span>
-                        </a>
-                    </li>
-                </ul>
-            </div>
-        </nav>
-
-        <!-- END OF NAV -->
-
-
-        <!-- Form Container -->
-        <div class="FormContainer" id="left">
-
-            <div class="container">
-                <div class="row">
-                    <div class="col-lg-5 col-md-5 col-sm-8 col-xs-9 bhoechie-tab-container">
-                        <div class="col-lg-3 col-md-3 col-sm-3 col-xs-3 bhoechie-tab-menu">
-                            <div class="list-group">
-                                <a href="#" class="list-group-item active text-center">
-                                    <br/>General Information
-                                </a>
-                                <a href="#" class="list-group-item text-center">
-                                    <br/> Spiritual Life
-                                </a>
-                                <a href="#" class="list-group-item text-center">
-                                    <br/>Education
-                                </a>
-                                <a href="#" class="list-group-item text-center">
-                                    <br/>Work Experience
-                                </a>
-                                <a href="#" class="list-group-item text-center">
-                                    <br/>Emergency Contacts
-                                </a>
-                                <a href="#" class="list-group-item text-center">
-                                    <br/>Required Documents
-                                </a>
-                            </div>
-                        </div>
-
-
-                        <!-- Form Sections -->
-
-                        <div class="col-lg-9 col-md-9 col-sm-9 col-xs-9 bhoechie-tab">
-
-
-                            <!-- General Information Section -->
-
-                            <div class="bhoechie-tab-content active">
-                                <center>
-                                    <h2 style="margin-top: 0;color:black">General Information</h2>
-
-
-                                    <form class="form-style-9">
-                                        <ul>
-                                            <li>
-                                                <p:watermark for="fName" value="First Name" />
-                                                <p:inputText id ="fName" class="field-style field-split align-left"  value="" />
-
-                                                <input type="text" name="field2" class="field-style field-split align-right" placeholder="Street Address" />
-
-                                            </li>
-                                            <li>
-                                                <input type="text" name="field3" class="field-style field-split align-left" placeholder="Surname" />
-                                                <input type="text" name="field4" class="field-style field-split align-right" placeholder="City / State" />
-                                            </li>
-
-                                            <li>
-                                                <input type="text" name="field1" class="field-style field-split align-left" placeholder="Prefared Name" />
-                                                <input type="number" name="field2" class="field-style field-split align-right" placeholder="Zip Code"/>
-
-                                            </li>
-
-                                            <li>
-                                                <input type="text" name="field1" class="field-style field-split align-left" placeholder="Date of Birth" />
-                                                <input type="text" name="field2" class="field-style field-split align-right" placeholder="Maritial Status"/>
-
-                                            </li>
-
-                                            <li>
-                                                <input type="text" name="field1" class="field-style field-split align-left" placeholder="Email Address" />
-                                                <input type="number" name="field2" class="field-style field-split align-right" placeholder="Phone Number"/>
-
-                                            </li>
-
-                                            <li>
-                                                <input type="button" value="Save" />
-                                            </li>
-
-                                        </ul>
-                                    </form>
-
-                                </center>
-
-                            </div>
-
-
-                            <!-- END OF GENERAL INFORMATION -->
-
-
-
-                            <!-- Spiritual Life Section  -->
-
-
-                            <div class="bhoechie-tab-content">
-                                <center>
-                                    <h2 style="margin-top: 0;color:black">Spiritual Life</h2>
-
-
-                                    <form class="form-style-9">
-                                        <ul>
-                                            <li>
-                                                <input type="text" name="field1" class="field-style field-split align-left" placeholder="Do You Have A Saving Faith In Jesus Christ" />
-                                                <input type="text" name="field2" class="field-style field-split align-right" placeholder="Are You A Member of A Local Church" />
-
-                                            </li>
-                                            <li>
-                                                <input type="text" name="field3" class="field-style" placeholder="Name of Local Church" />
-
-                                            </li>
-
-                                            <li>
-                                                <textarea name="field5" class="field-style" placeholder="Enter Your Testimony"></textarea>
-                                            </li>
-                                            <li>
-                                                <input type="button" value="Save" />
-                                            </li>
-                                        </ul>
-                                    </form>
-
-                                </center>
-
-                            </div>
-                            <!-- END OF Spiritual Life Section  -->
-
-
-                            <!-- Education Qualification Section -->
-                            <div class="bhoechie-tab-content">
-                                <center>
-                                    <h2 style="margin-top: 0;color:black">Education Qualification</h2>
-
-
-                                    <form class="form-style-9">
-                                        <ul>
-                                            <li>
-                                                <input type="text" name="field1" class="field-style field-split align-left" placeholder="Name of Highest Qualification" />
-                                                <input type="text" name="field2" class="field-style field-split align-right" placeholder="Date of Graduation" />
-
-                                            </li>
-
-                                            <li>
-                                                <input type="text" name="field3" class="field-style field-split align-left" placeholder="Special Certification" />
-                                                <input type="text" name="field4" class="field-style field-split align-right" placeholder="Date of Certification" />
-                                            </li>
-
-                                            <li>
-                                                <input type="text" name="field3" class="field-style field-split align-left" placeholder="Character strength" />
-                                                <input type="text" name="field4" class="field-style field-split align-right" placeholder="Character strength" />
-                                            </li>
-
-                                            <li>
-                                                <input type="text" name="field3" class="field-style field-split align-left" placeholder="Character Weakness" />
-                                                <input type="text" name="field4" class="field-style field-split align-right" placeholder="Character Weakness" />
-                                            </li>
-
-                                            <li>
-                                                <input type="button" value="Save" />
-                                            </li>
-                                        </ul>
-                                    </form>
-                                </center>
-                            </div>
-                            <!-- END of Education Qualification Section -->
-
-
-                            <!-- Work Experience Section -->
-                            <div class="bhoechie-tab-content">
-                                <center>
-                                    <h2 style="margin-top: 0;color:black">Work Experience</h2>
-
-
-                                    <form class="form-style-9">
-                                        <ul>
-                                            <li>
-                                                <input type="text" name="field1" class="field-style field-split align-left" placeholder="Name of Previous Employeer" />
-                                                <input type="text" name="field2" class="field-style field-split align-right" placeholder="Previous Job Title" />
-
-                                            </li>
-
-                                            <li>
-                                                <input type="date" name="field3" class="field-style field-split align-left" placeholder="Start Date Of Previous Job"/>
-                                                <input type="date" name="field3" class="field-style field-split align-right" placeholder="End Date Of  Previous Job"/>
-                                            </li>
-
-                                            <li>
-                                                <textarea name="field5" class="field-style" placeholder="Reason For Leaving Job"></textarea>
-                                            </li>
-
-                                            <li>
-                                                <input type="button" value="Save"/>
-                                            </li>
-                                        </ul>
-                                    </form>
-
-                                </center>
-                            </div>
-                            <!--- END of Work Experience Section -->
-
-
-
-                            <!-- Emergency Contacts Section -->
-
-                            <div class="bhoechie-tab-content">
-
-                                <center>
-                                    <h2 style="margin-top: 0;color:black">Emergency Contacts</h2>
-
-
-                                    <form class="form-style-9">
-                                        <ul>
-                                            <li>
-                                                <input type="text" name="field1" class="field-style field-split align-left" placeholder="First Name of Next Kin" />
-                                                <input type="text" name="field2" class="field-style field-split align-right" placeholder="Email Address of Next Kin" />
-
-                                            </li>
-                                            <li>
-                                                <input type="text" name="field3" class="field-style field-split align-left" placeholder="Last Name of Next Kin" />
-                                                <input type="text" name="field4" class="field-style field-split align-right" placeholder="Phone Number of Next Kin" />
-                                            </li>
-
-                                            <li>
-                                                <input type="text" name="field1" class="field-style field-split align-left" placeholder="Relationship of Next Kin" />
-                                                <input type="number" name="field2" class="field-style field-split align-right" placeholder="Street Address of Next Kin" />
-                                            </li>
-
-                                            <li>
-                                                <input type="submit" value="Save" />
-                                            </li>
-                                        </ul>
-                                    </form>
-
-                                </center>
-                            </div>
-
-                            <!-- END Emergency Contacts Section -->
-
-
-                            <!-- Required Documents Section -->
-                            <div class="bhoechie-tab-content">
-                                <center>
-                                    <div class="dropDownContainer">
-                                        <div class="panel panel-default">
-                                            <div class="panel-heading">
-                                                <strong>Upload Files</strong> <small>Files upload</small>
-                                            </div>
-                                            <div class="panel-body">
-
-                                                <!-- Standar Form -->
-                                                <h4>Select files from your computer</h4>
-                                                <form action="" method="post" enctype="multipart/form-data" id="js-upload-form">
-                                                    <div class="form-inline">
-                                                        <div class="form-group">
-                                                            <input type="file" name="files[]" id="js-upload-files" multiple="true"/>
-                                                        </div>
-                                                        <button type="submit" class="btn btn-sm btn-primary" id="js-upload-submit">Upload files</button>
-                                                    </div>
-                                                </form>
-
-                                                <!-- Drop Zone -->
-                                                <h4>Or drag and drop files below</h4>
-                                                <div class="upload-drop-zone" id="drop-zone">
-                                                    Just drag and drop files here
-                                                </div>
-
-                                                <!-- Progress Bar -->
-                                                <div class="progress">
-                                                    <div class="progress-bar" role="progressbar" aria-valuenow="60" aria-valuemin="0" aria-valuemax="100" style="width: 100%;">
-                                                        <span class="sr-only">20% Complete</span>
-                                                    </div>
-                                                </div>
-
-                                                <!--Upload Finished
-                                                <div class="js-upload-finished">
-                                                        <h3>Processed files</h3>
-                                                        <div class="list-group">
-                                                                <a href="#" class="list-group-item list-group-item-success"><span class="badge alert-success pull-right">Success</span>image-01.jpg</a>
-
-                                                        </div>-->
-                                            </div>
-                                        </div>
-                                    </div>
-
-
-
-                                    <!-- downDropContainer -->
-
-
-
-
-
-
-
-                                    <!--<div id="myProgress">
-                                            <div id="myBar"></div>
-                                            <input type="button" value="Complete" />
-                                    </div>-->
-
-
-
-
-
-                                </center>
-
-
-                            </div>
-
-                        </div>
-
-                    </div>
-
-                </div>
-            </div>
-
+        <div class="navbar-more-overlay">
         </div>
+        <nav class="navbar navbar-inverse navbar-fixed-top animate">
+              
+            <ui:include src="internAppTopNav.xhtml" />
+        </nav>
+        <!-- END OF NAV -->
+        <!-- Form Container -->
+        
+            <div class="FormContainer" id="left">
 
 
 
+              
+                <div class="container">
+                    <div class="row">
+                        <div class="col-lg-5 col-md-5 col-sm-8 col-xs-9 bhoechie-tab-container">
+                            <div class="col-lg-3 col-md-3 col-sm-3 col-xs-3 bhoechie-tab-menu">
+                                <div class="list-group">
+                                    <a href="#" class="list-group-item active text-center">
+                                        <br/>Internship Information
+                                    </a>
+                                    <a href="#" class="list-group-item ">
+                                        <br/>General Information
+                                    </a>
+                                    <a href="#" class="list-group-item text-center">
+                                        <br/> Spiritual Life
+                                    </a>
+                                    <a href="#" class="list-group-item text-center">
+                                        <br/>Education
+                                    </a>
+                                    <a href="#" class="list-group-item text-center">
+                                        <br/>Work Experience
+                                    </a>
+                                    <a href="#" class="list-group-item text-center">
+                                        <br/>Emergency Contacts
+                                    </a>
+                                    <a href="#" class="list-group-item text-center">
+                                        <br/>Required Documents
+                                    </a>
+                                </div>
+                            </div>
+                            <!-- Form Sections -->
+                            <div class="col-lg-9 col-md-9 col-sm-9 col-xs-9 bhoechie-tab">
+                                
+                                <div class="bhoechie-tab-content active">
+                                    <ui:include src=" internshipInfo.xhtml" />
 
+                                </div>
+                                <!-- General Information Section -->
+                                <div class="bhoechie-tab-content ">
+                                    <ui:include src="internGeneralInformation.xhtml" />
+                                </div>
+                                <!-- END OF GENERAL INFORMATION -->
+                                <!-- Spiritual Life Section  -->
+                                <div class="bhoechie-tab-content">
+                                    <ui:include src="internSpiritualLife.xhtml" />
+                                </div>
+                                <!-- END OF Spiritual Life Section  -->
+                                <!-- Education Qualification Section -->
+                                <div class="bhoechie-tab-content">
+                                    <ui:include src="internEducationQualification.xhtml" />
+                                </div>
+                                <!-- END of Education Qualification Section -->
+                                <!-- Work Experience Section -->
+                                <div class="bhoechie-tab-content">
+                                    <ui:include src="internWorkExperience.xhtml" />
+                                </div>
+                                <!--- END of Work Experience Section -->
+                                <!-- Emergency Contacts Section -->
+                                <div class="bhoechie-tab-content">
+                                    <ui:include src="internEmergencyContacts.xhtml" />
+                                </div>
+                                <!-- END Emergency Contacts Section -->
+                                <!-- Required Documents Section -->
+                                <div class="bhoechie-tab-content">
+                                    <ui:include src="internRequiredDocs.xhtml" />
+                                </div>
+                            </div>
+
+                        </div>
+
+                    </div>
+                </div>
+
+            </div>
 
         <!-- Profile Photo Holder -->
-
         <div class="profileHolder" id="right">
-
-            <center>
-
-                <div class="container">
-                    <div class="row profile">
-                        <div class="col-md-3">
-                            <div class="profile-sidebar">
-                                <!-- SIDEBAR USERPIC -->
-                                <div class="profile-userpic">
-                                    <img src="https://pixabay.com/static/img/profile_image_dummy.svg" class="img-responsive" alt=""/>
-                                </div>
-                                <!-- END SIDEBAR USERPIC -->
-                                <!-- SIDEBAR USER TITLE -->
-                                <div class="profile-usertitle">
-                                    <div class="profile-usertitle-name">
-                                        Intern
-                                    </div>
-                                    <!-- <div class="profile-usertitle-job">
-                                            Developer
-                                    </div> -->
-                                </div>
-                                <!-- END SIDEBAR USER TITLE -->
-                                <!-- SIDEBAR BUTTONS
-                                <div class="profile-userbuttons">
-                                        <button type="button" class="btn btn-success btn-sm">Follow</button>
-                                        <button type="button" class="btn btn-danger btn-sm">Message</button>
-                                </div> -->
-                                <!-- END SIDEBAR BUTTONS -->
-                                <!-- SIDEBAR MENU -->
-                                <div class="profile-usermenu">
-                                    <ul class="nav">
-                                        <li class="active">
-                                            <a href="#">
-                                                <i class="glyphicon glyphicon-home"></i>
-                                                Overview </a>
-                                        </li>
-                                        <li>
-                                            <a href="#">
-                                                <i class="glyphicon glyphicon-user"></i>
-                                                Email Address </a>
-                                        </li>
-                                        <li>
-                                            <a href="#" target="_blank">
-                                                <i class="glyphicon glyphicon-ok"></i>
-                                                Tasks </a>
-                                        </li>
-                                    </ul>
-                                </div>
-                                <!-- END MENU -->
-                            </div>
-                        </div>
-                    </div>
-                </div>
-
-
-            </center>
-
+            <ui:include src="internProfile.xhtml" />
         </div>
-
-
     </h:body>
 </html>
 

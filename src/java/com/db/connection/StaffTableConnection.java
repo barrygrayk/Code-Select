@@ -273,19 +273,9 @@ public class StaffTableConnection extends DatabaseConnection {
         return ps;
     }
 
-    public void getResultSet(String query) throws ClassNotFoundException, SQLException {
-        connection = getConnection();
-        statement = connection.createStatement();
-        resultset = statement.executeQuery(query);
-    }
+ 
 
-    public void getResultSet(int id, String query) throws ClassNotFoundException, SQLException {
-        connection = getConnection();
-        PreparedStatement ps = connection.prepareStatement(query);
-        ps.setInt(1, id);
-        resultset = ps.executeQuery();
-    }
-
+ 
     public List<OthantileStaff> getOthantileStaffRecord() throws SQLException {
         List<OthantileStaff> members = new ArrayList<>();
         while (resultset.next()) {
@@ -388,18 +378,9 @@ public class StaffTableConnection extends DatabaseConnection {
     }
     public String getFullname(int id) {
         String fullnameQuery = "SELECT `firstName`,`LastName` FROM `onthantilestaff`  WHERE staffID =?";
-        String fullname = "";
-        try {
-            getResultSet(id, fullnameQuery);
-            if (resultset.next()) {
-                fullname = resultset.getString("firstName") + " " + resultset.getString("LastName");
-            }
-        } catch (ClassNotFoundException | SQLException ex) {
-            Logger.getLogger(StaffTableConnection.class.getName()).log(Level.SEVERE, null, ex);
-            feedback.error("Read error", ex.getMessage());
-        }
-        return fullname;
+        return getFullname(id, fullnameQuery);
     }
+    
      public String getRole(int id) {
         String roleQuery = "SELECT `roleName` FROM `staffroles`  WHERE OnthantileStaff_staffID =?";
         String role = "";
@@ -534,17 +515,5 @@ public class StaffTableConnection extends DatabaseConnection {
         return allEvents;
     }
 
-    public java.sql.Date toSqlDate(Date util) {
-        Date date = util;
-        java.util.Date utilStartDate = date;
-        java.sql.Date sqlDate = new java.sql.Date(utilStartDate.getTime());
-        return sqlDate;
-    }
-
-    public java.sql.Timestamp toSqlDateTime(Date util) {
-        Date date = util;
-        java.util.Date utilStartDate = date;
-        java.sql.Timestamp sqlDate = new java.sql.Timestamp(utilStartDate.getTime());
-        return sqlDate;
-    }
+  
 }

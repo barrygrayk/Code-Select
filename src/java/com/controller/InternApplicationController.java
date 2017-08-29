@@ -2,17 +2,27 @@ package com.controller;
 
 import com.Messages.InventoryAlerts;
 import com.applicants.Model.Applicant;
+import com.applicants.Model.InternshipInfo;
 import com.db.connection.InternAplicationTableConnection;
 import com.validation.MrKaplan;
+import com.validation.SessionUtils;
 import com.validation.TheEqualizer;
 import java.io.Serializable;
+import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
+import java.util.Locale;
 import java.util.Map;
 import java.util.TreeMap;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.annotation.PostConstruct;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.SessionScoped;
+import javax.faces.context.FacesContext;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpSession;
 import org.primefaces.event.SelectEvent;
 import org.primefaces.event.UnselectEvent;
 
@@ -24,10 +34,16 @@ import org.primefaces.event.UnselectEvent;
 @SessionScoped
 public class InternApplicationController extends Applicant implements Serializable {
 
-    private String country;
+    private String country, duration = "0";
+    private Date startDate, endDate;
+    private String mStatus, goal, heardFrom;
     private Applicant selectedApplicant;
     private TreeMap<String, String> countries = new TreeMap();
-    private String code = "";
+    private List<String> heardFromList = new ArrayList<>();
+    private List<String> homeCountry = new ArrayList<>();
+    private List<String> maritalStatuses = new ArrayList<>();
+    private List<String> genders = new ArrayList<>();
+    private String code = "", theGender = " ";
     private List<Applicant> applicants = new ArrayList<>();
 
     public InternApplicationController() {
@@ -42,8 +58,39 @@ public class InternApplicationController extends Applicant implements Serializab
         this.selectedApplicant = selectedApplicant;
     }
 
+    public String getDuration() {
+        return duration;
+    }
+
+    public void setDuration(String duration) {
+        this.duration = duration;
+    }
+
     @PostConstruct
     public void init() {
+
+        HttpServletRequest req = (HttpServletRequest) FacesContext.getCurrentInstance().getExternalContext().getRequest();
+        HttpSession ses = req.getSession();
+        //System.out.println("Applicant id-----gg-------" + ses.getAttribute("id"));
+        try {
+
+            if (ses.getAttribute("id") != null) {
+                int sesPk = (int) ses.getAttribute("id");
+                List<Applicant> currentApplicant = new InternAplicationTableConnection().getApplicant(sesPk);
+                setId(sesPk);
+                System.out.println("---------Phone---------" + currentApplicant.get(0).getPhoneNumber());
+                if (currentApplicant.size() == 1) {
+                    System.out.println("------------------");
+                    setFirstname(currentApplicant.get(0).getFirstname());
+                    setLastname(currentApplicant.get(0).getLastname());
+                    setPhoneNumber(currentApplicant.get(0).getPhoneNumber());
+                    setEmailAddress(currentApplicant.get(0).getEmailAddress());
+                }
+            }
+        } catch (ClassNotFoundException | SQLException ex) {
+            Logger.getLogger(InternApplicationController.class.getName()).log(Level.SEVERE, null, ex);
+        }
+
         countries.put("Algeria", "213");
         countries.put("Andorra", "376");
         countries.put("Angola", "244");
@@ -257,6 +304,84 @@ public class InternApplicationController extends Applicant implements Serializab
         countries.put("Yemen South", "967");
         countries.put("Zambia", "260");
         countries.put("Zimbabwe", "263");
+        //Marital status list
+        maritalStatuses.add("Divorced");
+        maritalStatuses.add("Married");
+        maritalStatuses.add("Single");
+        //Heard from list 
+        //Church, Family, Friend, Social Media
+        heardFromList.add("Church");
+        heardFromList.add("Family");
+        heardFromList.add("Friend");
+        heardFromList.add("Social Media");
+        //Gnders list 
+        genders.add("Male");
+        genders.add("Female");
+
+        String[] locales = Locale.getISOCountries();
+        for (String countryCode : locales) {
+            Locale obj = new Locale("", countryCode);
+            System.out.println( obj.getDisplayCountry());
+
+        }
+
+    
+    }
+
+    public List<String> getGenders() {
+        return genders;
+    }
+
+    public void setGenders(List<String> genders) {
+        this.genders = genders;
+    }
+
+    public String getTheGender() {
+        return theGender;
+    }
+
+    public void setTheGender(String theGender) {
+        this.theGender = theGender;
+    }
+
+    public Date getStartDate() {
+        return startDate;
+    }
+
+    public void setStartDate(Date startDate) {
+        this.startDate = startDate;
+    }
+
+    public Date getEndDate() {
+        return endDate;
+    }
+
+    public void setEndDate(Date endDate) {
+        this.endDate = endDate;
+    }
+
+    public String getmStatus() {
+        return mStatus;
+    }
+
+    public void setmStatus(String mStatus) {
+        this.mStatus = mStatus;
+    }
+
+    public String getGoal() {
+        return goal;
+    }
+
+    public void setGoal(String goal) {
+        this.goal = goal;
+    }
+
+    public String getHeardFrom() {
+        return heardFrom;
+    }
+
+    public void setHeardFrom(String heardFrom) {
+        this.heardFrom = heardFrom;
     }
 
     public String getCountry() {
@@ -271,6 +396,14 @@ public class InternApplicationController extends Applicant implements Serializab
         return countries;
     }
 
+    public List<String> getHeardFromList() {
+        return heardFromList;
+    }
+
+    public void setHeardFromList(List<String> heardFromList) {
+        this.heardFromList = heardFromList;
+    }
+
     public void setCountries(TreeMap<String, String> countries) {
         this.countries = countries;
     }
@@ -278,9 +411,38 @@ public class InternApplicationController extends Applicant implements Serializab
     public void onCountryChange() {
         if (country != null) {
             code = "+" + country;
+
         } else {
             code = "";
         }
+    }
+
+    public void onEndDateChange() {
+        System.err.println("------Change Date----");
+        final long DAY_IN_MILLIS = 1000 * 60 * 60 * 24;
+        System.out.println(getStartDate() + " ----------DAte--------------- " + getEndDate());
+        if (startDate != null && endDate != null) {
+            int diffInDays = (int) ((endDate.getTime() - startDate.getTime()) / DAY_IN_MILLIS);
+            if (diffInDays >= 30) {
+                int months = diffInDays / 30;
+                duration = months + " month(s)";
+                if (months >= 12) {
+                    int years = months / 12;
+                    duration = years + " year(s)";
+                }
+            } else {
+                duration = diffInDays + " day(s)";
+            }
+
+        }
+    }
+
+    public List<String> getMaritalStatuses() {
+        return maritalStatuses;
+    }
+
+    public void setMaritalStatuses(List<String> maritalStatuses) {
+        this.maritalStatuses = maritalStatuses;
     }
 
     public String getCode() {
@@ -320,6 +482,7 @@ public class InternApplicationController extends Applicant implements Serializab
             application.setFirstname(sanitise.toUperAndLower(getFirstname()));
             application.setLastname(sanitise.toUperAndLower(getLastname()));
             application.setEmailAddress(getEmailAddress());
+
             application.setPhoneNumber(code);
             application.setMotivationForApllication(getMotivationForApllication());
             System.out.println("-----cont---------");
@@ -327,8 +490,43 @@ public class InternApplicationController extends Applicant implements Serializab
             System.out.println("-----Cont--Done-------");
         }
     }
-    
-    public void acceptRequst (){
+
+    public void saveInternApplicationInfo() {
+        Applicant application = new Applicant();
+        InternshipInfo info = new InternshipInfo();
+        info.setStartDate(startDate);
+        info.setEndDate(endDate);
+        info.setHowUHeard(heardFrom);
+        info.setInternshipGoal(goal);
+        application.setInternshipInfo(info);
+        application.setId(getId());
+        System.out.println("------save ex--------- " + application.getId());
+        new InternAplicationTableConnection().updateInternInfo(application);
+    }
+
+    public void saveGeneralInfo() {
+        TheEqualizer sanitise = new TheEqualizer();
+        Applicant application = new Applicant();
+        application.setFirstname(sanitise.toUperAndLower(getFirstname()));
+        application.setLastname(sanitise.toUperAndLower(getLastname()));
+        application.setPrename(getPrename());
+        application.setDateOfBirth(getDateOfBirth());
+        application.setEmailAddress(getEmailAddress());
+        System.out.println("com.controller.InternApplicationController.saveGeneralInfo() " + getMaritalStatus());
+        application.setMaritalStatus(getMaritalStatus());
+        application.setCity(getCity());
+        application.setZipCode(getZipCode());
+        application.setAddress(getAddress());
+        System.out.println(theGender);
+        application.setGender(theGender.charAt(0));
+        application.setCountry(getCountry());
+        application.setPhoneNumber(getPhoneNumber());
+        application.setId(getId());
+        System.out.println("------save ex Gen------- " + application.getId());
+        new InternAplicationTableConnection().updateGenralInfo(application);
+    }
+
+    public void acceptRequst() {
         new InternAplicationTableConnection().sendAcceRequest(selectedApplicant);
     }
 

@@ -11,7 +11,8 @@
         <div class="ui-g">
             <div class="ui-g-2">
                 <h:form>
-                    <p:commandButton id="add_" value="Assign Shift" icon="fa fa-plus" type="button" onclick="PF('dlg1').show()" oncomplete="PF('dig').hide();" />
+                    <p:commandButton id="add_" value="Assign Shift" icon="fa fa-plus" type="button" 
+                                     onclick="PF('dlg1').show()" oncomplete="PF('dig').hide();" />
                 </h:form>  
             </div>
         </div>
@@ -55,7 +56,8 @@
                                     <h:outputLabel for="mask"    value="Shift Date:" />
                                 </div>
                                 <div class="ui-g-6">
-                                    <p:calendar id="mask" value="#{StaffMembers.shitDate}" pattern="yyyy-MM-dd" mask="true" required="true" label="shift date" />
+                                    <p:calendar id="mask" value="#{StaffMembers.shitDate}" pattern="yyyy-MM-dd" mask="true" required="true" 
+                                                label="shift date" />
                                 </div>
                             </div>
                             <div class="ui-g">
@@ -78,7 +80,8 @@
                                 </div>
                             </div>
                             <div class="ui-g-6">
-                                <p:commandButton value="Assign" action="#{StaffMembers.assignShift()}" update=":shiftToday :shiftFut :shiftHist"/>
+                                <p:commandButton value="Assign" action="#{StaffMembers.assignShift()}" update="shiftToday todaysShift 
+                                                 :shiftFut :shiftHist"/>
                             </div>                        
                         </div>
                     </p:dialog>
@@ -86,8 +89,9 @@
             </div>
             <div class="ui-g-9">
                 <h:form id="shiftFut">
-                    <p:dataTable id="shiftFuture" var="temp" value="#{StaffMembers.futureShifts}" selectionMode="single" selection="#{StaffMembers.selectedsatff}"  rowKey=""  >
-                          > 
+                    <p:dataTable id="shiftFuture" var="temp" value="#{StaffMembers.futureShifts}" 
+                                 selectionMode="single" selection="#{StaffMembers.selectedsatff}"  rowKey=""  >
+                         
                         <f:facet name="header">
                             Future Shifts
                         </f:facet>
@@ -112,8 +116,10 @@
             <div class="ui-g-9">
                 <h:form id="shiftHist">
 
-                    <p:dataTable id="shiftHistory" var="temp" value="#{StaffMembers.shiftHistory}" selectionMode="single" selection="#{StaffMembers.selectedsatff}"  rowKey=""  paginator="true" rows="5"
-                     paginatorTemplate="{CurrentPageReport}  {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
+                    <p:dataTable id="shiftHistory" var="temp" value="#{StaffMembers.shiftHistory}" selectionMode="single" 
+                                 selection="#{StaffMembers.selectedsatff}"  rowKey=""  paginator="true" rows="5"
+                     paginatorTemplate="{CurrentPageReport}  {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} 
+                     {LastPageLink} {RowsPerPageDropdown}"
                      rowsPerPageTemplate="5,10,15">
                         <f:facet name="header">
                             Shift history

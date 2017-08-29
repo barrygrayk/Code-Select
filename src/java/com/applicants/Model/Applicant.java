@@ -14,12 +14,24 @@ public class Applicant extends Person {
     private String city;
     private String zipCode;
     private String maritalStatus;
+    private String prename;
+    private String country;
     private EmergencyContact nextSkin; // needs to add on Design class diagram
     private SpiritualLife beliefs; // same above...
     private EducationAndQualification formation;
     private ApplicantMedicalHistory healthRecord;
     private WorkExperience experience;
+    private InternshipInfo internshipInfo;
+
+    public InternshipInfo getInternshipInfo() {
+        return internshipInfo;
+    }
+
+    public void setInternshipInfo(InternshipInfo internshipInfo) {
+        this.internshipInfo = internshipInfo;
+    }
     private String motivationForApllication;
+    private String preredName;
     private int id;
     
     public Applicant(String firstname, String lastname, char gender, String phoneNumber, String address, String placeOfBirth, Date dateOfBirth, String emailAddress) {
@@ -43,6 +55,14 @@ public class Applicant extends Person {
 
     public void setId(int id) {
         this.id = id;
+    }
+
+    public String getCountry() {
+        return country;
+    }
+
+    public void setCountry(String country) {
+        this.country = country;
     }
     
     
@@ -81,6 +101,14 @@ public class Applicant extends Person {
 
     public String getMaritalStatus() {
         return maritalStatus;
+    }
+
+    public String getPrename() {
+        return prename;
+    }
+
+    public void setPrename(String prename) {
+        this.prename = prename;
     }
 
     public EmergencyContact getNextSkin() {
@@ -127,5 +155,14 @@ public class Applicant extends Person {
     public int getAge() {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
+
+    public String getPreredName() {
+        return preredName;
+    }
+
+    public void setPreredName(String preredName) {
+        this.preredName = preredName;
+    }
+    
     
 }
