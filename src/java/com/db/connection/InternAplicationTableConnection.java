@@ -251,14 +251,15 @@ public class InternAplicationTableConnection extends DatabaseConnection {
     public void updateInternInfo(Applicant applicant) {
         try {
             connection = getConnection();
-            String updateAuthfQuery = "UPDATE applicantInternShipInfo SET  `startdate` = ?,`enddate` = ?,`heardFrom` = ?,`goalForInternship` = ? WHERE `applicantId` = ?";
+            String updateAuthfQuery = "UPDATE applicantInternShipInfo SET  `startdate` = ?,`enddate` = ?,`aredaysflex` = ?,`heardFrom` = ?,`goalForInternship` = ? WHERE `applicantId` = ?";
             PreparedStatement ps = null;
             ps = connection.prepareStatement(updateAuthfQuery);
             ps.setDate(1, toSqlDate(applicant.getInternshipInfo().getStartDate()));
             ps.setDate(2, toSqlDate(applicant.getInternshipInfo().getEndDate()));
-            ps.setString(3, applicant.getInternshipInfo().getHowUHeard());
-            ps.setString(4, applicant.getInternshipInfo().getInternshipGoal());
-            ps.setInt(5, applicant.getId());
+            ps.setString(3,applicant.getInternshipInfo().getAreDayFlex());
+            ps.setString(4, applicant.getInternshipInfo().getHowUHeard());
+            ps.setString(5, applicant.getInternshipInfo().getInternshipGoal());
+            ps.setInt(6, applicant.getId());
             ps.execute();
             System.out.println("------update ex---------");
             feedback.addMessage("Success", "Your internship Information has been saved");

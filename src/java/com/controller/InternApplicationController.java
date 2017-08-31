@@ -1,11 +1,9 @@
 package com.controller;
 
-import com.Messages.InventoryAlerts;
 import com.applicants.Model.Applicant;
 import com.applicants.Model.InternshipInfo;
 import com.db.connection.InternAplicationTableConnection;
 import com.validation.MrKaplan;
-import com.validation.SessionUtils;
 import com.validation.TheEqualizer;
 import java.io.Serializable;
 import java.sql.SQLException;
@@ -38,6 +36,7 @@ public class InternApplicationController extends Applicant implements Serializab
     private Date startDate, endDate;
     private String mStatus, goal, heardFrom;
     private Applicant selectedApplicant;
+    private InternshipInfo applicat = new InternshipInfo();
     private TreeMap<String, String> countries = new TreeMap();
     private List<String> heardFromList = new ArrayList<>();
     private List<String> homeCountry = new ArrayList<>();
@@ -48,6 +47,14 @@ public class InternApplicationController extends Applicant implements Serializab
 
     public InternApplicationController() {
         super();
+    }
+
+    public List<String> getHomeCountry() {
+        return homeCountry;
+    }
+
+    public void setHomeCountry(List<String> homeCountry) {
+        this.homeCountry = homeCountry;
     }
 
     public Applicant getSelectedApplicant() {
@@ -68,7 +75,7 @@ public class InternApplicationController extends Applicant implements Serializab
 
     @PostConstruct
     public void init() {
-
+        
         HttpServletRequest req = (HttpServletRequest) FacesContext.getCurrentInstance().getExternalContext().getRequest();
         HttpSession ses = req.getSession();
         //System.out.println("Applicant id-----gg-------" + ses.getAttribute("id"));
@@ -321,11 +328,10 @@ public class InternApplicationController extends Applicant implements Serializab
         String[] locales = Locale.getISOCountries();
         for (String countryCode : locales) {
             Locale obj = new Locale("", countryCode);
-            System.out.println( obj.getDisplayCountry());
+            homeCountry.add(obj.getDisplayCountry());
 
         }
 
-    
     }
 
     public List<String> getGenders() {
@@ -482,7 +488,6 @@ public class InternApplicationController extends Applicant implements Serializab
             application.setFirstname(sanitise.toUperAndLower(getFirstname()));
             application.setLastname(sanitise.toUperAndLower(getLastname()));
             application.setEmailAddress(getEmailAddress());
-
             application.setPhoneNumber(code);
             application.setMotivationForApllication(getMotivationForApllication());
             System.out.println("-----cont---------");
@@ -497,6 +502,8 @@ public class InternApplicationController extends Applicant implements Serializab
         info.setStartDate(startDate);
         info.setEndDate(endDate);
         info.setHowUHeard(heardFrom);
+        System.out.println("Testing"+applicat.getAreDayFlex());
+        info.setAreDayFlex(applicat.getAreDayFlex());
         info.setInternshipGoal(goal);
         application.setInternshipInfo(info);
         application.setId(getId());
@@ -512,12 +519,10 @@ public class InternApplicationController extends Applicant implements Serializab
         application.setPrename(getPrename());
         application.setDateOfBirth(getDateOfBirth());
         application.setEmailAddress(getEmailAddress());
-        System.out.println("com.controller.InternApplicationController.saveGeneralInfo() " + getMaritalStatus());
         application.setMaritalStatus(getMaritalStatus());
         application.setCity(getCity());
         application.setZipCode(getZipCode());
         application.setAddress(getAddress());
-        System.out.println(theGender);
         application.setGender(theGender.charAt(0));
         application.setCountry(getCountry());
         application.setPhoneNumber(getPhoneNumber());
@@ -525,6 +530,15 @@ public class InternApplicationController extends Applicant implements Serializab
         System.out.println("------save ex Gen------- " + application.getId());
         new InternAplicationTableConnection().updateGenralInfo(application);
     }
+
+    public InternshipInfo getApplicat() {
+        return applicat;
+    }
+
+    public void setApplicat(InternshipInfo applicat) {
+        this.applicat = applicat;
+    }
+    
 
     public void acceptRequst() {
         new InternAplicationTableConnection().sendAcceRequest(selectedApplicant);

@@ -15,6 +15,7 @@ import java.util.Date;
 public class InternshipInfo {
     private Date startDate;
     private Date endDate;
+    private String areDayFlex;
     private String howUHeard=null;
     private String internshipGoal;
 
@@ -54,6 +55,16 @@ public class InternshipInfo {
     public void setInternshipGoal(String internshipGoal) {
         this.internshipGoal = internshipGoal;
     }
+
+    public String getAreDayFlex() {
+        return areDayFlex;
+    }
+
+    public void setAreDayFlex(String areDayFlex) {
+        this.areDayFlex = areDayFlex;
+    }
+    
+    
     
     
     

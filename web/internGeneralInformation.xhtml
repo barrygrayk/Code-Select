@@ -15,6 +15,7 @@
                     <li>
                         <p:watermark for="fName" value="First Name" />
                         <p:inputText id ="fName" class="field-style field-split align-left"  value="#{Apply.firstname}" />
+                        
                         <p:watermark for="streetAddress" value="Street Address" />
                         <p:inputText id="streetAddress" type="text" class="field-style field-split align-right" value="#{Apply.address}" />
 
@@ -23,6 +24,7 @@
                     <li>
                         <p:watermark for="surname" value="Surname" />
                         <p:inputText id="surname" type="text" class="field-style field-split align-left"  value="#{Apply.lastname}"/>
+                        
                         <p:watermark for="City" value="City/State" />
                         <p:inputText  id="City" type="text"  class="field-style field-split align-right" value="#{Apply.city}"/>
                     </li>
@@ -30,42 +32,48 @@
                     <li>
                         <p:watermark for="preName" value="Prefared Name" />
                         <p:inputText id="preName" type="text" class="field-style field-split align-left" value="#{Apply.prename}" />
-                        <p:watermark for="mask" value="Date of birth" />
-                        <!-- <input type="text" name="field1" class="field-style field-split align-left" placeholder="Date of Birth" />-->
-                        <p:calendar id="mask" value="#{Apply.dateOfBirth}" pattern="yyyy-MM-dd"  class="field-style field-split align-right"   styleClass="dateTimeField"  />
+
+                     
+
+                        <p:watermark for="zip" value="Zip Code" />
+                        <p:inputText id ="zip" type="number"  class="field-style field-split align-right" value="#{Apply.zipCode}"/>
                     </li>
 
                     <li>
-                         <p:watermark for="zip" value="Zip Code" />
-                        <p:inputText id ="zip" type="number"  class="field-style field-split align-left" value="#{Apply.zipCode}"/>
-                        
                         <p:watermark for="Gender" value="Gender" />
-                        <p:selectOneMenu id="Gender" value="#{Apply.theGender}" style="width:49%; margin-left: 5px;" class="drop field-split align-right">
+                        <p:selectOneMenu id="Gender" value="#{Apply.theGender}" style="width:49%;" class="drop field-split align-left">
                             <f:selectItem itemLabel="Gender" itemValue="#{Apply.theGender}" noSelectionOption="true" />
                             <f:selectItems value="#{Apply.genders}" />
                         </p:selectOneMenu>
 
- <!--<p:inputText id="mStatus" type="text"  class="field-style field-split align-right"  value="#{Apply.emailAddress}"/>-->
+
+
+                        <p:selectOneMenu id="country" value="#{Apply.country}" style="width:49%; margin-left: 5px;" class="drop field-split align-right" filter="true" filterMatchMode="startsWith" panelStyle="width:auto">
+                            <f:selectItem itemLabel="Country" itemValue="#{Apply.country}" noSelectionOption="true" />
+                            <f:selectItems value="#{Apply.homeCountry}" />
+                        </p:selectOneMenu>
+
 
                     </li>
                     <li>
+                        <p:watermark for="mask" value="Date of birth" />
+                        <p:calendar id="mask" value="#{Apply.dateOfBirth}" pattern="dd-MM-yyyy"  class="field-style field-split align-left"   styleClass="dateTimeField"  />
 
 
-                        <p:selectOneMenu id="country" value="#{Apply.maritalStatus}" style="width:49%; margin-right: 5px;" class="drop field-split align-left">
+
+                        <p:watermark for="Email" value="Email Address" />
+                        <p:inputText id="Email" type="text"  class="field-style field-split align-right"  value="#{Apply.emailAddress}"/>
+
+
+
+                    </li>
+
+                    <li>
+                        <p:selectOneMenu id="Maritalstatus" value="#{Apply.maritalStatus}" style="width:49%; " class="drop field-split align-left" >
                             <f:selectItem itemLabel="Marital status" itemValue="#{Apply.maritalStatus}" noSelectionOption="true" />
                             <f:selectItems value="#{Apply.maritalStatuses}" />
                         </p:selectOneMenu>
 
-                        <p:selectOneMenu id="city" value="#{Apply.country}" style="width:49%; margin-left:  5px" class="drop field-split align-right">
-                            <f:selectItem itemLabel="Country" itemValue="#{Apply.country}" noSelectionOption="true" />
-                            <f:selectItems value="#{Apply.maritalStatuses}" />
-                        </p:selectOneMenu>
-
-                    </li>
-
-                    <li>
-                        <p:watermark for="Email" value="Email Address" />
-                        <p:inputText id="Email" type="text"  class="field-style field-split align-left"  value="#{Apply.emailAddress}"/>
                         <p:watermark for="phoneNumber" value="Phone number " />
                         <p:inputText id="phoneNumber"   class="field-style field-split align-right"  value="#{Apply.phoneNumber}"/>
 
