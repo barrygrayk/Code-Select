@@ -256,7 +256,7 @@ public class InternAplicationTableConnection extends DatabaseConnection {
             ps = connection.prepareStatement(updateAuthfQuery);
             ps.setDate(1, toSqlDate(applicant.getInternshipInfo().getStartDate()));
             ps.setDate(2, toSqlDate(applicant.getInternshipInfo().getEndDate()));
-            ps.setString(3,applicant.getInternshipInfo().getAreDayFlex());
+            ps.setString(3, applicant.getInternshipInfo().getAreDayFlex());
             ps.setString(4, applicant.getInternshipInfo().getHowUHeard());
             ps.setString(5, applicant.getInternshipInfo().getInternshipGoal());
             ps.setInt(6, applicant.getId());
@@ -280,7 +280,6 @@ public class InternAplicationTableConnection extends DatabaseConnection {
 
     /*UPDATE  applicant SET `idApplicant` = ?,`firstname` = ?,`lastname` = ?,`prename` = ?,`dateOfBirth` = ?,`phoneNumber` = ?,`emailAddress` = ?,`citystate` = ?,`streetAddress` = ?,`country` = ?,`zipCode` = ?,`gender` = ?,`maritalStatus` = ?,`applicationStatus` = ?,`message` = ?WHERE `idApplicant` = ?;
      */
-
     public void updateGenralInfo(Applicant applicant) {
         System.out.println("------in 1---------");
         try {
@@ -289,7 +288,7 @@ public class InternAplicationTableConnection extends DatabaseConnection {
                     + "`streetAddress` = ?,`country` = ?,`zipCode` = ?,`gender` = ?,`maritalStatus` = ?"
                     + " WHERE `idApplicant` = ?";
             PreparedStatement ps = null;
-               System.out.println("------in 2---------");
+            System.out.println("------in 2---------");
             ps = connection.prepareStatement(updateAuthfQuery);
             ps.setString(1, applicant.getFirstname());
             ps.setString(2, applicant.getLastname());
@@ -318,11 +317,44 @@ public class InternAplicationTableConnection extends DatabaseConnection {
                 Logger.getLogger(InternAplicationTableConnection.class.getName()).log(Level.SEVERE, null, ex);
             }
         }
-        /*UPDATE `onthatile children's ministries`.`applicantInternShipInfo` SET  `startdate` = ?,`enddate` = ?,`heardFrom` = ?, `applicantInternShipInfocol` = ? ,`goalForInternship` = ? WHERE `Applicant_idApplicant` = ?;*/
-
- /*UPDATE `onthatile children's ministries`.`applicantInternShipInfo` SET  `startdate` = ?,`enddate` = ?,`heardFrom` = ?, `applicantInternShipInfocol` = ? ,`goalForInternship` = ? WHERE `Applicant_idApplicant` = ?;*/
+       
     }
-
+    
+    public void updateSpiritualLife(Applicant applicant) {
+        System.out.println("------in 1---------");
+        try {
+            connection = getConnection();
+            String updateAuthfQuery = "UPDATE applicantspirituallife SET "
+                    + " `attendChurch` = ?, `whichChurch` = ?, `attendDuration` = ?, `ministrisIn` = ?, "
+                    + "`commitdJesus` = ?, `commitedTest` = ?, `viewBefSaved` = ?, `hearGospel` = ?, `gospelMess` = ?, `background` = ?  "
+                    + "WHERE `Applicant_idApplicant` = ?";
+            PreparedStatement ps = null;
+            System.out.println("------in 2---------");
+            ps = connection.prepareStatement(updateAuthfQuery);
+            ps.setString(1, applicant.getBeliefs().getAttend());
+            ps.setString(2, applicant.getBeliefs().getWhichChurch());
+            ps.setDouble(3, applicant.getBeliefs().getAttendDuration());
+            ps.setString(4, applicant.getBeliefs().getMinistriesIn());
+            ps.setString(5, applicant.getBeliefs().getCommitedJesus());
+            ps.setString(6, applicant.getBeliefs().getCommitedTest());
+            ps.setString(7, applicant.getBeliefs().getViewBefSaved());
+            ps.setString(8, applicant.getBeliefs().getHearGospel());
+            ps.setString(9, applicant.getBeliefs().getGospelMess());
+            ps.setString(10, applicant.getBeliefs().getBackGround());
+            ps.setInt(11, applicant.getId());
+            ps.execute();
+            System.out.println("------update ex complete---------");
+            feedback.addMessage("Success", "Your Spiritual Life has been saved");
+        } catch (ClassNotFoundException | SQLException ex) {
+            Logger.getLogger(InternAplicationTableConnection.class.getName()).log(Level.SEVERE, null, ex);
+        } finally {
+            try {
+                connection.close();
+            } catch (SQLException ex) {
+                Logger.getLogger(InternAplicationTableConnection.class.getName()).log(Level.SEVERE, null, ex);
+            }
+        }
+    }
 
     @Override
     boolean recordValidator() {

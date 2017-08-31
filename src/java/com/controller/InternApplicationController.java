@@ -2,6 +2,7 @@ package com.controller;
 
 import com.applicants.Model.Applicant;
 import com.applicants.Model.InternshipInfo;
+import com.applicants.Model.SpiritualLife;
 import com.db.connection.InternAplicationTableConnection;
 import com.validation.MrKaplan;
 import com.validation.TheEqualizer;
@@ -37,6 +38,7 @@ public class InternApplicationController extends Applicant implements Serializab
     private String mStatus, goal, heardFrom;
     private Applicant selectedApplicant;
     private InternshipInfo applicat = new InternshipInfo();
+    private SpiritualLife spirituaLife = new SpiritualLife();
     private TreeMap<String, String> countries = new TreeMap();
     private List<String> heardFromList = new ArrayList<>();
     private List<String> homeCountry = new ArrayList<>();
@@ -73,9 +75,17 @@ public class InternApplicationController extends Applicant implements Serializab
         this.duration = duration;
     }
 
+    public SpiritualLife getSpirituaLife() {
+        return spirituaLife;
+    }
+
+    public void setSpirituaLife(SpiritualLife spirituaLife) {
+        this.spirituaLife = spirituaLife;
+    }
+
     @PostConstruct
     public void init() {
-        
+
         HttpServletRequest req = (HttpServletRequest) FacesContext.getCurrentInstance().getExternalContext().getRequest();
         HttpSession ses = req.getSession();
         //System.out.println("Applicant id-----gg-------" + ses.getAttribute("id"));
@@ -502,7 +512,7 @@ public class InternApplicationController extends Applicant implements Serializab
         info.setStartDate(startDate);
         info.setEndDate(endDate);
         info.setHowUHeard(heardFrom);
-        System.out.println("Testing"+applicat.getAreDayFlex());
+        System.out.println("Testing" + applicat.getAreDayFlex());
         info.setAreDayFlex(applicat.getAreDayFlex());
         info.setInternshipGoal(goal);
         application.setInternshipInfo(info);
@@ -531,6 +541,13 @@ public class InternApplicationController extends Applicant implements Serializab
         new InternAplicationTableConnection().updateGenralInfo(application);
     }
 
+    public void saveSpiritualLife() {
+        Applicant application = new Applicant();
+        application.setBeliefs(spirituaLife); 
+        application.setId(getId());
+        new InternAplicationTableConnection().updateSpiritualLife(application);
+    }
+
     public InternshipInfo getApplicat() {
         return applicat;
     }
@@ -538,7 +555,6 @@ public class InternApplicationController extends Applicant implements Serializab
     public void setApplicat(InternshipInfo applicat) {
         this.applicat = applicat;
     }
-    
 
     public void acceptRequst() {
         new InternAplicationTableConnection().sendAcceRequest(selectedApplicant);

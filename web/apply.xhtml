@@ -27,95 +27,102 @@
 
 
     <h:body>
-        
+
         <p:growl sticky="true" showDetail="true" life="1000"  autoUpdate="true"/>
 
         <div class="navbar-more-overlay">
         </div>
         <nav class="navbar navbar-inverse navbar-fixed-top animate">
-              
+
             <ui:include src="internAppTopNav.xhtml" />
         </nav>
         <!-- END OF NAV -->
         <!-- Form Container -->
-        
-            <div class="FormContainer" id="left">
+
+        <div class="FormContainer" id="left">
 
 
 
-              
-                <div class="container">
-                    <div class="row">
-                        <div class="col-lg-5 col-md-5 col-sm-8 col-xs-9 bhoechie-tab-container">
-                            <div class="col-lg-3 col-md-3 col-sm-3 col-xs-3 bhoechie-tab-menu">
-                                <div class="list-group">
-                                    <a href="#" class="list-group-item active text-center">
-                                        <br/>Internship Information
-                                    </a>
-                                    <a href="#" class="list-group-item ">
-                                        <br/>General Information
-                                    </a>
-                                    <a href="#" class="list-group-item text-center">
-                                        <br/> Spiritual Life
-                                    </a>
-                                    <a href="#" class="list-group-item text-center">
-                                        <br/>Education
-                                    </a>
-                                    <a href="#" class="list-group-item text-center">
-                                        <br/>Work Experience
-                                    </a>
-                                    <a href="#" class="list-group-item text-center">
-                                        <br/>Emergency Contacts
-                                    </a>
-                                    <a href="#" class="list-group-item text-center">
-                                        <br/>Required Documents
-                                    </a>
-                                </div>
+
+            <div class="container">
+                <div class="row">
+                    <div class="col-lg-5 col-md-5 col-sm-8 col-xs-9 bhoechie-tab-container">
+                        <div class="col-lg-3 col-md-3 col-sm-3 col-xs-3 bhoechie-tab-menu">
+                            <div class="list-group">
+                                <a href="#" class="list-group-item active text-center">
+                                    <br/>Internship Information
+                                </a>
+                                <a href="#" class="list-group-item ">
+                                    <br/>General Information
+                                </a>
+                                <a href="#" class="list-group-item text-center">
+                                    <br/> Spiritual Life
+                                </a>
+                                <a href="#" class="list-group-item text-center">
+                                    <br/> Personality Traits 
+                                </a>
+                                <a href="#" class="list-group-item text-center">
+                                    <br/>Education
+                                </a>
+                                <a href="#" class="list-group-item text-center">
+                                    <br/>Work Experience
+                                </a>
+                                <a href="#" class="list-group-item text-center">
+                                    <br/>Emergency Contacts
+                                </a>
+                                <a href="#" class="list-group-item text-center">
+                                    <br/>Required Documents
+                                </a>
                             </div>
-                            <!-- Form Sections -->
-                            <div class="col-lg-9 col-md-9 col-sm-9 col-xs-9 bhoechie-tab">
-                                
-                                <div class="bhoechie-tab-content active">
-                                    <ui:include src=" internshipInfo.xhtml" />
+                        </div>
+                        <!-- Form Sections -->
+                        <div class="col-lg-9 col-md-9 col-sm-9 col-xs-9 bhoechie-tab">
 
-                                </div>
-                                <!-- General Information Section -->
-                                <div class="bhoechie-tab-content ">
-                                    <ui:include src="internGeneralInformation.xhtml" />
-                                </div>
-                                <!-- END OF GENERAL INFORMATION -->
-                                <!-- Spiritual Life Section  -->
-                                <div class="bhoechie-tab-content">
-                                    <ui:include src="internSpiritualLife.xhtml" />
-                                </div>
-                                <!-- END OF Spiritual Life Section  -->
-                                <!-- Education Qualification Section -->
-                                <div class="bhoechie-tab-content">
-                                    <ui:include src="internEducationQualification.xhtml" />
-                                </div>
-                                <!-- END of Education Qualification Section -->
-                                <!-- Work Experience Section -->
-                                <div class="bhoechie-tab-content">
-                                    <ui:include src="internWorkExperience.xhtml" />
-                                </div>
-                                <!--- END of Work Experience Section -->
-                                <!-- Emergency Contacts Section -->
-                                <div class="bhoechie-tab-content">
-                                    <ui:include src="internEmergencyContacts.xhtml" />
-                                </div>
-                                <!-- END Emergency Contacts Section -->
-                                <!-- Required Documents Section -->
-                                <div class="bhoechie-tab-content">
-                                    <ui:include src="internRequiredDocs.xhtml" />
-                                </div>
+                            <div class="bhoechie-tab-content active">
+                                <ui:include src=" internshipInfo.xhtml" />
+
                             </div>
+                            <!-- General Information Section -->
+                            <div class="bhoechie-tab-content ">
+                                <ui:include src="internGeneralInformation.xhtml" />
+                            </div>
+                            <!-- END OF GENERAL INFORMATION -->
+                            <!-- Spiritual Life Section  -->
 
+                            <div class="bhoechie-tab-content">
+                                <ui:include src="internSpiritualLife.xhtml" />
+                            </div>
+                            <div class="bhoechie-tab-content">
+                                <ui:include src="internPersonalityTraits.xhtml" />
+                            </div>
+                            <!-- END OF Spiritual Life Section  -->
+                            <!-- Education Qualification Section -->
+                            <div class="bhoechie-tab-content">
+                                <ui:include src="internEducationQualification.xhtml" />
+                            </div>
+                            <!-- END of Education Qualification Section -->
+                            <!-- Work Experience Section -->
+                            <div class="bhoechie-tab-content">
+                                <ui:include src="internWorkExperience.xhtml" />
+                            </div>
+                            <!--- END of Work Experience Section -->
+                            <!-- Emergency Contacts Section -->
+                            <div class="bhoechie-tab-content">
+                                <ui:include src="internEmergencyContacts.xhtml" />
+                            </div>
+                            <!-- END Emergency Contacts Section -->
+                            <!-- Required Documents Section -->
+                            <div class="bhoechie-tab-content">
+                                <ui:include src="internRequiredDocs.xhtml" />
+                            </div>
                         </div>
 
                     </div>
-                </div>
 
+                </div>
             </div>
+
+        </div>
 
         <!-- Profile Photo Holder -->
         <div class="profileHolder" id="right">
