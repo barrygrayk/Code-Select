@@ -19,6 +19,7 @@ public class Applicant extends Person {
     private EmergencyContact nextSkin; // needs to add on Design class diagram
     private SpiritualLife beliefs; // same above...
     private EducationAndQualification formation;
+    private PersonanlityTraits personalityTraits;
     private ApplicantMedicalHistory healthRecord;
     private WorkExperience experience;
     private InternshipInfo internshipInfo;
@@ -163,6 +164,15 @@ public class Applicant extends Person {
     public void setPreredName(String preredName) {
         this.preredName = preredName;
     }
+
+    public PersonanlityTraits getPersonalityTraits() {
+        return personalityTraits;
+    }
+
+    public void setPersonalityTraits(PersonanlityTraits personalityTraits) {
+        this.personalityTraits = personalityTraits;
+    }
+    
     
     
 }

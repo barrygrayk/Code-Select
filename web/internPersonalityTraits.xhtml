@@ -2,23 +2,51 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml"
       xmlns:h="http://xmlns.jcp.org/jsf/html"
-      xmlns:ui="http://xmlns.jcp.org/jsf/facelets">
-      <ui:composition>
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:f="http://xmlns.jcp.org/jsf/core">
+    <ui:composition>
         <center>
             <h2 style="margin-top: 0;color:black">Personality Traits </h2>
-            <form class="form-style-9">
+            <h:form class="form-style-9">
+
                 <ul>
                     <li>
-                        <input type="text" name="field1" class="field-style field-split align-left" placeholder="Name of Highest Qualification" />
-                        <input type="text" name="field2" class="field-style field-split align-right" placeholder="Date of Graduation" />
-                    </li>
-                   
+                        <h:outputLabel value="Please select all the words below which	you believe accurately describe	you:"/>
+                        <p:selectManyCheckbox id="grid2" value="#{Apply.perTraits.selectedTraits}" layout="grid"   columns="4">
+                            <f:selectItems value="#{Apply.perTraits.traits}" var="trait" itemLabel="#{trait}" itemValue="#{trait}" />
+                        </p:selectManyCheckbox>
 
+                    </li>
                     <li>
-                        <input type="button" value="Save" />
+                        <h:outputLabel value="List below two strengths you have in working with children. Please be specific:"/>
+                        <p:outputLabel for="strengths" value="What is your family background? " />
+                        <p:watermark for="strengths" value="List two strenghts and a breif explanation" />
+                        <p:inputTextarea  id="strengths" rows="5" cols="15"  class="field-style" 
+                                          counter="display7" maxlength="1000" counterTemplate="{0} characters remaining." 
+                                          autoResize="false"   label="Message" value="#{Apply.perTraits.resonForStrength}"/>
+                        <h:outputText id="display7" />
+
+                    </li>
+                    <li>
+                        <h:outputLabel value="List below two weaknesses you have in working with children. Please be specific:"/>
+                        <p:watermark for="weaknesses" value="List two weaknesses and a breif explanation" />
+                        <p:inputTextarea  id="weaknesses" rows="5" cols="15"  class="field-style" 
+                                          counter="display8" maxlength="1000" counterTemplate="{0} characters remaining." 
+                                          autoResize="false"   label="Message" value="#{Apply.perTraits.reasonForWeekness}"/>
+                        <h:outputText id="display8" />
+
                     </li>
                 </ul>
-            </form>
+
+
+
+                <li>
+                    <p:commandButton  value="Save"  icon="fa fa-save" class="btn btn-primary btn-md" action="#{Apply.savePersonanlityTraits()}"/>
+
+                </li>
+
+            </h:form>
         </center>
     </ui:composition>
 </html>

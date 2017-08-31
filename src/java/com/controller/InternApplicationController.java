@@ -2,6 +2,7 @@ package com.controller;
 
 import com.applicants.Model.Applicant;
 import com.applicants.Model.InternshipInfo;
+import com.applicants.Model.PersonanlityTraits;
 import com.applicants.Model.SpiritualLife;
 import com.db.connection.InternAplicationTableConnection;
 import com.validation.MrKaplan;
@@ -39,6 +40,7 @@ public class InternApplicationController extends Applicant implements Serializab
     private Applicant selectedApplicant;
     private InternshipInfo applicat = new InternshipInfo();
     private SpiritualLife spirituaLife = new SpiritualLife();
+    private PersonanlityTraits perTraits =  new PersonanlityTraits();
     private TreeMap<String, String> countries = new TreeMap();
     private List<String> heardFromList = new ArrayList<>();
     private List<String> homeCountry = new ArrayList<>();
@@ -83,14 +85,23 @@ public class InternApplicationController extends Applicant implements Serializab
         this.spirituaLife = spirituaLife;
     }
 
+    public PersonanlityTraits getPerTraits() {
+        return perTraits;
+    }
+
+    public void setPerTraits(PersonanlityTraits perTraits) {
+        this.perTraits = perTraits;
+    }
+
+ 
+    
+    
     @PostConstruct
     public void init() {
-
         HttpServletRequest req = (HttpServletRequest) FacesContext.getCurrentInstance().getExternalContext().getRequest();
         HttpSession ses = req.getSession();
         //System.out.println("Applicant id-----gg-------" + ses.getAttribute("id"));
         try {
-
             if (ses.getAttribute("id") != null) {
                 int sesPk = (int) ses.getAttribute("id");
                 List<Applicant> currentApplicant = new InternAplicationTableConnection().getApplicant(sesPk);
@@ -546,6 +557,19 @@ public class InternApplicationController extends Applicant implements Serializab
         application.setBeliefs(spirituaLife); 
         application.setId(getId());
         new InternAplicationTableConnection().updateSpiritualLife(application);
+    }
+    
+     public void savePersonanlityTraits() {
+        Applicant application = new Applicant();
+        
+         String allTraits ="";
+        for(String per: perTraits.getSelectedTraits()){
+            allTraits+= per+" ";
+        }
+        perTraits.setTraitsToString(allTraits);
+        application.setPersonalityTraits(perTraits);
+        application.setId(getId());
+        new InternAplicationTableConnection().updatePersonalityTraits(application);
     }
 
     public InternshipInfo getApplicat() {

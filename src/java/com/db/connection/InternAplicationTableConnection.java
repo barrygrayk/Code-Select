@@ -242,8 +242,17 @@ public class InternAplicationTableConnection extends DatabaseConnection {
             PreparedStatement insertWordExp = connection.prepareStatement("INSERT INTO applicantworkexperience (`Applicant_idApplicant`) VALUES(?)");
             insertWordExp.setInt(1, fk);
             insertWordExp.execute();
+            PreparedStatement insertPersTraits = connection.prepareStatement("INSERT INTO applicantPersonalityTraits (`applicantID`) VALUES(?)");
+            insertPersTraits.setInt(1, fk);
+            insertPersTraits.execute();
         } catch (SQLException ex) {
             Logger.getLogger(InternAplicationTableConnection.class.getName()).log(Level.SEVERE, null, ex);
+        } finally {
+            try {
+                connection.close();
+            } catch (SQLException ex) {
+                Logger.getLogger(InternAplicationTableConnection.class.getName()).log(Level.SEVERE, null, ex);
+            }
         }
 
     }
@@ -273,13 +282,8 @@ public class InternAplicationTableConnection extends DatabaseConnection {
                 Logger.getLogger(InternAplicationTableConnection.class.getName()).log(Level.SEVERE, null, ex);
             }
         }
-        /*UPDATE `onthatile children's ministries`.`applicantInternShipInfo` SET  `startdate` = ?,`enddate` = ?,`heardFrom` = ?, `applicantInternShipInfocol` = ? ,`goalForInternship` = ? WHERE `Applicant_idApplicant` = ?;*/
-
- /*UPDATE `onthatile children's ministries`.`applicantInternShipInfo` SET  `startdate` = ?,`enddate` = ?,`heardFrom` = ?, `applicantInternShipInfocol` = ? ,`goalForInternship` = ? WHERE `Applicant_idApplicant` = ?;*/
     }
 
-    /*UPDATE  applicant SET `idApplicant` = ?,`firstname` = ?,`lastname` = ?,`prename` = ?,`dateOfBirth` = ?,`phoneNumber` = ?,`emailAddress` = ?,`citystate` = ?,`streetAddress` = ?,`country` = ?,`zipCode` = ?,`gender` = ?,`maritalStatus` = ?,`applicationStatus` = ?,`message` = ?WHERE `idApplicant` = ?;
-     */
     public void updateGenralInfo(Applicant applicant) {
         System.out.println("------in 1---------");
         try {
@@ -288,7 +292,6 @@ public class InternAplicationTableConnection extends DatabaseConnection {
                     + "`streetAddress` = ?,`country` = ?,`zipCode` = ?,`gender` = ?,`maritalStatus` = ?"
                     + " WHERE `idApplicant` = ?";
             PreparedStatement ps = null;
-            System.out.println("------in 2---------");
             ps = connection.prepareStatement(updateAuthfQuery);
             ps.setString(1, applicant.getFirstname());
             ps.setString(2, applicant.getLastname());
@@ -317,9 +320,9 @@ public class InternAplicationTableConnection extends DatabaseConnection {
                 Logger.getLogger(InternAplicationTableConnection.class.getName()).log(Level.SEVERE, null, ex);
             }
         }
-       
+
     }
-    
+
     public void updateSpiritualLife(Applicant applicant) {
         System.out.println("------in 1---------");
         try {
@@ -355,6 +358,31 @@ public class InternAplicationTableConnection extends DatabaseConnection {
             }
         }
     }
+    
+        public void updatePersonalityTraits(Applicant applicant) {
+        try {
+            connection = getConnection();
+            String updateAuthfQuery = "UPDATE applicantPersonalityTraits  SET `traits` = ?, `WeeknessReason` = ?, `strenghtReason` = ? WHERE `applicantID` = ?";
+            PreparedStatement ps = null;
+            ps = connection.prepareStatement(updateAuthfQuery);
+            ps.setString(1, applicant.getPersonalityTraits().getTraitsToString());
+            ps.setString(2, applicant.getPersonalityTraits().getReasonForWeekness());
+            ps.setString(3, applicant.getPersonalityTraits().getResonForStrength());
+            ps.setInt(4, applicant.getId());
+            ps.execute();
+            System.out.println("------update ex---------");
+            feedback.addMessage("Success", "Your Personality Traits has been saved");
+
+        } catch (ClassNotFoundException | SQLException ex) {
+            Logger.getLogger(InternAplicationTableConnection.class.getName()).log(Level.SEVERE, null, ex);
+        } finally {
+            try {
+                connection.close();
+            } catch (SQLException ex) {
+                Logger.getLogger(InternAplicationTableConnection.class.getName()).log(Level.SEVERE, null, ex);
+            }
+        }
+    }
 
     @Override
     boolean recordValidator() {
@@ -362,71 +390,6 @@ public class InternAplicationTableConnection extends DatabaseConnection {
     }
 
 }
-/*INSERT INTO applicanteducationqualification
-(`idapplicanteducationqualification`,
-`highestQual`,
-`dateOfGraduation`,
-`specialCertification`,
-`strenghts`,
-`weakness`,
-`Applicant_idApplicant`)
-VALUES
-();
- */
- /*INSERT INTO applicantemergencycontact
-(`idApplicantEmergencyContact`,
-`firstname`,
-`lastname`,
-`relationship`,
-`phoneNumber`,
-`emailAddress`,
-`Applicant_idApplicant`)
-VALUES
-();
- */
 
- /*INSERT INTO `onthatile children's ministries`.`applicantInternShipInfo`
-(`idapplicantInternShipInfo`,
-`startdate`,
-`enddate`,
-`heardFrom`,
-`applicantInternShipInfocol`,
-`goalForInternship`,
-`applicantId`)
-VALUES
-();
- */
- /*INSERT INTO applicantmedicalhistory
-(`idApplicantMedicalHistory`,
-`anyMedicalConditions`,
-`medicalConditionDesc`,
-`anyPastMedicalCondition`,
-`pastMedicalConditionDesc`,
-`diataryRestrictions`,
-`dietaryRestrictionsDesc`,
-`physicalHandicap`,
-`handicapDesc`,
-`Applicant_idApplicant`)
-VALUES
-();
- */
- /*INSERT INTO applicantspirituallife
-(`idapplicantspirituallife`,
-`beliefInJesus`,
-`nameOfChurch`,
-`testimony`,
-`Applicant_idApplicant`)
-VALUES
-();
-
- */
- /*INSERT INTO applicantworkexperience
-(`idapplicantworkexperience`,
-`nameOfEmployer`,
-`jobTitle`,
-`jobLength`,
-`reasonForLeaving`,
-`Applicant_idApplicant`)
-VALUES
-();
- */
+/*;
+*/
