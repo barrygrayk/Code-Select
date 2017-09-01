@@ -3,8 +3,7 @@
 package com.applicants.Model;
 
 import com.staff.Model.Person;
-import javax.faces.bean.ManagedBean;
-import javax.faces.bean.SessionScoped;
+
 
 /**
  *
@@ -17,6 +16,10 @@ public class EmergencyContact extends Person {
     private String relationship;
     private int id;
 
+    public EmergencyContact() {
+    }
+
+    
     public EmergencyContact(String firstname, String lastname, String phoneNumber,  String emailAddress) {
         super(firstname, lastname, phoneNumber,  emailAddress);
     }

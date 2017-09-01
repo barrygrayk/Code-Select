@@ -1,6 +1,8 @@
 package com.controller;
 
 import com.applicants.Model.Applicant;
+import com.applicants.Model.EducationAndQualification;
+import com.applicants.Model.EmergencyContact;
 import com.applicants.Model.InternshipInfo;
 import com.applicants.Model.PersonanlityTraits;
 import com.applicants.Model.SpiritualLife;
@@ -40,7 +42,9 @@ public class InternApplicationController extends Applicant implements Serializab
     private Applicant selectedApplicant;
     private InternshipInfo applicat = new InternshipInfo();
     private SpiritualLife spirituaLife = new SpiritualLife();
-    private PersonanlityTraits perTraits =  new PersonanlityTraits();
+    private EducationAndQualification edeucation = new EducationAndQualification();
+    private EmergencyContact emergency = new EmergencyContact();
+    private PersonanlityTraits perTraits = new PersonanlityTraits();
     private TreeMap<String, String> countries = new TreeMap();
     private List<String> heardFromList = new ArrayList<>();
     private List<String> homeCountry = new ArrayList<>();
@@ -81,6 +85,14 @@ public class InternApplicationController extends Applicant implements Serializab
         return spirituaLife;
     }
 
+    public EducationAndQualification getEdeucation() {
+        return edeucation;
+    }
+
+    public void setEdeucation(EducationAndQualification edeucation) {
+        this.edeucation = edeucation;
+    }
+
     public void setSpirituaLife(SpiritualLife spirituaLife) {
         this.spirituaLife = spirituaLife;
     }
@@ -93,9 +105,15 @@ public class InternApplicationController extends Applicant implements Serializab
         this.perTraits = perTraits;
     }
 
- 
+    public EmergencyContact getEmergency() {
+        return emergency;
+    }
+
+    public void setEmergency(EmergencyContact emergency) {
+        this.emergency = emergency;
+    }
     
-    
+
     @PostConstruct
     public void init() {
         HttpServletRequest req = (HttpServletRequest) FacesContext.getCurrentInstance().getExternalContext().getRequest();
@@ -554,22 +572,32 @@ public class InternApplicationController extends Applicant implements Serializab
 
     public void saveSpiritualLife() {
         Applicant application = new Applicant();
-        application.setBeliefs(spirituaLife); 
+        application.setBeliefs(spirituaLife);
         application.setId(getId());
         new InternAplicationTableConnection().updateSpiritualLife(application);
     }
-    
-     public void savePersonanlityTraits() {
+
+    public void savePersonanlityTraits() {
         Applicant application = new Applicant();
-        
-         String allTraits ="";
-        for(String per: perTraits.getSelectedTraits()){
-            allTraits+= per+" ";
-        }
+        String allTraits = "";
+        allTraits = perTraits.getSelectedTraits().stream().map((per) -> per + " ").reduce(allTraits, String::concat);
         perTraits.setTraitsToString(allTraits);
         application.setPersonalityTraits(perTraits);
         application.setId(getId());
         new InternAplicationTableConnection().updatePersonalityTraits(application);
+    }
+
+    public void saveEducationAndQualification() {
+        Applicant application = new Applicant();
+        application.setFormation(edeucation);
+        application.setId(getId());
+        new InternAplicationTableConnection().updateEducationQualification(application);
+    }
+     public void saveEmergencyContact() {
+        Applicant application = new Applicant();
+        application.setNextSkin(emergency);
+        application.setId(getId());
+        new InternAplicationTableConnection().updateEmergencContact(application);
     }
 
     public InternshipInfo getApplicat() {

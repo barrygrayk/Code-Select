@@ -358,8 +358,8 @@ public class InternAplicationTableConnection extends DatabaseConnection {
             }
         }
     }
-    
-        public void updatePersonalityTraits(Applicant applicant) {
+
+    public void updatePersonalityTraits(Applicant applicant) {
         try {
             connection = getConnection();
             String updateAuthfQuery = "UPDATE applicantPersonalityTraits  SET `traits` = ?, `WeeknessReason` = ?, `strenghtReason` = ? WHERE `applicantID` = ?";
@@ -372,7 +372,64 @@ public class InternAplicationTableConnection extends DatabaseConnection {
             ps.execute();
             System.out.println("------update ex---------");
             feedback.addMessage("Success", "Your Personality Traits has been saved");
+        } catch (ClassNotFoundException | SQLException ex) {
+            Logger.getLogger(InternAplicationTableConnection.class.getName()).log(Level.SEVERE, null, ex);
+        } finally {
+            try {
+                connection.close();
+            } catch (SQLException ex) {
+                Logger.getLogger(InternAplicationTableConnection.class.getName()).log(Level.SEVERE, null, ex);
+            }
+        }
+    }
 
+    public void updateEducationQualification(Applicant applicant) {
+        try {
+            connection = getConnection();
+            String updateAuthfQuery = "UPDATE applicanteducationqualification SET `highestQual` = ?, `dateOfGraduation` = ?,"
+                    + " `specialCertification` = ?, `specialGraduationDate` = ? WHERE"
+                    + " `Applicant_idApplicant` = ?";
+            PreparedStatement ps = null;
+            ps = connection.prepareStatement(updateAuthfQuery);
+            ps.setString(1, applicant.getFormation().getHighestQualification());
+            ps.setDate(2, toSqlDate(applicant.getFormation().getHighestGraduationDate()));
+            ps.setString(3, applicant.getFormation().getSpecialQualification());
+            ps.setDate(4, toSqlDate(applicant.getFormation().getSpecialGraduationDate()));
+            ps.setInt(5, applicant.getId());
+            ps.execute();
+            System.out.println("------update ex---------");
+            feedback.addMessage("Success", "Your Qualifiaction has been saved");
+        } catch (ClassNotFoundException | SQLException ex) {
+            Logger.getLogger(InternAplicationTableConnection.class.getName()).log(Level.SEVERE, null, ex);
+        } finally {
+            try {
+                connection.close();
+            } catch (SQLException ex) {
+                Logger.getLogger(InternAplicationTableConnection.class.getName()).log(Level.SEVERE, null, ex);
+            }
+        }
+    }
+
+    /*
+     */
+
+    public void updateEmergencContact(Applicant applicant) {
+        try {
+            connection = getConnection();
+            String updateAuthfQuery = "UPDATE applicantemergencycontact SET `firstname` = ?, `lastname` = ?, `relationship` = ?,"
+                    + " `phoneNumber` = ?, `emailAddress` =? "
+                    + "WHERE `Applicant_idApplicant` =?";
+            PreparedStatement ps = null;
+            ps = connection.prepareStatement(updateAuthfQuery);
+            ps.setString(1, applicant.getNextSkin().getFirstname());
+            ps.setString(2, applicant.getNextSkin().getLastname());
+            ps.setString(3, applicant.getNextSkin().getRelationship());
+            ps.setString(4, applicant.getNextSkin().getPhoneNumber());
+            ps.setString(5, applicant.getNextSkin().getEmailAddress());
+            ps.setInt(6, applicant.getId());
+            ps.execute();
+            System.out.println("------update ex---------");
+            feedback.addMessage("Success", "Your Emergency Contact has been saved");
         } catch (ClassNotFoundException | SQLException ex) {
             Logger.getLogger(InternAplicationTableConnection.class.getName()).log(Level.SEVERE, null, ex);
         } finally {
@@ -390,6 +447,3 @@ public class InternAplicationTableConnection extends DatabaseConnection {
     }
 
 }
-
-/*;
-*/

@@ -1,22 +1,18 @@
-
 package com.applicants.Model;
 
-import java.util.ArrayList;
-import java.util.Date;
 
+import java.util.Date;
 
 /**
  *
  * @author efsan1
  */
-
 public class EducationAndQualification {
-    
+
     private String highestQualification;
-    private Date graduationDate;
+    private Date highestGraduationDate;
+    private Date specialGraduationDate;
     private String specialQualification;
-    private ArrayList<String> strengths;
-    private ArrayList<String> weaknesses;
 
     public String getHighestQualification() {
         return highestQualification;
@@ -26,12 +22,20 @@ public class EducationAndQualification {
         this.highestQualification = highestQualification;
     }
 
-    public Date getGraduationDate() {
-        return graduationDate;
+    public Date getHighestGraduationDate() {
+        return highestGraduationDate;
     }
 
-    public void setGraduationDate(Date graduationDate) {
-        this.graduationDate = graduationDate;
+    public void setHighestGraduationDate(Date highestGraduationDate) {
+        this.highestGraduationDate = highestGraduationDate;
+    }
+
+    public Date getSpecialGraduationDate() {
+        return specialGraduationDate;
+    }
+
+    public void setSpecialGraduationDate(Date specialGraduationDate) {
+        this.specialGraduationDate = specialGraduationDate;
     }
 
     public String getSpecialQualification() {
@@ -41,22 +45,9 @@ public class EducationAndQualification {
     public void setSpecialQualification(String specialQualification) {
         this.specialQualification = specialQualification;
     }
-
-    public ArrayList<String> getStrengths() {
-        return strengths;
-    }
-
-    public void setStrengths(ArrayList<String> strengths) {
-        this.strengths = strengths;
-    }
-
-    public ArrayList<String> getWeaknesses() {
-        return weaknesses;
-    }
-
-    public void setWeaknesses(ArrayList<String> weaknesses) {
-        this.weaknesses = weaknesses;
-    }
     
+
+   
     
+
 }

@@ -1,29 +1,30 @@
 <?xml version='1.0' encoding='UTF-8' ?>
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml"
-      xmlns:ui="http://xmlns.jcp.org/jsf/facelets">
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:p="http://primefaces.org/ui">
     <ui:composition>
         <center>
-            <h2 style="margin-top: 0;color:black">Emergency Contacts</h2>
-            <form class="form-style-9">
+            <h2 style="margin-top: 0;color:black">Emergency Contact</h2>
+            <h:form class="form-style-9">
                 <ul>
                     <li>
-                        <input type="text" name="field1" class="field-style field-split align-left" placeholder="First Name of Next Kin" />
-                        <input type="text" name="field2" class="field-style field-split align-right" placeholder="Email Address of Next Kin" />
+                        <p:inputText type="text"  class="field-style field-split align-left" placeholder="First Name" value="#{Apply.emergency.firstname}" />
+                        <p:inputText type="text" class="field-style field-split align-right" placeholder="Email Address" value="#{Apply.emergency.emailAddress}" />
                     </li>
                     <li>
-                        <input type="text" name="field3" class="field-style field-split align-left" placeholder="Last Name of Next Kin" />
-                        <input type="text" name="field4" class="field-style field-split align-right" placeholder="Phone Number of Next Kin" />
+                        <p:inputText type="text" class="field-style field-split align-left" placeholder="Last Name"  value="#{Apply.emergency.lastname}"/>
+                        <p:inputText type="text" class="field-style field-split align-right" placeholder="Phone number" value="#{Apply.emergency.phoneNumber}" />
                     </li>
                     <li>
-                        <input type="text" name="field1" class="field-style field-split align-left" placeholder="Relationship of Next Kin" />
-                        <input type="number" name="field2" class="field-style field-split align-right" placeholder="Street Address of Next Kin" />
+                        <p:inputText type="text" class="field-style field-split align-left" placeholder="Relationship" value="#{Apply.emergency.relationship}" />
                     </li>
                     <li>
-                        <input type="submit" value="Save" />
+                        <p:commandButton  value="Save"  icon="fa fa-save" class="btn btn-primary btn-md" action="#{Apply.saveEmergencyContact()}"/>
                     </li>
                 </ul>
-            </form>
+            </h:form>
         </center>
     </ui:composition>
 </html>
