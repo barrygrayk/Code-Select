@@ -2,6 +2,7 @@ package com.db.connection;
 
 import com.MenuView.MenuView;
 import com.applicants.Model.Applicant;
+import com.applicants.Model.WorkExperience;
 import com.staff.Model.Authenticate;
 import com.staff.Model.Authentication;
 import com.validation.AuthTokens;
@@ -239,9 +240,9 @@ public class InternAplicationTableConnection extends DatabaseConnection {
             PreparedStatement insertSpiLife = connection.prepareStatement("INSERT INTO applicantspirituallife (`Applicant_idApplicant`) VALUES (?)");
             insertSpiLife.setInt(1, fk);
             insertSpiLife.execute();
-            PreparedStatement insertWordExp = connection.prepareStatement("INSERT INTO applicantworkexperience (`Applicant_idApplicant`) VALUES(?)");
+            /*PreparedStatement insertWordExp = connection.prepareStatement("INSERT INTO applicantworkexperience (`Applicant_idApplicant`) VALUES(?)");
             insertWordExp.setInt(1, fk);
-            insertWordExp.execute();
+            insertWordExp.execute();*/
             PreparedStatement insertPersTraits = connection.prepareStatement("INSERT INTO applicantPersonalityTraits (`applicantID`) VALUES(?)");
             insertPersTraits.setInt(1, fk);
             insertPersTraits.execute();
@@ -410,9 +411,6 @@ public class InternAplicationTableConnection extends DatabaseConnection {
         }
     }
 
-    /*
-     */
-
     public void updateEmergencContact(Applicant applicant) {
         try {
             connection = getConnection();
@@ -439,6 +437,54 @@ public class InternAplicationTableConnection extends DatabaseConnection {
                 Logger.getLogger(InternAplicationTableConnection.class.getName()).log(Level.SEVERE, null, ex);
             }
         }
+    }
+
+    public void insertWorkxperience(Applicant applicant) {
+        try {
+             connection = getConnection();
+            PreparedStatement insertEdu = connection.prepareStatement("INSERT INTO applicantworkexperience "
+                    + "(`nameOfEmployer`,`jobTitle`, `startDate`,`endDate`,`duties`, `Applicant_idApplicant`) "
+                    + "VALUES (?, ?, ?, ?, ?, ?)");
+            insertEdu.setString(1, applicant.getExperience().getNameOfEmployer());
+            insertEdu.setString(2, applicant.getExperience().getJobTitle());
+            insertEdu.setDate(3, toSqlDate(applicant.getExperience().getJobStart()));
+            insertEdu.setDate(4, toSqlDate(applicant.getExperience().getJobEnd()));
+            insertEdu.setString(5, applicant.getExperience().getDailyDuities());
+            insertEdu.setInt(6, applicant.getId());
+            insertEdu.execute();
+            feedback.addMessage("Success", "Your Work Experience has been saved");
+        } catch (SQLException | ClassNotFoundException ex) {
+            Logger.getLogger(InternAplicationTableConnection.class.getName()).log(Level.SEVERE, null, ex);
+        } finally {
+            try {
+                connection.close();
+            } catch (SQLException ex) {
+                Logger.getLogger(InternAplicationTableConnection.class.getName()).log(Level.SEVERE, null, ex);
+            }
+        }
+
+    }
+    /*
+*/
+    public List <WorkExperience> getWorkExperience (int id){
+         List <WorkExperience> works = new ArrayList<>();
+        try {
+           
+            getResultSet(id,"SELECT * FROM idapplicantworkexperience WHERE `Applicant_idApplicant` = ?");
+            while (resultset.next()){
+                WorkExperience work =  new WorkExperience ();
+                work.setId(resultset.getInt("idapplicantworkexperience"));
+                work.setJobTitle(resultset.getString("jobTitle"));
+                work.setNameOfEmployer(resultset.getString("nameOfEmployer"));
+                work.setJobEnd(resultset.getDate("endDate"));
+                work.setJobStart(resultset.getDate("startDate"));
+                work.setDailyDuities(resultset.getString("duties"));
+                works.add(work);              
+            }
+        } catch (ClassNotFoundException | SQLException ex) {
+            Logger.getLogger(InternAplicationTableConnection.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return works;
     }
 
     @Override

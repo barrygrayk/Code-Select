@@ -2,28 +2,68 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml"
       xmlns:h="http://xmlns.jcp.org/jsf/html"
-      xmlns:ui="http://xmlns.jcp.org/jsf/facelets">
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:f="http://xmlns.jcp.org/jsf/core">
     <ui:composition>
         <center>
-            <h2 style="margin-top: 0;color:black">Work Experience</h2>
-            <form class="form-style-9">
+            <h2 style="margin-top: 0;color:black">Experience</h2>
+            <h:form id="experienceForm" class="form-style-9">
                 <ul>
                     <li>
-                        <input type="text" name="field1" class="field-style field-split align-left" placeholder="Name of Previous Employeer" />
-                        <input type="text" name="field2" class="field-style field-split align-right" placeholder="Previous Job Title" />
+                        <p:inputText type="text" class="field-style field-split align-left" placeholder="Name of Previous Employeer" value="#{Apply.workExperience.nameOfEmployer}"/>
+                        <p:inputText type="text"  class="field-style field-split align-right" placeholder="Previous Job Title" value="#{Apply.workExperience.jobTitle}" />
                     </li>
                     <li>
-                        <input type="date" name="field3" class="field-style field-split align-left" placeholder="Start Date Of Previous Job"/>
-                        <input type="date" name="field3" class="field-style field-split align-right" placeholder="End Date Of  Previous Job"/>
+                        <p:watermark for="mask1" value="Start Date" />
+                        <p:calendar id="mask1" value="#{Apply.workExperience.jobStart}" pattern="dd-MM-yyyy"  class="field-style field-split align-left"   styleClass="dateTimeFieldLeft"   />
+                        <p:watermark for="mask" value="End Date" />
+                        <p:calendar id="mask" value="#{Apply.workExperience.jobEnd}" pattern="dd-MM-yyyy"  class="field-style field-split align-righ"  style="margin-left: 8px" styleClass="dateTimeField"  />
+
                     </li>
                     <li>
-                        <textarea name="field5" class="field-style" placeholder="Reason For Leaving Job"></textarea>
+                        <p:watermark for="duties" value="State daily duties" />
+                        <p:inputTextarea  id="duties" rows="5" cols="20"  class="field-style" 
+                                          counter="display8" maxlength="1000" counterTemplate="{0} characters remaining." 
+                                          autoResize="false"   label="Message" value="#{Apply.workExperience.dailyDuities}"/>
+                        <h:outputText id="display8" />
                     </li>
                     <li>
-                        <input type="button" value="Save"/>
+                        <p:commandButton  value="Add"   icon="fa fa-plus" class="btn btn-primary btn-md" action="#{Apply.addWorkExperience()}"/>
+                        <p:commandButton  value="Clear"   icon="fa fa-eraser" class="btn btn-primary btn-md" action="#{Apply.saveInternApplicationInfo()}"/>
                     </li>
                 </ul>
-            </form>
+                <p:dataTable id="Stock" var="stock" value="#{InventoryCont.inventory}" rowKey="#{stock.id}"
+                             selection="#{InventoryCont.slectedStock}" selectionMode="single">
+             
+                    <p:ajax event="rowSelect" listener="#{InventoryCont.onRowSelect}" update="experienceForm" process="Stock"/>
+                    <p:ajax event="rowUnselect" listener="#{InventoryCont.onRowUnselect}" update="experienceForm" process="Stock"/>   
+
+                    <p:column headerText="Employeer" style="width: 130px">
+                        <h:outputText value="#{stock.description}" />
+                    </p:column>
+                    <p:column headerText="Job Title" style="width:320px">
+                        <h:outputText value="#{stock.quantity}" />
+                    </p:column>
+                    <p:column headerText="Action">
+                        <p:commandButton actionListener="#{InventoryCont.deleteStockItem()}"  update="experienceForm" icon="fa fa-trash" >
+                            <p:confirm header="Confirmation" message="Are you sure, you want delete selected record(s)?" icon="ui-icon-alert" />
+                        </p:commandButton>
+                    </p:column>
+
+
+                    <f:facet name="footer">
+
+
+                        <p:confirmDialog global="true">
+                            <p:commandButton value="Yes" type="button" styleClass="ui-confirmdialog-yes" icon="ui-icon-check"  />
+                            <p:commandButton value="No" type="button" styleClass="ui-confirmdialog-no" icon="ui-icon-close" />
+                        </p:confirmDialog>
+                    
+                    </f:facet>
+
+                </p:dataTable> 
+            </h:form>
         </center>
     </ui:composition>
 </html>

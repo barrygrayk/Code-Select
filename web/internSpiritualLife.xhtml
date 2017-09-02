@@ -16,7 +16,6 @@
                             <f:selectItem itemLabel="Yes" itemValue="Yes" />
                             <f:selectItem itemLabel="No" itemValue="NO" />
                         </p:selectOneRadio>
-
                     </li>
                     <li>
                         <p:outputLabel for="attend" value="What church do you currently attend?" />
@@ -27,6 +26,7 @@
                         <p:outputLabel for="duration" value="How long have you attended there? "   />
                         <p:watermark for="duration" value="Enter number of years" />
                         <p:inputText  id="duration" type="number"  class="field-style field-split align-right"  style="width:100%" value="#{Apply.spirituaLife.attendDuration}"/>
+                        <p:inputText  id="duration1" type="number"  class="field-style field-split align-right"  style="width:100%" value="#{Apply.spirituaLife.attendDuration}"/>
                     </li>
                     <li>
                         <p:outputLabel for="ministries" value="What ministries do you serve in? "   />

@@ -6,6 +6,7 @@ import com.applicants.Model.EmergencyContact;
 import com.applicants.Model.InternshipInfo;
 import com.applicants.Model.PersonanlityTraits;
 import com.applicants.Model.SpiritualLife;
+import com.applicants.Model.WorkExperience;
 import com.db.connection.InternAplicationTableConnection;
 import com.validation.MrKaplan;
 import com.validation.TheEqualizer;
@@ -43,6 +44,7 @@ public class InternApplicationController extends Applicant implements Serializab
     private InternshipInfo applicat = new InternshipInfo();
     private SpiritualLife spirituaLife = new SpiritualLife();
     private EducationAndQualification edeucation = new EducationAndQualification();
+    private WorkExperience workExperience = new WorkExperience();
     private EmergencyContact emergency = new EmergencyContact();
     private PersonanlityTraits perTraits = new PersonanlityTraits();
     private TreeMap<String, String> countries = new TreeMap();
@@ -112,7 +114,14 @@ public class InternApplicationController extends Applicant implements Serializab
     public void setEmergency(EmergencyContact emergency) {
         this.emergency = emergency;
     }
-    
+
+    public WorkExperience getWorkExperience() {
+        return workExperience;
+    }
+
+    public void setWorkExperience(WorkExperience workExperience) {
+        this.workExperience = workExperience;
+    }
 
     @PostConstruct
     public void init() {
@@ -593,11 +602,19 @@ public class InternApplicationController extends Applicant implements Serializab
         application.setId(getId());
         new InternAplicationTableConnection().updateEducationQualification(application);
     }
-     public void saveEmergencyContact() {
+
+    public void saveEmergencyContact() {
         Applicant application = new Applicant();
         application.setNextSkin(emergency);
         application.setId(getId());
         new InternAplicationTableConnection().updateEmergencContact(application);
+    }
+
+    public void addWorkExperience() {
+        Applicant application = new Applicant();
+        application.setExperience(workExperience);
+        application.setId(getId());
+        new InternAplicationTableConnection().insertWorkxperience(application);
     }
 
     public InternshipInfo getApplicat() {
