@@ -18,6 +18,7 @@ public class Applicant extends Person {
     private String country;
     private EmergencyContact nextSkin; // needs to add on Design class diagram
     private SpiritualLife beliefs; // same above...
+    private LegalHistory legalHistory = new LegalHistory();
     private EducationAndQualification formation;
     private PersonanlityTraits personalityTraits;
     private ApplicantMedicalHistory healthRecord;
@@ -172,6 +173,16 @@ public class Applicant extends Person {
     public void setPersonalityTraits(PersonanlityTraits personalityTraits) {
         this.personalityTraits = personalityTraits;
     }
+
+    public LegalHistory getLegalHistory() {
+        return legalHistory;
+    }
+
+    public void setLegalHistory(LegalHistory legalHistory) {
+        this.legalHistory = legalHistory;
+    }
+    
+    
     
     
     

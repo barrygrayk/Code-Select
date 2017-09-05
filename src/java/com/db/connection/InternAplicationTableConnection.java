@@ -439,18 +439,32 @@ public class InternAplicationTableConnection extends DatabaseConnection {
         }
     }
 
-    public void insertWorkxperience(Applicant applicant) {
+    public void insertWorkxperience(Applicant applicant, String action) {
         try {
-             connection = getConnection();
-            PreparedStatement insertEdu = connection.prepareStatement("INSERT INTO applicantworkexperience "
+            connection = getConnection();
+            String update = "UPDATE applicantworkexperience SET "
+                    + " `nameOfEmployer` = ?,`jobTitle`=?, `startDate`=?,`endDate`=?,`duties`=? WHERE "
+                    + "`idapplicantworkexperience`=?";
+            String insert = "INSERT INTO applicantworkexperience "
                     + "(`nameOfEmployer`,`jobTitle`, `startDate`,`endDate`,`duties`, `Applicant_idApplicant`) "
-                    + "VALUES (?, ?, ?, ?, ?, ?)");
+                    + "VALUES (?, ?, ?, ?, ?, ?)";
+            String query = "";
+            int id = 0;
+            if (action.equals("Edit")) {
+                query = update;
+                id = applicant.getExperience().getId();
+            } else {
+                query = insert;
+                id = applicant.getId();
+            }
+            PreparedStatement insertEdu = connection.prepareStatement(query);
             insertEdu.setString(1, applicant.getExperience().getNameOfEmployer());
             insertEdu.setString(2, applicant.getExperience().getJobTitle());
             insertEdu.setDate(3, toSqlDate(applicant.getExperience().getJobStart()));
             insertEdu.setDate(4, toSqlDate(applicant.getExperience().getJobEnd()));
             insertEdu.setString(5, applicant.getExperience().getDailyDuities());
-            insertEdu.setInt(6, applicant.getId());
+            insertEdu.setInt(6, id);
+
             insertEdu.execute();
             feedback.addMessage("Success", "Your Work Experience has been saved");
         } catch (SQLException | ClassNotFoundException ex) {
@@ -464,22 +478,30 @@ public class InternAplicationTableConnection extends DatabaseConnection {
         }
 
     }
-    /*
-*/
-    public List <WorkExperience> getWorkExperience (int id){
-         List <WorkExperience> works = new ArrayList<>();
+
+    public void deleteWorkExperience(int id) {
         try {
-           
-            getResultSet(id,"SELECT * FROM idapplicantworkexperience WHERE `Applicant_idApplicant` = ?");
-            while (resultset.next()){
-                WorkExperience work =  new WorkExperience ();
+            deleteRecord(id, "DELETE FROM  `applicantworkexperience` where  idapplicantworkexperience=?");
+        } catch (ClassNotFoundException ex) {
+            Logger.getLogger(InternAplicationTableConnection.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }
+
+    public List<WorkExperience> getWorkExperience(int id) {
+        List<WorkExperience> works = new ArrayList<>();
+        try {
+
+            getResultSet(id, "SELECT * FROM applicantworkexperience WHERE `Applicant_idApplicant` = ?");
+            while (resultset.next()) {
+                WorkExperience work = new WorkExperience();
+
                 work.setId(resultset.getInt("idapplicantworkexperience"));
                 work.setJobTitle(resultset.getString("jobTitle"));
                 work.setNameOfEmployer(resultset.getString("nameOfEmployer"));
                 work.setJobEnd(resultset.getDate("endDate"));
                 work.setJobStart(resultset.getDate("startDate"));
                 work.setDailyDuities(resultset.getString("duties"));
-                works.add(work);              
+                works.add(work);
             }
         } catch (ClassNotFoundException | SQLException ex) {
             Logger.getLogger(InternAplicationTableConnection.class.getName()).log(Level.SEVERE, null, ex);

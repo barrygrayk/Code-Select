@@ -1,6 +1,8 @@
 
 package com.applicants.Model;
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 
 /**
  *
@@ -14,6 +16,9 @@ public class WorkExperience {
     private Date  jobStart;
     private Date jobEnd;
     private String dailyDuities;
+    private List <String> certificates = new ArrayList<> ();
+    private String dealingWith, explanation;
+    private String victimOf;
     private int id;
 
     public String getNameOfEmployer() {
@@ -63,6 +68,46 @@ public class WorkExperience {
     public void setId(int id) {
         this.id = id;
     }
+
+    public List<String> getCertificates() {
+        return certificates;
+    }
+
+    public void setCertificates(String certificate) {
+        this.certificates.add(certificate);
+    }
+
+    public String getDealingWith() {
+        return dealingWith;
+    }
+
+    public void setDealingWith(String dealingWith) {
+        this.dealingWith = dealingWith;
+    }
+
+    public String getExplanation() {
+        return explanation;
+    }
+
+    public void setExplanation(String explanation) {
+        this.explanation = explanation;
+    }
+
+    public String getVictimOf() {
+        return victimOf;
+    }
+
+    public void setVictimOf(String victimOf) {
+        this.victimOf = victimOf;
+    }
+    
+    
+    
+    
+
+  
+    
+    
 
    
     

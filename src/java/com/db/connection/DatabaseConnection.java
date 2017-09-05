@@ -1,5 +1,6 @@
 package com.db.connection;
 
+import com.MenuView.MenuView;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.PreparedStatement;
@@ -16,7 +17,7 @@ import java.util.logging.Logger;
  * @author Barry Gray Kapelembe
  */
 public abstract class DatabaseConnection {
-
+  private final MenuView feedback = new MenuView();
     private final String conString;
     private final String dbUserName;
     private final String dbPassWord;
@@ -28,6 +29,9 @@ public abstract class DatabaseConnection {
        this.dbUserName = "root";
         this.dbPassWord = "password";
         conString = "jdbc:mysql://localhost:3306/onthatile children's ministries";
+       /* this.dbUserName = "admin";
+        this.dbPassWord = "Codeselect";
+        conString = "jdbc:mysql://node158047-testingone.j.layershift.co.uk/onthatilechildrensministries";*/
 //jdbc:mysql://node157038-onthatileapp.j.layershift.co.uk
      /*   this.dbUserName = "codeselect";
         this.dbPassWord = "9RstG7oenS";
@@ -38,6 +42,7 @@ public abstract class DatabaseConnection {
         //jdbc:mysql://localhost:3306/?user=root
         //jdbc:mysql://127.0.0.1:3306/?user=root
         //root@127.0.0.1:3306
+        //jdbc:mysql://node158047-testingone.j.layershift.co.uk/
     }
 
     public Connection getConnection() throws ClassNotFoundException {
@@ -91,7 +96,30 @@ public abstract class DatabaseConnection {
         java.sql.Timestamp sqlDate = new java.sql.Timestamp(utilStartDate.getTime());
         return sqlDate;
     }
+ public void deleteRecord(int id,String query) throws ClassNotFoundException  {
+        connection = getConnection();
+        PreparedStatement deleteRecord = null;
+        String deleteItem = query;
+        try {
+            deleteRecord = connection.prepareStatement(deleteItem);
+            deleteRecord.setInt(1, id);
+            deleteRecord.execute();
+            feedback.addMessage("Sucess", "Record has been deleted");
+        } catch (SQLException ex) {
+            Logger.getLogger(StaffTableConnection.class.getName()).log(Level.SEVERE, null, ex);
+            feedback.error("Delete error", ex.getMessage());
+        } finally {
+            try {
+                connection.close();
+                deleteRecord.close();
+            } catch (SQLException ex) {
+                feedback.error("Connection error", ex.getMessage());
+                MenuView out = new MenuView();
+                out.error("Detele error", "No staff member has been selected");
+            }
+        }
 
+    }
     abstract boolean recordValidator();
 
 }

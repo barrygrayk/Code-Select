@@ -19,7 +19,6 @@ public class SpiritualLife {
     private String backGround;
 
     public SpiritualLife() {
-        id = 0;
         attend = null;
         whichChurch = null;
         attendDuration = 0;
@@ -118,7 +117,5 @@ public class SpiritualLife {
     public void setBackGround(String backGround) {
         this.backGround = backGround;
     }
-    
-    
 
 }

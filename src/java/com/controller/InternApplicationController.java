@@ -1,5 +1,6 @@
 package com.controller;
 
+import com.MenuView.MenuView;
 import com.applicants.Model.Applicant;
 import com.applicants.Model.EducationAndQualification;
 import com.applicants.Model.EmergencyContact;
@@ -38,12 +39,17 @@ import org.primefaces.event.UnselectEvent;
 public class InternApplicationController extends Applicant implements Serializable {
 
     private String country, duration = "0";
+    private String buttonVal = "Add", iconVal = "fa fa-plus";
     private Date startDate, endDate;
+    private boolean showDealingWith = false, reasonForNo = false;
     private String mStatus, goal, heardFrom;
     private Applicant selectedApplicant;
     private InternshipInfo applicat = new InternshipInfo();
     private SpiritualLife spirituaLife = new SpiritualLife();
     private EducationAndQualification edeucation = new EducationAndQualification();
+
+    //tock
+    private WorkExperience selectedSExperience = new WorkExperience();
     private WorkExperience workExperience = new WorkExperience();
     private EmergencyContact emergency = new EmergencyContact();
     private PersonanlityTraits perTraits = new PersonanlityTraits();
@@ -51,12 +57,37 @@ public class InternApplicationController extends Applicant implements Serializab
     private List<String> heardFromList = new ArrayList<>();
     private List<String> homeCountry = new ArrayList<>();
     private List<String> maritalStatuses = new ArrayList<>();
+    private List<WorkExperience> workExp = new ArrayList<>();
     private List<String> genders = new ArrayList<>();
     private String code = "", theGender = " ";
     private List<Applicant> applicants = new ArrayList<>();
 
     public InternApplicationController() {
         super();
+    }
+
+    public WorkExperience getSelectedSExperience() {
+        return selectedSExperience;
+    }
+
+    public void setSelectedSExperience(WorkExperience selectedSExperience) {
+        this.selectedSExperience = selectedSExperience;
+    }
+
+    public String getButtonVal() {
+        return buttonVal;
+    }
+
+    public void setButtonVal(String buttonVal) {
+        this.buttonVal = buttonVal;
+    }
+
+    public String getIconVal() {
+        return iconVal;
+    }
+
+    public void setIconVal(String iconVal) {
+        this.iconVal = iconVal;
     }
 
     public List<String> getHomeCountry() {
@@ -121,6 +152,14 @@ public class InternApplicationController extends Applicant implements Serializab
 
     public void setWorkExperience(WorkExperience workExperience) {
         this.workExperience = workExperience;
+    }
+
+    public List<WorkExperience> getWorkExp() {
+        return new InternAplicationTableConnection().getWorkExperience(getId());
+    }
+
+    public void setWorkExp(List<WorkExperience> workExp) {
+        this.workExp = new InternAplicationTableConnection().getWorkExperience(getId());
     }
 
     @PostConstruct
@@ -382,6 +421,14 @@ public class InternApplicationController extends Applicant implements Serializab
 
     }
 
+    public boolean isShowDealingWith() {
+        return showDealingWith;
+    }
+
+    public void setShowDealingWith(boolean showDealingWith) {
+        this.showDealingWith = showDealingWith;
+    }
+
     public List<String> getGenders() {
         return genders;
     }
@@ -614,7 +661,54 @@ public class InternApplicationController extends Applicant implements Serializab
         Applicant application = new Applicant();
         application.setExperience(workExperience);
         application.setId(getId());
-        new InternAplicationTableConnection().insertWorkxperience(application);
+        System.out.println("--------------------------" + workExperience.getId());
+        new InternAplicationTableConnection().insertWorkxperience(application, buttonVal);
+        clear();
+        buttonVal = "Add";
+        iconVal = "fa fa-plus";
+    }
+
+    public void onRowSelectWork(SelectEvent e) {
+        selectedSExperience = (WorkExperience) e.getObject();
+        workExperience.setId(selectedSExperience.getId());
+        workExperience.setJobTitle(selectedSExperience.getJobTitle());
+        workExperience.setNameOfEmployer(selectedSExperience.getNameOfEmployer());
+        workExperience.setDailyDuities(selectedSExperience.getDailyDuities());
+        workExperience.setJobEnd(selectedSExperience.getJobEnd());
+        workExperience.setJobStart(selectedSExperience.getJobStart());
+        buttonVal = "Edit";
+        iconVal = "fa fa-edit";
+        System.out.println("=============");
+    }
+
+    public void clearForm() {
+        clear();
+        buttonVal = "Add";
+        iconVal = "fa fa-plus";
+    }
+
+    private void clear() {
+        workExperience.setDailyDuities(null);
+        workExperience.setJobTitle(null);
+        workExperience.setNameOfEmployer(null);
+        workExperience.setJobEnd(null);
+        workExperience.setJobStart(null);
+    }
+
+    public void delete() {
+
+        if (selectedSExperience != null) {
+            new InternAplicationTableConnection().deleteWorkExperience(selectedSExperience.getId());
+        } else {
+            MenuView feedback = new MenuView();
+            feedback.error("Row selected", "Please select the recod u want to delete by clicking it.");
+        }
+
+        clear();
+    }
+
+    public void onRowUnselectWork(UnselectEvent e) {
+        selectedSExperience = null;
     }
 
     public InternshipInfo getApplicat() {
@@ -627,6 +721,48 @@ public class InternApplicationController extends Applicant implements Serializab
 
     public void acceptRequst() {
         new InternAplicationTableConnection().sendAcceRequest(selectedApplicant);
+    }
+
+    public void onChangeRadioBUtton() {
+        System.out.println("----------------" + workExperience.getDealingWith());
+        if (workExperience.getDealingWith() != null && workExperience.getDealingWith().equals("Yes")) {
+            System.out.println("----------------" + workExperience.getDealingWith());
+            showDealingWith = true;
+        } else {
+            System.out.println("----------------" + workExperience.getDealingWith());
+            showDealingWith = false;
+        }
+        reasonForNo = (getLegalHistory().getArrested() != null
+                && getLegalHistory().getArrested() != null
+                && getLegalHistory().getConvicedCrime() != null
+                && getLegalHistory().getSexualMisCond() != null
+                && getLegalHistory().getGuitlyToSexualMisCond() != null
+                && getLegalHistory().getDrugsNotPresc() != null
+                && getLegalHistory().getWeed() != null
+                && getLegalHistory().getAlcohol()!= null
+                && getLegalHistory().getTobaco() != null)
+                && (getLegalHistory().getArrested().equals("Yes")
+                || getLegalHistory().getArrested().equals("Yes")
+                || getLegalHistory().getConvicedCrime().equals("Yes")
+                || getLegalHistory().getSexualMisCond().equals("Yes")
+                || getLegalHistory().getGuitlyToSexualMisCond().equals("Yes")
+                || getLegalHistory().getDrugsNotPresc().equals("Yes")
+                || getLegalHistory().getWeed().equals("Yes")
+                || getLegalHistory().getAlcohol().equals("Yes")
+                || getLegalHistory().getTobaco().equals("Yes"));
+
+    }
+
+    public boolean isReasonForNo() {
+        return reasonForNo;
+    }
+
+    public void setReasonForNo(boolean reasonForNo) {
+        this.reasonForNo = reasonForNo;
+    }
+
+    public void saveLegalHistory() {
+        System.out.println(getLegalHistory().getArrested());
     }
 
 }

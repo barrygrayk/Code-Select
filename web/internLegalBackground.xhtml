@@ -1,0 +1,98 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:f="http://xmlns.jcp.org/jsf/core">
+    <ui:composition>
+        <center>
+            <h2 style="margin-top: 0;color:black">Legal History</h2>
+            <h:form  id="legalHist" class="form-style-9">
+                <ul>
+                    <li>
+                        <h:outputLabel value="Have	you ever been arrested	for a criminal offense?"/>
+                        <p:selectOneRadio id="arrested" value="#{Apply.legalHistory.arrested}" >
+                            <p:ajax process="arrested" update="legalHist" listener="#{Apply.onChangeRadioBUtton()}"  />
+                            <f:selectItem itemLabel="Yes" itemValue="Yes" />
+                            <f:selectItem itemLabel="No" itemValue="No" />
+                        </p:selectOneRadio>
+                    </li>
+                    <li>
+                        <h:outputLabel value="Have you ever been convicted of or plead guilty to a crime?"/>
+                        <p:selectOneRadio id="convicted" value="#{Apply.legalHistory.convicedCrime}" >
+                            <p:ajax process="convicted" update="legalHist" listener="#{Apply.onChangeRadioBUtton()}"  />
+                            <f:selectItem itemLabel="Yes" itemValue="Yes" />
+                            <f:selectItem itemLabel="No" itemValue="No" />
+                        </p:selectOneRadio>
+                    </li>
+                    <li>
+                        <h:outputLabel value="Have you ever been arrested for sexual misconduct?"/>
+                        <p:selectOneRadio id="misconduct" value="#{Apply.legalHistory.sexualMisCond}" >
+                            <p:ajax process="misconduct" update="legalHist" listener="#{Apply.onChangeRadioBUtton()}"  />
+                            <f:selectItem itemLabel="Yes" itemValue="Yes" />
+                            <f:selectItem itemLabel="No" itemValue="No" />
+                        </p:selectOneRadio>
+                    </li>
+                    <li>
+                        <h:outputLabel value="Have you ever been convicted of or plead guilty	to sexual misconduct?"/>
+                        <p:selectOneRadio id="guilty" value="#{Apply.legalHistory.guitlyToSexualMisCond}" >
+                            <p:ajax process="guilty" update="legalHist" listener="#{Apply.onChangeRadioBUtton()}"  />
+                            <f:selectItem itemLabel="Yes" itemValue="Yes" />
+                            <f:selectItem itemLabel="No" itemValue="No" />
+                        </p:selectOneRadio>
+                    </li>
+                    <li>
+                        <h:outputLabel value="Have you ever taken drugs other than for medical purposes prescribed to you by your doctor?"/>
+                        <p:selectOneRadio id="prescribed" value="#{Apply.legalHistory.drugsNotPresc}" >
+                            <p:ajax process="prescribed" update="legalHist" listener="#{Apply.onChangeRadioBUtton()}"  />
+                            <f:selectItem itemLabel="Yes" itemValue="Yes" />
+                            <f:selectItem itemLabel="No" itemValue="No" />
+                        </p:selectOneRadio>
+                    </li>
+
+                    <div class="ui-g">
+                        <div class="ui-g-4">
+                            <h:outputLabel value="Use tobacco?"/>
+                            <p:selectOneRadio id="tobacco" value="#{Apply.legalHistory.tobaco}" class="field-style field-split align-left"  >
+                                <p:ajax process="tobacco" update="legalHist" listener="#{Apply.onChangeRadioBUtton()}"  />
+                                <f:selectItem itemLabel="Yes" itemValue="Yes" />
+                                <f:selectItem itemLabel="No" itemValue="No" />
+                            </p:selectOneRadio>
+                        </div>
+                        <div class="ui-g-4">
+                            <h:outputLabel value="Use alcohol?"/>
+                            <p:selectOneRadio id="alcohol" value="#{Apply.legalHistory.alcohol}" class="field-style field-split align-right"  >
+                                <p:ajax process="alcohol" update="legalHist" listener="#{Apply.onChangeRadioBUtton()}"  />
+                                <f:selectItem itemLabel="Yes" itemValue="Yes" />
+                                <f:selectItem itemLabel="No" itemValue="No" />
+                            </p:selectOneRadio>
+                        </div>
+                           <div class="ui-g-4">
+                            <h:outputLabel value="Use marijuana?"/>
+                            <p:selectOneRadio id="marijuana" value="#{Apply.legalHistory.weed}" class="field-style field-split align-right"  >
+                                <p:ajax process="marijuana" update="legalHist" listener="#{Apply.onChangeRadioBUtton()}"  />
+                                <f:selectItem itemLabel="Yes" itemValue="Yes" />
+                                <f:selectItem itemLabel="No" itemValue="No" />
+                            </p:selectOneRadio>
+                        </div>
+                    </div>
+
+
+
+                    <li>
+                        <p:watermark for="ReasonFOrNo" value="Please explain your yes" />
+                        <p:inputTextarea  id="ReasonFOrNo" rows="5" cols="20"  class="field-style"  immediate="true"
+                                          counter="reasonArrestDisp" maxlength="1000" counterTemplate="{0} characters remaining." 
+                                          autoResize="false"   label="Message" value="#{Apply.legalHistory.reason}" rendered="#{Apply.reasonForNo}" />
+                        <h:outputText id="reasonArrestDisp" />
+                    </li>
+                    <li>
+                        <p:commandButton  value="Save"  icon="fa fa-save" class="btn btn-primary btn-md" action="#{Apply.saveLegalHistory()}"/>
+                    </li>
+                </ul>
+            </h:form>
+        </center>
+    </ui:composition>
+</html>
+
