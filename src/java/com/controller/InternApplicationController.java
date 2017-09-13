@@ -662,7 +662,7 @@ public class InternApplicationController extends Applicant implements Serializab
         application.setExperience(workExperience);
         application.setId(getId());
         System.out.println("--------------------------" + workExperience.getId());
-        new InternAplicationTableConnection().insertWorkxperience(application, buttonVal);
+        //new InternAplicationTableConnection().insertWorkxperience(application, buttonVal);
         clear();
         buttonVal = "Add";
         iconVal = "fa fa-plus";
@@ -764,5 +764,7 @@ public class InternApplicationController extends Applicant implements Serializab
     public void saveLegalHistory() {
         System.out.println(getLegalHistory().getArrested());
     }
+    
+    
 
 }

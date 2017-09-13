@@ -18,6 +18,10 @@ import javax.faces.bean.SessionScoped;
 import javax.faces.context.ExternalContext;
 import javax.faces.context.FacesContext;
 import javax.servlet.http.HttpSession;
+import javax.ws.rs.GET;
+import javax.ws.rs.Path;
+import javax.ws.rs.Produces;
+import javax.ws.rs.core.MediaType;
 
 //import javax.ws.rs.Path;
 /**
@@ -26,7 +30,8 @@ import javax.servlet.http.HttpSession;
  */
 @ManagedBean(name = "Login", eager = true)
 @SessionScoped
-//@Path("/login")
+
+
 public class LoginBean extends Passwords implements Serializable {
 //us MrKaplan for error checking
 
@@ -53,7 +58,7 @@ public class LoginBean extends Passwords implements Serializable {
             staffDB = new StaffTableConnection();
             ApplicantDB = new InternAplicationTableConnection();
             authenticatedStaff = staffDB.getAuthenticatedStaff();
-            authenticatedApplicant =ApplicantDB.getAuthenticatedApplicant();
+            authenticatedApplicant = ApplicantDB.getAuthenticatedApplicant();
         } catch (ClassNotFoundException ex) {
             Logger.getLogger(LoginBean.class.getName()).log(Level.SEVERE, null, ex);
             feedBack.error("Database Error", ex.getMessage());
@@ -86,9 +91,8 @@ public class LoginBean extends Passwords implements Serializable {
                     if (username.contains("@")) {
                         HttpSession session = SessionUtils.getSession();
                         session.setAttribute("username", username);
-                          session.setAttribute("id", id);
-                      
-                        
+                        session.setAttribute("id", id);
+
                         page = "apply.xhtml?faces-redirect=true";
                     } else if (role.equals("Admin")) {
                         HttpSession session = SessionUtils.getSession();
@@ -156,7 +160,6 @@ public class LoginBean extends Passwords implements Serializable {
     public String doLogOut() {
         HttpSession hs = SessionUtils.getSession();
         hs.invalidate();
-
         return "login.xhtml?faces-redirect=true";
     }
 
@@ -189,4 +192,15 @@ public class LoginBean extends Passwords implements Serializable {
         return id;
     }
 
+    /*@GET
+    @Path("/caregiver")
+    @Produces(MediaType.APPLICATION_XML)
+    public boolean login(String username , String password) {
+        LoginBean login = new LoginBean();
+        init();
+        this.username = username;
+        this.password =  password;
+        return true;
+    }2
+*/
 }

@@ -83,7 +83,7 @@
                             <li>
                                 <h:outputLabel value="Do you have any previous	training or background in dealing with abused, neglected,  or abandoned	children?"/>
                                 <p:selectOneRadio id="dealing" value="#{Apply.workExperience.dealingWith}" >
-                                    <p:ajax process="dealing" update="part2 reason" listener="#{Apply.onChangeRadioBUtton()}"  />
+                                    <p:ajax process="dealing" update="experienceForm" listener="#{Apply.onChangeRadioBUtton()}"  />
                                     <f:selectItem itemLabel="Yes" itemValue="Yes" />
                                     <f:selectItem itemLabel="No" itemValue="No" />
                                 </p:selectOneRadio>
@@ -98,7 +98,7 @@
                                 <p:selectOneRadio id="victim" >
                                     <f:selectItem itemLabel="Yes" itemValue="Yes" />
                                     <f:selectItem itemLabel="No" itemValue="No" />
-                                     <p:ajax process="victim" update="part2 reason1" listener="#{Apply.onChangeRadioBUtton()}"  />
+                                     <p:ajax process="victim" update="experienceForm" listener="#{Apply.onChangeRadioBUtton()}"  />
                                       <f:selectItem itemLabel="I	wish	to	discuss	privately" itemValue="I	wish to discuss privately" />
                                     <!--I wish to  discuss privately-->
                                 </p:selectOneRadio>

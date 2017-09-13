@@ -69,7 +69,8 @@
                                             <div class="form-group">
                                                 <h:panelGrid columns="2">
                                                     <h:panelGrid>
-                                                        <p:selectOneMenu label="Country code"  class="form-control" id="country" value="#{Apply.country}" style="width:60px; margin: 2px" filter="true" filterMatchMode="startsWith" panelStyle="width:auto">
+                                                        <p:selectOneMenu label="Country code"  class="form-control" id="country" value="#{Apply.country}" 
+                                                                         style="width:60px; margin: 2px" filter="true" filterMatchMode="startsWith" panelStyle="width:auto">
                                                             <p:ajax listener="#{Apply.onCountryChange()}"  update="Phone"  />
                                                             <f:selectItem  class="form-control" itemLabel="Select Country" itemValue="#{Apply.country}" noSelectionOption="true"/>
                                                             <f:selectItems value="#{Apply.countries}" />

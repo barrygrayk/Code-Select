@@ -15,7 +15,7 @@
                     <li>
                         <p:watermark for="fName" value="First Name" />
                         <p:inputText id ="fName" class="field-style field-split align-left"  value="#{Apply.firstname}" />
-                        
+
                         <p:watermark for="streetAddress" value="Street Address" />
                         <p:inputText id="streetAddress" type="text" class="field-style field-split align-right" value="#{Apply.address}" />
 
@@ -24,7 +24,7 @@
                     <li>
                         <p:watermark for="surname" value="Surname" />
                         <p:inputText id="surname" type="text" class="field-style field-split align-left"  value="#{Apply.lastname}"/>
-                        
+
                         <p:watermark for="City" value="City/State" />
                         <p:inputText  id="City" type="text"  class="field-style field-split align-right" value="#{Apply.city}"/>
                     </li>
@@ -33,7 +33,7 @@
                         <p:watermark for="preName" value="Prefared Name" />
                         <p:inputText id="preName" type="text" class="field-style field-split align-left" value="#{Apply.prename}" />
 
-                     
+
 
                         <p:watermark for="zip" value="Zip Code" />
                         <p:inputText id ="zip" type="number"  class="field-style field-split align-right" value="#{Apply.zipCode}"/>
@@ -56,16 +56,17 @@
 
                     </li>
                     <li>
-                        <p:watermark for="mask" value="Date of birth" />
-                        <p:calendar id="mask" value="#{Apply.dateOfBirth}" pattern="dd-MM-yyyy"  class="field-style field-split align-left"   styleClass="dateTimeField"  />
+                          <p:watermark for="mask" value="Date of birth" />
+                    
+                          
+                            <p:calendar id="mask" value="#{Apply.dateOfBirth}" pattern="dd-MM-yyyy"  class="field-style field-split align-left"   styleClass="dateTimeField"  />
+                
+                             <p:watermark for="Email" value="Email Address" />
+                     
 
-
-
-                        <p:watermark for="Email" value="Email Address" />
-                        <p:inputText id="Email" type="text"  class="field-style field-split align-right"  value="#{Apply.emailAddress}"/>
-
-
-
+                         
+                            <p:inputText id="Email" type="text"  class="field-style field-split align-right"  value="#{Apply.emailAddress}"/>
+              
                     </li>
 
                     <li>

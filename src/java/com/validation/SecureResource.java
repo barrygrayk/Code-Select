@@ -10,15 +10,15 @@ import javax.ws.rs.core.MediaType;
  * 
  * @author Barry Gray Kapelembe 
  */
- @Path ("Secured")
+ //@Path ("Secured")
 public class SecureResource {
      @GET
      @Path("")
      @Produces(MediaType.TEXT_PLAIN)
-     public String secured(){
-         MenuView feedback = new MenuView ();
-         feedback.error("user is not login", "Please login");
-         return null;
+     public String secured(String username , String password){
+         //MenuView feedback = new MenuView ();
+         //feedback.error("user is not login", "Please login");
+         return "Yes";
      }
 
 }
