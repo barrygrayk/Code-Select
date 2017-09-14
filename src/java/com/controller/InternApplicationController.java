@@ -4,9 +4,6 @@ import com.MenuView.MenuView;
 import com.applicants.Model.Applicant;
 import com.applicants.Model.EducationAndQualification;
 import com.applicants.Model.EmergencyContact;
-import com.applicants.Model.InternshipInfo;
-import com.applicants.Model.PersonanlityTraits;
-import com.applicants.Model.SpiritualLife;
 import com.applicants.Model.WorkExperience;
 import com.db.connection.InternAplicationTableConnection;
 import com.validation.MrKaplan;
@@ -14,7 +11,7 @@ import com.validation.TheEqualizer;
 import java.io.Serializable;
 import java.sql.SQLException;
 import java.util.ArrayList;
-import java.util.Date;
+
 import java.util.List;
 import java.util.Locale;
 import java.util.Map;
@@ -39,20 +36,14 @@ import org.primefaces.event.UnselectEvent;
 public class InternApplicationController extends Applicant implements Serializable {
 
     private String country, duration = "0";
+    private final MenuView feedback = new MenuView();
     private String buttonVal = "Add", iconVal = "fa fa-plus";
-    private Date startDate, endDate;
     private boolean showDealingWith = false, reasonForNo = false;
-    private String mStatus, goal, heardFrom;
+    private boolean hasCondition = false, hasMedication = false, hasSeriousIllness = false, hasDietrestr, hasPhyHadicap = false;
     private Applicant selectedApplicant;
-    private InternshipInfo applicat = new InternshipInfo();
-    private SpiritualLife spirituaLife = new SpiritualLife();
-    private EducationAndQualification edeucation = new EducationAndQualification();
-
-    //tock
     private WorkExperience selectedSExperience = new WorkExperience();
     private WorkExperience workExperience = new WorkExperience();
     private EmergencyContact emergency = new EmergencyContact();
-    private PersonanlityTraits perTraits = new PersonanlityTraits();
     private TreeMap<String, String> countries = new TreeMap();
     private List<String> heardFromList = new ArrayList<>();
     private List<String> homeCountry = new ArrayList<>();
@@ -98,6 +89,46 @@ public class InternApplicationController extends Applicant implements Serializab
         this.homeCountry = homeCountry;
     }
 
+    public boolean isHasCondition() {
+        return hasCondition;
+    }
+
+    public void setHasCondition(boolean hasCondition) {
+        this.hasCondition = hasCondition;
+    }
+
+    public boolean isHasMedication() {
+        return hasMedication;
+    }
+
+    public void setHasMedication(boolean hasMedication) {
+        this.hasMedication = hasMedication;
+    }
+
+    public boolean isHasSeriousIllness() {
+        return hasSeriousIllness;
+    }
+
+    public void setHasSeriousIllness(boolean hasSeriousIllness) {
+        this.hasSeriousIllness = hasSeriousIllness;
+    }
+
+    public boolean isHasDietrestr() {
+        return hasDietrestr;
+    }
+
+    public void setHasDietrestr(boolean hasDietrestr) {
+        this.hasDietrestr = hasDietrestr;
+    }
+
+    public boolean isHasPhyHadicap() {
+        return hasPhyHadicap;
+    }
+
+    public void setHasPhyHadicap(boolean hasPhyHadicap) {
+        this.hasPhyHadicap = hasPhyHadicap;
+    }
+
     public Applicant getSelectedApplicant() {
         return selectedApplicant;
     }
@@ -112,30 +143,6 @@ public class InternApplicationController extends Applicant implements Serializab
 
     public void setDuration(String duration) {
         this.duration = duration;
-    }
-
-    public SpiritualLife getSpirituaLife() {
-        return spirituaLife;
-    }
-
-    public EducationAndQualification getEdeucation() {
-        return edeucation;
-    }
-
-    public void setEdeucation(EducationAndQualification edeucation) {
-        this.edeucation = edeucation;
-    }
-
-    public void setSpirituaLife(SpiritualLife spirituaLife) {
-        this.spirituaLife = spirituaLife;
-    }
-
-    public PersonanlityTraits getPerTraits() {
-        return perTraits;
-    }
-
-    public void setPerTraits(PersonanlityTraits perTraits) {
-        this.perTraits = perTraits;
     }
 
     public EmergencyContact getEmergency() {
@@ -445,46 +452,6 @@ public class InternApplicationController extends Applicant implements Serializab
         this.theGender = theGender;
     }
 
-    public Date getStartDate() {
-        return startDate;
-    }
-
-    public void setStartDate(Date startDate) {
-        this.startDate = startDate;
-    }
-
-    public Date getEndDate() {
-        return endDate;
-    }
-
-    public void setEndDate(Date endDate) {
-        this.endDate = endDate;
-    }
-
-    public String getmStatus() {
-        return mStatus;
-    }
-
-    public void setmStatus(String mStatus) {
-        this.mStatus = mStatus;
-    }
-
-    public String getGoal() {
-        return goal;
-    }
-
-    public void setGoal(String goal) {
-        this.goal = goal;
-    }
-
-    public String getHeardFrom() {
-        return heardFrom;
-    }
-
-    public void setHeardFrom(String heardFrom) {
-        this.heardFrom = heardFrom;
-    }
-
     public String getCountry() {
         return country;
     }
@@ -519,11 +486,9 @@ public class InternApplicationController extends Applicant implements Serializab
     }
 
     public void onEndDateChange() {
-        System.err.println("------Change Date----");
         final long DAY_IN_MILLIS = 1000 * 60 * 60 * 24;
-        System.out.println(getStartDate() + " ----------DAte--------------- " + getEndDate());
-        if (startDate != null && endDate != null) {
-            int diffInDays = (int) ((endDate.getTime() - startDate.getTime()) / DAY_IN_MILLIS);
+        if (getInternshipInfo().getStartDate() != null && getInternshipInfo().getEndDate() != null) {
+            int diffInDays = (int) ((getInternshipInfo().getEndDate().getTime() - getInternshipInfo().getStartDate().getTime()) / DAY_IN_MILLIS);
             if (diffInDays >= 30) {
                 int months = diffInDays / 30;
                 duration = months + " month(s)";
@@ -532,7 +497,12 @@ public class InternApplicationController extends Applicant implements Serializab
                     duration = years + " year(s)";
                 }
             } else {
-                duration = diffInDays + " day(s)";
+                if (getInternshipInfo().getStartDate().after(getInternshipInfo().getEndDate())) {
+                    feedback.error("Date error", "Please ensure end date is after start");
+                } else {
+                    duration = diffInDays + " day(s)";
+                }
+
             }
 
         }
@@ -592,62 +562,48 @@ public class InternApplicationController extends Applicant implements Serializab
     }
 
     public void saveInternApplicationInfo() {
-        Applicant application = new Applicant();
-        InternshipInfo info = new InternshipInfo();
-        info.setStartDate(startDate);
-        info.setEndDate(endDate);
-        info.setHowUHeard(heardFrom);
-        System.out.println("Testing" + applicat.getAreDayFlex());
-        info.setAreDayFlex(applicat.getAreDayFlex());
-        info.setInternshipGoal(goal);
-        application.setInternshipInfo(info);
-        application.setId(getId());
-        System.out.println("------save ex--------- " + application.getId());
-        new InternAplicationTableConnection().updateInternInfo(application);
+        if (getInternshipInfo().getStartDate() != null && getInternshipInfo().getEndDate() != null
+                && getInternshipInfo().getStartDate().before(getInternshipInfo().getEndDate())) {
+            setInternshipInfo(getInternshipInfo());
+            setId(getId());
+            new InternAplicationTableConnection().updateInternInfo(this);
+        } else {
+            feedback.warning("Save incomplete", "Internship start and end dates have not been set. Please check and try again");
+        }
+
     }
 
     public void saveGeneralInfo() {
         TheEqualizer sanitise = new TheEqualizer();
-        Applicant application = new Applicant();
-        application.setFirstname(sanitise.toUperAndLower(getFirstname()));
-        application.setLastname(sanitise.toUperAndLower(getLastname()));
-        application.setPrename(getPrename());
-        application.setDateOfBirth(getDateOfBirth());
-        application.setEmailAddress(getEmailAddress());
-        application.setMaritalStatus(getMaritalStatus());
-        application.setCity(getCity());
-        application.setZipCode(getZipCode());
-        application.setAddress(getAddress());
-        application.setGender(theGender.charAt(0));
-        application.setCountry(getCountry());
-        application.setPhoneNumber(getPhoneNumber());
-        application.setId(getId());
-        System.out.println("------save ex Gen------- " + application.getId());
-        new InternAplicationTableConnection().updateGenralInfo(application);
+        setFirstname(sanitise.toUperAndLower(getFirstname()));
+        setLastname(sanitise.toUperAndLower(getLastname()));
+        setGender(theGender.charAt(0));
+        setId(getId());
+        new InternAplicationTableConnection().updateGenralInfo(this);
     }
 
     public void saveSpiritualLife() {
-        Applicant application = new Applicant();
-        application.setBeliefs(spirituaLife);
-        application.setId(getId());
-        new InternAplicationTableConnection().updateSpiritualLife(application);
+        this.setBeliefs(getBeliefs());
+        this.setId(getId());
+        new InternAplicationTableConnection().updateSpiritualLife(this);
     }
 
     public void savePersonanlityTraits() {
-        Applicant application = new Applicant();
         String allTraits = "";
-        allTraits = perTraits.getSelectedTraits().stream().map((per) -> per + " ").reduce(allTraits, String::concat);
-        perTraits.setTraitsToString(allTraits);
-        application.setPersonalityTraits(perTraits);
-        application.setId(getId());
-        new InternAplicationTableConnection().updatePersonalityTraits(application);
+        allTraits = getPersonalityTraits().getSelectedTraits().stream().map((per) -> per + " ").reduce(allTraits, String::concat);
+        getPersonalityTraits().setTraitsToString(allTraits);
+        setId(getId());
+        new InternAplicationTableConnection().updatePersonalityTraits(this);
     }
 
     public void saveEducationAndQualification() {
-        Applicant application = new Applicant();
-        application.setFormation(edeucation);
-        application.setId(getId());
-        new InternAplicationTableConnection().updateEducationQualification(application);
+        setId(getId());
+        new InternAplicationTableConnection().updateEducationQualification(this);
+    }
+
+    public void saveMedicalHistory() {
+        setId(getId());
+        new InternAplicationTableConnection().updateApplicantMedicalhistory(this);
     }
 
     public void saveEmergencyContact() {
@@ -662,7 +618,6 @@ public class InternApplicationController extends Applicant implements Serializab
         application.setExperience(workExperience);
         application.setId(getId());
         System.out.println("--------------------------" + workExperience.getId());
-        //new InternAplicationTableConnection().insertWorkxperience(application, buttonVal);
         clear();
         buttonVal = "Add";
         iconVal = "fa fa-plus";
@@ -696,11 +651,9 @@ public class InternApplicationController extends Applicant implements Serializab
     }
 
     public void delete() {
-
         if (selectedSExperience != null) {
             new InternAplicationTableConnection().deleteWorkExperience(selectedSExperience.getId());
         } else {
-            MenuView feedback = new MenuView();
             feedback.error("Row selected", "Please select the recod u want to delete by clicking it.");
         }
 
@@ -711,27 +664,18 @@ public class InternApplicationController extends Applicant implements Serializab
         selectedSExperience = null;
     }
 
-    public InternshipInfo getApplicat() {
-        return applicat;
-    }
-
-    public void setApplicat(InternshipInfo applicat) {
-        this.applicat = applicat;
-    }
-
     public void acceptRequst() {
         new InternAplicationTableConnection().sendAcceRequest(selectedApplicant);
     }
 
     public void onChangeRadioBUtton() {
-        System.out.println("----------------" + workExperience.getDealingWith());
-        if (workExperience.getDealingWith() != null && workExperience.getDealingWith().equals("Yes")) {
-            System.out.println("----------------" + workExperience.getDealingWith());
-            showDealingWith = true;
-        } else {
-            System.out.println("----------------" + workExperience.getDealingWith());
-            showDealingWith = false;
-        }
+
+        showDealingWith = workExperience.getDealingWith() != null && workExperience.getDealingWith().equals("Yes");
+        hasCondition = getMediaclHistory().getConditions() != null && getMediaclHistory().getConditions().equals("Yes");
+        hasMedication = getMediaclHistory().getMedications() != null && getMediaclHistory().getMedications().equals("Yes");
+        hasSeriousIllness = getMediaclHistory().getSeriousIllness() != null && getMediaclHistory().getSeriousIllness().equals("Yes");
+        hasDietrestr = getMediaclHistory().getRestrictions() != null && getMediaclHistory().getRestrictions().equals("Yes");
+        hasPhyHadicap = getMediaclHistory().getPhysicalHandicap() != null && getMediaclHistory().getPhysicalHandicap().equals("Yes");
         reasonForNo = (getLegalHistory().getArrested() != null
                 && getLegalHistory().getArrested() != null
                 && getLegalHistory().getConvicedCrime() != null
@@ -739,7 +683,7 @@ public class InternApplicationController extends Applicant implements Serializab
                 && getLegalHistory().getGuitlyToSexualMisCond() != null
                 && getLegalHistory().getDrugsNotPresc() != null
                 && getLegalHistory().getWeed() != null
-                && getLegalHistory().getAlcohol()!= null
+                && getLegalHistory().getAlcohol() != null
                 && getLegalHistory().getTobaco() != null)
                 && (getLegalHistory().getArrested().equals("Yes")
                 || getLegalHistory().getArrested().equals("Yes")
@@ -762,9 +706,8 @@ public class InternApplicationController extends Applicant implements Serializab
     }
 
     public void saveLegalHistory() {
-        System.out.println(getLegalHistory().getArrested());
+        setId(getId());
+        new InternAplicationTableConnection().updateApplicantLegalHist(this);
     }
-    
-    
 
 }

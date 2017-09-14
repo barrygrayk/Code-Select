@@ -17,10 +17,10 @@
                             <f:selectItem itemLabel="Yes" itemValue="Yes" />
                             <f:selectItem itemLabel="No" itemValue="No" />
                         </p:selectOneRadio>
-                        <p:watermark for="Reasonconditions" value="Please explain your yes" />
+                        <p:watermark for="Reasonconditions" value="Please explain medical	conditions" />
                         <p:inputTextarea  id="Reasonconditions" rows="5" cols="20"  class="field-style"  immediate="true"
                                           counter="ReasonconditionsDisp" maxlength="1000" counterTemplate="{0} characters remaining." 
-                                          autoResize="false"   label="Message" value="#{Apply.mediaclHistory.conditionExplanation}" rendered="#{Apply.reasonForNo}" />
+                                          autoResize="false"   label="Message" value="#{Apply.mediaclHistory.conditionExplanation}" rendered="#{Apply.hasCondition}" />
                         <h:outputText id="ReasonconditionsDisp" />
                     </li>
                     <li>
@@ -30,10 +30,10 @@
                             <f:selectItem itemLabel="Yes" itemValue="Yes" />
                             <f:selectItem itemLabel="No" itemValue="No" />
                         </p:selectOneRadio>
-                        <p:watermark for="Reasonmedications" value="Please explain your yes" />
+                        <p:watermark for="Reasonmedications" value="Please state medications" />
                         <p:inputTextarea  id="Reasonmedications" rows="5" cols="20"  class="field-style"  immediate="true"
                                           counter="ReasonmedicationsDisp" maxlength="1000" counterTemplate="{0} characters remaining." 
-                                          autoResize="false"   label="Message" value="#{Apply.mediaclHistory.medicationsExplanation}" rendered="#{Apply.reasonForNo}" />
+                                          autoResize="false"   label="Message" value="#{Apply.mediaclHistory.medicationsExplanation}" rendered="#{Apply.hasMedication}" />
                         <h:outputText id="ReasonmedicationsDisp" />
                     </li>
                     <li>
@@ -43,10 +43,10 @@
                             <f:selectItem itemLabel="Yes" itemValue="Yes" />
                             <f:selectItem itemLabel="No" itemValue="No" />
                         </p:selectOneRadio>
-                        <p:watermark for="Reasonseriousillness" value="Please explain your yes" />
+                        <p:watermark for="Reasonseriousillness" value="Please explain your illness" />
                         <p:inputTextarea  id="Reasonseriousillness" rows="5" cols="20"  class="field-style"  immediate="true"
                                           counter="ReasonseriousillnessDisp" maxlength="1000" counterTemplate="{0} characters remaining." 
-                                          autoResize="false"   label="Message" value="#{Apply.mediaclHistory.medicationsExplanation}" rendered="#{Apply.reasonForNo}" />
+                                          autoResize="false"   label="Message" value="#{Apply.mediaclHistory.seriousIllnessExplanation}" rendered="#{Apply.hasSeriousIllness}" />
                         <h:outputText id="ReasonseriousillnessDisp" />
                     </li>
                     <li>
@@ -56,10 +56,10 @@
                             <f:selectItem itemLabel="Yes" itemValue="Yes" />
                             <f:selectItem itemLabel="No" itemValue="No" />
                         </p:selectOneRadio>
-                        <p:watermark for="Reasonrestrictions" value="Please explain your yes" />
+                        <p:watermark for="Reasonrestrictions" value="Please state your dietary restrictions" />
                         <p:inputTextarea  id="Reasonrestrictions" rows="5" cols="20"  class="field-style"  immediate="true"
                                           counter="ReasonrestrictionsDisp" maxlength="1000" counterTemplate="{0} characters remaining." 
-                                          autoResize="false"   label="Message" value="#{Apply.mediaclHistory.restrictionsExplanation}" rendered="#{Apply.reasonForNo}" />
+                                          autoResize="false"   label="Message" value="#{Apply.mediaclHistory.restrictionsExplanation}" rendered="#{Apply.hasDietrestr}" />
                         <h:outputText id="ReasonrestrictionsDisp" />
                     </li>
                     <li>
@@ -69,14 +69,14 @@
                             <f:selectItem itemLabel="Yes" itemValue="Yes" />
                             <f:selectItem itemLabel="No" itemValue="No" />
                         </p:selectOneRadio>
-                        <p:watermark for="Reasonphysicalhandicaps" value="Please explain your yes" />
+                        <p:watermark for="Reasonphysicalhandicaps" value="Please explain" />
                         <p:inputTextarea  id="Reasonphysicalhandicaps" rows="5" cols="20"  class="field-style"  immediate="true"
                                           counter="ReasonphysicalhandicapsDisp" maxlength="1000" counterTemplate="{0} characters remaining." 
-                                          autoResize="false"   label="Message" value="#{Apply.mediaclHistory.physicalHandicapExplanation}" rendered="#{Apply.reasonForNo}" />
+                                          autoResize="false"   label="Message" value="#{Apply.mediaclHistory.physicalHandicapExplanation}" rendered="#{Apply.hasPhyHadicap}" />
                         <h:outputText id="ReasonphysicalhandicapsDisp" />
                     </li>
                     <li>
-                        <p:commandButton  value="Save"  icon="fa fa-save" class="btn btn-primary btn-md" action="#{Apply.saveLegalHistory()}"/>
+                        <p:commandButton  value="Save"  icon="fa fa-save" class="btn btn-primary btn-md" action="#{Apply.saveMedicalHistory()}"/>
                     </li>
                 </ul>
             </h:form>

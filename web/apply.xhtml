@@ -16,9 +16,10 @@
             <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
             <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
             <h:outputScript  name="bootstrap/js/script.js" />
-            <h:outputStylesheet name="bootstrap/css/style.scss" />
+            
             <h:outputStylesheet name="bootstrap/css/bootstrap.css" />
             <h:outputStylesheet name="bootstrap/css/dashboard.css" />
+            
             <h:outputStylesheet library="font-awesome" name="css/font-awesome.min.css" />
             <link rel="icon" type="image/x-icon" href="#{resource['images/favicon.ico']}" />
             <h:outputScript library="primefaces" name="jquery/jquery.js" />
@@ -27,6 +28,7 @@
 
 
     <h:body>
+        <h:outputStylesheet name="bootstrap/css/style.scss" />
 
         <p:growl sticky="true" showDetail="true" life="1000"  autoUpdate="true"/>
 

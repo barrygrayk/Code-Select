@@ -40,44 +40,35 @@
                     </li>
 
                     <li>
-                        <p:watermark for="Gender" value="Gender" />
-                        <p:selectOneMenu id="Gender" value="#{Apply.theGender}" style="width:49%;" class="drop field-split align-left">
-                            <f:selectItem itemLabel="Gender" itemValue="#{Apply.theGender}" noSelectionOption="true" />
-                            <f:selectItems value="#{Apply.genders}" />
-                        </p:selectOneMenu>
+                        <div class="ui-g-6">
+                            <p:watermark for="Gender" value="Gender" />
+                            <p:selectOneMenu id="Gender" value="#{Apply.theGender}" style="width:102%; margin: 0px " class="drop field-split align-left">
+                                <f:selectItem itemLabel="Gender" itemValue="#{Apply.theGender}" noSelectionOption="true" />
+                                <f:selectItems value="#{Apply.genders}" />
+                            </p:selectOneMenu>
 
-
-
-                        <p:selectOneMenu id="country" value="#{Apply.country}" style="width:49%; margin-left: 5px;" class="drop field-split align-right" filter="true" filterMatchMode="startsWith" panelStyle="width:auto">
-                            <f:selectItem itemLabel="Country" itemValue="#{Apply.country}" noSelectionOption="true" />
-                            <f:selectItems value="#{Apply.homeCountry}" />
-                        </p:selectOneMenu>
-
-
+                        </div>
+                        <div class="ui-g-6">
+                            <p:selectOneMenu id="country" value="#{Apply.country}" style="width:102%;margin: 0px " class="drop field-split align-right" filter="true" filterMatchMode="startsWith" panelStyle="width:auto">
+                                <f:selectItem itemLabel="Country" itemValue="#{Apply.country}" noSelectionOption="true" />
+                                <f:selectItems value="#{Apply.homeCountry}" />
+                            </p:selectOneMenu>
+                        </div>
                     </li>
                     <li>
-                          <p:watermark for="mask" value="Date of birth" />
-                    
-                          
-                            <p:calendar id="mask" value="#{Apply.dateOfBirth}" pattern="dd-MM-yyyy"  class="field-style field-split align-left"   styleClass="dateTimeField"  />
-                
-                             <p:watermark for="Email" value="Email Address" />
-                     
-
-                         
-                            <p:inputText id="Email" type="text"  class="field-style field-split align-right"  value="#{Apply.emailAddress}"/>
-              
+                        <p:watermark for="mask" value="Date of birth" />
+                        <p:calendar id="mask" value="#{Apply.dateOfBirth}" pattern="dd-MM-yyyy"  class="field-style field-split align-left"  style="margin-left: -12px" styleClass="dateTimeField"  />
+                        <p:watermark for="Email" value="Email Address" />
+                        <p:inputText id="Email" type="text"  class="field-style field-split align-right"  value="#{Apply.emailAddress}"/>
                     </li>
 
                     <li>
-                        <p:selectOneMenu id="Maritalstatus" value="#{Apply.maritalStatus}" style="width:49%; " class="drop field-split align-left" >
+                        <p:selectOneMenu id="Maritalstatus" value="#{Apply.maritalStatus}" style="width:49%; margin-left: -8px " class="drop field-split align-left" >
                             <f:selectItem itemLabel="Marital status" itemValue="#{Apply.maritalStatus}" noSelectionOption="true" />
                             <f:selectItems value="#{Apply.maritalStatuses}" />
                         </p:selectOneMenu>
-
                         <p:watermark for="phoneNumber" value="Phone number " />
                         <p:inputText id="phoneNumber"   class="field-style field-split align-right"  value="#{Apply.phoneNumber}"/>
-
                     </li>
 
 

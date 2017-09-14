@@ -17,14 +17,14 @@ public class Applicant extends Person {
     private String prename;
     private String country;
     private EmergencyContact nextSkin; // needs to add on Design class diagram
-    private SpiritualLife beliefs; // same above...
+    private SpiritualLife beliefs =  new SpiritualLife();; // same above...
     private LegalHistory legalHistory = new LegalHistory();
     private MediaclHistory mediaclHistory = new MediaclHistory();
-    private EducationAndQualification formation;
-    private PersonanlityTraits personalityTraits;
+    private EducationAndQualification formation = new EducationAndQualification();
+    private PersonanlityTraits personalityTraits = new PersonanlityTraits();
     private ApplicantMedicalHistory healthRecord;
-    private WorkExperience experience;
-    private InternshipInfo internshipInfo;
+    private WorkExperience experience = new WorkExperience();
+    private InternshipInfo internshipInfo = new InternshipInfo();
 
     public InternshipInfo getInternshipInfo() {
         return internshipInfo;
@@ -78,8 +78,6 @@ public class Applicant extends Person {
         this.motivationForApllication = motivationForApllication;
     }
     
-    
-   
     
     public void setCity(String city) {
         this.city = city;

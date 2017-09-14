@@ -13,8 +13,8 @@
                 <ul>
                     <li>
                         <h:outputLabel value="Please select all the words below which	you believe accurately describe	you:"/>
-                        <p:selectManyCheckbox id="grid2" value="#{Apply.perTraits.selectedTraits}" layout="grid"   columns="4">
-                            <f:selectItems value="#{Apply.perTraits.traits}" var="trait" itemLabel="#{trait}" itemValue="#{trait}" />
+                        <p:selectManyCheckbox id="grid2" value="#{Apply.personalityTraits.selectedTraits}" layout="grid"   columns="3">
+                            <f:selectItems value="#{Apply.personalityTraits.traits}" var="trait" itemLabel="#{trait}" itemValue="#{trait}" />
                         </p:selectManyCheckbox>
 
                     </li>
@@ -23,7 +23,7 @@
                         <p:watermark for="strengths" value="List two strenghts and a breif explanation" />
                         <p:inputTextarea  id="strengths" rows="5" cols="15"  class="field-style" 
                                           counter="display7" maxlength="1000" counterTemplate="{0} characters remaining." 
-                                          autoResize="false"   label="Message" value="#{Apply.perTraits.resonForStrength}"/>
+                                          autoResize="false"   label="Message" value="#{Apply.personalityTraits.resonForStrength}"/>
                         <h:outputText id="display7" />
 
                     </li>
@@ -32,18 +32,19 @@
                         <p:watermark for="weaknesses" value="List two weaknesses and a breif explanation" />
                         <p:inputTextarea  id="weaknesses" rows="5" cols="15"  class="field-style" 
                                           counter="display8" maxlength="1000" counterTemplate="{0} characters remaining." 
-                                          autoResize="false"   label="Message" value="#{Apply.perTraits.reasonForWeekness}"/>
+                                          autoResize="false"   label="Message" value="#{Apply.personalityTraits.reasonForWeekness}"/>
                         <h:outputText id="display8" />
+
+                    </li>
+
+
+                    <li>
+                        <p:commandButton  value="Save"  icon="fa fa-save" class="btn btn-primary btn-md" action="#{Apply.savePersonanlityTraits()}"/>
 
                     </li>
                 </ul>
 
 
-
-                <li>
-                    <p:commandButton  value="Save"  icon="fa fa-save" class="btn btn-primary btn-md" action="#{Apply.savePersonanlityTraits()}"/>
-
-                </li>
 
             </h:form>
         </center>

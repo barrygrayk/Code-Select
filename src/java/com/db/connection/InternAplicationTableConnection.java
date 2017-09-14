@@ -240,12 +240,12 @@ public class InternAplicationTableConnection extends DatabaseConnection {
             PreparedStatement insertSpiLife = connection.prepareStatement("INSERT INTO applicantspirituallife (`Applicant_idApplicant`) VALUES (?)");
             insertSpiLife.setInt(1, fk);
             insertSpiLife.execute();
-            /*PreparedStatement insertWordExp = connection.prepareStatement("INSERT INTO applicantworkexperience (`Applicant_idApplicant`) VALUES(?)");
-            insertWordExp.setInt(1, fk);
-            insertWordExp.execute();*/
             PreparedStatement insertPersTraits = connection.prepareStatement("INSERT INTO applicantPersonalityTraits (`applicantID`) VALUES(?)");
             insertPersTraits.setInt(1, fk);
             insertPersTraits.execute();
+            PreparedStatement insertLegalHist = connection.prepareStatement("INSERT INTO idapplicantLegalHistory (`applicantLegLid`) VALUES(?)");
+            insertLegalHist.setInt(1, fk);
+            insertLegalHist.execute();
         } catch (SQLException ex) {
             Logger.getLogger(InternAplicationTableConnection.class.getName()).log(Level.SEVERE, null, ex);
         } finally {
@@ -474,6 +474,82 @@ public class InternAplicationTableConnection extends DatabaseConnection {
                 connection.close();
             } catch (SQLException ex) {
                 Logger.getLogger(InternAplicationTableConnection.class.getName()).log(Level.SEVERE, null, ex);
+            }
+        }
+
+    }
+
+    public void updateApplicantLegalHist(Applicant applicant) {
+
+        try {
+            connection = getConnection();
+            String updateLegalHist = "UPDATE applicantLegalHistory SET  `offense` = ?, `convictated` = ?, `missconduct` = ?, "
+                    + "`guiltyMisconduct` = ?, `drugs` =?, `tobacco` = ?, `weed` = ?, `alcohol` = ?, `reason` = ? "
+                    + "WHERE `applicantLegLid` = ?";
+            PreparedStatement ps = null;
+            ps = connection.prepareStatement(updateLegalHist);
+            ps.setString(1, applicant.getLegalHistory().getArrested());
+            ps.setString(2, applicant.getLegalHistory().getConvicedCrime());
+            ps.setString(3, applicant.getLegalHistory().getSexualMisCond());
+            ps.setString(4, applicant.getLegalHistory().getGuitlyToSexualMisCond());
+            ps.setString(5, applicant.getLegalHistory().getDrugsNotPresc());
+            ps.setString(6, applicant.getLegalHistory().getTobaco());
+            ps.setString(7, applicant.getLegalHistory().getWeed());
+            ps.setString(8, applicant.getLegalHistory().getAlcohol());
+            ps.setString(9, applicant.getLegalHistory().getReason());
+            ps.setInt(10, applicant.getId());
+            ps.execute();
+            System.out.println("------update ex complete---------");
+            feedback.addMessage("Success", "Your  Legal History has been saved");
+
+        } catch (ClassNotFoundException | SQLException ex) {
+            Logger.getLogger(InternAplicationTableConnection.class.getName()).log(Level.SEVERE, null, ex);
+        } finally {
+            try {
+                connection.close();
+            } catch (SQLException ex) {
+                Logger.getLogger(InternAplicationTableConnection.class.getName()).log(Level.SEVERE, null, ex);
+
+            }
+        }
+
+    }
+
+    /*
+     */
+    public void updateApplicantMedicalhistory(Applicant applicant) {
+
+        try {
+            connection = getConnection();
+            String updateLegalHist = "UPDATE applicantmedicalhistory SET `anyMedicalConditions` = ?, `medicalConditionDesc` = ?,"
+                    + " `anyMedication` =?, `medicationDec` = ?, `anyPastMedicalCondition` =?, `pastMedicalConditionDesc` = ?, "
+                    + "`diataryRestrictions` = ?, `dietaryRestrictionsDesc` = ?, `physicalHandicap` = ?, `handicapDesc` = ?"
+                    + " WHERE  `Applicant_idApplicant` = ?;";
+            PreparedStatement ps = null;
+            ps = connection.prepareStatement(updateLegalHist);
+            ps.setString(1, applicant.getMediaclHistory().getConditions());
+            ps.setString(2,  applicant.getMediaclHistory().getConditionExplanation());
+            ps.setString(3, applicant.getMediaclHistory().getMedications());
+            ps.setString(4, applicant.getMediaclHistory().getMedicationsExplanation());
+            ps.setString(5, applicant.getMediaclHistory().getSeriousIllness());
+            ps.setString(6, applicant.getMediaclHistory().getSeriousIllnessExplanation());
+            ps.setString(7, applicant.getMediaclHistory().getRestrictions());
+            ps.setString(8, applicant.getMediaclHistory().getRestrictionsExplanation());
+            ps.setString(9, applicant.getMediaclHistory().getPhysicalHandicap());
+            ps.setString(10, applicant.getMediaclHistory().getPhysicalHandicapExplanation());
+            ps.setInt(11, applicant.getId());
+            ps.execute();
+            System.out.println("------update ex complete---------");
+            feedback.addMessage("Success", "Your Medical History has been saved");
+
+        } catch (ClassNotFoundException | SQLException ex) {
+            Logger.getLogger(InternAplicationTableConnection.class.getName()).log(Level.SEVERE, null, ex);
+        } finally {
+            try {
+                connection.close();
+            } catch (SQLException ex) {
+                Logger.getLogger(InternAplicationTableConnection.class.getName()).log(Level.SEVERE, null, ex);
+
             }
         }
 

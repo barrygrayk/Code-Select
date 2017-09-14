@@ -56,7 +56,7 @@ public class InternshipInfo {
         this.internshipGoal = internshipGoal;
     }
 
-    public String getAreDayFlex() {
+        public String getAreDayFlex() {
         return areDayFlex;
     }
 

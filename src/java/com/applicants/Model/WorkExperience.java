@@ -17,8 +17,8 @@ public class WorkExperience {
     private Date jobEnd;
     private String dailyDuities;
     private List <String> certificates = new ArrayList<> ();
-    private String dealingWith, explanation;
-    private String victimOf;
+    private String dealingWith, dealingWithExplanation;
+    private String victimOf,victimOfxplanation;
     private int id;
 
     public String getNameOfEmployer() {
@@ -85,14 +85,6 @@ public class WorkExperience {
         this.dealingWith = dealingWith;
     }
 
-    public String getExplanation() {
-        return explanation;
-    }
-
-    public void setExplanation(String explanation) {
-        this.explanation = explanation;
-    }
-
     public String getVictimOf() {
         return victimOf;
     }
@@ -100,6 +92,23 @@ public class WorkExperience {
     public void setVictimOf(String victimOf) {
         this.victimOf = victimOf;
     }
+
+    public String getDealingWithExplanation() {
+        return dealingWithExplanation;
+    }
+
+    public void setDealingWithExplanation(String dealingWithExplanation) {
+        this.dealingWithExplanation = dealingWithExplanation;
+    }
+
+    public String getVictimOfxplanation() {
+        return victimOfxplanation;
+    }
+
+    public void setVictimOfxplanation(String victimOfxplanation) {
+        this.victimOfxplanation = victimOfxplanation;
+    }
+    
     
     
     
