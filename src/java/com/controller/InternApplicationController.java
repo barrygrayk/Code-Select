@@ -38,12 +38,14 @@ public class InternApplicationController extends Applicant implements Serializab
     private String country, duration = "0";
     private final MenuView feedback = new MenuView();
     private String buttonVal = "Add", iconVal = "fa fa-plus";
-    private boolean showDealingWith = false, reasonForNo = false;
-    private boolean hasCondition = false, hasMedication = false, hasSeriousIllness = false, hasDietrestr, hasPhyHadicap = false;
+    private boolean showDealingWith = false, reasonForNo = false,
+            showAbuseNeglect = false;
+    private boolean hasCondition = false, hasMedication = false,
+            hasSeriousIllness = false, hasDietrestr,
+            hasPhyHadicap = false;
     private Applicant selectedApplicant;
     private WorkExperience selectedSExperience = new WorkExperience();
     private WorkExperience workExperience = new WorkExperience();
-    private EmergencyContact emergency = new EmergencyContact();
     private TreeMap<String, String> countries = new TreeMap();
     private List<String> heardFromList = new ArrayList<>();
     private List<String> homeCountry = new ArrayList<>();
@@ -67,6 +69,14 @@ public class InternApplicationController extends Applicant implements Serializab
 
     public String getButtonVal() {
         return buttonVal;
+    }
+
+    public boolean isShowAbuseNeglect() {
+        return showAbuseNeglect;
+    }
+
+    public void setShowAbuseNeglect(boolean showAbuseNeglect) {
+        this.showAbuseNeglect = showAbuseNeglect;
     }
 
     public void setButtonVal(String buttonVal) {
@@ -145,13 +155,6 @@ public class InternApplicationController extends Applicant implements Serializab
         this.duration = duration;
     }
 
-    public EmergencyContact getEmergency() {
-        return emergency;
-    }
-
-    public void setEmergency(EmergencyContact emergency) {
-        this.emergency = emergency;
-    }
 
     public WorkExperience getWorkExperience() {
         return workExperience;
@@ -173,15 +176,12 @@ public class InternApplicationController extends Applicant implements Serializab
     public void init() {
         HttpServletRequest req = (HttpServletRequest) FacesContext.getCurrentInstance().getExternalContext().getRequest();
         HttpSession ses = req.getSession();
-        //System.out.println("Applicant id-----gg-------" + ses.getAttribute("id"));
         try {
             if (ses.getAttribute("id") != null) {
                 int sesPk = (int) ses.getAttribute("id");
                 List<Applicant> currentApplicant = new InternAplicationTableConnection().getApplicant(sesPk);
                 setId(sesPk);
-                System.out.println("---------Phone---------" + currentApplicant.get(0).getPhoneNumber());
                 if (currentApplicant.size() == 1) {
-                    System.out.println("------------------");
                     setFirstname(currentApplicant.get(0).getFirstname());
                     setLastname(currentApplicant.get(0).getLastname());
                     setPhoneNumber(currentApplicant.get(0).getPhoneNumber());
@@ -607,20 +607,25 @@ public class InternApplicationController extends Applicant implements Serializab
     }
 
     public void saveEmergencyContact() {
-        Applicant application = new Applicant();
-        application.setNextSkin(emergency);
-        application.setId(getId());
-        new InternAplicationTableConnection().updateEmergencContact(application);
+        setId(getId());
+        new InternAplicationTableConnection().updateEmergencContact(this);
     }
 
     public void addWorkExperience() {
         Applicant application = new Applicant();
         application.setExperience(workExperience);
         application.setId(getId());
-        System.out.println("--------------------------" + workExperience.getId());
         clear();
         buttonVal = "Add";
         iconVal = "fa fa-plus";
+    }
+
+    public void saveWordExperience() {
+        String allCertificats = "";
+        allCertificats = getExperience().getCertificates().stream().map((per) -> per + " ").reduce(allCertificats, String::concat);
+        getExperience().setCertificatsToString(allCertificats);
+        setId(getId());
+        new InternAplicationTableConnection().updateApplicantExperience(this);
     }
 
     public void onRowSelectWork(SelectEvent e) {
@@ -633,7 +638,6 @@ public class InternApplicationController extends Applicant implements Serializab
         workExperience.setJobStart(selectedSExperience.getJobStart());
         buttonVal = "Edit";
         iconVal = "fa fa-edit";
-        System.out.println("=============");
     }
 
     public void clearForm() {
@@ -669,13 +673,14 @@ public class InternApplicationController extends Applicant implements Serializab
     }
 
     public void onChangeRadioBUtton() {
-
         showDealingWith = workExperience.getDealingWith() != null && workExperience.getDealingWith().equals("Yes");
         hasCondition = getMediaclHistory().getConditions() != null && getMediaclHistory().getConditions().equals("Yes");
         hasMedication = getMediaclHistory().getMedications() != null && getMediaclHistory().getMedications().equals("Yes");
         hasSeriousIllness = getMediaclHistory().getSeriousIllness() != null && getMediaclHistory().getSeriousIllness().equals("Yes");
         hasDietrestr = getMediaclHistory().getRestrictions() != null && getMediaclHistory().getRestrictions().equals("Yes");
         hasPhyHadicap = getMediaclHistory().getPhysicalHandicap() != null && getMediaclHistory().getPhysicalHandicap().equals("Yes");
+        showDealingWith = getExperience().getDealingWith() != null && getExperience().getDealingWith().equals("Yes");
+        showAbuseNeglect = getExperience().getVictimOf() != null && getExperience().getVictimOf().equals("Yes");
         reasonForNo = (getLegalHistory().getArrested() != null
                 && getLegalHistory().getArrested() != null
                 && getLegalHistory().getConvicedCrime() != null
@@ -694,7 +699,6 @@ public class InternApplicationController extends Applicant implements Serializab
                 || getLegalHistory().getWeed().equals("Yes")
                 || getLegalHistory().getAlcohol().equals("Yes")
                 || getLegalHistory().getTobaco().equals("Yes"));
-
     }
 
     public boolean isReasonForNo() {

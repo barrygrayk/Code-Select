@@ -528,7 +528,7 @@ public class InternAplicationTableConnection extends DatabaseConnection {
             PreparedStatement ps = null;
             ps = connection.prepareStatement(updateLegalHist);
             ps.setString(1, applicant.getMediaclHistory().getConditions());
-            ps.setString(2,  applicant.getMediaclHistory().getConditionExplanation());
+            ps.setString(2, applicant.getMediaclHistory().getConditionExplanation());
             ps.setString(3, applicant.getMediaclHistory().getMedications());
             ps.setString(4, applicant.getMediaclHistory().getMedicationsExplanation());
             ps.setString(5, applicant.getMediaclHistory().getSeriousIllness());
@@ -570,7 +570,6 @@ public class InternAplicationTableConnection extends DatabaseConnection {
             getResultSet(id, "SELECT * FROM applicantworkexperience WHERE `Applicant_idApplicant` = ?");
             while (resultset.next()) {
                 WorkExperience work = new WorkExperience();
-
                 work.setId(resultset.getInt("idapplicantworkexperience"));
                 work.setJobTitle(resultset.getString("jobTitle"));
                 work.setNameOfEmployer(resultset.getString("nameOfEmployer"));
@@ -583,6 +582,33 @@ public class InternAplicationTableConnection extends DatabaseConnection {
             Logger.getLogger(InternAplicationTableConnection.class.getName()).log(Level.SEVERE, null, ex);
         }
         return works;
+    }
+
+    public void updateApplicantExperience(Applicant applicant) {
+        try {
+            connection = getConnection();
+            String updateAuthfQuery = "UPDATE applicantExperience SET  `certificates` = ?, `deallingWithNeg` = ?, `dealingWithExplanation` = ?, "
+                    + "`victimOf` = ?, `victimOFExplanation` = ?  WHERE `appicantID_Fk` = ?";
+            PreparedStatement ps = null;
+            ps = connection.prepareStatement(updateAuthfQuery);
+            ps.setString(1, applicant.getExperience().getCertificatsToString());
+            ps.setString(2, applicant.getExperience().getDealingWith());
+            ps.setString(3,  applicant.getExperience().getDealingWithExplanation());
+            ps.setString(4, applicant.getExperience().getVictimOf());
+            ps.setString(5,  applicant.getExperience().getVictimOfxplanation());
+            ps.setInt(6, applicant.getId());
+            ps.execute();
+            System.out.println("------update ex---------");
+            feedback.addMessage("Success", "Your Experience has been saved");
+        } catch (ClassNotFoundException | SQLException ex) {
+            Logger.getLogger(InternAplicationTableConnection.class.getName()).log(Level.SEVERE, null, ex);
+        } finally {
+            try {
+                connection.close();
+            } catch (SQLException ex) {
+                Logger.getLogger(InternAplicationTableConnection.class.getName()).log(Level.SEVERE, null, ex);
+            }
+        }
     }
 
     @Override

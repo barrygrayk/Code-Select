@@ -16,13 +16,13 @@ public class Applicant extends Person {
     private String maritalStatus;
     private String prename;
     private String country;
-    private EmergencyContact nextSkin; // needs to add on Design class diagram
+    private EmergencyContact nextSkin = new EmergencyContact(); // needs to add on Design class diagram
     private SpiritualLife beliefs =  new SpiritualLife();; // same above...
     private LegalHistory legalHistory = new LegalHistory();
     private MediaclHistory mediaclHistory = new MediaclHistory();
     private EducationAndQualification formation = new EducationAndQualification();
     private PersonanlityTraits personalityTraits = new PersonanlityTraits();
-    private ApplicantMedicalHistory healthRecord;
+    private TermAndConditions tsAndCs = new TermAndConditions();
     private WorkExperience experience = new WorkExperience();
     private InternshipInfo internshipInfo = new InternshipInfo();
 
@@ -37,7 +37,8 @@ public class Applicant extends Person {
     private String preredName;
     private int id;
     
-    public Applicant(String firstname, String lastname, char gender, String phoneNumber, String address, String placeOfBirth, Date dateOfBirth, String emailAddress) {
+    public Applicant(String firstname, String lastname, char gender, String phoneNumber, 
+            String address, String placeOfBirth, Date dateOfBirth, String emailAddress) {
         super(firstname, lastname, gender, phoneNumber, address, placeOfBirth, dateOfBirth, emailAddress);
     }
 
@@ -136,14 +137,6 @@ public class Applicant extends Person {
         this.formation = formation;
     }
 
-    public ApplicantMedicalHistory getHealthRecord() {
-        return healthRecord;
-    }
-
-    public void setHealthRecord(ApplicantMedicalHistory healthRecord) {
-        this.healthRecord = healthRecord;
-    }
-
     public WorkExperience getExperience() {
         return experience;
     }
@@ -188,10 +181,13 @@ public class Applicant extends Person {
     public void setMediaclHistory(MediaclHistory mediaclHistory) {
         this.mediaclHistory = mediaclHistory;
     }
-    
-    
-    
-    
-    
+
+    public TermAndConditions getTsAndCs() {
+        return tsAndCs;
+    }
+
+    public void setTsAndCs(TermAndConditions tsAndCs) {
+        this.tsAndCs = tsAndCs;
+    }
     
 }

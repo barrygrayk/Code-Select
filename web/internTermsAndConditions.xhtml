@@ -15,24 +15,21 @@
                         <ul>
                             <li>
                                 <h:outputLabel value="Will you commit to being flexible and servant-hearted?"/>
-                                <p:selectOneRadio id="servant-hearted" value="#{Apply.workExperience.dealingWith}" >
-                                    <p:ajax process="servant-hearted" update="TsandCs" listener="#{Apply.onChangeRadioBUtton()}"  />
+                                <p:selectOneRadio id="servant-hearted" value="#{Apply.tsAndCs.servantHearted}" >
                                     <f:selectItem itemLabel="Yes" itemValue="Yes" />
                                     <f:selectItem itemLabel="No" itemValue="No" />
                                 </p:selectOneRadio>
                             </li>
                             <li>
                                 <h:outputLabel value="Will you commit to living in a way that honors Christ?"/>
-                                <p:selectOneRadio id="honors" value="#{Apply.workExperience.dealingWith}" >
-                                    <p:ajax process="honors" update="TsandCs" listener="#{Apply.onChangeRadioBUtton()}"  />
+                                <p:selectOneRadio id="honors" value="#{Apply.tsAndCs.honourChrist}" >
                                     <f:selectItem itemLabel="Yes" itemValue="Yes" />
                                     <f:selectItem itemLabel="No" itemValue="No" />
                                 </p:selectOneRadio>
                             </li>
                             <li>
                                 <h:outputLabel value="Will you  submit 	yourself to the authority of Onthatile Children’s Ministries leadership during your time with us?"/>
-                                <p:selectOneRadio id="authority" value="#{Apply.workExperience.dealingWith}" >
-                                    <p:ajax process="authority" update="TsandCs" listener="#{Apply.onChangeRadioBUtton()}"  />
+                                <p:selectOneRadio id="authority" value="#{Apply.tsAndCs.respectAuthority}" >
                                     <f:selectItem itemLabel="Yes" itemValue="Yes" />
                                     <f:selectItem itemLabel="No" itemValue="No" />
                                 </p:selectOneRadio>
@@ -40,8 +37,14 @@
 
                             <li>
                                 <h:outputLabel value="Do	you	agree	to	take	full	responsibility	for	raising	these	funds?"/>
-                                <p:selectOneRadio id="responsibility" value="#{Apply.workExperience.dealingWith}" >
-                                    <p:ajax process="responsibility" update="TsandCs" listener="#{Apply.onChangeRadioBUtton()}"  />
+                                <p:selectOneRadio id="responsibility" value="#{Apply.tsAndCs.rasieFunds}" >
+                                    <f:selectItem itemLabel="Yes" itemValue="Yes" />
+                                    <f:selectItem itemLabel="No" itemValue="No" />
+                                </p:selectOneRadio>
+                            </li>
+                            <li>
+                                <h:outputLabel value="I have fully read, understand,	and	agree	to	the	information	outlined	in	the	Intern	Information	Packet,	Part	1	&amp;	2"/>
+                                <p:selectOneRadio id="read" value="#{Apply.tsAndCs.readP1P2}" >
                                     <f:selectItem itemLabel="Yes" itemValue="Yes" />
                                     <f:selectItem itemLabel="No" itemValue="No" />
                                 </p:selectOneRadio>
@@ -50,22 +53,13 @@
                         </ul>
                     </p:tab>    
                     <p:tab title="Applicant’s	Statement">
-
                         <ul>
-                            <li>
-                                <h:outputLabel value="I have fully read, understand,	and	agree	to	the	information	outlined	in	the	Intern	Information	Packet,	Part	1	&amp;	2"/>
-                                <p:selectOneRadio id="read" value="#{Apply.workExperience.dealingWith}" >
-                                    <p:ajax process="read" update="TsandCs" listener="#{Apply.onChangeRadioBUtton()}"  />
-                                    <f:selectItem itemLabel="Yes" itemValue="Yes" />
-                                    <f:selectItem itemLabel="No" itemValue="No" />
-                                </p:selectOneRadio>
-                            </li>
                             <li>
                                 <h:outputLabel value="I	 have	 fully	 read	 the	 checklist	 and	 understand	 what	 is	 required	 of	 me	 at	 least	 2	 weeks	 prior	 to	 arriving	 in	 South	 Africa	 and	
                                                understand	that	even	if	I	am	accepted	into	the	internship	program	if	I	do	not	complete	the	required	activities	I	will	not	be	allowed	
                                                to	intern	with	Onthatile	Children’s	Ministries.?"/>
-                                <p:selectOneRadio id="promotional" value="#{Apply.workExperience.dealingWith}" >
-                                    <p:ajax process="promotional" update="TsandCs" listener="#{Apply.onChangeRadioBUtton()}"  />
+                                <p:selectOneRadio id="promotional" value="#{Apply.tsAndCs.readChecklist}" >
+
                                     <f:selectItem itemLabel="Yes" itemValue="Yes" />
                                     <f:selectItem itemLabel="No" itemValue="No" />
                                 </p:selectOneRadio>
@@ -74,7 +68,7 @@
                                 <h:outputLabel value="I	agree	to	give	Onthatile	Children’s	Ministries and	staff permission	to	use	any	photos	taken	of	me or	other	photos	I	take	during	my	
                                                time	with	the ministry	for	promotional	or	ministry	needs?"/>
                                 <p:selectOneRadio id="permission" value="#{Apply.workExperience.dealingWith}" >
-                                    <p:ajax process="permission" update="TsandCs" listener="#{Apply.onChangeRadioBUtton()}"  />
+
                                     <f:selectItem itemLabel="Yes" itemValue="Yes" />
                                     <f:selectItem itemLabel="No" itemValue="No" />
                                 </p:selectOneRadio>
@@ -84,34 +78,27 @@
                                                commitments	I have	made	in	this	application.	If	I	am	sent home	early,	none	of	the	monies	I	have paid	for	plane	travel	or	expenses	
                                                incurred	during	my time	with	Onthatile will	be	reimbursed,	and	I will	be	responsible	for	any	additional	cost	resulting	from	changing	
                                                my	return	plane	ticket ?"/>
-                                <p:selectOneRadio id="terminate" value="#{Apply.workExperience.dealingWith}" >
-                                    <p:ajax process="terminate" update="TsandCs" listener="#{Apply.onChangeRadioBUtton()}"  />
+                                <p:selectOneRadio id="terminate" value="#{Apply.tsAndCs.permissionUsePhotos}" >
                                     <f:selectItem itemLabel="Yes" itemValue="Yes" />
                                     <f:selectItem itemLabel="No" itemValue="No" />
                                 </p:selectOneRadio>
                             </li>
                             <li>
                                 <h:outputLabel value="I confirm	that	everything	I’ve	filled	out	in	this	application	is	accurate	and	true,	to	the	best	of	my knowledge.?"/>
-                                <p:selectOneRadio id="everything" value="#{Apply.workExperience.dealingWith}" >
-                                    <p:ajax process="everything" update="TsandCs" listener="#{Apply.onChangeRadioBUtton()}"  />
+                                <p:selectOneRadio id="everything" value="#{Apply.tsAndCs.confirmAccuracy}" >
                                     <f:selectItem itemLabel="Yes" itemValue="Yes" />
                                     <f:selectItem itemLabel="No" itemValue="No" />
                                 </p:selectOneRadio>
                             </li>
                             <li>
-                                <h:outputLabel value=" confirm	that	I	am aware	of	the	crime	concerns	in	South	Africa.	I also	acknowledge	that	accidents	can	happen	wherever	I	am.		I	
+                                <h:outputLabel value="I confirm	that	I	am aware	of	the	crime	concerns	in	South	Africa.	I also	acknowledge	that	accidents	can	happen	wherever	I	am.		I	
                                                release	Onthatile	Children’s	Ministries from	any	liability	whatsoever	should	any	harm	befall	me while	I	am in	South	Africa	or	during	
                                                my travels	there	and	back.	?"/>
-                                <p:selectOneRadio id="acknowledge" value="#{Apply.workExperience.dealingWith}" >
-                                    <p:ajax process="acknowledge" update="TsandCs" listener="#{Apply.onChangeRadioBUtton()}"  />
+                                <p:selectOneRadio id="acknowledge" value="#{Apply.tsAndCs.awareOfCrime}" >
                                     <f:selectItem itemLabel="Yes" itemValue="Yes" />
                                     <f:selectItem itemLabel="No" itemValue="No" />
                                 </p:selectOneRadio>
                             </li>
-
-
-
-
                         </ul>
                         <ul>
                             <li>

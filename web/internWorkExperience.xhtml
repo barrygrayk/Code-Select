@@ -73,7 +73,7 @@
                         <ul>
                             <li>
                                 <h:outputLabel value="Do you have certifications in the following?"/>
-                                <p:selectManyCheckbox id="basic" >
+                                <p:selectManyCheckbox id="basic" value="#{Apply.experience.certificates}" >
                                     <f:selectItem itemLabel="CPR" itemValue="CPR" />
                                     <f:selectItem itemLabel="First Aid" itemValue="First Aid" />
                                     <f:selectItem itemLabel="Nursing" itemValue="Nursing" />
@@ -90,12 +90,12 @@
                                 <p:watermark for="reason" value="Please explain" />
                                 <p:inputTextarea  id="reason" rows="5" cols="20"  class="field-style"  immediate="true"
                                                   counter="reasonDisp" maxlength="1000" counterTemplate="{0} characters remaining." 
-                                                  autoResize="false"   label="Message" value="#{Apply.experience.dealingWith}" rendered="#{Apply.showDealingWith}"/>
+                                                  autoResize="false"   label="Message" value="#{Apply.experience.dealingWithExplanation}" rendered="#{Apply.showDealingWith}"/>
                                 <h:outputText id="reasonDisp" />
                             </li>
                             <li>
                                 <h:outputLabel value="Were you a victim of abuse, neglect, or	abandonment as a minor?	"/>
-                                <p:selectOneRadio id="victim" >
+                                <p:selectOneRadio id="victim"  value="#{Apply.experience.victimOf}">
                                     <f:selectItem itemLabel="Yes" itemValue="Yes" />
                                     <f:selectItem itemLabel="No" itemValue="No" />
                                      <p:ajax process="victim" update="experienceForm" listener="#{Apply.onChangeRadioBUtton()}"  />
@@ -105,13 +105,13 @@
                                 <p:watermark for="reason1" value="Please explain" />
                                 <p:inputTextarea  id="reason1" rows="5" cols="20"  class="field-style" 
                                                   counter="reasonDisp1" maxlength="1000" counterTemplate="{0} characters remaining." 
-                                                  autoResize="false"   label="Message" value="#{Apply.experience.victimOf}"/>
+                                                  autoResize="false"   label="Message" value="#{Apply.experience.victimOfxplanation}" rendered="#{Apply.showAbuseNeglect}"/>
                                 <h:outputText id="reasonDisp1" />
                             </li>
                         </ul>
                         <ul>
                             <li>
-                                <p:commandButton  value="Save"  icon="fa fa-save" class="btn btn-primary btn-md" action="#{Apply.saveSpiritualLife()}"/>
+                                <p:commandButton  value="Save"  icon="fa fa-save" class="btn btn-primary btn-md" action="#{Apply.saveWordExperience()}"/>
                             </li>
                         </ul>
                     </p:tab>
