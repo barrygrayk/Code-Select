@@ -14,6 +14,7 @@ public class TermAndConditions {
     private String terminateInternShip;
     private String confirmAccuracy;
     private String awareOfCrime;
+    private String sign;
 
     public String getServantHearted() {
         return servantHearted;
@@ -94,5 +95,15 @@ public class TermAndConditions {
     public void setAwareOfCrime(String awareOfCrime) {
         this.awareOfCrime = awareOfCrime;
     }
+
+    public String getSign() {
+        return sign;
+    }
+
+    public void setSign(String sign) {
+        this.sign = sign;
+    }
+    
+    
     
 }

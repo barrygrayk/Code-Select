@@ -3,7 +3,6 @@ package com.controller;
 import com.InventoryModels.Inventory;
 import com.MenuView.MenuView;
 import com.db.connection.InventorytableConneection;
-import com.staff.Model.OthantileStaff;
 import com.validation.MrKaplan;
 import com.validation.TheEqualizer;
 import java.io.Serializable;

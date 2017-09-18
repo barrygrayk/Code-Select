@@ -99,12 +99,31 @@
                                     <f:selectItem itemLabel="No" itemValue="No" />
                                 </p:selectOneRadio>
                             </li>
-                        </ul>
-                        <ul>
                             <li>
-                                <p:commandButton  value="Save"  icon="fa fa-save" class="btn btn-primary btn-md" action="#{Apply.saveSpiritualLife()}"/>
+
                             </li>
+                            <h:outputLabel value="Sign below"/>
+
+                            <li>
+
+
+                                <p:signature  style="width:200px;height:100px" widgetVar="sig" value="#{Apply.tsAndCs.sign}"  required="true"  />
+
+                                <div style="margin:20px">
+
+                                    <p:commandButton value="Clear" icon="ui-icon-close" type="button" onclick="PF('sig').clear()"/>
+                                </div>
+                            </li>
+
+
+
+                            <li>
+                                <p:commandButton  value="Save"  icon="fa fa-save" class="btn btn-primary btn-md" action="#{Apply.saveTermsAndConditions()}"/>
+                            </li>
+
+
                         </ul>
+
                     </p:tab>
                 </p:tabView>
 

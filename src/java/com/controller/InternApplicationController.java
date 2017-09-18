@@ -34,7 +34,7 @@ import org.primefaces.event.UnselectEvent;
 @ManagedBean(name = "Apply", eager = true)
 @SessionScoped
 public class InternApplicationController extends Applicant implements Serializable {
-
+    
     private String country, duration = "0";
     private final MenuView feedback = new MenuView();
     private String buttonVal = "Add", iconVal = "fa fa-plus";
@@ -54,124 +54,123 @@ public class InternApplicationController extends Applicant implements Serializab
     private List<String> genders = new ArrayList<>();
     private String code = "", theGender = " ";
     private List<Applicant> applicants = new ArrayList<>();
-
+    
     public InternApplicationController() {
         super();
     }
-
+    
     public WorkExperience getSelectedSExperience() {
         return selectedSExperience;
     }
-
+    
     public void setSelectedSExperience(WorkExperience selectedSExperience) {
         this.selectedSExperience = selectedSExperience;
     }
-
+    
     public String getButtonVal() {
         return buttonVal;
     }
-
+    
     public boolean isShowAbuseNeglect() {
         return showAbuseNeglect;
     }
-
+    
     public void setShowAbuseNeglect(boolean showAbuseNeglect) {
         this.showAbuseNeglect = showAbuseNeglect;
     }
-
+    
     public void setButtonVal(String buttonVal) {
         this.buttonVal = buttonVal;
     }
-
+    
     public String getIconVal() {
         return iconVal;
     }
-
+    
     public void setIconVal(String iconVal) {
         this.iconVal = iconVal;
     }
-
+    
     public List<String> getHomeCountry() {
         return homeCountry;
     }
-
+    
     public void setHomeCountry(List<String> homeCountry) {
         this.homeCountry = homeCountry;
     }
-
+    
     public boolean isHasCondition() {
         return hasCondition;
     }
-
+    
     public void setHasCondition(boolean hasCondition) {
         this.hasCondition = hasCondition;
     }
-
+    
     public boolean isHasMedication() {
         return hasMedication;
     }
-
+    
     public void setHasMedication(boolean hasMedication) {
         this.hasMedication = hasMedication;
     }
-
+    
     public boolean isHasSeriousIllness() {
         return hasSeriousIllness;
     }
-
+    
     public void setHasSeriousIllness(boolean hasSeriousIllness) {
         this.hasSeriousIllness = hasSeriousIllness;
     }
-
+    
     public boolean isHasDietrestr() {
         return hasDietrestr;
     }
-
+    
     public void setHasDietrestr(boolean hasDietrestr) {
         this.hasDietrestr = hasDietrestr;
     }
-
+    
     public boolean isHasPhyHadicap() {
         return hasPhyHadicap;
     }
-
+    
     public void setHasPhyHadicap(boolean hasPhyHadicap) {
         this.hasPhyHadicap = hasPhyHadicap;
     }
-
+    
     public Applicant getSelectedApplicant() {
         return selectedApplicant;
     }
-
+    
     public void setSelectedApplicant(Applicant selectedApplicant) {
         this.selectedApplicant = selectedApplicant;
     }
-
+    
     public String getDuration() {
         return duration;
     }
-
+    
     public void setDuration(String duration) {
         this.duration = duration;
     }
-
-
+    
     public WorkExperience getWorkExperience() {
         return workExperience;
     }
-
+    
     public void setWorkExperience(WorkExperience workExperience) {
         this.workExperience = workExperience;
     }
-
+    
     public List<WorkExperience> getWorkExp() {
         return new InternAplicationTableConnection().getWorkExperience(getId());
     }
-
+    
     public void setWorkExp(List<WorkExperience> workExp) {
         this.workExp = new InternAplicationTableConnection().getWorkExperience(getId());
     }
-
+    
     @PostConstruct
     public void init() {
         HttpServletRequest req = (HttpServletRequest) FacesContext.getCurrentInstance().getExternalContext().getRequest();
@@ -191,7 +190,7 @@ public class InternApplicationController extends Applicant implements Serializab
         } catch (ClassNotFoundException | SQLException ex) {
             Logger.getLogger(InternApplicationController.class.getName()).log(Level.SEVERE, null, ex);
         }
-
+        
         countries.put("Algeria", "213");
         countries.put("Andorra", "376");
         countries.put("Angola", "244");
@@ -418,73 +417,73 @@ public class InternApplicationController extends Applicant implements Serializab
         //Gnders list 
         genders.add("Male");
         genders.add("Female");
-
+        
         String[] locales = Locale.getISOCountries();
         for (String countryCode : locales) {
             Locale obj = new Locale("", countryCode);
             homeCountry.add(obj.getDisplayCountry());
-
+            
         }
-
+        
     }
-
+    
     public boolean isShowDealingWith() {
         return showDealingWith;
     }
-
+    
     public void setShowDealingWith(boolean showDealingWith) {
         this.showDealingWith = showDealingWith;
     }
-
+    
     public List<String> getGenders() {
         return genders;
     }
-
+    
     public void setGenders(List<String> genders) {
         this.genders = genders;
     }
-
+    
     public String getTheGender() {
         return theGender;
     }
-
+    
     public void setTheGender(String theGender) {
         this.theGender = theGender;
     }
-
+    
     public String getCountry() {
         return country;
     }
-
+    
     public void setCountry(String country) {
         this.country = country;
     }
-
+    
     public Map<String, String> getCountries() {
         return countries;
     }
-
+    
     public List<String> getHeardFromList() {
         return heardFromList;
     }
-
+    
     public void setHeardFromList(List<String> heardFromList) {
         this.heardFromList = heardFromList;
     }
-
+    
     public void setCountries(TreeMap<String, String> countries) {
         this.countries = countries;
     }
-
+    
     public void onCountryChange() {
         if (country != null) {
             code = "+" + country;
-
+            
         } else {
             code = "";
         }
     }
-
+    
     public void onEndDateChange() {
         final long DAY_IN_MILLIS = 1000 * 60 * 60 * 24;
         if (getInternshipInfo().getStartDate() != null && getInternshipInfo().getEndDate() != null) {
@@ -502,48 +501,48 @@ public class InternApplicationController extends Applicant implements Serializab
                 } else {
                     duration = diffInDays + " day(s)";
                 }
-
+                
             }
-
+            
         }
     }
-
+    
     public List<String> getMaritalStatuses() {
         return maritalStatuses;
     }
-
+    
     public void setMaritalStatuses(List<String> maritalStatuses) {
         this.maritalStatuses = maritalStatuses;
     }
-
+    
     public String getCode() {
         return code;
     }
-
+    
     public void setCode(String code) {
         this.code = code;
     }
-
+    
     public void onRowSelect(SelectEvent e) {
         System.err.println("------------");
         selectedApplicant = (Applicant) e.getObject();
         System.out.println(selectedApplicant.getMotivationForApllication());
-
+        
     }
-
+    
     public void onRowUnselect(UnselectEvent e) {
         selectedApplicant = null;
     }
-
+    
     public List<Applicant> getApplicants() {
         applicants = new InternAplicationTableConnection().getApplicants();
         return applicants;
     }
-
+    
     public void setApplicants(List<Applicant> applicants) {
         this.applicants = applicants;
     }
-
+    
     public void sendRequst() {
         System.out.println("Here");
         MrKaplan validate = new MrKaplan();
@@ -560,7 +559,7 @@ public class InternApplicationController extends Applicant implements Serializab
             System.out.println("-----Cont--Done-------");
         }
     }
-
+    
     public void saveInternApplicationInfo() {
         if (getInternshipInfo().getStartDate() != null && getInternshipInfo().getEndDate() != null
                 && getInternshipInfo().getStartDate().before(getInternshipInfo().getEndDate())) {
@@ -570,9 +569,9 @@ public class InternApplicationController extends Applicant implements Serializab
         } else {
             feedback.warning("Save incomplete", "Internship start and end dates have not been set. Please check and try again");
         }
-
+        
     }
-
+    
     public void saveGeneralInfo() {
         TheEqualizer sanitise = new TheEqualizer();
         setFirstname(sanitise.toUperAndLower(getFirstname()));
@@ -581,13 +580,13 @@ public class InternApplicationController extends Applicant implements Serializab
         setId(getId());
         new InternAplicationTableConnection().updateGenralInfo(this);
     }
-
+    
     public void saveSpiritualLife() {
         this.setBeliefs(getBeliefs());
         this.setId(getId());
         new InternAplicationTableConnection().updateSpiritualLife(this);
     }
-
+    
     public void savePersonanlityTraits() {
         String allTraits = "";
         allTraits = getPersonalityTraits().getSelectedTraits().stream().map((per) -> per + " ").reduce(allTraits, String::concat);
@@ -595,22 +594,22 @@ public class InternApplicationController extends Applicant implements Serializab
         setId(getId());
         new InternAplicationTableConnection().updatePersonalityTraits(this);
     }
-
+    
     public void saveEducationAndQualification() {
         setId(getId());
         new InternAplicationTableConnection().updateEducationQualification(this);
     }
-
+    
     public void saveMedicalHistory() {
         setId(getId());
         new InternAplicationTableConnection().updateApplicantMedicalhistory(this);
     }
-
+    
     public void saveEmergencyContact() {
         setId(getId());
         new InternAplicationTableConnection().updateEmergencContact(this);
     }
-
+    
     public void addWorkExperience() {
         Applicant application = new Applicant();
         application.setExperience(workExperience);
@@ -619,13 +618,19 @@ public class InternApplicationController extends Applicant implements Serializab
         buttonVal = "Add";
         iconVal = "fa fa-plus";
     }
-
+    
     public void saveWordExperience() {
         String allCertificats = "";
         allCertificats = getExperience().getCertificates().stream().map((per) -> per + " ").reduce(allCertificats, String::concat);
         getExperience().setCertificatsToString(allCertificats);
         setId(getId());
         new InternAplicationTableConnection().updateApplicantExperience(this);
+    }
+    
+    public void saveTermsAndConditions() {
+        setId(getId());
+        System.out.println("Yess"+getTsAndCs().getSign());
+        new InternAplicationTableConnection().updateApplicantTermsAndConditions(this);
     }
 
     public void onRowSelectWork(SelectEvent e) {
@@ -639,13 +644,13 @@ public class InternApplicationController extends Applicant implements Serializab
         buttonVal = "Edit";
         iconVal = "fa fa-edit";
     }
-
+    
     public void clearForm() {
         clear();
         buttonVal = "Add";
         iconVal = "fa fa-plus";
     }
-
+    
     private void clear() {
         workExperience.setDailyDuities(null);
         workExperience.setJobTitle(null);
@@ -653,25 +658,25 @@ public class InternApplicationController extends Applicant implements Serializab
         workExperience.setJobEnd(null);
         workExperience.setJobStart(null);
     }
-
+    
     public void delete() {
         if (selectedSExperience != null) {
             new InternAplicationTableConnection().deleteWorkExperience(selectedSExperience.getId());
         } else {
             feedback.error("Row selected", "Please select the recod u want to delete by clicking it.");
         }
-
+        
         clear();
     }
-
+    
     public void onRowUnselectWork(UnselectEvent e) {
         selectedSExperience = null;
     }
-
+    
     public void acceptRequst() {
         new InternAplicationTableConnection().sendAcceRequest(selectedApplicant);
     }
-
+    
     public void onChangeRadioBUtton() {
         showDealingWith = workExperience.getDealingWith() != null && workExperience.getDealingWith().equals("Yes");
         hasCondition = getMediaclHistory().getConditions() != null && getMediaclHistory().getConditions().equals("Yes");
@@ -700,18 +705,18 @@ public class InternApplicationController extends Applicant implements Serializab
                 || getLegalHistory().getAlcohol().equals("Yes")
                 || getLegalHistory().getTobaco().equals("Yes"));
     }
-
+    
     public boolean isReasonForNo() {
         return reasonForNo;
     }
-
+    
     public void setReasonForNo(boolean reasonForNo) {
         this.reasonForNo = reasonForNo;
     }
-
+    
     public void saveLegalHistory() {
         setId(getId());
         new InternAplicationTableConnection().updateApplicantLegalHist(this);
     }
-
+    
 }

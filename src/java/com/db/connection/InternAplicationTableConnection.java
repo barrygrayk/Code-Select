@@ -246,6 +246,10 @@ public class InternAplicationTableConnection extends DatabaseConnection {
             PreparedStatement insertLegalHist = connection.prepareStatement("INSERT INTO idapplicantLegalHistory (`applicantLegLid`) VALUES(?)");
             insertLegalHist.setInt(1, fk);
             insertLegalHist.execute();
+            PreparedStatement insertLegalExp = connection.prepareStatement("INSERT INTO applicantExperience (`appicantID_Fk`) VALUES(?)");
+            insertLegalExp.setInt(1, fk);
+            insertLegalExp.execute();
+
         } catch (SQLException ex) {
             Logger.getLogger(InternAplicationTableConnection.class.getName()).log(Level.SEVERE, null, ex);
         } finally {
@@ -515,8 +519,6 @@ public class InternAplicationTableConnection extends DatabaseConnection {
 
     }
 
-    /*
-     */
     public void updateApplicantMedicalhistory(Applicant applicant) {
 
         try {
@@ -593,9 +595,9 @@ public class InternAplicationTableConnection extends DatabaseConnection {
             ps = connection.prepareStatement(updateAuthfQuery);
             ps.setString(1, applicant.getExperience().getCertificatsToString());
             ps.setString(2, applicant.getExperience().getDealingWith());
-            ps.setString(3,  applicant.getExperience().getDealingWithExplanation());
+            ps.setString(3, applicant.getExperience().getDealingWithExplanation());
             ps.setString(4, applicant.getExperience().getVictimOf());
-            ps.setString(5,  applicant.getExperience().getVictimOfxplanation());
+            ps.setString(5, applicant.getExperience().getVictimOfxplanation());
             ps.setInt(6, applicant.getId());
             ps.execute();
             System.out.println("------update ex---------");
@@ -609,6 +611,44 @@ public class InternAplicationTableConnection extends DatabaseConnection {
                 Logger.getLogger(InternAplicationTableConnection.class.getName()).log(Level.SEVERE, null, ex);
             }
         }
+    }
+
+    public void updateApplicantTermsAndConditions(Applicant applicant) {
+
+        try {
+            connection = getConnection();
+            String updateLegalHist = "UPDATE applicantTermsAndConditions SET `servantHearted` = ?, `honorChrist` = ?,"
+                    + " `submitToAuthority` = ?, `raiseFunds` = ?, `readP1P2` = ?, `readChecklist` =?,`permissionPhotos` = ?, "
+                    + "`terminateInternship` =?, `filledAccuratly` = ?, `awareOfCrime` = ?, `sign` = ? WHERE `appliacantid_fk` = ?;";
+            PreparedStatement ps = null;
+            ps = connection.prepareStatement(updateLegalHist);
+            ps.setString(1, applicant.getTsAndCs().getServantHearted());
+            ps.setString(2, applicant.getTsAndCs().getHonourChrist());
+            ps.setString(3, applicant.getTsAndCs().getRespectAuthority());
+            ps.setString(4, applicant.getTsAndCs().getRasieFunds());
+            ps.setString(5, applicant.getTsAndCs().getReadP1P2());
+            ps.setString(6, applicant.getTsAndCs().getReadChecklist());
+            ps.setString(7, applicant.getTsAndCs().getPermissionUsePhotos());
+            ps.setString(8, applicant.getTsAndCs().getTerminateInternShip());
+            ps.setString(9, applicant.getTsAndCs().getConfirmAccuracy());
+            ps.setString(10, applicant.getTsAndCs().getAwareOfCrime());
+            ps.setString(11, applicant.getTsAndCs().getSign());
+            ps.setInt(12, applicant.getId());
+            ps.execute();
+            System.out.println("------update ex complete---------");
+            feedback.addMessage("Success", "Your Terms And Conditions has been saved");
+
+        } catch (ClassNotFoundException | SQLException ex) {
+            Logger.getLogger(InternAplicationTableConnection.class.getName()).log(Level.SEVERE, null, ex);
+        } finally {
+            try {
+                connection.close();
+            } catch (SQLException ex) {
+                Logger.getLogger(InternAplicationTableConnection.class.getName()).log(Level.SEVERE, null, ex);
+
+            }
+        }
+
     }
 
     @Override
