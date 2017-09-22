@@ -41,7 +41,7 @@
                                 </p:submenu>
                                 <p:submenu label="Intern Applications" styleClass="sidebar-brand" style="padding:10px" icon="fa fa-pencil-square-o">
                                     <p:menuitem styleClass="sidebar-item" value="Inbox" actionListener="#{menuView.save}" update=":content" icon="fa fa-inbox" action="#{Include.setPage('internAppInbox')}"/>
-                                    <p:menuitem value="Progress" actionListener="#{menuView.update}"  icon="fa fa-list-ol"   />
+                                    <p:menuitem value="Progress" actionListener="#{menuView.update}"  icon="fa fa-list-ol"  update=":content" action="#{Include.setPage('intertAppInProgress')}" />
                                 </p:submenu>
                                 <p:submenu label="Messages" styleClass="sidebar-brand" style="padding:10px" icon="fa fa-envelope">
                                     <p:menuitem styleClass="sidebar-item" value="Notice board" actionListener="#{menuView.save}"  action="#{Include.setPage('messages')}" update=":content" icon="fa fa-bullhorn" />

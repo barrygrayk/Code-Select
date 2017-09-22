@@ -8,6 +8,7 @@
         <title>Applications inbox</title>
     </h:head>
     <ui:composition>
+         <h3> Application requests</h3>
         <p:growl id="growl" sticky="true" showDetail="true" life="3000" />
         <h:form id="alertForm">
             <p:dataTable id="Alert" var="apply" value="#{Apply.applicants}"  selectionMode="single" rowKey="#{apply.id}" style="margin-bottom:0" selection="#{Apply.selectedApplicant}" >

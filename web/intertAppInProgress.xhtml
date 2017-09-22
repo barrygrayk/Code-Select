@@ -1,0 +1,360 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:f="http://xmlns.jcp.org/jsf/core">
+    <h:head>
+        <title>Applications in progress</title>
+    </h:head>
+    <ui:composition>
+        <h3> Applications in progress </h3>
+
+        <p:growl id="growl" sticky="true" showDetail="true" life="3000" />
+        <h:form id="procressForm">
+            <p:dataTable id="AlertContext" var="apply" value="#{Apply.applicantsInProgress}"  selectionMode="single" 
+                         rowKey="#{apply.id}" style="margin-bottom:0" selection="#{Apply.selectedApplicant}" >
+                <p:ajax event="rowSelect" listener="#{Apply.onRowSelect}" update=":procressForm" process="AlertContext"/>
+                <p:ajax event="rowUnselect" listener="#{Apply.onRowUnselect}" update=":procressForm" process="AlertContext"/>  
+
+                <p:column style="width:150px"  >
+                    <h:outputText value="#{apply.firstname} #{apply.lastname}" title="Right click" />
+                </p:column>
+                <p:column >
+                    <h:outputText value="#{apply.applicationStatus}" title="Right click"/>
+                </p:column> 
+            </p:dataTable>
+            <p:contextMenu for="AlertContext">
+                <p:menuitem value="View application"   oncomplete="PF('dlg').show()"  icon="fa fa-eye" update=":Applog"/>
+                <p:menuitem value="Suspend application"   oncomplete="PF('dlg').show()"  icon="fa fa-pause" update=":Applog"/>
+                <p:menuitem value="Reset password"   oncomplete="PF('dlg').show()"  icon="fa fa fa-refresh" update=":Applog"/>
+                <p:menuitem value="Delete"  action="#{msgCont.delete()}" icon="fa fa-remove" update=":procressForm"/>
+            </p:contextMenu>
+        </h:form>
+
+
+        <p:dialog id="Applog" header="#{Apply.firstname}   #{Apply.lastname} 's Apllication form" widgetVar="dlg" minimizable="true" maximizable="true" position="center" >
+            <h:form>
+                <div class="ui-g">
+                    <div class="ui-g-12">
+                        <p:panel id="Office"  collapsed="true" header="For Office Use Only" toggleable="true" closable="false"  toggleSpeed="500"
+                                 closeSpeed="500" widgetVar="pane11" style="margin-bottom:20px">
+                           
+                                <div class="ui-g-12">
+                                    <h:outputLabel value="References Received:"/>
+                                    <p:selectManyCheckbox id="basic" value="#{Apply.experience.certificates}" >
+                                        <f:selectItem itemLabel="Pastoral" itemValue="Pastoral" />
+                                        <f:selectItem itemLabel="General Reference 1" itemValue="General Reference 1" />
+                                        <f:selectItem itemLabel="General Reference 2" itemValue="General Reference 2" />
+                                    </p:selectManyCheckbox>
+                                </div>
+                                <div class="ui-g-12">
+                                <h:panelGrid columns="1" cellpadding="10">
+                                     <p:outputLabel for="interviwers" value="Interview date and time: "   />
+                                    <p:watermark for="interviewDate" value="Interview date and time" />
+                                    <p:calendar id="interviewDate" value="#{Apply.formation.highestGraduationDate}" pattern="dd-MM-yyyy HH:mm"  class="field-style field-split"   
+                                                 />
+                                     <p:outputLabel for="interviwers" value="Interviewers: "   />
+                                    <p:watermark for="interviwers" value="eg Joel (The press enter key)" />
+                                    <p:chips id="interviwers"  value="#{Apply.beliefs.listOFMinistries}"/>
+                                </h:panelGrid>
+                                </div>
+                                   <div class="ui-g-12">
+                                    <h:outputLabel value="Interview outcome:"/>
+                                    <p:selectManyCheckbox id="basic" value="#{Apply.experience.certificates}" >
+                                        <f:selectItem itemLabel="Highly recommend" itemValue="Pastoral" />
+                                        <f:selectItem itemLabel="Recommend" itemValue="Recommend" />
+                                        <f:selectItem itemLabel="Recommend with reservations" itemValue="Recommend with reservations" />
+                                        <f:selectItem itemLabel="Prefer not to	recommend" itemValue="Prefer not to	recommend" />
+                                        
+                                    </p:selectManyCheckbox>
+                                </div>
+                                 <div class="ui-g-6">
+                                  
+
+                                </div>
+                                <div class="ui-g-6">
+
+                                </div>
+                           
+
+
+
+
+
+                        </p:panel>
+
+                    </div>
+                </div>
+                <div class="ui-g">
+                    <div class="ui-g-6">
+                        <p:panel id="Genaral"  collapsed="true" header="Genaral Information" toggleable="true" closable="false"  
+                                 toggleSpeed="500" closeSpeed="500" widgetVar="panel1" style="margin-bottom:20px">
+
+                            <h:panelGrid columns="2" cellpadding="10">
+                                <h:outputLabel value="First name:"/>  #{Apply.firstname} 
+                                <h:outputLabel value="Last name:"/>  #{Apply.lastname}
+                                <h:outputLabel value="Prefered name:"/>  #{Apply.prename} 
+                                <h:outputLabel value="Gender:"/>  #{Apply.theGender}
+                                <h:outputLabel value="Date of birth:"/>  #{Apply.dateOfBirth}
+                                <h:outputLabel value="Marital Status:"/>  #{Apply.maritalStatus}
+                                <h:outputLabel value="Country:"/>  #{Apply.country}
+                                <h:outputLabel value="City:"/>  #{Apply.city} 
+                                <h:outputLabel value="Zip code:"/> #{Apply.zipCode}  
+                                <h:outputLabel value="Address:"/>  #{Apply.address}
+                                <h:outputLabel value="Email Address:"/>  #{Apply.emailAddress} 
+                                <h:outputLabel value="First name:"/>  #{Apply.phoneNumber}
+                            </h:panelGrid>
+                        </p:panel>
+
+                    </div>
+                    <div class="ui-g-6">
+                        <p:panel id="Internship"  collapsed="true" header="Internship Information" toggleable="true" closable="false"  
+                                 toggleSpeed="500" closeSpeed="500" widgetVar="panel2" style="margin-bottom:20px">
+                            <h:panelGrid columns="1" cellpadding="10">
+                                <h:outputLabel value="Desired Start Intership Date:"/>  #{Apply.internshipInfo.startDate}
+                                <h:outputLabel value="Desired End Intership Date:"/>  #{Apply.internshipInfo.endDate} 
+                                <h:outputLabel value="Are your days flexible ?:"/>  #{Apply.internshipInfo.areDayFlex}
+                                <h:outputLabel value="How Did You Hear about the Intership s ?:"/>  #{Apply.internshipInfo.howUHeard}
+                                <h:outputLabel value="Why you wish to intern	with Onthatile Children’s Ministries and	
+                                               What your	goals are for the internship?:"/>  #{Apply.internshipInfo.internshipGoal}
+                            </h:panelGrid>
+                        </p:panel>
+                    </div>
+                    <div class="ui-g-6">
+                        <p:panel id="Spiritual"  collapsed="true" header="Spiritual Life" toggleable="true" closable="false"  
+                                 toggleSpeed="500" closeSpeed="500" widgetVar="panel3" style="margin-bottom:20px">
+                            <p:tabView class="form-style-9"  cache="false" >
+                                <p:tab title="Spiritual Life I" >
+                                    <h:panelGrid columns="1" cellpadding="10">
+                                        <p:outputLabel value="Do you  attend a local church ?" />#{Apply.beliefs.attend}
+                                        <p:outputLabel value="What church do you currently attend?" />#{Apply.beliefs.whichChurch}
+                                        <p:outputLabel value="How long have you attended there? " />#{Apply.beliefs.attendDuration}
+                                        <p:outputLabel  value="What ministries do you serve in? "   />#{Apply.beliefs.listOFMinistries}
+                                        <p:outputLabel  value="Have you committed your life to Jesus Christ ?" />#{Apply.beliefs.commitedJesus}
+                                        <p:outputLabel  value="Testimony" />
+                                        #{Apply.beliefs.commitedTest}
+                                    </h:panelGrid>
+
+                                </p:tab>    
+                                <p:tab title="Spiritual Life II" id="part2">
+                                    <h:panelGrid columns="1" cellpadding="10">
+                                        <p:outputLabel value="How did God view you before you were saved?" />
+                                        #{Apply.beliefs.viewBefSaved}
+                                        <p:outputLabel value="How	did	you	hear	the	gospel?	" />
+                                        #{Apply.beliefs.hearGospel}
+                                        <p:outputLabel value="What is the gospel message and how is your life different now that you believe? " />
+                                        #{Apply.beliefs.gospelMess}
+                                        <p:outputLabel value="What is your family background? " />
+                                        #{Apply.beliefs.backGround}
+                                    </h:panelGrid>
+                                </p:tab>
+                            </p:tabView>
+                        </p:panel>
+                    </div>
+                    <div class="ui-g-6">
+                        <p:panel id="Personality"  collapsed="true" header="Personality Traits " toggleable="true" closable="false"  
+                                 toggleSpeed="500" closeSpeed="500" widgetVar="panel4" style="margin-bottom:20px">
+                            <h:panelGrid columns="1" cellpadding="10">
+                                <h:outputLabel value="Please select all the words below which	you believe accurately describe	you:"/>
+                                #{Apply.personalityTraits.selectedTraits}
+                                <h:outputLabel value="List below two strengths you have in working with children. Please be specific:"/>
+                                #{Apply.personalityTraits.resonForStrength}
+                                <h:outputLabel value="List below two weaknesses you have in working with children. Please be specific:"/>
+                                #{Apply.personalityTraits.reasonForWeekness}
+                            </h:panelGrid>
+                        </p:panel>
+                    </div>
+                    <div class="ui-g-6">
+                        <p:panel id="Legal"  collapsed="true" header="Legal Background" toggleable="true" closable="false"  toggleSpeed="500"
+                                 closeSpeed="500" widgetVar="panel5" style="margin-bottom:20px">
+                            <h:panelGrid columns="1" cellpadding="10">
+                                <h:outputLabel value="Have	you ever been arrested	for a criminal offense?"/>
+                                #{Apply.legalHistory.arrested}
+                                <h:outputLabel value="Have you ever been convicted of or plead guilty to a crime?"/>
+                                #{Apply.legalHistory.convicedCrime}
+                                <h:outputLabel value="Have you ever been arrested for sexual misconduct?"/>
+                                #{Apply.legalHistory.sexualMisCond}
+                                <h:outputLabel value="Have you ever been convicted of or plead guilty	to sexual misconduct?"/>
+                                #{Apply.legalHistory.guitlyToSexualMisCond}
+                                <h:outputLabel value="Have you ever taken drugs other than for medical purposes prescribed to you by your doctor?"/>
+                                #{Apply.legalHistory.drugsNotPresc}
+                                <h:outputLabel value="Use tobacco?"/>
+                                #{Apply.legalHistory.tobaco}
+                                <h:outputLabel value="Use alcohol?"/>
+                                #{Apply.legalHistory.alcohol}
+                                <h:outputLabel value="Use marijuana?"/>
+                                #{Apply.legalHistory.weed}
+                                <h:outputLabel value="Explaination:-"/>
+                                #{Apply.legalHistory.reason}
+                            </h:panelGrid>
+                        </p:panel>
+                    </div>
+                    <div class="ui-g-6">
+                        <p:panel id="Education"  collapsed="true" header="Education" toggleable="true" closable="false"  toggleSpeed="500"
+                                 closeSpeed="500" widgetVar="panel6" style="margin-bottom:20px">
+                            <h:panelGrid columns="2" cellpadding="10">
+                                <h:outputLabel value="Name of Highest Qualification: " />
+                                #{Apply.formation.highestQualification}
+                                <h:outputLabel  value="Highest Qualification Graduation: " />
+                                #{Apply.formation.highestGraduationDate}
+                                <h:outputLabel  value="Name of Special Qualification: " />
+                                #{Apply.formation.specialQualification}
+                                <h:outputLabel  value="Special Qualification Graduation: " />
+                                #{Apply.formation.specialGraduationDate}
+                            </h:panelGrid>
+                        </p:panel>
+                    </div>
+                    <div class="ui-g-6">
+                        <p:panel id="Medical"  collapsed="true" header="Medical History" toggleable="true" closable="false"  toggleSpeed="500"
+                                 closeSpeed="500" widgetVar="panel7" style="margin-bottom:20px">
+                            <h:panelGrid columns="1" cellpadding="10">
+                                <h:outputLabel value="Do you have any medical conditions?"/>
+                                #{Apply.mediaclHistory.conditions}
+                                <h:outputLabel value="Explanation" />
+                                #{Apply.mediaclHistory.conditionExplanation}
+                                <h:outputLabel value="Do you take any	medications?"/>
+                                #{Apply.mediaclHistory.medications}
+                                <h:outputLabel value="Medications" />
+                                #{Apply.mediaclHistory.medicationsExplanation}
+                                <h:outputLabel value="Have you had any serious	illness	or injuries in the last 3 years?"/>
+                                #{Apply.mediaclHistory.seriousIllness}
+                                <h:outputLabel value="Explanation for illness" />
+                                #{Apply.mediaclHistory.seriousIllnessExplanation}
+                                <h:outputLabel value="Do you have any dietary restrictions?"/>
+                                #{Apply.mediaclHistory.restrictions}
+                                <h:outputLabel value="Dietary restrictions" />
+                                #{Apply.mediaclHistory.restrictionsExplanation}
+                                <h:outputLabel value="Do you have any	physical handicaps, conditions,	or limitations preventing you from performing any type of activity?"/>
+                                #{Apply.mediaclHistory.physicalHandicap}
+                                <h:outputLabel  value="Handicap details" />
+                                #{Apply.mediaclHistory.physicalHandicapExplanation}
+                            </h:panelGrid>
+                        </p:panel>
+                    </div>
+                    <div class="ui-g-6">
+                        <p:panel id="Experience"  collapsed="true" header="Experience" toggleable="true" closable="false"  toggleSpeed="500"
+                                 closeSpeed="500" widgetVar="panel8" style="margin-bottom:20px">
+                            <p:tabView class="form-style-9"  cache="false" >
+                                <p:tab title="Experience Part I" >
+                                    <p:repeat value="#{Apply.workExp}" var="exp">
+                                        <h:panelGrid columns="2" style="width:100%" >
+                                            <p:outputPanel>
+                                                <h:panelGrid columns="1" cellpadding="5">
+                                                    <h:outputLabel  value="Name of Previous Employeer"/>
+                                                    #{exp.nameOfEmployer}
+                                                    <h:outputLabel value="Previous Job Title"  />
+                                                    #{exp.jobTitle}
+
+                                                    <h:outputLabel  value="Start Date"/>
+                                                    #{exp.jobStart}
+                                                    <h:outputLabel value="End Date"  />
+                                                    #{exp.jobEnd}
+
+                                                    <h:outputLabel  value="Daily duties"/>
+                                                    #{exp.dailyDuities}
+                                                </h:panelGrid>
+                                            </p:outputPanel>
+                                        </h:panelGrid>
+                                        <hr />
+                                    </p:repeat>
+                                </p:tab>    
+                                <p:tab title="Experience Part II" id="part2">
+                                    <h:panelGrid columns="1" style="width:100%" >
+
+                                        <h:outputLabel value="Do you have certifications in the following?"/>
+                                        #{Apply.experience.certificates}
+                                        <h:outputLabel value="Do you have any previous	training or background in dealing with abused, neglected,  or abandoned	children?"/>
+                                        #{Apply.experience.dealingWith}
+                                        <h:outputLabel  value="Explanation" />
+                                        #{Apply.experience.dealingWithExplanation}
+                                        <h:outputLabel value="Were you a victim of abuse, neglect, or	abandonment as a minor?	"/>
+                                        #{Apply.experience.victimOf}
+                                        <h:outputLabel for="reason1" value="Explanation" />
+                                        #{Apply.experience.victimOfxplanation}
+                                    </h:panelGrid>
+                                </p:tab>
+                            </p:tabView>
+                        </p:panel>
+                    </div>
+                    <div class="ui-g-6">
+                        <p:panel id="Emergency"  collapsed="true" header="Emergency Contacts" toggleable="true" closable="false"  toggleSpeed="500"
+                                 closeSpeed="500" widgetVar="pane9" style="margin-bottom:20px">
+                            <h:panelGrid columns="2" cellpadding="10">
+                                <h:outputLabel value="First Name: " />
+                                #{Apply.nextSkin.firstname}
+                                <h:outputLabel  value="Last Name: " />
+                                #{Apply.nextSkin.lastname}
+                                <h:outputLabel  value="Email Address: " />
+                                #{Apply.nextSkin.emailAddress}
+                                <h:outputLabel value="Phone number: " />
+                                #{Apply.nextSkin.phoneNumber}
+                                <h:outputLabel  value="Email Address: " />
+                                #{Apply.nextSkin.emailAddress}
+                                <h:outputLabel  value="Relationship: " />
+                                #{Apply.nextSkin.relationship}
+                            </h:panelGrid>
+                        </p:panel>
+                    </div>
+                    <div class="ui-g-6">
+                        <p:panel id="Terms"  collapsed="true" header="Terms and Conditions" toggleable="true" closable="false"  toggleSpeed="500"
+                                 closeSpeed="500" widgetVar="pane10" style="margin-bottom:20px">
+                            <p:tabView class="form-style-9"  cache="false" >
+                                <p:tab title="Required Commitments" >
+                                    <h:panelGrid columns="1" cellpadding="10">
+                                        <h:outputLabel id="servant-heartedTootip" value="Will you commit to being flexible and servant-hearted?"/>
+                                        #{Apply.tsAndCs.servantHearted}
+                                        <h:outputLabel id="commitedToCh" value="Will you commit to living in a way that honors Christ?"/>
+                                        #{Apply.tsAndCs.honourChrist}
+                                        <h:outputLabel value="Will you  submit 	yourself to the authority of Onthatile Children’s Ministries leadership during your time with us?"/>
+                                        #{Apply.tsAndCs.respectAuthority}
+                                        <h:outputLabel value="Do	you	agree	to	take	full	responsibility	for	raising	these	funds?"/>
+                                        #{Apply.tsAndCs.rasieFunds}
+                                        <h:outputLabel value="I have fully read, understand,	and	agree	to	the	information	outlined	
+                                                       in	the	Intern	Information	Packet,	Part	1	&amp;	2" />
+                                        #{Apply.tsAndCs.readP1P2}
+                                    </h:panelGrid>
+                                </p:tab>    
+                                <p:tab title="Applicant’s	Statement">
+                                    <h:panelGrid columns="1" cellpadding="10">
+                                        <h:outputLabel id="grow" value="I	 have	 fully	 read	 the	 checklist	 and	 understand	 what	 is	 required	 of	 me	 at	 least	 2	 weeks	 prior	 to	 arriving	 in	 South	 Africa	 and	
+                                                       understand	that	even	if	I	am	accepted	into	the	internship	program	if	I	do	not	complete	the	required	activities	I	will	not	be	allowed	
+                                                       to	intern	with	Onthatile	Children’s	Ministries.?">
+                                        </h:outputLabel>
+                                        #{Apply.tsAndCs.readChecklist}
+                                        <h:outputLabel value="I	agree	to	give	Onthatile	Children’s	Ministries and	staff permission	to	use	any	photos	taken	of	me or	other	photos	I	take	during	my	
+                                                       time	with	the ministry	for	promotional	or	ministry	needs?">
+
+                                        </h:outputLabel>
+                                        #{Apply.tsAndCs.permissionUsePhotos}
+                                        <h:outputLabel value="I	 understand	 that	 Onthatile	 Children’s	 Ministries	 can	 terminate	 my internship	 and	 send	 me home	 if	 I do	 not	 abide	 by	 the	
+                                                       commitments	I have	made	in	this	application.	If	I	am	sent home	early,	none	of	the	monies	I	have paid	for	plane	travel	or	expenses	
+                                                       incurred	during	my time	with	Onthatile will	be	reimbursed,	and	I will	be	responsible	for	any	additional	cost	resulting	from	changing	
+                                                       my	return	plane	ticket ?"/>
+                                        #{Apply.tsAndCs.terminateInternShip}
+
+                                        <h:outputLabel value="I confirm	that	everything	I’ve	filled	out	in	this	application	is	accurate	and	true,	to	the	best	of	my knowledge.?"/>
+                                        #{Apply.tsAndCs.confirmAccuracy}
+                                        <h:outputLabel value="I confirm	that	I	am aware	of	the	crime	concerns	in	South	Africa.	I also	acknowledge	that	accidents	can	happen	wherever	I	am.		I	
+                                                       release	Onthatile	Children’s	Ministries from	any	liability	whatsoever	should	any	harm	befall	me while	I	am in	South	Africa	or	during	
+                                                       my travels	there	and	back.	?"/>
+                                        #{Apply.tsAndCs.awareOfCrime}
+                                        <h:outputLabel value="Signed"/>
+                                        <p:signature  style="width:200px;height:100px" widgetVar="sig" value="#{Apply.tsAndCs.sign}"  />
+                                    </h:panelGrid>
+                                </p:tab>
+
+                            </p:tabView>
+                        </p:panel>
+                    </div>
+                </div>
+
+            </h:form> 
+            <h:form>
+                <p:commandButton value="Accept"  update="growl" class="btn btn-success" icon="fa fa-thumbs-up" style="margin:1px" action="#{Apply.acceptRequst()}"/>
+            </h:form>
+        </p:dialog>
+    </ui:composition>
+</html>
+

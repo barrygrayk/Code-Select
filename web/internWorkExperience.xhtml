@@ -39,8 +39,8 @@
                         <p:dataTable id="workEp" var="work" value="#{Apply.workExp}" rowKey="#{work.id}"
                                      selection="#{Apply.selectedSExperience}" selectionMode="single">
 
-                            <p:ajax event="rowSelect" listener="#{Apply.onRowSelectWork}" update="experienceForm" process="workEp"/>
-                            <p:ajax event="rowUnselect" listener="#{Apply.onRowSelectWork}" update="experienceForm" process="workEp"/>   
+                            <p:ajax event="rowSelect" listener="#{Apply.onRowSelectWork}" update=":experienceForm" process="workEp"/>
+                            <p:ajax event="rowUnselect" listener="#{Apply.onRowSelectWork}" update=":experienceForm" process="workEp"/>   
 
                             <p:column headerText="Employeer" style="width: 100px">
                                 <h:outputText value="#{work.nameOfEmployer}" />

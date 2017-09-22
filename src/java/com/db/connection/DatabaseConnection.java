@@ -17,7 +17,8 @@ import java.util.logging.Logger;
  * @author Barry Gray Kapelembe
  */
 public abstract class DatabaseConnection {
-  private final MenuView feedback = new MenuView();
+
+    private final MenuView feedback = new MenuView();
     private final String conString;
     private final String dbUserName;
     private final String dbPassWord;
@@ -26,14 +27,14 @@ public abstract class DatabaseConnection {
     protected ResultSet resultset = null;
 
     public DatabaseConnection() {
-       this.dbUserName = "root";
+        this.dbUserName = "root";
         this.dbPassWord = "password";
         conString = "jdbc:mysql://localhost:3306/onthatile children's ministries";
-       /* this.dbUserName = "admin";
-        this.dbPassWord = "Codeselect";
-        conString = "jdbc:mysql://node158047-testingone.j.layershift.co.uk/onthatilechildrensministries";*/
+      /*  this.dbUserName = "admin";
+        this.dbPassWord = "codeselect";
+        conString = "jdbc:mysql://node159735-adminportal.j.layershift.co.uk/onthatilechildresdb";*/
 //jdbc:mysql://node157038-onthatileapp.j.layershift.co.uk
-     /*   this.dbUserName = "codeselect";
+        /*   this.dbUserName = "codeselect";
         this.dbPassWord = "9RstG7oenS";
         conString = "jdbc:mysql://node157038-onthatileapp.j.layershift.co.uk/onthatilechildrensministries"*/
         //jdbc:mysql://node156446-onthatilewebapplication.j.layershift.co.uk/onthatilechildrensministries
@@ -82,8 +83,8 @@ public abstract class DatabaseConnection {
         }
         return fullname;
     }
-    
-      public java.sql.Date toSqlDate(Date util) {
+
+    public java.sql.Date toSqlDate(Date util) {
         Date date = util;
         java.util.Date utilStartDate = date;
         java.sql.Date sqlDate = new java.sql.Date(utilStartDate.getTime());
@@ -96,7 +97,8 @@ public abstract class DatabaseConnection {
         java.sql.Timestamp sqlDate = new java.sql.Timestamp(utilStartDate.getTime());
         return sqlDate;
     }
- public void deleteRecord(int id,String query) throws ClassNotFoundException  {
+
+    public void deleteRecord(int id, String query) throws ClassNotFoundException {
         connection = getConnection();
         PreparedStatement deleteRecord = null;
         String deleteItem = query;
@@ -120,6 +122,7 @@ public abstract class DatabaseConnection {
         }
 
     }
+
     abstract boolean recordValidator();
 
 }

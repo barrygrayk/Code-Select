@@ -16,10 +16,10 @@
             <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
             <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
             <h:outputScript  name="bootstrap/js/script.js" />
-            
+
             <h:outputStylesheet name="bootstrap/css/bootstrap.css" />
             <h:outputStylesheet name="bootstrap/css/dashboard.css" />
-            
+
             <h:outputStylesheet library="font-awesome" name="css/font-awesome.min.css" />
             <link rel="icon" type="image/x-icon" href="#{resource['images/favicon.ico']}" />
             <h:outputScript library="primefaces" name="jquery/jquery.js" />
@@ -74,12 +74,13 @@
                                 <a href="#" class="list-group-item text-center">
                                     <br/>Emergency Contacts
                                 </a>
-                                 <a href="#" class="list-group-item text-center">
+                                <a href="#" class="list-group-item text-center">
                                     <br/>Terms and Conditions
                                 </a>
                                 <a href="#" class="list-group-item text-center">
                                     <br/>Required Documents
                                 </a>
+                         
                             </div>
                         </div>
                         <!-- Form Sections -->
@@ -123,7 +124,7 @@
                             <div class="bhoechie-tab-content">
                                 <ui:include src="internEmergencyContacts.xhtml" />
                             </div>
-                             <div class="bhoechie-tab-content">
+                            <div class="bhoechie-tab-content">
                                 <ui:include src="internTermsAndConditions.xhtml" />
                             </div>
                             <!-- END Emergency Contacts Section -->
@@ -131,6 +132,7 @@
                             <div class="bhoechie-tab-content">
                                 <ui:include src="internRequiredDocs.xhtml" />
                             </div>
+                       
                         </div>
 
                     </div>

@@ -25,6 +25,7 @@ public class Applicant extends Person {
     private TermAndConditions tsAndCs = new TermAndConditions();
     private WorkExperience experience = new WorkExperience();
     private InternshipInfo internshipInfo = new InternshipInfo();
+    private RequiredDocs dos =new RequiredDocs();
 
     public InternshipInfo getInternshipInfo() {
         return internshipInfo;
@@ -189,5 +190,14 @@ public class Applicant extends Person {
     public void setTsAndCs(TermAndConditions tsAndCs) {
         this.tsAndCs = tsAndCs;
     }
+
+    public RequiredDocs getDos() {
+        return dos;
+    }
+
+    public void setDos(RequiredDocs dos) {
+        this.dos = dos;
+    }
+    
     
 }

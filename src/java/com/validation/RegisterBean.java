@@ -94,7 +94,7 @@ public class RegisterBean extends Passwords implements Serializable {
             jwt.verifyToken(token);
             System.out.println(token);
             if (jwt.getSubject().contains("@")) {
-                List<Applicant> applicants = new InternAplicationTableConnection().getApplicants();
+                List<Applicant> applicants = new InternAplicationTableConnection().getApplicants("Request pending");
                 for (Applicant app : applicants) {
                     if (jwt.getId().equals(app.getId() + "") && app.getApplicationStatus().equals("Request pending")) {
                         if (jwt.getSubject().equals(app.getEmailAddress())) {

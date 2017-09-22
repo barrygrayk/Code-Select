@@ -47,9 +47,7 @@
         <extension>woff2</extension>
         <mime-type>application/x-font-woff2</mime-type>
     </mime-mapping>
-  
     
- 
     <!-- Welcome page -->
     <welcome-file-list>
         <welcome-file>dashboard.xhtml</welcome-file>

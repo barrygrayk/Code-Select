@@ -1,60 +1,50 @@
 package com.driveuploads;
 
-import com.dropbox.core.*;
-import java.io.*;
-import java.util.Locale;
+
+import com.dropbox.core.DbxException;
+import com.dropbox.core.DbxRequestConfig;
+import com.dropbox.core.v2.DbxClientV2;
+import com.dropbox.core.v2.files.FileMetadata;
+import com.dropbox.core.v2.files.ListFolderResult;
+import com.dropbox.core.v2.files.Metadata;
+import com.dropbox.core.v2.users.FullAccount;
+
+import java.util.List;
+
+import java.io.FileInputStream;
+import java.io.InputStream;
+import java.io.IOException;
 
 public class Main {
-    public static void main(String[] args) throws IOException, DbxException {
-        // Get your app key and secret from the Dropbox developers website.
-        final String APP_KEY = "wa0dsgmf86h0ut5";
-        final String APP_SECRET = "330jfzrhi346ezi";
+    private static final String ACCESS_TOKEN = "KzFXrT5oq4QAAAAAAAABiiFWnmh2aBZESN27c1nqQ6LH9nI2JvdY45t8jM1zNONm";
 
-        DbxAppInfo appInfo = new DbxAppInfo(APP_KEY, APP_SECRET);
-
+    public static void main(String args[]) throws DbxException, IOException {
+        // Create Dropbox client
         DbxRequestConfig config = new DbxRequestConfig("dropbox/java-tutorial", "en_US");
-        DbxWebAuthNoRedirect webAuth = new DbxWebAuthNoRedirect(config, appInfo);
+        DbxClientV2 client = new DbxClientV2(config, ACCESS_TOKEN);
 
-        // Have the user sign in and authorize your app.
-        String authorizeUrl = webAuth.start();
-        System.out.println("1. Go to: " + authorizeUrl);
-        System.out.println("2. Click \"Allow\" (you might have to log in first)");
-        System.out.println("3. Copy the authorization code.");
-        //String code = new BufferedReader(new InputStreamReader(System.in)).readLine().trim();
-        String code = "TNgD8hyXUrAAAAAAAAADvb92KNkzLOylUKWR3cBdzW8";
+        // Get current account info
+        FullAccount account = client.users().getCurrentAccount();
+        System.out.println(account.getName().getDisplayName());
 
-        // This will fail if the user enters an invalid authorization code.
-        DbxAuthFinish authFinish = webAuth.finish(code);
-        String accessToken = authFinish.accessToken;
-        System.out.println(accessToken+"Access token ");
+        // Get files and folder metadata from Dropbox root directory
+        ListFolderResult result = client.files().listFolder("");
+        while (true) {
+            for (Metadata metadata : result.getEntries()) {
+                System.out.println(metadata.getPathLower());
+            }
 
-        DbxClient client = new DbxClient(config, accessToken);
+            if (!result.getHasMore()) {
+                break;
+            }
 
-        System.out.println("Linked account: " + client.getAccountInfo().displayName);
-/*
-        File inputFile = new File("working-draft.txt");
-        FileInputStream inputStream = new FileInputStream(inputFile);
-        try {
-            DbxEntry.File uploadedFile = client.uploadFile("/magnum-opus.txt",
-                DbxWriteMode.add(), inputFile.length(), inputStream);
-            System.out.println("Uploaded: " + uploadedFile.toString());
-        } finally {
-            inputStream.close();
+            result = client.files().listFolderContinue(result.getCursor());
         }
 
-        DbxEntry.WithChildren listing = client.getMetadataWithChildren("/");
-        System.out.println("Files in the root path:");
-        for (DbxEntry child : listing.children) {
-            System.out.println("	" + child.name + ": " + child.toString());
+        // Upload "test.txt" to Dropbox
+        try (InputStream in = new FileInputStream("test.txt")) {
+            FileMetadata metadata = client.files().uploadBuilder("/test.txt")
+                .uploadAndFinish(in);
         }
-
-        FileOutputStream outputStream = new FileOutputStream("magnum-opus.txt");
-        try {
-            DbxEntry.File downloadedFile = client.getFile("/magnum-opus.txt", null,
-                outputStream);
-            System.out.println("Metadata: " + downloadedFile.toString());
-        } finally {
-            outputStream.close();
-        }*/
     }
 }

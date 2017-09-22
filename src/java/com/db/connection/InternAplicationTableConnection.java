@@ -2,6 +2,14 @@ package com.db.connection;
 
 import com.MenuView.MenuView;
 import com.applicants.Model.Applicant;
+import com.applicants.Model.EducationAndQualification;
+import com.applicants.Model.EmergencyContact;
+import com.applicants.Model.InternshipInfo;
+import com.applicants.Model.LegalHistory;
+import com.applicants.Model.MediaclHistory;
+import com.applicants.Model.PersonanlityTraits;
+import com.applicants.Model.SpiritualLife;
+import com.applicants.Model.TermAndConditions;
 import com.applicants.Model.WorkExperience;
 import com.staff.Model.Authenticate;
 import com.staff.Model.Authentication;
@@ -12,6 +20,7 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -41,7 +50,6 @@ public class InternAplicationTableConnection extends DatabaseConnection {
                     fKey = key.getInt(1);
                     setApplicantTablesFK(fKey);
                 }
-
             }
             feedback.addMessage("Success", "Your application request has been sucessfully sent. "
                     + "The success of this application will be communicated via your eamil. Thank you.");
@@ -74,7 +82,7 @@ public class InternAplicationTableConnection extends DatabaseConnection {
         return insertAppRequst;
     }
 
-    public List<Applicant> getApplicants() {
+    public List<Applicant> getApplicants(String status) {
         List<Applicant> applicants = new ArrayList<>();
         try {
             String query = "SELECT * FROM `applicant`";
@@ -82,14 +90,14 @@ public class InternAplicationTableConnection extends DatabaseConnection {
             statement = connection.createStatement();
             resultset = statement.executeQuery(query);
             while (resultset.next()) {
-                Applicant applicant = new Applicant();
-                applicant.setId(resultset.getInt("idApplicant"));
-                applicant.setFirstname(resultset.getString("firstname"));
-                applicant.setLastname(resultset.getString("lastname"));
-                applicant.setPhoneNumber(resultset.getString("phoneNumber"));
-                applicant.setEmailAddress(resultset.getString("emailAddress"));
-                applicant.setMotivationForApllication(resultset.getString("message"));
-                if (resultset.getString("applicationStatus").equals("Request pending")) {
+                if (resultset.getString("applicationStatus").equals(status)) {
+                    Applicant applicant = new Applicant();
+                    applicant.setId(resultset.getInt("idApplicant"));
+                    applicant.setFirstname(resultset.getString("firstname"));
+                    applicant.setLastname(resultset.getString("lastname"));
+                    applicant.setPhoneNumber(resultset.getString("phoneNumber"));
+                    applicant.setEmailAddress(resultset.getString("emailAddress"));
+                    applicant.setMotivationForApllication(resultset.getString("message"));
                     applicant.setApplicationStatus(resultset.getString("applicationStatus"));
                     applicants.add(applicant);
                 }
@@ -108,24 +116,27 @@ public class InternAplicationTableConnection extends DatabaseConnection {
         return applicants;
     }
 
-    public List<Applicant> getApplicant(int id) throws ClassNotFoundException, SQLException {
-        //getResultSet(id, "SELECT * FROM `applicant` WHERE idApplicant=?");
-        List<Applicant> applicants = new ArrayList<>();
+    public Applicant getApplicant(int id) throws ClassNotFoundException, SQLException {
+        Applicant applicant = new Applicant();
         try {
             String query = "SELECT * FROM applicant WHERE idApplicant=?";
             getResultSet(id, query);
             if (resultset.next()) {
-                Applicant applicant = new Applicant();
                 applicant.setId(resultset.getInt("idApplicant"));
                 applicant.setFirstname(resultset.getString("firstname"));
                 applicant.setLastname(resultset.getString("lastname"));
+                applicant.setPrename(resultset.getString("prename"));
+                applicant.setDateOfBirth(resultset.getDate("dateOfBirth"));
                 applicant.setPhoneNumber(resultset.getString("phoneNumber"));
                 applicant.setEmailAddress(resultset.getString("emailAddress"));
+                applicant.setCity(resultset.getString("citystate"));
+                applicant.setAddress(resultset.getString("streetAddress"));
+                applicant.setCountry(resultset.getString("country"));
+                applicant.setZipCode(resultset.getString("zipCode"));
+                applicant.setGender(resultset.getString("gender").charAt(0));
+                applicant.setMaritalStatus(resultset.getString("maritalStatus"));
                 applicant.setMotivationForApllication(resultset.getString("message"));
-                applicants.add(applicant);
-
             }
-
         } catch (ClassNotFoundException | SQLException ex) {
             Logger.getLogger(InventorytableConneection.class.getName()).log(Level.SEVERE, null, ex);
         } finally {
@@ -136,7 +147,230 @@ public class InternAplicationTableConnection extends DatabaseConnection {
                 feedback.error("Connection error", ex.getMessage());
             }
         }
-        return applicants;
+        return applicant;
+    }
+
+    public InternshipInfo getApplicantionInfo(int id) {
+        InternshipInfo info = new InternshipInfo();
+        try {
+            String query = "SELECT * FROM applicantInternShipInfo WHERE applicantId=?";
+            getResultSet(id, query);
+            if (resultset.next()) {
+                info.setStartDate(resultset.getDate("startdate"));
+                info.setEndDate(resultset.getDate("enddate"));
+                info.setHowUHeard(resultset.getString("heardFrom"));
+                info.setAreDayFlex(resultset.getString("aredaysflex"));
+                info.setInternshipGoal(resultset.getString("goalForInternship"));
+            }
+        } catch (ClassNotFoundException | SQLException ex) {
+            Logger.getLogger(InventorytableConneection.class.getName()).log(Level.SEVERE, null, ex);
+        } finally {
+            try {
+                resultset.close();
+                connection.close();
+            } catch (SQLException ex) {
+                feedback.error("Connection error", ex.getMessage());
+            }
+        }
+        return info;
+    }
+
+    public SpiritualLife getSperitualLife(int id) {
+        SpiritualLife life = new SpiritualLife();
+        try {
+            String query = "SELECT * FROM applicantspirituallife WHERE Applicant_idApplicant=?";
+            getResultSet(id, query);
+            if (resultset.next()) {
+                life.setAttend(resultset.getString("attendChurch"));
+                life.setWhichChurch(resultset.getString("whichChurch"));
+                life.setAttendDuration(resultset.getDouble("attendDuration"));
+                String ministriesList = resultset.getString("ministrisIn");
+                if (ministriesList != null && ministriesList.length() > 1) {
+                    life.setListOFMinistries(new ArrayList<>(Arrays.asList(ministriesList.split(","))));
+                }
+                life.setCommitedJesus(resultset.getString("commitdJesus"));
+                life.setCommitedTest(resultset.getString("commitedTest"));
+                life.setViewBefSaved(resultset.getString("viewBefSaved"));
+                life.setHearGospel(resultset.getString("hearGospel"));
+                life.setGospelMess(resultset.getString("gospelMess"));
+                life.setBackGround(resultset.getString("background"));
+            }
+        } catch (ClassNotFoundException | SQLException ex) {
+            Logger.getLogger(InventorytableConneection.class.getName()).log(Level.SEVERE, null, ex);
+        } finally {
+            try {
+                resultset.close();
+                connection.close();
+            } catch (SQLException ex) {
+                feedback.error("Connection error", ex.getMessage());
+            }
+        }
+        return life;
+    }
+
+    public PersonanlityTraits getersonalityTraits(int id) {
+        PersonanlityTraits allTraits = new PersonanlityTraits();
+        try {
+            String query = "SELECT * FROM applicantPersonalityTraits WHERE applicantID=?";
+            getResultSet(id, query);
+            if (resultset.next()) {
+                String traits = resultset.getString("traits");
+                if (traits != null && traits.length() > 1) {
+                    allTraits.setSelectedTraits(new ArrayList<>(Arrays.asList(traits.split(" "))));
+                }
+                allTraits.setReasonForWeekness(resultset.getString("WeeknessReason"));
+                allTraits.setResonForStrength(resultset.getString("strenghtReason"));
+            }
+        } catch (ClassNotFoundException | SQLException ex) {
+            Logger.getLogger(InventorytableConneection.class.getName()).log(Level.SEVERE, null, ex);
+        } finally {
+            try {
+                resultset.close();
+                connection.close();
+            } catch (SQLException ex) {
+                feedback.error("Connection error", ex.getMessage());
+            }
+        }
+        return allTraits;
+    }
+
+    public LegalHistory getLegalHistory(int id) throws ClassNotFoundException, SQLException {
+        LegalHistory history = new LegalHistory();
+        try {
+            String query = "SELECT * FROM applicantLegalHistory WHERE applicantLegLid=?";
+            getResultSet(id, query);
+            if (resultset.next()) {
+                history.setArrested(resultset.getString("offense"));
+                history.setConvicedCrime(resultset.getString("convictated"));
+                history.setSexualMisCond(resultset.getString("missconduct"));
+                history.setGuitlyToSexualMisCond(resultset.getString("guiltyMisconduct"));
+                history.setDrugsNotPresc(resultset.getString("drugs"));
+                history.setTobaco(resultset.getString("tobacco"));
+                history.setWeed(resultset.getString("weed"));
+                history.setAlcohol(resultset.getString("alcohol"));
+                history.setReason(resultset.getString("reason"));
+            }
+        } catch (ClassNotFoundException | SQLException ex) {
+            Logger.getLogger(InventorytableConneection.class.getName()).log(Level.SEVERE, null, ex);
+        } finally {
+            try {
+                resultset.close();
+                connection.close();
+            } catch (SQLException ex) {
+                feedback.error("Connection error", ex.getMessage());
+            }
+        }
+        return history;
+    }
+
+    public EducationAndQualification getEducationqualification(int id) throws ClassNotFoundException, SQLException {
+        EducationAndQualification edu = new EducationAndQualification();
+        try {
+            String query = "SELECT * FROM applicanteducationqualification WHERE Applicant_idApplicant=?";
+            getResultSet(id, query);
+            if (resultset.next()) {
+                edu.setHighestQualification(resultset.getString("highestQual"));
+                edu.setHighestGraduationDate(resultset.getDate("dateOfGraduation"));
+                edu.setSpecialQualification(resultset.getString("specialCertification"));
+                edu.setSpecialGraduationDate(resultset.getDate("specialGraduationDate"));
+            }
+        } catch (ClassNotFoundException | SQLException ex) {
+            Logger.getLogger(InventorytableConneection.class.getName()).log(Level.SEVERE, null, ex);
+        } finally {
+            try {
+                resultset.close();
+                connection.close();
+            } catch (SQLException ex) {
+                feedback.error("Connection error", ex.getMessage());
+            }
+        }
+        return edu;
+    }
+
+    public MediaclHistory getMedicalhistory(int id) throws ClassNotFoundException, SQLException {
+        MediaclHistory med = new MediaclHistory();
+        try {
+            String query = "SELECT * FROM applicantmedicalhistory WHERE Applicant_idApplicant=?";
+            getResultSet(id, query);
+            if (resultset.next()) {
+                med.setConditions(resultset.getString("anyMedicalConditions"));
+                med.setConditionExplanation(resultset.getString("medicalConditionDesc"));
+                med.setMedications(resultset.getString("anyMedication"));
+                med.setMedicationsExplanation(resultset.getString("medicationDec"));
+                med.setSeriousIllness(resultset.getString("anyPastMedicalCondition"));
+                med.setSeriousIllnessExplanation(resultset.getString("pastMedicalConditionDesc"));
+                med.setRestrictions(resultset.getString("diataryRestrictions"));
+                med.setRestrictionsExplanation(resultset.getString("dietaryRestrictionsDesc"));
+                med.setPhysicalHandicap(resultset.getString("physicalHandicap"));
+                med.setPhysicalHandicapExplanation(resultset.getString("handicapDesc"));
+            }
+        } catch (ClassNotFoundException | SQLException ex) {
+            Logger.getLogger(InventorytableConneection.class.getName()).log(Level.SEVERE, null, ex);
+        } finally {
+            try {
+                resultset.close();
+                connection.close();
+            } catch (SQLException ex) {
+                feedback.error("Connection error", ex.getMessage());
+            }
+        }
+        return med;
+    }
+
+    public EmergencyContact getEmergencycontact(int id) throws ClassNotFoundException, SQLException {
+        EmergencyContact emerg = new EmergencyContact();
+        try {
+            String query = "SELECT * FROM applicantemergencycontact WHERE Applicant_idApplicant=?";
+            getResultSet(id, query);
+            if (resultset.next()) {
+                emerg.setFirstname(resultset.getString("firstname"));
+                emerg.setLastname(resultset.getString("lastname"));
+                emerg.setRelationship(resultset.getString("relationship"));
+                emerg.setPhoneNumber(resultset.getString("phoneNumber"));
+                emerg.setEmailAddress(resultset.getString("emailAddress"));
+            }
+        } catch (ClassNotFoundException | SQLException ex) {
+            Logger.getLogger(InventorytableConneection.class.getName()).log(Level.SEVERE, null, ex);
+        } finally {
+            try {
+                resultset.close();
+                connection.close();
+            } catch (SQLException ex) {
+                feedback.error("Connection error", ex.getMessage());
+            }
+        }
+        return emerg;
+    }
+
+    public TermAndConditions getTermsAndConditions(int id) throws ClassNotFoundException, SQLException {
+        TermAndConditions tsAndCs = new TermAndConditions();
+        try {
+            String query = "SELECT * FROM applicantTermsAndConditions WHERE appliacantid_fk=?";
+            getResultSet(id, query);
+            if (resultset.next()) {
+                tsAndCs.setServantHearted(resultset.getString("servantHearted"));
+                tsAndCs.setHonourChrist(resultset.getString("honorChrist"));
+                tsAndCs.setRespectAuthority(resultset.getString("submitToAuthority"));
+                tsAndCs.setRasieFunds(resultset.getString("raiseFunds"));
+                tsAndCs.setReadP1P2(resultset.getString("readP1P2"));
+                tsAndCs.setReadChecklist(resultset.getString("readChecklist"));
+                tsAndCs.setPermissionUsePhotos(resultset.getString("permissionPhotos"));
+                tsAndCs.setTerminateInternShip(resultset.getString("terminateInternship"));
+                tsAndCs.setConfirmAccuracy(resultset.getString("filledAccuratly"));
+                tsAndCs.setAwareOfCrime(resultset.getString("awareOfCrime"));
+                tsAndCs.setSign(resultset.getString("sign"));
+            }
+        } catch (ClassNotFoundException | SQLException ex) {
+            Logger.getLogger(InventorytableConneection.class.getName()).log(Level.SEVERE, null, ex);
+        } finally {
+            try {
+                resultset.close();
+                connection.close();
+            } catch (SQLException ex) {
+                feedback.error("Connection error", ex.getMessage());
+            }
+        }
+        return tsAndCs;
     }
 
     public void sendAcceRequest(Applicant applicant) {
@@ -265,7 +499,8 @@ public class InternAplicationTableConnection extends DatabaseConnection {
     public void updateInternInfo(Applicant applicant) {
         try {
             connection = getConnection();
-            String updateAuthfQuery = "UPDATE applicantInternShipInfo SET  `startdate` = ?,`enddate` = ?,`aredaysflex` = ?,`heardFrom` = ?,`goalForInternship` = ? WHERE `applicantId` = ?";
+            String updateAuthfQuery = "UPDATE applicantInternShipInfo SET  `startdate` = ?,`enddate` = ?,"
+                    + "`aredaysflex` = ?,`heardFrom` = ?,`goalForInternship` = ? WHERE `applicantId` = ?";
             PreparedStatement ps = null;
             ps = connection.prepareStatement(updateAuthfQuery);
             ps.setDate(1, toSqlDate(applicant.getInternshipInfo().getStartDate()));
@@ -290,10 +525,10 @@ public class InternAplicationTableConnection extends DatabaseConnection {
     }
 
     public void updateGenralInfo(Applicant applicant) {
-        System.out.println("------in 1---------");
         try {
             connection = getConnection();
-            String updateAuthfQuery = "UPDATE  applicant SET `firstname` = ?,`lastname` = ?,`prename` = ?,`dateOfBirth` = ?,`phoneNumber` = ?,`emailAddress` = ?,`citystate` = ?,"
+            String updateAuthfQuery = "UPDATE  applicant SET `firstname` = ?,`lastname` = ?,`prename` = ?,"
+                    + "`dateOfBirth` = ?,`phoneNumber` = ?,`emailAddress` = ?,`citystate` = ?,"
                     + "`streetAddress` = ?,`country` = ?,`zipCode` = ?,`gender` = ?,`maritalStatus` = ?"
                     + " WHERE `idApplicant` = ?";
             PreparedStatement ps = null;
@@ -313,7 +548,6 @@ public class InternAplicationTableConnection extends DatabaseConnection {
             ps.setString(12, applicant.getMaritalStatus());
             ps.setInt(13, applicant.getId());
             ps.execute();
-            System.out.println("------update ex complete---------");
             feedback.addMessage("Success", "Your General Information has been saved");
 
         } catch (ClassNotFoundException | SQLException ex) {
@@ -342,6 +576,7 @@ public class InternAplicationTableConnection extends DatabaseConnection {
             ps.setString(1, applicant.getBeliefs().getAttend());
             ps.setString(2, applicant.getBeliefs().getWhichChurch());
             ps.setDouble(3, applicant.getBeliefs().getAttendDuration());
+
             ps.setString(4, applicant.getBeliefs().getMinistriesIn());
             ps.setString(5, applicant.getBeliefs().getCommitedJesus());
             ps.setString(6, applicant.getBeliefs().getCommitedTest());
@@ -367,7 +602,8 @@ public class InternAplicationTableConnection extends DatabaseConnection {
     public void updatePersonalityTraits(Applicant applicant) {
         try {
             connection = getConnection();
-            String updateAuthfQuery = "UPDATE applicantPersonalityTraits  SET `traits` = ?, `WeeknessReason` = ?, `strenghtReason` = ? WHERE `applicantID` = ?";
+            String updateAuthfQuery = "UPDATE applicantPersonalityTraits  SET `traits` = ?, `WeeknessReason` = ?, `strenghtReason` = ?"
+                    + " WHERE `applicantID` = ?";
             PreparedStatement ps = null;
             ps = connection.prepareStatement(updateAuthfQuery);
             ps.setString(1, applicant.getPersonalityTraits().getTraitsToString());

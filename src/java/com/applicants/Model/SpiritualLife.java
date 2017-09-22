@@ -1,5 +1,8 @@
 package com.applicants.Model;
 
+import java.util.ArrayList;
+import java.util.List;
+
 /**
  *
  * @author efsan1
@@ -10,6 +13,7 @@ public class SpiritualLife {
     private String attend;
     private String whichChurch;
     private double attendDuration;
+    private List <String> listOFMinistries = new ArrayList<>(); 
     private String ministriesIn;
     private String commitedJesus;
     private String commitedTest;
@@ -116,6 +120,14 @@ public class SpiritualLife {
 
     public void setBackGround(String backGround) {
         this.backGround = backGround;
+    }
+
+    public List<String> getListOFMinistries() {
+        return listOFMinistries;
+    }
+
+    public void setListOFMinistries(List<String> listOFMinistries) {
+        this.listOFMinistries = listOFMinistries;
     }
 
 }
