@@ -94,8 +94,25 @@ public class RegisterBean extends Passwords implements Serializable {
             jwt.verifyToken(token);
             System.out.println(token);
             if (jwt.getSubject().contains("@")) {
-                List<Applicant> applicants = new InternAplicationTableConnection().getApplicants("Request pending");
+                InternAplicationTableConnection ApplicantDB = new InternAplicationTableConnection();
+                List<Authenticate> authenticatedApplicant = ApplicantDB.getAuthenticatedApplicant();
+                System.out.println("Out of loop " + jwt.getId());
+                for (Authenticate auth : authenticatedApplicant) {
+                    System.out.println("Inside loop" + auth.authId());
+                    if (jwt.getId().equals(auth.authId() + "") && auth.getStatus().equals("Suspended")) {
+                        if (jwt.getSubject().equals(auth.getUsername())) {
+                            username = auth.getUsername();
+                            message = "Welcome ";
+                            id = Integer.parseInt(jwt.getId());
+                            setDisable(false);
+                        }
+                    } else {
+                        message = "Token could not be validated.This account has been deactivated";
+                    }
+                }
+               List<Applicant> applicants = new InternAplicationTableConnection().getApplicants("Request pending");
                 for (Applicant app : applicants) {
+                    System.out.println("Inside loop" + app.getId());
                     if (jwt.getId().equals(app.getId() + "") && app.getApplicationStatus().equals("Request pending")) {
                         if (jwt.getSubject().equals(app.getEmailAddress())) {
                             username = app.getEmailAddress();
@@ -165,11 +182,11 @@ public class RegisterBean extends Passwords implements Serializable {
                 auth.setAuthId(id);
                 auth.setToken(token);
                 new InternAplicationTableConnection().setApplicantAuthDetails(auth);
-                
+
             } else {
                 staffDB.updatePassword(auth);
             }
-            message = "Hello "+ fullname+ " Click login button to sign into your account";
+            message = "Hello " + fullname + " Click login button to sign into your account";
             FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO,
                     fullname + "'s account activated",
                     "Account has been sucessfully activated"));

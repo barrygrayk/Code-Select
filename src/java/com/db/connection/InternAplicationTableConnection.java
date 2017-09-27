@@ -2,6 +2,7 @@ package com.db.connection;
 
 import com.MenuView.MenuView;
 import com.applicants.Model.Applicant;
+import com.applicants.Model.ApplicationProgress;
 import com.applicants.Model.EducationAndQualification;
 import com.applicants.Model.EmergencyContact;
 import com.applicants.Model.InternshipInfo;
@@ -11,6 +12,7 @@ import com.applicants.Model.PersonanlityTraits;
 import com.applicants.Model.SpiritualLife;
 import com.applicants.Model.TermAndConditions;
 import com.applicants.Model.WorkExperience;
+import com.controller.InternApplicationController;
 import com.staff.Model.Authenticate;
 import com.staff.Model.Authentication;
 import com.validation.AuthTokens;
@@ -444,6 +446,10 @@ public class InternAplicationTableConnection extends DatabaseConnection {
             case "Deactivated":
                 statusIndex = 3;
                 break;
+            case "Suspended":
+                statusIndex = 4;
+                break;
+                
         }
         return statusIndex;
     }
@@ -483,7 +489,12 @@ public class InternAplicationTableConnection extends DatabaseConnection {
             PreparedStatement insertLegalExp = connection.prepareStatement("INSERT INTO applicantExperience (`appicantID_Fk`) VALUES(?)");
             insertLegalExp.setInt(1, fk);
             insertLegalExp.execute();
-
+            PreparedStatement insertProgress = connection.prepareStatement("INSERT INTO applicantprogress (`applicant_ID`) VALUES(?)");
+            insertProgress.setInt(1, fk);
+            insertProgress.execute();
+            PreparedStatement inserRecDocs = connection.prepareStatement("INSERT INTO applicantRequiredDocuments (`applicant_Id`) VALUES(?)");
+            inserRecDocs.setInt(1, fk);
+            inserRecDocs.execute();
         } catch (SQLException ex) {
             Logger.getLogger(InternAplicationTableConnection.class.getName()).log(Level.SEVERE, null, ex);
         } finally {
@@ -512,7 +523,6 @@ public class InternAplicationTableConnection extends DatabaseConnection {
             ps.execute();
             System.out.println("------update ex---------");
             feedback.addMessage("Success", "Your internship Information has been saved");
-
         } catch (ClassNotFoundException | SQLException ex) {
             Logger.getLogger(InternAplicationTableConnection.class.getName()).log(Level.SEVERE, null, ex);
         } finally {
@@ -873,7 +883,6 @@ public class InternAplicationTableConnection extends DatabaseConnection {
             ps.execute();
             System.out.println("------update ex complete---------");
             feedback.addMessage("Success", "Your Terms And Conditions has been saved");
-
         } catch (ClassNotFoundException | SQLException ex) {
             Logger.getLogger(InternAplicationTableConnection.class.getName()).log(Level.SEVERE, null, ex);
         } finally {
@@ -881,10 +890,8 @@ public class InternAplicationTableConnection extends DatabaseConnection {
                 connection.close();
             } catch (SQLException ex) {
                 Logger.getLogger(InternAplicationTableConnection.class.getName()).log(Level.SEVERE, null, ex);
-
             }
         }
-
     }
 
     @Override
@@ -892,4 +899,120 @@ public class InternAplicationTableConnection extends DatabaseConnection {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 
+    public void updateApplicantInterviewProgress(Applicant applicant) {
+        try {
+            connection = getConnection();
+            String updateAuthfQuery = "UPDATE applicantprogress SET `referenceRecieved` =?, `interviewDateTime` = ?, `interviewers` = ? WHERE `applicant_ID` = ?";
+            PreparedStatement ps = null;
+            ps = connection.prepareStatement(updateAuthfQuery);
+            ps.setString(1, applicant.getProgress().getReqDocToString());
+            ps.setTimestamp(2, toSqlDateTime(applicant.getProgress().getInterviewDate()));
+            ps.setString(3, applicant.getProgress().getIntervwersToString());
+            ps.setInt(4, applicant.getId());
+            ps.execute();
+            System.out.println("------update ex---------");
+            feedback.addMessage("Success", "Progress has been updated");
+        } catch (ClassNotFoundException | SQLException ex) {
+            Logger.getLogger(InternAplicationTableConnection.class.getName()).log(Level.SEVERE, null, ex);
+        } finally {
+            try {
+                connection.close();
+            } catch (SQLException ex) {
+                Logger.getLogger(InternAplicationTableConnection.class.getName()).log(Level.SEVERE, null, ex);
+            }
+        }
+
+    }
+
+    public ApplicationProgress getApplicationProgress(int id) {
+        ApplicationProgress progress = new ApplicationProgress();
+        /*UPDATE applicantprogress SET `idinternprogressTable` = ?,`referenceRecieved` =?, `interviewDateTime` = ?, `interviewers` = ?,`interviewRecomendation` = ?,
+`comments` = ? WHERE `applicant_ID` = ?;
+         */
+        try {
+            String query = "SELECT * FROM applicantprogress WHERE applicant_ID=?";
+            getResultSet(id, query);
+            if (resultset.next()) {
+                progress.setRequiredDocs(resultset.getString("referenceRecieved") != null
+                        ? new ArrayList<>(Arrays.asList(resultset.getString("referenceRecieved").split(",")))
+                        : new ArrayList<>());
+                progress.setInterviewDate(resultset.getTimestamp("interviewDateTime"));
+                progress.setInterviewers(resultset.getString("interviewers") != null
+                        ? new ArrayList<>(Arrays.asList(resultset.getString("interviewers").split(",")))
+                        : new ArrayList<>());
+                progress.setOutcoume(resultset.getString("interviewRecomendation"));
+                progress.setComments(resultset.getString("comments"));
+            }
+        } catch (ClassNotFoundException | SQLException ex) {
+            Logger.getLogger(InventorytableConneection.class.getName()).log(Level.SEVERE, null, ex);
+        } finally {
+            try {
+                resultset.close();
+                connection.close();
+            } catch (SQLException ex) {
+                feedback.error("Connection error", ex.getMessage());
+            }
+        }
+        return progress;
+
+    }
+
+    public void updateInterviewOutcome(Applicant applicant) {
+        try {
+            connection = getConnection();
+            String updateAuthfQuery = "UPDATE applicantprogress SET `interviewRecomendation` = ?, `comments` = ? WHERE `applicant_ID` = ?";
+            PreparedStatement ps = null;
+            ps = connection.prepareStatement(updateAuthfQuery);
+            ps.setString(1, applicant.getProgress().getOutcoume());
+            ps.setString(2, applicant.getProgress().getComments());
+            ps.setInt(3, applicant.getId());
+            ps.execute();
+            feedback.addMessage("Success", "Progress has been updated");
+        } catch (ClassNotFoundException | SQLException ex) {
+            Logger.getLogger(InternAplicationTableConnection.class.getName()).log(Level.SEVERE, null, ex);
+        } finally {
+            try {
+                connection.close();
+            } catch (SQLException ex) {
+                Logger.getLogger(InternAplicationTableConnection.class.getName()).log(Level.SEVERE, null, ex);
+            }
+        }
+    }
+
+ 
+
+    public void updateAccountStatus(String suspended, int id) {
+           try {
+            connection = getConnection();
+            String updateAuthfQuery = "UPDATE `applicantLogin`SET `status` = ? WHERE `idApplicant` = ?";
+            PreparedStatement ps = null;
+            ps = connection.prepareStatement(updateAuthfQuery);
+            ps.setString(1, suspended);
+            ps.setInt(2, id);
+            ps.execute();
+            feedback.addMessage("Success", "Account has been suspended");
+        } catch (ClassNotFoundException | SQLException ex) {
+            Logger.getLogger(InternAplicationTableConnection.class.getName()).log(Level.SEVERE, null, ex);
+        } finally {
+            try {
+                connection.close();
+            } catch (SQLException ex) {
+                Logger.getLogger(InternAplicationTableConnection.class.getName()).log(Level.SEVERE, null, ex);
+            }
+        }
+    }
+
+
 }
+
+/*
+UPDATE `onthatile children's ministries`.`applicantRequiredDocuments`
+SET
+`idinternRequiredDocuments` = <{idinternRequiredDocuments: }>,
+`generalRefe` = <{generalRefe: }>,
+`pasroralRef` = <{pasroralRef: }>,
+`parentalCon` = <{parentalCon: }>,
+`applicant_Id` = <{applicant_Id: }>
+WHERE `idinternRequiredDocuments` = <{expr}> AND `applicant_Id` = <{expr}>;
+
+ */

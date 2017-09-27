@@ -4,6 +4,10 @@ import com.MenuView.MenuView;
 import com.applicants.Model.Applicant;
 import com.applicants.Model.WorkExperience;
 import com.db.connection.InternAplicationTableConnection;
+import com.db.connection.StaffTableConnection;
+import com.staff.Model.Authenticate;
+import com.staff.Model.Authentication;
+import com.staff.Model.OthantileStaff;
 import com.validation.MrKaplan;
 import com.validation.TheEqualizer;
 import java.io.Serializable;
@@ -37,7 +41,7 @@ public class InternApplicationController extends Applicant implements Serializab
     private Applicant currentApplicant = new Applicant();
     private String buttonVal = "Add", iconVal = "fa fa-plus";
     private boolean showDealingWith = false, reasonForNo = false,
-            showAbuseNeglect = false;
+            showAbuseNeglect = false, grantAccess = false;
     private boolean hasCondition = false, hasMedication = false,
             hasSeriousIllness = false, hasDietrestr,
             hasPhyHadicap = false;
@@ -68,6 +72,14 @@ public class InternApplicationController extends Applicant implements Serializab
 
     public String getButtonVal() {
         return buttonVal;
+    }
+
+    public boolean isGrantAccess() {
+        return grantAccess;
+    }
+
+    public void setGrantAccess(boolean grantAccess) {
+        this.grantAccess = grantAccess;
     }
 
     public boolean isShowAbuseNeglect() {
@@ -459,6 +471,7 @@ public class InternApplicationController extends Applicant implements Serializab
                 setMediaclHistory(new InternAplicationTableConnection().getMedicalhistory(sesPk));
                 setNextSkin(new InternAplicationTableConnection().getEmergencycontact(sesPk));
                 setTsAndCs(new InternAplicationTableConnection().getTermsAndConditions(sesPk));
+                setProgress(new InternAplicationTableConnection().getApplicationProgress(sesPk));
                 onChangeRadioBUtton();
             }
         } catch (ClassNotFoundException | SQLException ex) {
@@ -568,6 +581,7 @@ public class InternApplicationController extends Applicant implements Serializab
         System.out.println("Applicant id " + selectedApplicant.getId());
         if (selectedApplicant.getApplicationStatus().equals("Application pending")) {
             initApplicantFields(selectedApplicant.getId());
+            this.setId(selectedApplicant.getId());
         }
     }
 
@@ -694,7 +708,7 @@ public class InternApplicationController extends Applicant implements Serializab
         workExperience.setDailyDuities(selectedSExperience.getDailyDuities());
         workExperience.setJobEnd(selectedSExperience.getJobEnd());
         workExperience.setJobStart(selectedSExperience.getJobStart());
-        System.out.println("+++++++++"+workExperience.getDailyDuities());
+        System.out.println("+++++++++" + workExperience.getDailyDuities());
         buttonVal = "Edit";
         iconVal = "fa fa-edit";
     }
@@ -732,6 +746,7 @@ public class InternApplicationController extends Applicant implements Serializab
     }
 
     public void onChangeRadioBUtton() {
+        grantAccess = getProgress().getOutcoume() != null && (!getProgress().getOutcoume().equals("Prefer not to recommend"));
         showDealingWith = workExperience.getDealingWith() != null && workExperience.getDealingWith().equals("Yes");
         hasCondition = getMediaclHistory().getConditions() != null && getMediaclHistory().getConditions().equals("Yes");
         hasMedication = getMediaclHistory().getMedications() != null && getMediaclHistory().getMedications().equals("Yes");
@@ -771,6 +786,77 @@ public class InternApplicationController extends Applicant implements Serializab
     public void saveLegalHistory() {
         setId(getId());
         new InternAplicationTableConnection().updateApplicantLegalHist(this);
+    }
+
+    public void sendInterviewNotification() {
+        if (getProgress().getInterviewDate() != null && getProgress().getInterviewers() != null) {
+            try {
+                String intViwers = "";
+                intViwers = getProgress().getInterviewers().stream().map((toVar) -> toVar + ",").reduce(intViwers, String::concat);
+                String body = "Dear " + getFirstname() + " " + getLastname() + "\n"
+                        + "We are glad to inform you that you have made it to next stage of the application processes. We would like to schedule an interview on the following date and time.  \n" + getProgress().getInterviewDate()
+                        + " \n"
+                        + "Your interviewers will be  \n" + intViwers.substring(0, intViwers.length() - 1)
+                        + " \nPlease confirm your availability to this email. Any question or concerns can be addressed to this email address."
+                        + "King Regards, \n"
+                        + "Onthalie Admin. ";
+                new StaffTableConnection().sendEmailToStaff(getEmailAddress(), "Interview appointment", body);
+                String allRecDos = "", allInterviewrs = "";
+                allRecDos = getProgress().getRequiredDocs().stream().map((per) -> per + ",").reduce(allRecDos, String::concat);
+                getProgress().setReqDocToString(allRecDos);
+                allInterviewrs = getProgress().getInterviewers().stream().map((toVar) -> toVar + ",").reduce(allInterviewrs, String::concat);
+                getProgress().setIntervwersToString(allInterviewrs);
+                feedback.addMessage("Sending successfull", "Interview notification has been sent.");
+                new InternAplicationTableConnection().updateApplicantInterviewProgress(this);
+            } catch (Exception e) {
+                feedback.error("Sending failed", e.getMessage());
+            }
+        } else {
+            feedback.error("Sending failed", "Interview date and interviwers must be set.");
+        }
+    }
+
+    public void updateInterViewOutCome() {
+        if (getProgress().getInterviewDate() != null && getProgress().getInterviewers() != null) {
+            new InternAplicationTableConnection().updateInterviewOutcome(this);
+        } else {
+            feedback.error("Save error", "Interview date and interviwers must be set.");
+        }
+    }
+
+    public void grantInternAccess() {
+        if (getProgress().getOutcoume() != null) {
+            OthantileStaff staff = new OthantileStaff(0, getFirstname(), getLastname(), theGender.charAt(0), getAddress(),
+                    getCountry(), getDateOfBirth(), getEmailAddress());
+            staff.setAccessLevel(3);
+            staff.setRoleName("Intern");
+            Authenticate auth = new Authentication();
+            auth.createUsername(staff.getFirstname(), staff.getLastname());
+            staff.setAuthcateDetails((Authentication) auth);
+            try {
+                new StaffTableConnection().addStaffMemeber(staff);
+            } catch (ClassNotFoundException ex) {
+                Logger.getLogger(InternApplicationController.class.getName()).log(Level.SEVERE, null, ex);
+            }
+        }
+    }
+
+    public void suspendAccount() {
+        if (selectedApplicant != null) {
+            new InternAplicationTableConnection().updateAccountStatus("Suspended", selectedApplicant.getId());
+        } else {
+            feedback.error("Selection error", "please select applicant");
+
+        }
+    }
+
+    public void restAccount() {
+        if (selectedApplicant != null) {
+            new InternAplicationTableConnection().sendAcceRequest(selectedApplicant);
+        } else {
+            feedback.error("Selection error", "please select applicant");
+
+        }
     }
 
 }

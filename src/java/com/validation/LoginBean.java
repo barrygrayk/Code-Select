@@ -18,10 +18,7 @@ import javax.faces.bean.SessionScoped;
 import javax.faces.context.ExternalContext;
 import javax.faces.context.FacesContext;
 import javax.servlet.http.HttpSession;
-import javax.ws.rs.GET;
-import javax.ws.rs.Path;
-import javax.ws.rs.Produces;
-import javax.ws.rs.core.MediaType;
+
 
 //import javax.ws.rs.Path;
 /**
@@ -30,7 +27,6 @@ import javax.ws.rs.core.MediaType;
  */
 @ManagedBean(name = "Login", eager = true)
 @SessionScoped
-
 
 public class LoginBean extends Passwords implements Serializable {
 //us MrKaplan for error checking
@@ -92,7 +88,6 @@ public class LoginBean extends Passwords implements Serializable {
                         HttpSession session = SessionUtils.getSession();
                         session.setAttribute("username", username);
                         session.setAttribute("id", id);
-
                         page = "apply.xhtml?faces-redirect=true";
                     } else if (role.equals("Admin")) {
                         HttpSession session = SessionUtils.getSession();
@@ -106,6 +101,9 @@ public class LoginBean extends Passwords implements Serializable {
                     break;
                 case "Deactivated":
                     feedBack.errorMessage(fullname + " Your account has been deactivated please contact admin for help: othantile@admin.com");
+                    break;
+                case "Suspended":
+                    feedBack.errorMessage(fullname + " Your account has been suspended please contact admin for help: othantile@admin.com");
                     break;
             }
 
@@ -125,6 +123,7 @@ public class LoginBean extends Passwords implements Serializable {
                 setUsername(auth.getUsername());
                 fullname = staffDB.getFullname(id);
                 status = auth.getStatus();
+                System.out.println("----------------" + status);
                 role = staffDB.getRole(id);
                 expectedHash = auth.getHashedPassword();
                 salt = auth.getSalt();
@@ -136,10 +135,14 @@ public class LoginBean extends Passwords implements Serializable {
         for (Authenticate auth : authenticatedApplicant) {
             if (auth.getUsername().equals(username)) {
                 id = auth.authId();
+                System.out.println("-------"+id);
                 setUsername(auth.getUsername());
+                System.out.println("-------"+username);
                 fullname = ApplicantDB.getFullname(id);
                 status = auth.getStatus();
+                System.out.println("----------------" + status);
                 expectedHash = auth.getHashedPassword();
+                System.out.println(expectedHash);
                 salt = auth.getSalt();
             }
         }
@@ -202,5 +205,5 @@ public class LoginBean extends Passwords implements Serializable {
         this.password =  password;
         return true;
     }2
-*/
+     */
 }

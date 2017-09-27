@@ -27,64 +27,64 @@
             </p:dataTable>
             <p:contextMenu for="AlertContext">
                 <p:menuitem value="View application"   oncomplete="PF('dlg').show()"  icon="fa fa-eye" update=":Applog"/>
-                <p:menuitem value="Suspend application"   oncomplete="PF('dlg').show()"  icon="fa fa-pause" update=":Applog"/>
-                <p:menuitem value="Reset password"   oncomplete="PF('dlg').show()"  icon="fa fa fa-refresh" update=":Applog"/>
+                <p:menuitem value="Suspend application"   oncomplete="PF('dlg').show()"  action="#{Apply.suspendAccount()}" icon="fa fa-pause" update=":Applog"/>
+                <p:menuitem value="Reset password"   oncomplete="PF('dlg').show()"  action="#{Apply.restAccount()}" icon="fa fa fa-refresh" update=":Applog"/>
                 <p:menuitem value="Delete"  action="#{msgCont.delete()}" icon="fa fa-remove" update=":procressForm"/>
             </p:contextMenu>
         </h:form>
-
-
         <p:dialog id="Applog" header="#{Apply.firstname}   #{Apply.lastname} 's Apllication form" widgetVar="dlg" minimizable="true" maximizable="true" position="center" >
-            <h:form>
+            <h:form id="officialUse">
                 <div class="ui-g">
                     <div class="ui-g-12">
                         <p:panel id="Office"  collapsed="true" header="For Office Use Only" toggleable="true" closable="false"  toggleSpeed="500"
                                  closeSpeed="500" widgetVar="pane11" style="margin-bottom:20px">
-                           
-                                <div class="ui-g-12">
-                                    <h:outputLabel value="References Received:"/>
-                                    <p:selectManyCheckbox id="basic" value="#{Apply.experience.certificates}" >
-                                        <f:selectItem itemLabel="Pastoral" itemValue="Pastoral" />
-                                        <f:selectItem itemLabel="General Reference 1" itemValue="General Reference 1" />
-                                        <f:selectItem itemLabel="General Reference 2" itemValue="General Reference 2" />
-                                    </p:selectManyCheckbox>
-                                </div>
-                                <div class="ui-g-12">
-                                <h:panelGrid columns="1" cellpadding="10">
-                                     <p:outputLabel for="interviwers" value="Interview date and time: "   />
-                                    <p:watermark for="interviewDate" value="Interview date and time" />
-                                    <p:calendar id="interviewDate" value="#{Apply.formation.highestGraduationDate}" pattern="dd-MM-yyyy HH:mm"  class="field-style field-split"   
-                                                 />
-                                     <p:outputLabel for="interviwers" value="Interviewers: "   />
-                                    <p:watermark for="interviwers" value="eg Joel (The press enter key)" />
-                                    <p:chips id="interviwers"  value="#{Apply.beliefs.listOFMinistries}"/>
-                                </h:panelGrid>
-                                </div>
-                                   <div class="ui-g-12">
-                                    <h:outputLabel value="Interview outcome:"/>
-                                    <p:selectManyCheckbox id="basic" value="#{Apply.experience.certificates}" >
-                                        <f:selectItem itemLabel="Highly recommend" itemValue="Pastoral" />
-                                        <f:selectItem itemLabel="Recommend" itemValue="Recommend" />
-                                        <f:selectItem itemLabel="Recommend with reservations" itemValue="Recommend with reservations" />
-                                        <f:selectItem itemLabel="Prefer not to	recommend" itemValue="Prefer not to	recommend" />
-                                        
-                                    </p:selectManyCheckbox>
-                                </div>
-                                 <div class="ui-g-6">
-                                  
-
+                            <div class="ui-g">
+                                <div class="ui-g-6">
+                                    <div class="ui-g-12">
+                                        <h:outputLabel value="References Received:"/>
+                                        <p:selectManyCheckbox id="basic" value="#{Apply.progress.requiredDocs}" >
+                                            <f:selectItem itemLabel="Pastoral" itemValue="Pastoral" />
+                                            <f:selectItem itemLabel="General Reference 1" itemValue="General Reference 1" />
+                                            <f:selectItem itemLabel="General Reference 2" itemValue="General Reference 2" />
+                                        </p:selectManyCheckbox>
+                                    </div>
+                                    <div class="ui-g-12">
+                                        <h:panelGrid columns="1" cellpadding="10">
+                                            <p:outputLabel for="interviwers" value="Interview date and time: "   />
+                                            <p:watermark for="interviewDate" value="Interview date and time" />
+                                            <p:calendar id="interviewDate" value="#{Apply.progress.interviewDate}" pattern="dd-MM-yyyy HH:mm"  
+                                                        class="field-style field-split"   
+                                                        />
+                                            <p:outputLabel for="interviwers" value="Interviewers: "   />
+                                            <p:watermark for="interviwers" value="Joel (Enter key)" />
+                                            <p:chips id="interviwers"  value="#{Apply.progress.interviewers}"/>
+                                            <p:commandButton value="Send noification" icon="fa fa-info-circle" action="#{Apply.sendInterviewNotification()}"/>
+                                        </h:panelGrid>
+                                    </div>
                                 </div>
                                 <div class="ui-g-6">
-
+                                    <div class="ui-g-12">
+                                        <h:outputLabel value="Interview outcome:"/>
+                                        <p:selectOneRadio id="outcome" value="#{Apply.progress.outcoume}">
+                                            <f:selectItem itemLabel="Highly recommend" itemValue="Pastoral" />
+                                            <f:selectItem itemLabel="Recommend" itemValue="Recommend" />
+                                            <f:selectItem itemLabel="Recommend with reservations" itemValue="Recommend with reservations" />
+                                            <f:selectItem itemLabel="Prefer not to recommend" itemValue="Prefer not to recommend" />
+                                        </p:selectOneRadio>
+                                    </div>
+                                    <div class="ui-g-12">
+                                        <p:watermark for="Interview" value="Intrview comments " />
+                                        <p:inputTextarea  id="Interview" rows="5" cols="20"  immediate="true"
+                                                          maxlength="1000" counterTemplate="{0} characters remaining." 
+                                                          autoResize="false"   label="Message" value="#{Apply.progress.comments}" />
+                                    </div>
+                                    <p:commandButton value="Save" icon="fa fa-save" action="#{Apply.updateInterViewOutCome()}"/> 
                                 </div>
-                           
-
-
-
-
-
+                            </div>
+                            <hr/>
+                            <p:commandButton value="Grant intern access" icon="fa fa-unlock" action="#{Apply.grantInternAccess()}" /> 
                         </p:panel>
-
+                         
                     </div>
                 </div>
                 <div class="ui-g">
@@ -352,7 +352,7 @@
 
             </h:form> 
             <h:form>
-                <p:commandButton value="Accept"  update="growl" class="btn btn-success" icon="fa fa-thumbs-up" style="margin:1px" action="#{Apply.acceptRequst()}"/>
+             
             </h:form>
         </p:dialog>
     </ui:composition>

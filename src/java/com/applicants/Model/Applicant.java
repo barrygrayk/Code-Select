@@ -20,6 +20,7 @@ public class Applicant extends Person {
     private SpiritualLife beliefs =  new SpiritualLife();; // same above...
     private LegalHistory legalHistory = new LegalHistory();
     private MediaclHistory mediaclHistory = new MediaclHistory();
+    private ApplicationProgress progress = new ApplicationProgress();
     private EducationAndQualification formation = new EducationAndQualification();
     private PersonanlityTraits personalityTraits = new PersonanlityTraits();
     private TermAndConditions tsAndCs = new TermAndConditions();
@@ -198,6 +199,16 @@ public class Applicant extends Person {
     public void setDos(RequiredDocs dos) {
         this.dos = dos;
     }
+
+    public ApplicationProgress getProgress() {
+        return progress;
+    }
+
+    public void setProgress(ApplicationProgress progress) {
+        this.progress = progress;
+    }
+    
+    
     
     
 }
