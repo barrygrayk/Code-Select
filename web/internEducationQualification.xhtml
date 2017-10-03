@@ -5,36 +5,41 @@
       xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
       xmlns:p="http://primefaces.org/ui">
     <ui:composition>
-        <center>
-            <h2 style="margin-top: 0;color:black">Education Qualification</h2>
-            <h:form class="form-style-9">
-                <ul>
-                    <li>
-                        <p:watermark for="Highest" value="Name of Highest Qualification" />
+        
+         <div class="ui-g-6">
+             
+            <h:panelGrid styleClass="ui-panelgrid-blank">  
+                <p:panel header="Name of Highest Qualification">
                         <p:inputText id ="Highest" class="field-style field-split align-left"  value="#{Apply.formation.highestQualification}" />
-
-                        <p:watermark for="GraduationDate" value="Highest Qualification Graduation" />
+                </p:panel>
+                
+                <p:panel header="Highest Qualification Graduation">
                         <p:calendar id="GraduationDate" value="#{Apply.formation.highestGraduationDate}" pattern="dd-MM-yyyy"  class="field-style field-split align-right"   
-                                    styleClass="dateTimeFieldLeft"  />
-                    </li>
-
-
-                    <li>
-                        <p:watermark for="Special" value="Name of Special Qualification" />
+                                    styleClass="dateTimeFieldLeft"  />    
+                </p:panel>     
+            </h:panelGrid> 
+             
+         </div>
+             
+            <div class="ui-g-6">
+            <h:panelGrid styleClass="ui-panelgrid-blank">  
+                <p:panel header="Name of Special Qualification">
                         <p:inputText id ="Special" class="field-style field-split align-left"  value="#{Apply.formation.specialQualification}" />
-
-                        <p:watermark for="SpecialDate" value="Special Qualification Graduation" />
+                </p:panel>
+              
+                <p:panel header="Special Qualification Graduation">
                         <p:calendar id="SpecialDate" value="#{Apply.formation.specialGraduationDate}" pattern="dd-MM-yyyy"  class="field-style field-split align-left"   
-                                    styleClass="dateTimeFieldLeft"  />
+                                    styleClass="dateTimeFieldLeft"  />        
+                </p:panel>
+                
+            </h:panelGrid>
+                </div>
 
-                    </li>
-
-                    <li>
+                
+                       <div align="center" position="bottom">
                         <p:commandButton  value="Save"  icon="fa fa-save" class="btn btn-primary btn-md" action="#{Apply.saveEducationAndQualification()}"/>
-                    </li>
-                </ul>
-            </h:form>
-        </center>
+                       </div>
+
     </ui:composition>
 </html>
 

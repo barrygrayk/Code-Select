@@ -6,48 +6,55 @@
       xmlns:p="http://primefaces.org/ui"
       xmlns:f="http://xmlns.jcp.org/jsf/core">
     <ui:composition>
-        <center>
-            <h2 style="margin-top: 0;color:black">Personality Traits </h2>
-            <h:form class="form-style-9">
-
-                <ul>
-                    <li>
-                        <h:outputLabel value="Please select all the words below which	you believe accurately describe	you:"/>
-                        <p:selectManyCheckbox id="grid2" value="#{Apply.personalityTraits.selectedTraits}" layout="grid"   columns="3">
+        
+            <div class="ui-g-12">
+                
+            <h:panelGrid styleClass="ui-panelgrid-blank">
+                 
+                <p:panel header="Please select all the words below which you believe accurately describe you:">
+                        <div align="center"> 
+                            <p:selectManyCheckbox id="grid2" value="#{Apply.personalityTraits.selectedTraits}" layout="grid"   columns="3">
                             <f:selectItems value="#{Apply.personalityTraits.traits}" var="trait" itemLabel="#{trait}" itemValue="#{trait}" />
-                        </p:selectManyCheckbox>
-
-                    </li>
-                    <li>
-                        <h:outputLabel value="List below two strengths you have in working with children. Please be specific:"/>
-                        <p:watermark for="strengths" value="List two strenghts and a breif explanation" />
-                        <p:inputTextarea  id="strengths" rows="5" cols="15"  class="field-style" 
+                            </p:selectManyCheckbox>
+                        </div>
+                </p:panel>
+           
+    
+                <p:panel header="List below two strengths you have in working with children. Please be specific: ">
+                        
+                    <p:inputTextarea  id="strengths" rows="10" cols="90"   class="field-style" 
                                           counter="display7" maxlength="1000" counterTemplate="{0} characters remaining." 
                                           autoResize="false"   label="Message" value="#{Apply.personalityTraits.resonForStrength}"/>
-                        <h:outputText id="display7" />
+                    <h:outputText id="display7" />
 
-                    </li>
-                    <li>
-                        <h:outputLabel value="List below two weaknesses you have in working with children. Please be specific:"/>
-                        <p:watermark for="weaknesses" value="List two weaknesses and a breif explanation" />
-                        <p:inputTextarea  id="weaknesses" rows="5" cols="15"  class="field-style" 
+                </p:panel>
+                
+                
+                <p:panel header="List below two weaknesses you have in working with children. Please be specific: ">
+                        
+                    <p:inputTextarea  id="weaknesses" rows="10" cols="90"  class="field-style" 
                                           counter="display8" maxlength="1000" counterTemplate="{0} characters remaining." 
                                           autoResize="false"   label="Message" value="#{Apply.personalityTraits.reasonForWeekness}"/>
-                        <h:outputText id="display8" />
+                    <h:outputText id="display8" />
 
-                    </li>
+                </p:panel>
+                 
+            </h:panelGrid>
+                
+                
+    
+        
+        <div align="center" position="bottom">
+               <p:commandButton  value="Save"  icon="fa fa-save" class="btn btn-primary btn-md" action="#{Apply.savePersonanlityTraits()}"/>
+        </div>
+                
+        </div>
 
-
-                    <li>
-                        <p:commandButton  value="Save"  icon="fa fa-save" class="btn btn-primary btn-md" action="#{Apply.savePersonanlityTraits()}"/>
-
-                    </li>
-                </ul>
-
-
-
-            </h:form>
-        </center>
+        
+        
+        
+        
+        
     </ui:composition>
 </html>
 

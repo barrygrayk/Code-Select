@@ -6,41 +6,95 @@
       xmlns:p="http://primefaces.org/ui"
       xmlns:f="http://xmlns.jcp.org/jsf/core">
     <ui:composition>
-        <center>
-            <h2 style="margin-top: 0;color:black">Experience</h2>
-            <h:form id="experienceForm" class="form-style-9">
-                <p:tabView class="form-style-9"  cache="false" >
-                    <p:tab title="Experience Part I" >
+        
+        
+        <p:tabView  cache="false">
+                
+            <p:tab title="Experience Form A " id="part1" >
+                        
+                    <div class="ui-g-6">
+                        
+                        <h:panelGrid styleClass="ui-panelgrid-blank">
 
-                        <ul>
-                            <li>
-                                <p:inputText type="text" class="field-style field-split align-left" placeholder="Name of Previous Employeer" value="#{Apply.experience.nameOfEmployer}"/>
+                            <p:panel header="Name of Previous Employeer">
+                                <p:inputText type="text" class="field-style field-split align-left" placeholder="Employeer" value="#{Apply.experience.nameOfEmployer}"/>
+                            </p:panel>
+                            
+                            <p:panel header="Job Start Date">
+                                <p:calendar id="mask1" value="#{Apply.experience.jobStart}" placeholder="dd-mm-yyyy" pattern="dd-MM-yyyy"  class="field-style field-split align-left" styleClass="dateTimeFieldLeft"/>
+                            </p:panel>
+
+                        </h:panelGrid>
+                        
+                    </div>
+                            
+                    
+                                
+                    <div class="ui-g-6"  styleClass="ui-panelgrid-blank">
+                            
+                        <h:panelGrid styleClass="ui-panelgrid-blank">
+                            
+                            <p:panel header="Previous Job Title">
                                 <p:inputText type="text"  class="field-style field-split align-right" placeholder="Previous Job Title" value="#{Apply.experience.jobTitle}" />
-                            </li>
-                            <li>
-                                <p:watermark for="mask1" value="Start Date" />
-                                <p:calendar id="mask1" value="#{Apply.experience.jobStart}" pattern="dd-MM-yyyy"  class="field-style field-split align-left"   styleClass="dateTimeFieldLeft"   />
-                                <p:watermark for="mask" value="End Date" />
-                                <p:calendar id="mask" value="#{Apply.experience.jobEnd}" pattern="dd-MM-yyyy"  class="field-style field-split align-righ"  style="margin-left: 8px" styleClass="dateTimeField"  />
-
-                            </li>
-                            <li>
-                                <p:watermark for="duties" value="State daily duties" />
-                                <p:inputTextarea  id="duties" rows="5" cols="20"  class="field-style" 
+                            </p:panel>
+                            
+                            <p:panel header="Job End Date">
+                                <p:calendar id="mask" value="#{Apply.experience.jobEnd}" placeholder="dd-mm-yyyy" pattern="dd-MM-yyyy"  class="field-style field-split align-righ"  style="margin-left: 8px" styleClass="dateTimeField"  />
+                            </p:panel>
+                            
+                        </h:panelGrid>
+                            
+                </div>
+                            
+                <div class="ui-g-12"  styleClass="ui-panelgrid-blank">
+                    
+                     <h:panelGrid styleClass="ui-panelgrid-blank">
+                    
+                                <p:panel header="Please state daily duties"> 
+                                <p:inputTextarea  id="duties" rows="10" cols="100"  class="field-style" 
                                                   counter="display8" maxlength="1000" counterTemplate="{0} characters remaining." 
                                                   autoResize="false"   label="Message" value="#{Apply.experience.dailyDuities}"/>
                                 <h:outputText id="display8" />
-                            </li>
-                            <li>
-                                <p:commandButton  value="#{Apply.buttonVal}"   icon="#{Apply.iconVal}" class="btn btn-primary btn-md" action="#{Apply.addWorkExperience()}" update="experienceForm"/>
-                                <p:commandButton  value="Clear"   icon="fa fa-eraser" class="btn btn-primary btn-md" action="#{Apply.clearForm()}" update="experienceForm"/>
-                            </li>
-                        </ul>
-                        <p:dataTable id="workEp" var="work" value="#{Apply.workExp}" rowKey="#{work.id}"
+                                </p:panel>
+                     </h:panelGrid>
+                         
+                
+                      
+                
+                   
+                 <div class="ui-g-2" >
+                     
+                    <h:panelGrid >
+                         
+                    <p:panel>
+                        
+                                <p:commandButton  value="#{Apply.buttonVal}"   icon="#{Apply.iconVal}" class="btn btn-primary btn-md" action="#{Apply.addWorkExperience()}"/>
+                    </p:panel>
+                        
+                    </h:panelGrid>
+                     
+                 </div>
+                     
+                <div class="ui-g-2" >
+                    <h:panelGrid>
+                              
+                    <p:panel>
+                                <p:commandButton  value="Clear"   icon="fa fa-eraser" class="btn btn-primary btn-md" action="#{Apply.clearForm()}"/>
+                        
+                    </p:panel> 
+                    </h:panelGrid>
+                        
+                </div>
+                    
+                
+                            
+                <div class="ui-g-12"  styleClass="ui-panelgrid-blank">
+                    <h:panelGrid>
+                    <p:dataTable id="workEp" var="work" value="#{Apply.workExp}" rowKey="#{work.id}"
                                      selection="#{Apply.selectedSExperience}" selectionMode="single">
 
-                            <p:ajax event="rowSelect" listener="#{Apply.onRowSelectWork}" update=":experienceForm" process="workEp"/>
-                            <p:ajax event="rowUnselect" listener="#{Apply.onRowSelectWork}" update=":experienceForm" process="workEp"/>   
+                            <p:ajax event="rowSelect" listener="#{Apply.onRowSelectWork}" process="workEp"/>
+                            <p:ajax event="rowUnselect" listener="#{Apply.onRowSelectWork}" process="workEp"/>   
 
                             <p:column headerText="Employeer" style="width: 100px">
                                 <h:outputText value="#{work.nameOfEmployer}" />
@@ -49,7 +103,7 @@
                                 <h:outputText value="#{work.jobTitle}" />
                             </p:column>
                             <p:column headerText="Action">
-                                <p:commandButton actionListener="#{Apply.delete()}"  update="experienceForm" icon="fa fa-trash" >
+                                <p:commandButton actionListener="#{Apply.delete()}" icon="fa fa-trash" >
                                     <p:confirm header="Confirmation" message="Are you sure, you want delete selected record(s)?" icon="ui-icon-alert" />
                                 </p:commandButton>
                             </p:column>
@@ -66,59 +120,85 @@
                             </f:facet>
 
                         </p:dataTable> 
+                 
+              </h:panelGrid> 
+ </div>
+                    
+         </div>
+                    
 
-                    </p:tab>    
-                    <p:tab title="Experience Part II" id="part2">
+    </p:tab>
+                      
+    <p:tab title="Experience Form B "  id="part2">
+                        
+        <div class="ui-g-12"  styleClass="ui-panelgrid-blank">
+                        
+            <h:panelGrid styleClass="ui-panelgrid-blank">
 
-                        <ul>
-                            <li>
-                                <h:outputLabel value="Do you have certifications in the following?"/>
+                <p:panel>
+                    
+                    <h4>Do you have certifications in the following?</h4>
+                               
                                 <p:selectManyCheckbox id="basic" value="#{Apply.experience.certificates}" >
                                     <f:selectItem itemLabel="CPR" itemValue="CPR" />
                                     <f:selectItem itemLabel="First Aid" itemValue="First Aid" />
                                     <f:selectItem itemLabel="Nursing" itemValue="Nursing" />
                                     <f:selectItem itemLabel="EMT" itemValue="EMT" />
                                 </p:selectManyCheckbox>
-                            </li>
-                            <li>
-                                <h:outputLabel value="Do you have any previous	training or background in dealing with abused, neglected,  or abandoned	children?"/>
+                                
+                </p:panel>
+                            
+                <p:panel>
+                    <h4>Do you have any previous training or background in dealing with abused, neglected, or abandoned children?</h4>
+                    
                                 <p:selectOneRadio id="dealing" value="#{Apply.experience.dealingWith}" >
-                                    <p:ajax process="dealing" update="experienceForm" listener="#{Apply.onChangeRadioBUtton()}"  />
+                                    <p:ajax process="dealing" listener="#{Apply.onChangeRadioBUtton()}"  />
                                     <f:selectItem itemLabel="Yes" itemValue="Yes" />
                                     <f:selectItem itemLabel="No" itemValue="No" />
                                 </p:selectOneRadio>
+            
+                    <div>
                                 <p:watermark for="reason" value="Please explain" />
                                 <p:inputTextarea  id="reason" rows="5" cols="20"  class="field-style"  immediate="true"
                                                   counter="reasonDisp" maxlength="1000" counterTemplate="{0} characters remaining." 
                                                   autoResize="false"   label="Message" value="#{Apply.experience.dealingWithExplanation}" rendered="#{Apply.showDealingWith}"/>
                                 <h:outputText id="reasonDisp" />
-                            </li>
-                            <li>
-                                <h:outputLabel value="Were you a victim of abuse, neglect, or	abandonment as a minor?	"/>
+                            </div>
+                                
+                </p:panel>
+                
+                <p:panel>
+      
+                <h4>Were you a victim of abuse, neglect, or abandonment as a minor?</h4>
                                 <p:selectOneRadio id="victim"  value="#{Apply.experience.victimOf}">
                                     <f:selectItem itemLabel="Yes" itemValue="Yes" />
                                     <f:selectItem itemLabel="No" itemValue="No" />
-                                     <p:ajax process="victim" update="experienceForm" listener="#{Apply.onChangeRadioBUtton()}"  />
-                                      <f:selectItem itemLabel="I	wish	to	discuss	privately" itemValue="I	wish to discuss privately" />
+                                    <p:ajax process="victim" listener="#{Apply.onChangeRadioBUtton()}"  />
+                                    <f:selectItem itemLabel="I wish to discuss privately" itemValue="I wish to discuss privately" />
                                     <!--I wish to  discuss privately-->
                                 </p:selectOneRadio>
-                                <p:watermark for="reason1" value="Please explain" />
-                                <p:inputTextarea  id="reason1" rows="5" cols="20"  class="field-style" 
+          
+               
+                                    <p:inputTextarea  id="reason1" rows="5" cols="20" placeholder="Please explain"  class="field-style" 
                                                   counter="reasonDisp1" maxlength="1000" counterTemplate="{0} characters remaining." 
                                                   autoResize="false"   label="Message" value="#{Apply.experience.victimOfxplanation}" rendered="#{Apply.showAbuseNeglect}"/>
                                 <h:outputText id="reasonDisp1" />
-                            </li>
-                        </ul>
-                        <ul>
-                            <li>
-                                <p:commandButton  value="Save"  icon="fa fa-save" class="btn btn-primary btn-md" action="#{Apply.saveWordExperience()}"/>
-                            </li>
-                        </ul>
+                              
+                
+                      </p:panel>
+                
+                
+                
+                            
+                            
+            </h:panelGrid>    
+                        </div>
                     </p:tab>
                 </p:tabView>
+        
+        <div align="center" position="bottom">
+            <p:commandButton  value="Save"  icon="fa fa-save" class="btn btn-primary btn-md" action="#{Apply.saveWordExperience()}"/>
+        </div>
 
-            </h:form>
-        </center>
     </ui:composition>
 </html>
-

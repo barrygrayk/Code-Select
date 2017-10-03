@@ -2,30 +2,52 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml"
       xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
-      xmlns:h="http://xmlns.jcp.org/jsf/html"
-      xmlns:p="http://primefaces.org/ui">
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:h="http://xmlns.jcp.org/jsf/html">
     <ui:composition>
-        <center>
-            <h2 style="margin-top: 0;color:black">Emergency Contact</h2>
-            <h:form class="form-style-9">
-                <ul>
-                    <li>
-                        <p:inputText type="text"  class="field-style field-split align-left" placeholder="First Name" value="#{Apply.nextSkin.firstname}" />
-                        <p:inputText type="text" class="field-style field-split align-right" placeholder="Email Address" value="#{Apply.nextSkin.emailAddress}" />
-                    </li>
-                    <li>
-                            <p:inputText type="text" class="field-style field-split align-left" placeholder="Last Name"  value="#{Apply.nextSkin.lastname}"/>
-                        <p:inputText type="text" class="field-style field-split align-right" placeholder="Phone number" value="#{Apply.nextSkin.phoneNumber}" />
-                    </li>
-                    <li>
-                        <p:inputText type="text" class="field-style field-split align-left" placeholder="Relationship" value="#{Apply.nextSkin.relationship}" />
-                    </li>
-                    <li>
-                        <p:commandButton  value="Save"  icon="fa fa-save" class="btn btn-primary btn-md" action="#{Apply.saveEmergencyContact()}"/>
-                    </li>
-                </ul>
-            </h:form>
-        </center>
+        
+            <div class="ui-g-6">
+            <h:panelGrid styleClass="ui-panelgrid-blank">
+                    
+                <p:panel header="First Name">
+                    <p:inputText type="text"  class="field-style field-split align-left" placeholder="First Name" value="#{Apply.nextSkin.firstname}" />
+                </p:panel>
+                
+                <p:panel header="Surname">
+                    <p:inputText id="surname2" type="text" class="field-style field-split align-left"  value="#{Apply.lastname}"/>
+                </p:panel>
+                
+                <p:panel header="Relationship To You">
+                     <p:inputText type="text" class="field-style field-split align-left" placeholder="Relationship" value="#{Apply.nextSkin.relationship}" />
+                </p:panel>
+                
+            </h:panelGrid>  
+        </div>
+         
+        <div id="emeLeftSide" class="ui-g-6">
+            <h:panelGrid styleClass="ui-panelgrid-blank">
+                
+                
+                <p:panel header="Phone Number 1">
+                    <p:inputText type="text" class="field-style field-split align-right" placeholder="Phone number" value="#{Apply.nextSkin.phoneNumber}" />
+                </p:panel>
+                
+                <p:panel header="Phone Number 2">
+                    <p:inputText type="text" class="field-style field-split align-right" placeholder="Phone number" value="#{Apply.nextSkin.phoneNumber}" />
+                </p:panel>
+                
+                <p:panel header="Email Address">
+                    <p:inputText type="text" class="field-style field-split align-right" placeholder="Email Address" value="#{Apply.nextSkin.emailAddress}" />
+                </p:panel>
+                
+            </h:panelGrid>
+       
+        </div>
+        
+        <div class="ui-g-12" align="center" position="bottom">
+            <p:commandButton  value="Save"  icon="fa fa-save" class="btn btn-primary btn-md" action="#{Apply.saveEmergencyContact()}"/>
+        </div>
+        
     </ui:composition>
 </html>
-

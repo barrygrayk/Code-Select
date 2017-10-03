@@ -386,6 +386,7 @@ public class InternAplicationTableConnection extends DatabaseConnection {
                 + "\nhttp://localhost:8080/OnthatileWebApplication/faces/register.xhtml?token=" + token;
         //http://localhost:8080/OnthatileWebApplication/faces/register.xhtml
         //http://onthatilewebapplication.j.layershift.co.uk/faces/register.xhtml
+        updateToken(token, applicant.getId());
         new StaffTableConnection().sendEmailToStaff(applicant.getEmailAddress(), "Intern portal activation", body);
         feedback.addMessage("Sucess", "Acceptance email has been sucessfully sent to " + applicant.getFirstname());
     }
@@ -449,7 +450,7 @@ public class InternAplicationTableConnection extends DatabaseConnection {
             case "Suspended":
                 statusIndex = 4;
                 break;
-                
+
         }
         return statusIndex;
     }
@@ -979,10 +980,30 @@ public class InternAplicationTableConnection extends DatabaseConnection {
         }
     }
 
- 
+    public void updateToken(String token, int id) {
+        try {
+            connection = getConnection();
+            String updateAuthfQuery = "UPDATE `applicantLogin`SET `token` = ? WHERE `idApplicant` = ?";
+            PreparedStatement ps = null;
+            ps = connection.prepareStatement(updateAuthfQuery);
+            ps.setString(1, token);
+            ps.setInt(2, id);
+            ps.execute();
+            feedback.addMessage("Success", "Account has been suspended");
+        } catch (ClassNotFoundException | SQLException ex) {
+            Logger.getLogger(InternAplicationTableConnection.class.getName()).log(Level.SEVERE, null, ex);
+        } finally {
+            try {
+                connection.close();
+            } catch (SQLException ex) {
+                Logger.getLogger(InternAplicationTableConnection.class.getName()).log(Level.SEVERE, null, ex);
+            }
+
+        }
+    }
 
     public void updateAccountStatus(String suspended, int id) {
-           try {
+        try {
             connection = getConnection();
             String updateAuthfQuery = "UPDATE `applicantLogin`SET `status` = ? WHERE `idApplicant` = ?";
             PreparedStatement ps = null;
@@ -1001,7 +1022,6 @@ public class InternAplicationTableConnection extends DatabaseConnection {
             }
         }
     }
-
 
 }
 

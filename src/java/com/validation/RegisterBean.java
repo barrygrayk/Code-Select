@@ -99,7 +99,9 @@ public class RegisterBean extends Passwords implements Serializable {
                 System.out.println("Out of loop " + jwt.getId());
                 for (Authenticate auth : authenticatedApplicant) {
                     System.out.println("Inside loop" + auth.authId());
-                    if (jwt.getId().equals(auth.authId() + "") && auth.getStatus().equals("Suspended")) {
+                    System.out.println(token);
+                    System.out.println(auth.getToken());
+                    if (jwt.getId().equals(auth.authId() + "") && auth.getStatus().equals("Suspended") && auth.getToken().equals(token)) {
                         if (jwt.getSubject().equals(auth.getUsername())) {
                             username = auth.getUsername();
                             message = "Welcome ";
@@ -110,19 +112,21 @@ public class RegisterBean extends Passwords implements Serializable {
                         message = "Token could not be validated.This account has been deactivated";
                     }
                 }
-               List<Applicant> applicants = new InternAplicationTableConnection().getApplicants("Request pending");
-                for (Applicant app : applicants) {
-                    System.out.println("Inside loop" + app.getId());
-                    if (jwt.getId().equals(app.getId() + "") && app.getApplicationStatus().equals("Request pending")) {
-                        if (jwt.getSubject().equals(app.getEmailAddress())) {
-                            username = app.getEmailAddress();
-                            fullname = app.getFirstname() + " " + app.getLastname();
-                            message = "Welcome ";
-                            id = Integer.parseInt(jwt.getId());
-                            setDisable(false);
+                if (disable) {
+                    List<Applicant> applicants = new InternAplicationTableConnection().getApplicants("Request pending");
+                    for (Applicant app : applicants) {
+                        System.out.println("Inside loop" + app.getId());
+                        if (jwt.getId().equals(app.getId() + "") && app.getApplicationStatus().equals("Request pending")) {
+                            if (jwt.getSubject().equals(app.getEmailAddress())) {
+                                username = app.getEmailAddress();
+                                fullname = app.getFirstname() + " " + app.getLastname();
+                                message = "Welcome ";
+                                id = Integer.parseInt(jwt.getId());
+                                setDisable(false);
+                            }
+                        } else {
+                            message = "Token could not be validated.This account has been deactivated";
                         }
-                    } else {
-                        message = "Token could not be validated.This account has been deactivated";
                     }
                 }
             } else {

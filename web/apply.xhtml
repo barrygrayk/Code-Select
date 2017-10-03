@@ -5,12 +5,17 @@
       xmlns:p="http://primefaces.org/ui"
       xmlns:f="http://xmlns.jcp.org/jsf/core"
       xmlns:ui="http://xmlns.jcp.org/jsf/facelets">
-    <h:head>
+
+    <h:head>  
+
         <f:facet name="first">
             <meta content='text/html; charset=UTF-8' http-equiv="Content-Type"/>
             <meta name="viewport" content="width=device-width, initial-scale=1" />
             <title>Intern Web Application</title>      
         </f:facet>
+
+        <a href="internAppTopNav.xhtml"></a>
+        <a href="i"></a>
         <f:facet name="middle">
             <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css"/>
             <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
@@ -20,132 +25,326 @@
             <h:outputStylesheet name="bootstrap/css/bootstrap.css" />
             <h:outputStylesheet name="bootstrap/css/dashboard.css" />
 
+            <!--<h:outputStylesheet name="https://cdn.linearicons.com/free/1.0.0/icon-font.min.css"/>-->
+
             <h:outputStylesheet library="font-awesome" name="css/font-awesome.min.css" />
-            <link rel="icon" type="image/x-icon" href="#{resource['images/favicon.ico']}" />
+            <link rel="icon" type="image/x-icon"/>
             <h:outputScript library="primefaces" name="jquery/jquery.js" />
         </f:facet>
     </h:head>
 
 
     <h:body>
-        <h:outputStylesheet name="bootstrap/css/style.scss" />
+        <h:form>     
+            <p:growl id="messages" showDetail="true" />
 
-        <p:growl sticky="true" showDetail="true" life="1000"  autoUpdate="true"/>
+            <p:toolbar>
+                <f:facet name="left">
+                    <p:commandButton type="button" value="Onthatile Children's Ministry" icon="ui-icon-document" />
 
-        <div class="navbar-more-overlay">
+                    <span class="ui-separator">
+                        <span class="ui-icon ui-icon-grip-dotted-vertical" />
+                    </span>
+
+                    <p:commandButton type="button" value="Michael Phoya" icon="ui-icon-folder-open" />
+
+                    <span class="ui-separator">
+                        <span class="ui-icon ui-icon-grip-dotted-vertical" />
+                    </span>
+
+                    <p:commandButton type="button" title="Save" icon="ui-icon-disk" />
+                    <p:commandButton type="button" title="Delete" icon="ui-icon-trash" />
+                    <p:commandButton type="button" title="Print" icon="ui-icon-print" />
+                </f:facet>
+
+                <f:facet name="right">
+
+                    <span class="ui-separator">
+
+                        <span class="ui-icon ui-icon-grip-dotted-vertical" />
+                    </span>
+
+                    <p:menuButton value="Intern Application Portal">
+
+                        <p:menuitem value="Log Out"  ajax="false" icon="ui-icon-close" />
+
+                    </p:menuButton>
+                </f:facet>
+
+            </p:toolbar>
+        </h:form>
+
+        <div class="ui-g-12" align="center" position="bottom">
+            <h:form>
+                <p:tabView>
+
+                    <!-- Top Tab 1 -->
+
+                    <p:tab title="Welcome" id="tab0">
+                        <p:tabView orientation="left" id="tab0a">
+                            <!--- Information Information -->
+                            <!--- Inner Menu -->
+                            <p:tab title="Welcome"> 
+                                <p:tab id="internshipWelcome" title="Internship Information Welcome">
+                                    <!-- Internship Information Section --> 
+                                    <div class="ui-g-12">
+                                        <h:panelGrid styleClass="ui-panelgrid-blank">
+                                            <p:panel>
+                                                <h1> Hello and Welcome </h1>
+
+                                            </p:panel>
+                                            <p:panel>
+                                                <h1> Past Intern Experiences </h1>
+
+
+
+                                            </p:panel>
+                                        </h:panelGrid>
+                                    </div>
+                                    <!-- END OF INTERNSHIP INFORMATION SECTION -->
+                                </p:tab>
+                            </p:tab>     
+                        </p:tabView>          
+                    </p:tab>             
+
+
+
+                    <p:tab title="Intern Application Form " id="tab1">
+
+                        <!--- Side Menu -->
+                        <p:tabView orientation="left" id="tab1a" >
+
+                            <!--- Information Information -->
+                            <!--- Inner Menu -->
+                            <p:tab title="1. Internship Information"> 
+                                <p:tab id="internshipInformation" title="Internship Information">
+                                    <!-- Internship Information Section --> 
+                                    <p:panel header="Internship Information Section" class="ui-g-12">
+                                        <div class="ui-g-12">
+                                            <div class="bhoechie-tab-content active">
+                                                <ui:include src="internshipInfo.xhtml" />
+                                            </div> 
+
+                                        </div>
+                                        <!-- END OF INTERNSHIP INFORMATION SECTION -->
+                                    </p:panel>
+                                </p:tab>   
+                            </p:tab>
+
+                            <!--- General Information -->
+                            <!--- Side Menu -->
+                            <p:tab title="2. General Information">
+                                <!--- Inner Menu -->
+                                <p:tab id="generalInformation" title="General Information">
+                                    <p:panel header="General Information Section" class="ui-g-12">
+                                        <!-- General Information Section -->
+                                        <div class="ui-g-12">
+                                            <div class="bhoechie-tab-content">
+                                                <ui:include src="internGeneralInformation.xhtml" />
+                                            </div>
+                                        </div>
+                                        <!-- END OF GENERAL INFORMATION -->
+                                    </p:panel>
+                                </p:tab>
+                            </p:tab>
+
+                            <!--- Spiritual Life -->        
+                            <!--- Side Menu -->     
+                            <p:tab title="3. Spiritual Life">
+                                <!--- Inner Menu -->
+                                <p:tab id="spirituallife" title="Spiritual Life">
+                                    <p:panel header="Spiritual Life" class="ui-g-12">
+                                        <!-- Spiritual Life Section -->
+                                        <div class="ui-g-12">
+                                            <div class="bhoechie-tab-content">
+                                                <ui:include src="internSpiritualLife.xhtml" />
+                                            </div>
+                                        </div> 
+                                        <!-- END OF Spiritual Life Section  -->
+                                    </p:panel>
+
+                                </p:tab>
+
+                            </p:tab>
+
+                            <!--- Personality Traits -->        
+                            <!--- Side Menu -->
+                            <p:tab title="4. Personality Traits">
+                                <!--- Inner Menu --> 
+                                <p:tab id="personalitytraits" title="Personality Traits">
+                                    <p:panel header="Personality Traits" class="ui-g-12">
+                                        <!-- Personality Traits Section  -->
+                                        <div class="bhoechie-tab-content">
+                                            <ui:include src="internPersonalityTraits.xhtml" />
+                                        </div>
+                                        <!-- END OF Personality Traits Section  --> 
+                                    </p:panel>
+                                </p:tab>
+                            </p:tab>
+
+
+                            <!--- Legal Background -->        
+                            <!--- Side Menu -->     
+                            <p:tab title="5. Legal Background">
+                                <!--- Inner Menu -->
+                                <p:tab id="legalBackground" title="Legal Background">
+                                    <p:panel header="Legal Background" class="ui-g-12">
+                                        <!-- Legal Background Section -->
+                                        <div class="ui-g-12">
+                                            <div class="bhoechie-tab-content">
+                                                <ui:include src="internLegalBackground.xhtml" />
+                                            </div>
+                                        </div> 
+                                        <!-- END OF Legal Background Section  -->
+                                    </p:panel>
+                                </p:tab>
+                            </p:tab>
+
+                            <!-- Education Qualification Section -->      
+                            <!--- Side Menu --> 
+                            <p:tab title="6. Education Qualification">
+                                <!--- Inner Menu -->
+                                <p:tab id="educationQualification" title="Education Qualification">
+                                    <p:panel header="Education Qualification" class="ui-g-12">
+                                        <!-- Education Qualification Section -->
+                                        <div class="ui-g-12">
+                                            <div class="bhoechie-tab-content">
+                                                <ui:include src="internEducationQualification.xhtml" />
+                                            </div>
+                                        </div> 
+                                        <!-- END OF Education Qualification Section  -->
+                                    </p:panel>
+                                </p:tab>
+                            </p:tab>
+
+
+                            <!--- Work Education -->        
+                            <!--- Side Menu -->
+                            <p:tab title="7. Work Experience">  
+                                <!--- Inner Menu -->
+                                <p:tab id="workExperience" title="Work Experience">
+                                    <p:panel header="Work Experience" class="ui-g-12">
+                                        <!-- Work Education Section -->
+
+                                        <div class="bhoechie-tab-content">
+                                            <div class="bhoechie-tab-content">
+                                                <ui:include src="internWorkExperience.xhtml" />
+                                            </div>
+                                        </div>
+
+                                        <!-- END OF Work Education Section  -->
+                                    </p:panel>
+                                </p:tab>
+                            </p:tab>
+
+                            <!--- Medical History -->        
+                            <!--- Side Menu -->
+                            <p:tab title="9. Medical History">  
+                                <!--- Inner Menu -->
+                                <p:tab id="medicalHistory" title="Medical History">
+                                    <p:panel header="Medical History" class="ui-g-12">
+                                        <!-- Medical History Section -->
+                                        <div class="ui-g-12">               
+                                            <div class="bhoechie-tab-content">
+                                                <ui:include src="internMedicalHistory.xhtml" /> 
+                                            </div>                                        
+                                        </div>
+                                        <!-- END OF Work Education Section  -->
+                                    </p:panel>
+                                </p:tab>
+                            </p:tab>
+
+                            <!---  Emergency Contacts -->        
+                            <!--- Side Menu -->
+                            <p:tab title="10. Emergency Contacts">  
+
+                                <!--- Inner Menu -->
+                                <p:tab id="emergencyContacts" title="Emergency Contacts">
+                                    <p:panel header="Emergency Contacts" class="ui-g-12">
+                                        <!-- Emergency Contacts Section -->
+
+                                        <div class="ui-g-12">
+                                            <div class="bhoechie-tab-content">
+                                                <ui:include src="internEmergencyContacts.xhtml"/>
+                                            </div>
+                                        </div>
+                                        <!-- END OF GENERAL INFORMATION -->
+                                    </p:panel>
+                                </p:tab>
+
+                            </p:tab>
+
+                        </p:tabView>
+
+                    </p:tab>
+
+
+                    <!-- Top Tab 2  -->
+
+                    <p:tab title="Required Documents" id="tab2">
+                        <!--- Side Menu -->
+                        <p:tabView orientation="left" id="tab2a" >
+                            <p:tab title="Required Documents">  
+                                <!--- Inner Menu -->
+                                <p:tab id="emergencyContacts" title="Required Documents">
+                                    <p:panel header="Required Documents" class="ui-g-12">
+
+                                        <ui:include src="internRequiredDocs.xhtml" />
+
+                                    </p:panel>
+                                </p:tab>   
+                            </p:tab>
+                        </p:tabView>
+                    </p:tab>
+
+                    <!-- Top Tab 3  -->
+
+                    <p:tab title="Required Commitments" id="tab3">
+                        <!--- Side Menu -->
+                        <!-- <p:tabView orientation="left" id="tab3a" >
+                               <p:tab title="1. Intern Commitments"> 
+                                   <p:tab id="Commitments" title="Intern Commitments">  
+                                       <div class="bhoechie-tab-content">
+                                           <ui:include src="internTermsAndConditions.xhtml" />
+                                       </div>
+                                   </p:tab>
+                               </p:tab>     
+                           </p:tabView>-->
+
+                    </p:tab>
+
+                    <!-- Top Tab 4  -->
+
+                    <p:tab title="Check List" id="tab4">
+                        <!--- Side Menu -->
+                        <p:tabView orientation="left" id="tab4a" >
+                            <!--- Pastoral Reference -->
+                            <!--- Inner Menu -->
+                            <p:tab title="Check List"> 
+                                <p:tab id="Commitments" title="Check List">  
+                                    <div class="bhoechie-tab-content">
+
+                                    </div>
+                                </p:tab>
+                            </p:tab>     
+                        </p:tabView>        
+                    </p:tab>
+
+
+                </p:tabView>
+            </h:form>
         </div>
-        <nav class="navbar navbar-inverse navbar-fixed-top animate">
 
-            <ui:include src="internAppTopNav.xhtml" />
-        </nav>
-        <!-- END OF NAV -->
-        <!-- Form Container -->
+      <h:form>     
+    <p:growl id="messagess" showDetail="true" />
+ 
+    <p:toolbar>
+        <f:facet name="buttom">
 
-        <div class="FormContainer" id="left">
-            <div class="container">
-                <div class="row">
-                    <div class="col-lg-5 col-md-5 col-sm-8 col-xs-9 bhoechie-tab-container">
-                        <div class="col-lg-3 col-md-3 col-sm-3 col-xs-3 bhoechie-tab-menu">
-                            <div class="list-group">
-                                <a href="#" class="list-group-item active text-center">
-                                    <br/>Internship Information
-                                </a>
-                                <a href="#" class="list-group-item ">
-                                    <br/>General Information
-                                </a>
-                                <a href="#" class="list-group-item text-center">
-                                    <br/>Spiritual Life
-                                </a>
-                                <a href="#" class="list-group-item text-center">
-                                    <br/>Personality Traits 
-                                </a>
-                                <a href="#" class="list-group-item text-center">
-                                    <br/>Legal Background
-                                </a>
-                                <a href="#" class="list-group-item text-center">
-                                    <br/>Education
-                                </a>
-                                <a href="#" class="list-group-item text-center">
-                                    <br/>Medical History
-                                </a>
-                                <a href="#" class="list-group-item text-center">
-                                    <br/>Experience
-                                </a>
-                                <a href="#" class="list-group-item text-center">
-                                    <br/>Emergency Contacts
-                                </a>
-                                <a href="#" class="list-group-item text-center">
-                                    <br/>Terms and Conditions
-                                </a>
-                                <a href="#" class="list-group-item text-center">
-                                    <br/>Required Documents
-                                </a>
-                         
-                            </div>
-                        </div>
-                        <!-- Form Sections -->
-                        <div class="col-lg-9 col-md-9 col-sm-9 col-xs-9 bhoechie-tab">
+         <p:progressBar value="75" labelTemplate="{value}% Intern Application Progress" displayOnly="true"/>
+         </f:facet>
+    </p:toolbar>
+         </h:form>
 
-                            <div class="bhoechie-tab-content active">
-                                <ui:include src=" internshipInfo.xhtml" />
-
-                            </div>
-                            <!-- General Information Section -->
-                            <div class="bhoechie-tab-content ">
-                                <ui:include src="internGeneralInformation.xhtml" />
-                            </div>
-                            <!-- END OF GENERAL INFORMATION -->
-                            <!-- Spiritual Life Section  -->
-
-                            <div class="bhoechie-tab-content">
-                                <ui:include src="internSpiritualLife.xhtml" />
-                            </div>
-                            <div class="bhoechie-tab-content">
-                                <ui:include src="internPersonalityTraits.xhtml" />
-                            </div>
-                            <div class="bhoechie-tab-content">
-                                <ui:include src="internLegalBackground.xhtml" />
-                            </div>
-                            <!-- END OF Spiritual Life Section  -->
-                            <!-- Education Qualification Section -->
-                            <div class="bhoechie-tab-content">
-                                <ui:include src="internEducationQualification.xhtml" />
-                            </div>
-                            <div class="bhoechie-tab-content">
-                                <ui:include src="internMedicalHistory.xhtml" />
-                            </div>
-                            <!-- END of Education Qualification Section -->
-                            <!-- Work Experience Section -->
-                            <div class="bhoechie-tab-content">
-                                <ui:include src="internWorkExperience.xhtml" />
-                            </div>
-                            <!--- END of Work Experience Section -->
-                            <!-- Emergency Contacts Section -->
-                            <div class="bhoechie-tab-content">
-                                <ui:include src="internEmergencyContacts.xhtml" />
-                            </div>
-                            <div class="bhoechie-tab-content">
-                                <ui:include src="internTermsAndConditions.xhtml" />
-                            </div>
-                            <!-- END Emergency Contacts Section -->
-                            <!-- Required Documents Section -->
-                            <div class="bhoechie-tab-content">
-                                <ui:include src="internRequiredDocs.xhtml" />
-                            </div>
-                       
-                        </div>
-
-                    </div>
-
-                </div>
-            </div>
-
-        </div>
-
-        <!-- Profile Photo Holder -->
-        <div class="profileHolder" id="right">
-            <ui:include src="internProfile.xhtml" />
-        </div>
     </h:body>
 </html>
-

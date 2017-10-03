@@ -6,33 +6,38 @@
       xmlns:p="http://primefaces.org/ui">
     <ui:composition>
         <center>
-            <h2 style="margin-top: 0;color:black">Required Documents</h2>
+            
             <h:form class="form-style-9">
                 <ul>
-                    <p:outputLabel value="All required documents must be sent to onthatile.sa@gmail.com" />
-                    <li>
-                           <p:outputLabel value="Pastoral Reference Form" />
-                           <p:inputText type="text" class="field-style field-split align-right" placeholder="Pastors email"  value="#{Apply.dos.pastorsEmail}" />
-                    </li>
-                    <li>
-                         <p:outputLabel  value="General Reference	Form" />
-                          
-                         <p:inputText type="text" class="field-style field-split align-right" placeholder="Phone number"  value="#{Apply.dos.genRefEmail}"/>
-                    </li>
-                    <li>
-                        <p:outputLabel value="Parental Consent Form" />
+                    <h4>All required documents must be sent to onthatile.sa@gmail.com</h4>
+                    
+                    <p:panel>
+                        <h4>Pastoral Reference Form</h4>
+                        <p:inputText type="text" class="field-style field-split align-right" placeholder="Pastors email"  value="#{Apply.dos.pastorsEmail}" />
+                    </p:panel>
+          
+                    <p:panel>
+                        <h4>General Reference Form - First Individual</h4>       
+                        <p:inputText type="text" class="field-style field-split align-right" placeholder="1st Reference email"  value="#{Apply.dos.genRefEmail}"/>
+                    </p:panel>
+                    
+                    <p:panel>
+                        <h4>General Reference Form - Second Individual</h4>       
+                        <p:inputText type="text" class="field-style field-split align-right" placeholder="2nd Reference email"  value="#{Apply.dos.genRefEmail}"/>
+                    </p:panel>
+        
+                    <p:panel>
+                        <h4>Parental Consent Form</h4>
                         <p:inputText type="text" class="field-style field-split align-right" placeholder="Parents email" value="#{Apply.dos.parntalCon}"/>
-                    </li>
-                       <li>
-                        <p:outputLabel value="Checklist" />
-                        <p:inputText type="text" class="field-style field-split align-right" placeholder="Parents email"  />
-                    </li>
-    
-                    <li>
-                        <p:commandButton  value="Save"  icon="fa fa-save" class="btn btn-primary btn-md" action="#{Apply.saveEmergencyContact()}"/>
-                    </li>
+                     </p:panel>
+
                 </ul>
             </h:form>
+            
+            <div class="ui-g-12" align="center" position="bottom">
+                        <p:commandButton  value="Save"  icon="fa fa-save" class="btn btn-primary btn-md" action="#{Apply.saveEmergencyContact()}"/>
+            </div>
+            
         </center>
     </ui:composition>
 </html>
