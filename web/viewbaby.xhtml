@@ -20,10 +20,6 @@
                 <p:ajax event="rowSelect" listener="#{ChildCont.onRowSelect}" update="@form"/>
                 <p:ajax event="rowUnselect" listener="#{ChildCont.onRowUnselect}" update="@form"/>
                           
-                <p:column headerText="Child ID">
-                    <h:outputText value="#{temp.babyProfileid}" />
-                </p:column>
-                
                 <p:column headerText="First Name" id="firstName">
                     <h:outputText  value="#{temp.firstname}"/>                 
                 </p:column>
@@ -31,7 +27,9 @@
                 <p:column headerText="Last Name" id="lastName">
                     <h:outputText  value="#{temp.lastname}"/>                  
                 </p:column>
-                
+                <p:column headerText="Date of Birth">
+                    <h:outputText value="#{temp.dateOfBirth}" />
+                </p:column>
                 <p:column headerText="Distinguish Mark" id="distinguishingMarks">
                     <h:outputText value="#{temp.destingushingMarks}"/>                    
                 </p:column>
@@ -40,10 +38,13 @@
                     <p:growl id="viewListOfChildren" showDetail="true"/>
                     <p:row>
       
-                        <p:commandButton process="viewTable" update=":content" icon="ui-icon-search" value="View" action="#{Include.setPage('childProfilePage')}" />
-                        <p:commandButton icon="fa fa-plus" value="Add" action="#{ChildCont.clearChild()}" onclick="PF('dlgAdd').show()" update=":testEditForm" process="viewListOfBabies"  />
-                        <p:commandButton icon="fa fa-fw fa-edit" value="Edit" onclick="PF('dlgEdit').show()"  update=":testEditForm" process="viewListOfBabies"  />
-                        <p:commandButton icon="fa fa-fw fa-remove" value="Delete" actionListener="#{ChildCont.deleteSingleChild()}" update="viewTable"> 
+                        <p:commandButton process="viewTable" update=":content" icon="ui-icon-search" value="View" action="#{Include.setPage('childProfilePage')}" actionListener="#{ChildCont.setDefaultChild()}"/>
+                        <p:commandButton icon="fa fa-plus" value="Add" action="#{ChildCont.clearChild()}" onclick="PF('dlgAdd').show()" update=":addChildForm" process="viewListOfBabies" type="submit">
+                            <p:resetInput target=":addChildForm" />
+                            <p:ajax update=":addChildForm" resetValues="true" />
+                        </p:commandButton>
+                        <p:commandButton icon="fa fa-fw fa-edit" value="Edit" onclick="PF('dlgEdit').show()"  update=":testEditForm" process="viewListOfBabies" type="submit" />
+                        <p:commandButton icon="fa fa-fw fa-trash-o" value="Delete" actionListener="#{ChildCont.deleteSingleChild()}" update="viewTable"> 
                             <p:confirm header="Confirmation" message="Are you sure, you want delete the selected record?" icon="ui-icon-alert" />
                         </p:commandButton>
                         <p:confirmDialog global="true" showEffect="fade" hideEffect="fade">
@@ -61,7 +62,7 @@
             <p:dialog header="Create a Child Record" widgetVar="dlgAdd"   resizable="false" responsive="true" showEffect="explode" hideEffect="explode" >
                 <ui:include src="addBaby.xhtml" />
             </p:dialog>
-            <p:dialog header="Update a Child Record" widgetVar="dlgEdit"  resizable="false" responsive="true" showEffect="explode" hideEffect="explode" modal="true" appendTo="@(body)">
+            <p:dialog header="Update a Child Record" widgetVar="dlgEdit"  resizable="false" responsive="true" showEffect="explode" hideEffect="explode" >
                 <ui:include src="updateBaby.xhtml" />
             </p:dialog>
             <!-- This needs to be  rethought-->

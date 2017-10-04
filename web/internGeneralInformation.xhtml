@@ -6,85 +6,85 @@
       xmlns:f="http://xmlns.jcp.org/jsf/core"
       xmlns:h="http://xmlns.jcp.org/jsf/html">
     <ui:composition>
-            
-       <div class="ui-g-6">
+
+        <div class="ui-g-6">
             <h:panelGrid styleClass="ui-panelgrid-blank">
-                    
+
                 <p:panel header="First Name">
                     <p:inputText id ="fName" class="field-style field-split align-left"  value="#{Apply.firstname}"/>
                 </p:panel>
-                
+
                 <p:panel header="Surname">
                     <p:inputText id="surname1" type="text" class="field-style field-split align-left"  value="#{Apply.lastname}"/>
                 </p:panel>
-                
+
                 <p:panel header="Prefared Name">
-                     <p:inputText id="preName" type="text" class="field-style field-split align-left" value="#{Apply.prename}"/>
+                    <p:inputText id="preName" type="text" class="field-style field-split align-left" value="#{Apply.prename}"/>
                 </p:panel>
-                
+
                 <p:panel header="Gender">
-                    <p:selectOneMenu id="Gender" value="#{Apply.theGender}" >
+                    <p:selectOneMenu id="Gender" value="#{Apply.theGender}"   style="width:100%">
                         <f:selectItem itemLabel="Gender" itemValue="#{Apply.theGender}" noSelectionOption="true" />
                         <f:selectItems value="#{Apply.genders}" />
                     </p:selectOneMenu>
                 </p:panel>
-                
+
                 <p:panel header="Date of Birth">
-                     <p:calendar id="mask" value="#{Apply.dateOfBirth}" pattern="dd-MM-yyyy"  styleClass="dateTimeField"/>
+                    <p:calendar id="mask" value="#{Apply.dateOfBirth}" pattern="dd-MM-yyyy" />
                 </p:panel>
-                
+
                 <p:panel header="Marital Status">
-                    <p:selectOneMenu id="Maritalstatus" value="#{Apply.maritalStatus}" style="width:49%; margin-left: -8px " class="drop field-split align-left" >
-                            <f:selectItem itemLabel="Status" itemValue="#{Apply.maritalStatus}" noSelectionOption="true" />
-                            <f:selectItems value="#{Apply.maritalStatuses}" />
+                    <p:selectOneMenu id="Maritalstatus" value="#{Apply.maritalStatus}" style="width:100%"  >
+                        <f:selectItem itemLabel="Status" itemValue="#{Apply.maritalStatus}" noSelectionOption="true" />
+                        <f:selectItems value="#{Apply.maritalStatuses}" />
                     </p:selectOneMenu>
                 </p:panel>
             </h:panelGrid>  
         </div>
-         
+
         <div class="ui-g-6">
             <h:panelGrid styleClass="ui-panelgrid-blank">
-                
-                
+
+
                 <p:panel header="Phone Number">
                     <p:inputText id="phoneNumber"   class="field-style field-split align-right"  value="#{Apply.phoneNumber}"/>
                 </p:panel>
-                
+
                 <p:panel header="Email Address">
                     <p:inputText id="Email" type="text"  class="field-style field-split align-right"  value="#{Apply.emailAddress}"/>
                 </p:panel>
-                
+
                 <p:panel header="Street Address">
                     <p:inputText id="streetAddress" type="text" class="field-style field-split align-right" value="#{Apply.address}" />
                 </p:panel>
-            
+
                 <p:panel header="City/State">
                     <p:inputText  id="City" type="text"  class="field-style field-split align-right" value="#{Apply.city}"/>
                 </p:panel>
-                 
+
                 <p:panel header="Zip Code">
                     <p:inputText id ="zip" type="number"  class="field-style field-split align-right" value="#{Apply.zipCode}"/>
                 </p:panel>
-                
+
                 <p:panel header="Country">
-                            <p:selectOneMenu id="country" value="#{Apply.country}" style="width:102%;margin: 0px " class="drop field-split align-right" filter="true" filterMatchMode="startsWith" panelStyle="width:auto">
-                                <f:selectItem itemLabel="Country" itemValue="#{Apply.country}" noSelectionOption="true" />
-                                <f:selectItems value="#{Apply.homeCountry}" />
-                            </p:selectOneMenu>
+                    <p:selectOneMenu id="country" value="#{Apply.country}" style="width:102%;margin: 0px " class="drop field-split align-right" filter="true" filterMatchMode="startsWith" panelStyle="width:auto">
+                        <f:selectItem itemLabel="Country" itemValue="#{Apply.country}" noSelectionOption="true" />
+                        <f:selectItems value="#{Apply.homeCountry}" />
+                    </p:selectOneMenu>
                 </p:panel>
- 
+
             </h:panelGrid>
-       
+
         </div>
-        
-        
+
+
         <div class="ui-g-12" align="center" position="bottom">
-            
-       
-                    <p:commandButton  value="Save"  icon="fa fa-save" class="btn btn-primary btn-md" action="#{Apply.saveGeneralInfo()}"/>
-                
-            
-         </div>
-               
+
+
+            <p:commandButton  value="Save"  icon="fa fa-save" class="btn btn-primary btn-md" action="#{Apply.saveGeneralInfo()}"/>
+
+
+        </div>
+
     </ui:composition>
 </html>

@@ -4,34 +4,53 @@
       xmlns:h="http://xmlns.jcp.org/jsf/html"
       xmlns:p="http://primefaces.org/ui"
       xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
       xmlns:ct="http://www.chartistjsf.org/charts">
-
+  
     <ui:composition>
-      
         
         <h:form id="viewHeightChart" enctype="multipart/form-data">
+            
             <div class="ui-g">
                 <div class="ui-g-12" style="width: 500px">
-                    <p:panel id="PanelHeight" style="width: 858px" >
-                        <ct:chart type="line" model="#{ChildCont.heightChart}" style="height:400px; width:800px"/>
+                    <p:panel id="PanelHeight" style="width: 858px;" >
+                        <ct:chart id="heightChart" type="line" model="#{ChildCont.heightChart}" style="height:400px; width:800px; margin-top:35px; margin-left: 25px">
+                            <p:ajax event="itemSelect" listener="#{ChildCont.onItemSelect}" update="HeightDlg lineChartMessage" oncomplete="PF('dlgUpdateHeight').show()"/>      
+                        </ct:chart>                        
+                        <p:message id="lineChartMessage" for="heightChart" showDetail="true" />
                     </p:panel>
                 </div>
-                <div class="ui-g-12">
-                    <p:panel  >
-                        <p:panelGrid columns="3">
-                            <p:commandButton value="Update" >
+                <div class="ui-g-12" style="margin-top: -50px">
+                    <p:panel >
+                        <p:panelGrid columns="2" style="width:282px">
+                            <p:commandButton value="Refresh" icon="fa fa-refresh">
+                                <p:ajax id="currentPage" update="@form" listener="#{ChildCont.getSelectedChildObject()}"/>
                                 <p:resetInput target="PanelHeight"/>
                             </p:commandButton>
-                            <p:commandButton value="Delete" >
-                                <p:resetInput target="PanelHeight"/>
-                            </p:commandButton>
-                            <p:commandButton value="Cancel" >
-                                <p:resetInput target="PanelHeight"/>
-                            </p:commandButton>
+                            <p:commandButton value="Cancel" icon="fa fa-times-circle" onclick="PF('dlgHeightChart').hide()"/>     
                         </p:panelGrid>
                     </p:panel>
                 </div>
-            </div>    
+            </div>  
+            <p:dialog id="HeightDlg" header="Update Height Entry" widgetVar="dlgUpdateHeight" resizable="false" responsive="true">
+            <p:panelGrid columns="2">
+                <p:outputLabel value="Height Value" />
+                <p:inputNumber id="txtHeight" value="#{ChildCont.child.heightRecorded.height}"/>
+                <p:outputLabel value="Date Recorded:" />
+                <p:calendar id="dateEvent" value="#{ChildCont.child.heightRecorded.dateRecorded}" pattern = "dd/MM/yyyy" mask = "true">
+                    <p:ajax event="dateSelect" listener="#{ChildCont.onDateSelect}" />
+                </p:calendar>
+            </p:panelGrid>
+                <p:panelGrid columns="3">
+                    <p:commandButton value="Cancel"  icon="fa fa-times-circle" onclick="PF('dlgUpdateHeight').hide()"/>
+                    <p:commandButton value="Update" icon="fa fa-fw fa-edit" action="#{ChildCont.updateChildHeightEntry()}" onclick="PF('dlgUpdateHeight').hide()">
+                        <p:resetInput target="PanelHeight"/>
+                    </p:commandButton>
+                    <p:commandButton value="Delete" action="#{ChildCont.deleteHeightEntry()}" icon="fa fa-fw fa-trash-o"  onclick="PF('dlgUpdateHeight').hide()">
+                        <p:resetInput target="PanelHeight"/>
+                    </p:commandButton>
+                </p:panelGrid>
+        </p:dialog>
         </h:form> 
     </ui:composition>
    

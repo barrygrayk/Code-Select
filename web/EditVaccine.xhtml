@@ -1,0 +1,50 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:f="http://xmlns.jcp.org/jsf/core">
+
+    <ui:composition>
+        
+        <h:form id="editVaccineForm">
+            <p:panelGrid columns="1" style=" width: 500px">
+                <p:dataTable id="editVaccineTb" var="temp" value="#{ChildCont.listOfVaccines}" selectionMode="single"  rowKey="#{temp.vaccineId}" scrollable="true" scrollHeight="100" >
+                    <p:ajax event="rowSelect" listener="#{ChildCont.onRowSelect}" update="@form"/>
+                    <p:ajax event="rowUnselect" listener="#{ChildCont.onRowUnselect}" update="@form"/>
+                    <p:column headerText="Vaccine">
+                        <h:outputText value="#{temp.vaccine}" />
+                    </p:column>
+                    <p:column headerText="AgeGroup">
+                        <h:outputText value="#{temp.ageGroup}" />
+                    </p:column>
+                    <p:column headerText="Site">
+                        <h:outputText value="#{temp.site}" />
+                    </p:column>
+                </p:dataTable>
+            </p:panelGrid>
+            <p:panelGrid columns="4">
+                <p:outputLabel value="Vaccine:" />
+                <p:inputText id="txVaccine" value="#{ChildCont.vaccine.vaccine}" />
+                <p:outputLabel value="Site:" style="margin-right: 15px"/>
+                <p:inputText id="txSite"  value="#{ChildCont.vaccine.site}"/>
+                <p:outputLabel value="AgeGroup:" style="margin-top: 15px"/>
+                <p:inputText id="txAgeGroup" value="#{ChildCont.vaccine.ageGroup}" />
+            </p:panelGrid> 
+            <p:panelGrid columns="3" >
+                <p:commandButton value="Cancel" icon="fa fa-fw fa-remove" onclick="PF('dlgEditVaccine').hide()" />
+                <p:commandButton value="Update" action="#{ChildCont.updateVaccine()}" icon="fa fa-fw fa-edit" oncomplete="PF('dlgEditVaccine').hide()" update="@form :mangeMedicalHistoryDialog"/>
+                <p:commandButton value="Delete" actionListener="#{ChildCont.deleteVaccineRecord()}" icon="fa fa-fw fa-trash-o" oncomplete="PF('dlgEditVaccine').hide()" update="@form :mangeMedicalHistoryDialog">
+                        <p:confirm header="Confirmation" message="Are you sure, you want delete the selected record?" icon="ui-icon-alert" />
+                </p:commandButton>
+                <p:confirmDialog global="true" showEffect="fade" hideEffect="fade">
+                    <p:commandButton value="Yes" type="button" styleClass="ui-confirmdialog-yes" icon="ui-icon-check" />
+                    <p:commandButton value="No" type="button" styleClass="ui-confirmdialog-no" icon="ui-icon-close" />
+                </p:confirmDialog> 
+            </p:panelGrid>
+        </h:form> 
+    </ui:composition>
+   
+</html>
+

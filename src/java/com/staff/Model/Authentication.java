@@ -14,7 +14,7 @@ public class Authentication implements Authenticate {
     private String userName;
     private String token;
 
-    String[] statusArray = {"Pending activaton", "Pending reset", "Active","Deactivated","Suspended"};
+    String[] statusArray = {"Pending activaton", "Pending reset", "Active", "Deactivated", "Suspended"};
     String status;
 
     public Authentication() {

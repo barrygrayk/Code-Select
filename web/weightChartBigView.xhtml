@@ -13,25 +13,43 @@
             <div class="ui-g">
                 <div class="ui-g-12" style="width: 500px">
                     <p:panel id="PanelWeight" style="width: 858px" >
-                        <ct:chart type="bar" model="#{ChildCont.weightChart}" style="height:400px; width:800px"/>
+                        <ct:chart id="weightChart" type="bar" model="#{ChildCont.weightChart}" style="height:400px; width:800px">
+                            <p:ajax event="itemSelect" listener="#{ChildCont.onWeightSelect}" update="WeightDlg lineChartMessage" oncomplete="PF('dlgUpdateWeight').show()"/>
+                        </ct:chart>
+                        <p:message id="lineChartMessage" for="weightChart" showDetail="true" />
                     </p:panel>
                 </div>
                 <div class="ui-g-12">
                     <p:panel  >
-                        <p:panelGrid columns="3">
-                            <p:commandButton value="Update" >
+                        <p:panelGrid columns="3" style="width:282px">
+                            <p:commandButton value="Refresh" update="@form" icon="fa fa-refresh">
+                                <p:ajax id="currentPage" update="@form" listener="#{ChildCont.getSelectedChildObject()}"/>
                                 <p:resetInput target="PanelWeight"/>
                             </p:commandButton>
-                            <p:commandButton value="Delete" >
-                                <p:resetInput target="PanelWeight"/>
-                            </p:commandButton>
-                            <p:commandButton value="Cancel" >
+                            <p:commandButton value="Cancel" onclick="PF('dlgWeightChart').hide()" icon="fa fa-times-circle">
                                 <p:resetInput target="PanelWeight"/>
                             </p:commandButton>
                         </p:panelGrid>
                     </p:panel>
                 </div>
-            </div>    
+            </div>
+            <p:dialog id="WeightDlg" header="Update Weight Entry" widgetVar="dlgUpdateWeight" resizable="false" responsive="true">
+            <h:panelGrid columns="2">
+                <p:outputLabel value="Weight Value:" />
+                <p:inputNumber id="txtWeight" value="#{ChildCont.child.weightRecorded.weight}"/>
+                <p:outputLabel value="Date Recorded:" />
+                <p:calendar id="dateEvent" value="#{ChildCont.child.weightRecorded.dateRecorded}" pattern = "dd/MM/yyyy" mask = "true">
+                    <p:ajax event="dateSelect" listener="#{ChildCont.onDateSelect}" />
+                </p:calendar>
+            </h:panelGrid>
+            <p:panelGrid columns="3">
+                <p:commandButton value="Cancel"  icon="fa fa-times-circle" onclick="PF('dlgUpdateWeight').hide()"/>
+                <p:commandButton value="Update" action="#{ChildCont.updateChildWeightEntry()}"  icon="fa fa-fw fa-edit" onclick="PF('dlgUpdateWeight').hide()"/>
+                <p:commandButton value="Delete" icon="fa fa-fw fa-trash-o" action="#{ChildCont.deleteWeightEntry()}" onclick="PF('dlgUpdateWeight').hide()">
+                    <p:resetInput target="PanelWeight"/>
+                </p:commandButton>
+            </p:panelGrid>
+        </p:dialog>
         </h:form> 
     </ui:composition>
    

@@ -15,6 +15,8 @@
  */
 package io.jsonwebtoken.impl;
 
+import com.io.jsonwebtoken.impl.AndroidBase64Codec;
+
 public class DefaultTextCodecFactory implements TextCodecFactory {
 
     protected String getSystemProperty(String key) {

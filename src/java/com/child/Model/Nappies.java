@@ -13,6 +13,7 @@ public class Nappies {
     private boolean conditionDry;
     private Date nappyChangeTime;
     private Date dateRecorded;
+    private String wetNappy, dryNappy; // for display purposes
     
     public int getNappyId() {
         return nappyId;
@@ -36,6 +37,7 @@ public class Nappies {
 
     public void setConditionWet(boolean conditionWet) {
         this.conditionWet = conditionWet;
+        setWetNappy();
     }
 
     public boolean isConditionDry() {
@@ -44,6 +46,7 @@ public class Nappies {
 
     public void setConditionDry(boolean conditionDry) {
         this.conditionDry = conditionDry;
+        setDryNappy();
     }
 
     public Date getDateRecorded() {
@@ -52,6 +55,29 @@ public class Nappies {
 
     public void setDateRecorded(Date dateRecorded) {
         this.dateRecorded = dateRecorded;
+    }
+
+    public String getWetNappy() {
+        return wetNappy;
+    }
+
+    public void setWetNappy() {
+        if(this.conditionWet)
+            this.wetNappy = "yes";
+        else 
+            this.wetNappy = "No";
+    }
+
+    public String getDryNappy() {
+        return dryNappy;
+    }
+
+    public void setDryNappy() {
+        if(this.conditionDry)
+            this.dryNappy = "yes";
+        else 
+            this.dryNappy = "No";
+        
     }
     
 

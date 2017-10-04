@@ -8,140 +8,324 @@
         
     <ui:composition>
         
-        <h:form id="mangeMedicalHistoryDialog">
+        <h:form id="mangeMedicalHistoryDialog" style="height: 658px">
             
                 <p:row>
-                    <p:panel id="p0" style="margin-right: 750px">
-                        <p:outputLabel value="View date:"/>
-                        <p:calendar id="button" showOn="button" placeholder="View date" pattern = "dd/MM/yyyy" value="#{ChildCont.searchDate}" mask = "true" style="text-align: right;">
+                        <p:menubar>
+                            <p:submenu label="File" icon="ui-icon-document">
+                                <p:submenu label="New" icon="ui-icon-contact">
+                                    <p:menuitem value="Allergy " onclick="PF('dlgCreateAllergy').show()" icon="fa fa-fw fa-bug"/>
+                                    <p:menuitem value="Vaccine" onclick="PF('dlgCreateVaccine').show()" icon=" fa fa-fw fa-eyedropper"/>
+                                    <p:menuitem value="Medication" onclick="PF('dlgCreateMedication').show()" icon="fa fa-fw fa-medkit"/>
+                                    <p:menuitem value="Diagnostic" onclick="PF('dlgCreateDiagnosis').show()" icon="fa fa-fw fa-stethoscope"/>
+                                    <p:menuitem value="Appointment" onclick="PF('dlgCreateAppointment').show()" icon="fa fa-fw fa-user-md"/>
+                                    <p:menuitem value="Exam Required" onclick="PF('dlgCreateExam').show()" icon="fa fa-fw fa-street-view"/>
+                                    <p:menuitem value="Chronic Illness" onclick="PF('dlgCreateChronicIllness').show()"  icon="fa fa-fw fa-bed"/>
+                                    <p:menuitem value="Treatment Plan" onclick="PF('dlgCreateTreatment').show()" icon="fa fa-fw fa-hospital-o" />
+                                    <p:menuitem value="Supporting Evidence" onclick="PF('dlgCreateEvidence').show()" icon="fa fa-fw fa-files-o" />
+                                </p:submenu>                  
+                            </p:submenu>
 
-                        </p:calendar>
-                    </p:panel>
+                            <p:submenu label="Edit" icon="ui-icon-pencil">
+                                    <p:menuitem value="Allergy " onclick="PF('dlgEditAllergy').show()" icon="fa fa-fw fa-bug"/>
+                                    <p:menuitem value="Vaccine" onclick="PF('dlgEditVaccine').show()" icon=" fa fa-fw fa-eyedropper"/>
+                                    <p:menuitem value="Medication" onclick="PF('dlgEditMedication').show()" update=":editMedicationForm" icon="fa fa-fw fa-medkit"/>
+                                    <p:menuitem value="Diagnostic" onclick="PF('dlgEditDiagnosis').show()" icon="fa fa-fw fa-stethoscope"/>
+                                    <p:menuitem value="Appointment" onclick="PF('dlgEditAppointment').show()" icon="fa fa-fw fa-user-md" />
+                                    <p:menuitem value="Exam Required" onclick="PF('dlgEditExam').show()" icon="fa fa-fw fa-street-view"/>
+                                    <p:menuitem value="Chronic Illness" onclick="PF('dlgEditChronicIllness').show()" icon="fa fa-fw fa-bed"/>
+                                    <p:menuitem value="Treatment Plan" onclick="PF('dlgEditTreatment').show()" icon="fa fa-fw fa-hospital-o" />
+                                    <p:menuitem value="Supporting Evidence" onclick="PF('').show()" icon="fa fa-fw fa-files-o" />
+                            </p:submenu>
+
+                            <p:submenu label="Views" icon="ui-icon-search">                                
+                                <p:menuitem value="Medication Taken" icon="fa fa-fw fa-heartbeat" onclick="PF('dlgEditMedicationTaken').show()" />
+                                <p:menuitem value="Initial Medical Record" onclick="PF('dlgInitialMedicalRecord').show()"  icon="fa fa-fw fa-th-list"/>                               
+                            </p:submenu>
+                            
+                            <p:submenu label="Help" icon="ui-icon-help">
+                                <p:menuitem value="User Manual" icon="fa fa-fw fa-info" />
+                            </p:submenu>
+                       
+                            <f:facet name="options">
+                                <p:inputText style="margin-right:10px" placeholder="Search"/>
+                                <p:commandButton value="Exit" icon="ui-icon-extlink" oncomplete="PF('dlgManageMedicalH').hide()" />
+                            </f:facet>
+                        </p:menubar>
+                   
                 </p:row>
-                
-                
-                    <div class="ui-g">
-                        <div class="ui-g-6">
+            <p:tabView dynamic="true">
+                <p:tab title="Consultation Information" id="tab1">
+                     <div class="ui-g">
+                        <div class="ui-g-12">
+                            <div class="ui-g-6">
+                                <div class="ui-g-12" style="margin-top: -8px">
                             <p:toolbar>
                                 <p:toolbarGroup align="left">
                                     <h4> Appointment Details</h4>
                                 </p:toolbarGroup>
                             </p:toolbar>
-                            <p:panel>
-                                <p:dataTable id="manageMedicalHTb" var="temp" value="#{ChildCont.child.listOfMedicalHistoryRecords}" selectionMode="single"  rowKey="#{temp.id}" rows="5" scrollable="true" scrollHeight="150" >
-
-                                <p:column headerText="Consultation Reason">
-                                    <h:outputText value="#{temp.cause}" />
-                                </p:column>
-
+                            <p:panel style="height:190px ">
+                                <p:dataTable id="manageMedicalHTb" var="temp" value="#{ChildCont.getListOfAllAppointmentRecords()}" selectionMode="single"  rowKey="#{temp.appointmentId}"  scrollable="true" scrollHeight="130" >
+                                    <p:ajax event="rowSelect" listener="#{ChildCont.onRowSelect}" update="@form" process="manageMedicalHTb"/>
+                                 <p:ajax event="rowUnselect" listener="#{ChildCont.onRowUnselect}" update="@form" process="manageMedicalHTb"/>
                                 <p:column headerText="Hospital Name">
-                                    <h:outputText value="#{temp.clincVisited}" />
+                                    <h:outputText value="#{temp.hospital}" />
                                 </p:column>
 
                                 <p:column headerText="Doctor Name">
-                                    <h:outputText value="#{temp.doctersName}" />
+                                    <h:outputText value="#{temp.doctor}" />
                                 </p:column>
-                            </p:dataTable>
+                                <p:column headerText="Date">
+                                    <h:outputText value="#{temp.date}" />
+                                </p:column>
+                                </p:dataTable>
                             </p:panel>
                         </div>
-                        <div class="ui-g-6">
+                        <div class="ui-g-12">
                             <p:toolbar>
                                 <p:toolbarGroup align="left">
-                                    <h4> Child's Established Perfil</h4>
+                                    <h4> Treatment Plan</h4>
                                 </p:toolbarGroup>
                             </p:toolbar>
-                            <p:panel>
-                            <p:panelGrid id="PanelPerfil" columns="4">
-                                <p:outputLabel id="currentWeight" value="Current Weight:" />
-                                <p:inputText id="txtCurrWeight" value="" style="width: 100px"/>
-                                <p:outputLabel id="ChronicIllness" value="Suffers from:" />
-                                <p:inputText id="txtChronicIllness" value="" style="width: 100px"/>
-                                <p:outputLabel id="AllergicTo" value="Allergic to:" />
-                                <p:inputText id="txtAllergicTo" value="" style="width: 100px"/>
-                                <p:outputLabel id="BloodType" value="Blood Type:" />
-                                <p:inputText id="txtBloodType" value=""   style="width: 100px" disabled="true"/>
-                                <p:outputLabel id="Age" value="Age:" />
-                                <p:inputText id="txtAge" value="" style="width: 100px" disabled="true"/>
-                                <p:commandButton value="Update">
-                                    <p:resetInput target="PanelPerfil"/>
-                                </p:commandButton>
-                                <p:commandButton value="Delete">
-                                    <p:resetInput target="PanelPerfil"/>
-                                </p:commandButton>
+                            <p:panel style="height: 248px">
+                            <p:panelGrid id="PanelTreatment" columns="2"  style="margin-left:-35px; margin-top: 12px">
+                                   
+                                <p:outputLabel value="Description:"/>
+                                
+                                 
+                                <p:outputLabel value="Start Date:"/>
+                                <p:inputText id="txtDescription"  value="#{ChildCont.child.treatmentPlan.description}"/>
+                                
+                                <p:calendar id="TreatmentStart" showOn="button" placeholder="View date" pattern = "dd/MM/yyyy" value="#{ChildCont.child.treatmentPlan.startDate}" mask = "true" style="text-align: left;"/>
+                                
+                                <p:outputLabel value="Approach:"/>
+                                <p:outputLabel value="End Date:"/>
+                                
+                                <p:inputTextarea rows="4" cols="25" style="align-self: flex-end;" value="#{ChildCont.child.treatmentPlan.approach}" scrollHeight="160" autoResize="false"/>
+                                
+                                <p:calendar id="TreatmentEnd" showOn="button" placeholder="View date" pattern = "dd/MM/yyyy" value="#{ChildCont.child.treatmentPlan.endDate}" mask = "true" style="text-align: right;"/>
+                                
+                                
                             </p:panelGrid>
                             </p:panel>
                         </div>
+                                </div>
                         <div class="ui-g-6">
                             <p:toolbar>
                                 <p:toolbarGroup align="left">
-                                     <h4> Consultation Summary</h4>
+                                     <h4> Doctor's Visit Details<!--Consultation Summary--></h4>
                                 </p:toolbarGroup>
                             </p:toolbar>
-                            <p:panel >
-                            
-                                <p:column>
-                                    <p:outputLabel value="Detected Illness(es): "/>
-                                    <p:selectOneMenu id="ListOfIllness" value="#{ChildCont.selectedChild}" style=" padding-right: 0px;">
-                                        <f:selectItem itemLabel="Select different Child to view" itemValue="#{ChildCont.selectedChild}"/>
-                                        <f:selectItems value="#{ChildCont.listOfChildren}" />
-                                        <p:ajax id="currentPage" update="@form" listener="#{ChildCont.getSelectedChildObject()}"/>
-                                    </p:selectOneMenu>
-                           
-                                </p:column>
-                                <p:column>
-                                    <p:panelGrid columns="2">
-                                        <p:outputLabel value="Suggested Treatment"/>
-                                        <p:inputText id="txtSuggestedTreatment" />
-
-                                        <p:outputLabel value="Start Date:"/>
-                                        <p:calendar id="TreatmentStart" showOn="button" placeholder="View date" pattern = "dd/MM/yyyy" value="#{ChildCont.searchDate}" mask = "true" style="text-align: right;"/>
-
-                                        <p:outputLabel value="End Date:"/>
-                                        <p:calendar id="TreatmentEnd" showOn="button" placeholder="View date" pattern = "dd/MM/yyyy" value="#{ChildCont.searchDate}" mask = "true" style="text-align: right;"/>
-                                    </p:panelGrid> 
-                                </p:column>
-                                <p:row>
-                                      <p:commandButton value="Add">
-                                    <p:resetInput target="PanelPerfil"/>
-                                </p:commandButton>
-                                  <p:commandButton value="Update">
-                                    <p:resetInput target="PanelPerfil"/>
-                                </p:commandButton>
-                                <p:commandButton value="Delete">
-                                    <p:resetInput target="PanelPerfil"/>
-                                </p:commandButton>
-                                </p:row>
-                           
-                            </p:panel>
-                        </div>
-                        <div class="ui-g-6">
-                            <p:toolbar>
-                                <p:toolbarGroup align="left">
-                                     <h4> Supporting Documents/ Evidence</h4>
-                                </p:toolbarGroup>
-                            </p:toolbar>
-                            <p:panel>
-                                <p:panelGrid columns="3">
-                                    <p:outputLabel id="doctorFeedback" value="Doctor Feedback:" />
-                                    <p:inputTextarea rows="4" cols="26" style="align-self: flex-end;"  />
-                                    <p:dataTable id="manageExamListTb" var="temp" value="#{ChildCont.child.listOfMedicalHistoryRecords}" selectionMode="single"  rowKey="#{temp.id}" scrollable="true" scrollHeight="60" >
-                                        <p:column headerText="Exams done" footerText="">
-                                            <h:outputText value="#{temp.cause}" />
+                            <p:panel style="height: 500px">
+                                <p:panelGrid columns="2">
+                                    <p:outputLabel value="Child Complaints/Symptoms"/>
+                                    <p:outputLabel value="Diagnosis List:"/>
+                                    <p:inputTextarea rows="5" cols="26" style="align-self: flex-end;" value="#{ChildCont.child.appointment.complaints}" autoResize="false"/>
+                                    <p:dataTable id="diagnosesTb" var="temp" value="#{ChildCont.child.listOfDiagnosticRecords}" selectionMode="single"  rowKey="#{temp.diagnosticId}" scrollable="true" scrollHeight="60" >
+                                        <p:column>
+                                            <h:outputText value="#{temp.title}" />
                                         </p:column>
                                     </p:dataTable>
-                                    <p:outputLabel value="Add Evidence:" />
-                                    <p:row>
-                                    <p:fileUpload value="#{ChildCont.file}" oncomplete="#{ChildCont.uploadFile()}" mode="simple" skinSimple="true"/>
-                                    <p:commandButton value="Upload Chosen File(s)" />
-                                    </p:row>
+                                    <p:outputLabel value="Physical Examination:"/>
+                                    <p:outputLabel value="Exams Required List:"/>
+                                    <p:inputTextarea rows="5" cols="26" style="align-self: flex-end;" value="#{ChildCont.child.appointment.physicalExamination}" autoResize="false"/>
+                                    <p:dataTable id="manageExamListTb" var="temp" value="#{ChildCont.child.listOfMedicalExamRecords}" selectionMode="single"  rowKey="#{temp.medicalExamId}" scrollable="true" scrollHeight="60" >
+                                        <p:column >
+                                            <h:outputText value="#{temp.examTitle}" />
+                                        </p:column>
+                                    </p:dataTable>
+                                    <p:outputLabel value="Doctor Feedback:"/>
+                                    <p:outputLabel value="Evidence document List:"/>
+                                    <p:inputTextarea rows="4" cols="26" style="align-self: flex-end;" value="#{ChildCont.child.appointment.doctorFeedback}" autoResize="false"/>
+                                    <p:dataTable id="manageEvidenceListTb" var="temp" value="#{ChildCont.child.listOfMedicalEvidenceRecords}" selectionMode="single"  rowKey="#{temp.medicalEvidenceId}" scrollable="true" scrollHeight="60" >
+                                        <p:column >
+                                            <h:outputText value="#{temp.evidenceTitle}" />
+                                        </p:column>
+                                    </p:dataTable>
                                 </p:panelGrid>
+                            
                             </p:panel>
+                        
+      
+                        </div>
+  
                         </div>
                     </div>
 
-            
+                </p:tab>
+                <p:tab title="General Medical Concerns" id="tab2">
+                     <div class="ui-g">
+                       
+                         <div class="ui-g-12">
+                             <div class="ui-g-6">
+                                <p:toolbar>
+                                    <p:toolbarGroup align="left">
+                                        <h4> Medical Routine Check</h4>
+                                    </p:toolbarGroup>
+                                </p:toolbar>
+                                 <p:panel style="height: 230px">
+                                     <p:panelGrid id="PanelPerfil" columns="4" style="margin-left: -85px">
+                                    <p:outputLabel id="currentWeight" value="Weight:" />
+                                    <p:inputText id="txtCurrWeight" value="#{ChildCont.child.weightRecorded.weight}" style="width: 100px"/>
+                                    <p:outputLabel id="Age" value="Age:" />
+                                    <p:inputText id="txtAge" value="#{ChildCont.child.getAge()}" style="width: 100px" disabled="true"/>
+                                    <p:outputLabel id="currentHeight" value="Height:" />
+                                    <p:inputText id="txtCurrHeight" value="#{ChildCont.child.heightRecorded.height}" style="width: 100px" immediate="true"/>
+                                    <p:outputLabel value="HC:" />
+                                    <p:inputText id="txtHc" value="#{ChildCont.child.headCir}" style="width: 100px"/>
+                                </p:panelGrid>
+                                    
+                                    <p:panelGrid  columns="1" style="margin-top: -20px;margin-left: -88px">
+                                    <p:outputLabel id="BloodTestComment" value="Blood Test Comment: " />
+                                    <p:inputTextarea rows="3" cols="45" style="align-self: flex-end;" value="#{ChildCont.child.appointment.bloodTestNote}" autoResize="false" />
+                                    </p:panelGrid> 
+                                    
+                                </p:panel>
+                             </div>
+                             <div class="ui-g-6">
+                                <p:toolbar>
+                                    <p:toolbarGroup align="left">
+                                        <h4> Child Medical Concerns</h4>
+                                    </p:toolbarGroup>
+                                </p:toolbar>
+                                 <p:panel style="height: 230px">
+                                     <p:panelGrid columns="2">
+                                          <p:dataTable id="sufferFromTb" var="temp" value="#{ChildCont.getListOfDetectedIllnessRecordDb()}" selectionMode="single"  rowKey="#{temp.detectedIllnessId}" scrollable="true" scrollHeight="130" >
+                                            <p:column headerText="Chronic Illness:" >
+                                                <h:outputText value="#{temp.description}" />
+                                            </p:column>
+                                        </p:dataTable>
+                                          <p:dataTable id="allergicToTb" var="temp" value="#{ChildCont.getListOfDetectedAllergiesRecordDb()}" selectionMode="single"  rowKey="#{temp.allergyId}" scrollable="true" scrollHeight="130" >
+                                              <p:column  headerText="Allergy:">
+                                                <h:outputText value="#{temp.description}" />
+                                            </p:column>
+                                        </p:dataTable>     
+                                     </p:panelGrid>
+                                 </p:panel>
+                             </div>
+                             <div class="ui-g-12">
+                                <p:toolbar>
+                                    <p:toolbarGroup align="left">
+                                        <h4>Vaccination</h4>
+                                    </p:toolbarGroup>
+                                </p:toolbar>
+                                 <p:panel style="height: 185px">
+                                     <p:dataTable id="vaccineTb" var="temp" value="#{ChildCont.displayVaccines()}" selectionMode="single"  rowKey="#{temp.vaccineTakenId}" 
+                                                  scrollable="true" scrollHeight="120"  rowStyleClass="#{ChildCont.rowColoring(temp.scheduleDate,'Overdue',temp.status) == true ? 'OverDue' : null} #{ChildCont.rowColoring(temp.scheduleDate,'Warning',temp.status) == true ? 'Reminder' : null }" >
+                                            
+                                            <p:column headerText="Vaccine:" >
+                                                <h:outputText value="#{temp.vaccineTaken}" />
+                                            </p:column>
+                                            <p:column headerText="Age Group:" >
+                                                <h:outputText value="#{temp.ageGroup}" />
+                                            </p:column>
+                                            <p:column headerText="Due Date:" >
+                                                <h:outputText value="#{temp.scheduleDate}" />
+                                            </p:column>
+                                            <p:column headerText="Received Date:" >
+                                                <h:outputText value="#{temp.givenDate}" />
+                                            </p:column>
+                                            <p:column headerText="Location:" >
+                                                <h:outputText value="#{temp.location}" />
+                                            </p:column>
+                                            <p:column headerText="Site:" >
+                                                <h:outputText value="#{temp.site}" />
+                                            </p:column>
+                                            <p:column headerText="Status:" >
+                                                <h:selectBooleanCheckbox value="#{temp.status}" >
+                                                    <p:ajax  listener="#{ChildCont.rowSelectCheckbox(temp.vaccineTaken, temp.ageGroup, temp.status)}" 
+                                                             oncomplete="PF('dlgAdministerVaccine').show()" update=":administerVaccineForm" />
+                                                </h:selectBooleanCheckbox>
+                                            </p:column>
+                                            <p:column headerText="Comments:" >
+                                                <h:outputText value="#{temp.comments}" />
+                                            </p:column>
+                                        </p:dataTable>
+                                 </p:panel>
+                             </div>
+                         </div>
+                             
+                     </div>
+                </p:tab>
+            </p:tabView>
+         
                
-        </h:form> 
+        </h:form>
+        <style>
+            .OverDue{
+                background-color: #ff3300;
+                font-weight: bolder;
+            }
+            .Reminder{
+                background-color: #ffbf00;
+                font-weight: bolder;
+            }
+            .Default{
+                background-color: #ffffff;
+                font-weight: bolder;
+            }
+        </style>
+        <p:dialog  header="Create Vaccine" widgetVar="dlgCreateVaccine" resizable="false" responsive="true" showEffect="explode" hideEffect="explode">
+            <ui:include src="CreateVaccine.xhtml" />
+        </p:dialog>
+        <p:dialog  header="Create Medication" widgetVar="dlgCreateMedication" resizable="false" responsive="true" showEffect="explode" hideEffect="explode">
+            <ui:include src="CreateMedication.xhtml" />
+        </p:dialog>
+        <p:dialog  header="Create ChronicIllness" widgetVar="dlgCreateChronicIllness" resizable="false" responsive="true" showEffect="explode" hideEffect="explode">
+            <ui:include src="CreateChronicIllness.xhtml" />
+        </p:dialog>
+        <p:dialog  header="Create Allergy" widgetVar="dlgCreateAllergy" resizable="false" responsive="true" showEffect="explode" hideEffect="explode">
+            <ui:include src="CreateAllergy.xhtml" />
+        </p:dialog>
+        <p:dialog  header="Create Appointment" widgetVar="dlgCreateAppointment" resizable="false" responsive="true" showEffect="explode" hideEffect="explode">
+            <ui:include src="CreateAppointment.xhtml" />
+        </p:dialog>
+        <p:dialog  header="Create Treatment Plan" widgetVar="dlgCreateTreatment" resizable="false" responsive="true" showEffect="explode" hideEffect="explode">
+            <ui:include src="CreateTreatmentPlan.xhtml" />
+        </p:dialog>
+        <p:dialog  header="Upload Appointment Evidence" widgetVar="dlgCreateEvidence" resizable="false" responsive="true" showEffect="explode" hideEffect="explode">
+            <ui:include src="CreateEvidenceFile.xhtml" />
+        </p:dialog>
+        <p:dialog  header="Create Diagnosis" widgetVar="dlgCreateDiagnosis" resizable="false" responsive="true" showEffect="explode" hideEffect="explode">
+            <ui:include src="CreateDiagnostic.xhtml" />
+        </p:dialog>
+        <p:dialog  header="Create Exam" widgetVar="dlgCreateExam" resizable="false" responsive="true" showEffect="explode" hideEffect="explode">
+            <ui:include src="CreateExam.xhtml" />
+        </p:dialog>
+        <p:dialog  header="Edit Allergy" widgetVar="dlgEditAllergy" resizable="false" responsive="true" showEffect="explode" hideEffect="explode">
+            <ui:include src="EditAllergy.xhtml" />
+        </p:dialog>
+        <p:dialog  header="Edit Vaccine" widgetVar="dlgEditVaccine" resizable="false" responsive="true" showEffect="explode" hideEffect="explode">
+            <ui:include src="EditVaccine.xhtml" />
+        </p:dialog>
+        <p:dialog  header="Edit Medication" widgetVar="dlgEditMedication" resizable="false" responsive="true" showEffect="explode" hideEffect="explode">
+            <ui:include src="EditMedication.xhtml" />
+        </p:dialog>
+        <p:dialog  header="Edit Diagnostic" widgetVar="dlgEditDiagnosis" resizable="false" responsive="true" showEffect="explode" hideEffect="explode">
+            <ui:include src="EditDiagnostic.xhtml" />
+        </p:dialog>
+        <p:dialog  header="Edit Exam" widgetVar="dlgEditExam" resizable="false" responsive="true" showEffect="explode" hideEffect="explode">
+            <ui:include src="EditExam.xhtml" />
+        </p:dialog>
+        <p:dialog  header="Edit Chronic Illness" widgetVar="dlgEditChronicIllness" resizable="false" responsive="true" showEffect="explode" hideEffect="explode">
+            <ui:include src="EditChronicIllness.xhtml" />
+        </p:dialog>
+        <p:dialog  header="Edit Appointment" widgetVar="dlgEditAppointment" resizable="false" responsive="true" showEffect="explode" hideEffect="explode">
+            <ui:include src="EditAppointment.xhtml" />
+        </p:dialog>
+        <p:dialog  header="Edit Treatment Plan" widgetVar="dlgEditTreatment" resizable="false" responsive="true" showEffect="explode" hideEffect="explode">
+            <ui:include src="EditTreatmentPlan.xhtml" />
+        </p:dialog>
+        <p:dialog  header="Admister Selected Vaccine" widgetVar="dlgAdministerVaccine" resizable="false" responsive="true" showEffect="explode" hideEffect="explode">
+            <ui:include src="AdministerVaccine.xhtml" />
+        </p:dialog>
+        <p:dialog  header="List of Medication Taken" widgetVar="dlgEditMedicationTaken" resizable="false" responsive="true" showEffect="explode" hideEffect="explode">
+            <ui:include src="EditMedicationTaken.xhtml" />
+        </p:dialog>
+        <p:dialog  header="Initial Medical History" widgetVar="dlgInitialMedicalRecord" resizable="false" responsive="true" showEffect="explode" hideEffect="explode">
+            <ui:include src="BabyInitialMedicalHistory.xhtml" />
+        </p:dialog>
     </ui:composition>
    
 </html>

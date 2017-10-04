@@ -23,15 +23,15 @@
                 </p:column> 
             </p:dataTable>
             <p:contextMenu for="Alert">
-                <p:menuitem value="View"   oncomplete="PF('dlg').show()"  icon="ui-icon-disk" update=":log"/>
-                <p:menuitem value="Delete"  action="#{msgCont.delete()}" icon="ui-icon-arrowrefresh-1-w" update=":alertForm"/>
+                <p:menuitem value="View application"  icon="fa fa-eye"   oncomplete="PF('dlg').show()"  update=":log"  />
+        
             </p:contextMenu>
         </h:form>
 
 
         <p:dialog id="log" header="Apllication Request form" widgetVar="dlg" minimizable="true" maximizable="true">
             <div class="ui-g">
-                <div class="ui-g-8 ui-g-nopad">
+            
                     <div class="ui-g-6">
                         <h:outputLabel value="First name :"/>
                         <h:outputLabel id="fNam" value="#{Apply.selectedApplicant.firstname}"/>
@@ -40,25 +40,31 @@
                         <h:outputLabel for="lName" value="Last name: "/>
                         <h:outputLabel id="lName" value="#{Apply.selectedApplicant.lastname}"/>
                     </div>
-                    <div class="ui-g-12">
+                    <div class="ui-g-6">
                         <h:outputLabel for="phone" value="Phone number: "/>
                         <h:outputLabel id="phone" value="#{Apply.selectedApplicant.phoneNumber}"/>
                     </div>
-                    <div class="ui-g-12">
+                    <div class="ui-g-6">
                         <h:outputLabel for="email" value="Email address: "/>
                         <h:outputLabel id="email" value="#{Apply.selectedApplicant.emailAddress}"/>
                     </div>
-                </div>
-                <div class="ui-g-4">
-                    <p>Reason for applying</p>
+
+                <div class="ui-g-12">
+                    <h:outputLabel value="Reson for applying"/><br/>
 
                     <h:outputText value="#{Apply.selectedApplicant.motivationForApllication}"/>
                 </div>
             </div>
             <h:form>
                 <p:commandButton value="Accept"  update="growl" class="btn btn-success" icon="fa fa-thumbs-up" style="margin:1px" action="#{Apply.acceptRequst()}"/>
-                <p:commandButton value="Reject" class="btn btn-danger" icon="fa fa-thumbs-down" style="margin:1px"/>
-
+       
+                <p:commandButton value="Reject" actionListener="#{Apply.rejectApplicanttion()}"  update="alertForm growl" icon="fa fa-fw fa-remove" >
+                        <p:confirm header="Confirmation" message="Please note that rejecting this appliaction will permanent delet the recode.?" icon="ui-icon-alert" />
+                    </p:commandButton>
+                    <p:confirmDialog global="true">
+                        <p:commandButton value="Yes" type="button" styleClass="ui-confirmdialog-yes" icon="ui-icon-check"  />
+                        <p:commandButton value="No" type="button" styleClass="ui-confirmdialog-no" icon="ui-icon-close" />
+                    </p:confirmDialog>
             </h:form>
 
 

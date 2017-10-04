@@ -1,0 +1,81 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:f="http://xmlns.jcp.org/jsf/core">
+
+    <ui:composition>
+        
+        <h:form id="editMedicationTakenForm">
+            <h:panelGrid columns="1" style="width: 550px;" >
+                <p:dataTable id="editMedicationTakenTb" var="temp" value="#{ChildCont.getListOfMedicationTakenDb()}" selectionMode="single"  rowKey="#{temp.medicationTakenId}" scrollable="true" scrollHeight="100" >
+                    
+                    <p:ajax event="rowSelect" listener="#{ChildCont.onRowSelectTreatment}" update="@form"  process="editMedicationTakenTb"/>
+                    <p:ajax event="rowUnselect" listener="#{ChildCont.onRowUnselectTreatment}" update="@form" process="editMedicationTakenTb"/>
+                    
+                    <p:column headerText="Medicine Taken">
+                        <h:outputText value="#{temp.medicineTaken}" />
+                    </p:column>
+                    <p:column headerText="Quantity">
+                        <h:outputText value="#{temp.quantity}" />
+                    </p:column>
+                    <p:column headerText="Metric">
+                        <h:outputText value="#{temp.metric}" />
+                    </p:column>
+                    <p:column headerText="Admission Time">
+                        <h:outputText value="#{temp.admisssionTime}"> 
+                            <f:convertDateTime pattern="dd/MM/yyyy HH:mm:ss" type="both" timeZone="GMT-3" />
+                        </h:outputText>
+                    </p:column>
+                    <p:column headerText="Comment">
+                        <h:outputText value="#{temp.comment}" />
+                    </p:column>
+                </p:dataTable>
+            </h:panelGrid>
+           <!--some invisible fields here for adding--> 
+            <p:panelGrid columns="3" rendered="#{ChildCont.displayFields}">
+                <p:outputLabel value="Medicine Taken:" />
+                <p:outputLabel value="Quantity:" />
+                <p:outputLabel value="Admission Time:" />
+               
+                <p:inputText id="txtMedicineTaken" value="#{ChildCont.child.medicationTaken.medicineTaken}" />
+                <p:inputText id="txtQuantity" value="#{ChildCont.child.medicationTaken.quantity}" />
+               
+                <p:calendar id="dateAdmissionTime" placeholder="Choose Date and Time"  mask="99/99/9999" pattern="dd/MM/yyyy HH:mm:ss" value="#{ChildCont.child.medicationTaken.admisssionTime}" >
+                    <p:ajax event="dateSelect" listener="#{ChildCont.onDateTimeSelect}" />
+                </p:calendar>
+               
+            </p:panelGrid>
+           <p:panelGrid columns="2" rendered="#{ChildCont.displayFields}">
+                <p:outputLabel value="Metric:" style="margin-left: -30px" />
+               
+                <p:selectOneMenu id="metricOptions" value="#{ChildCont.child.medicationTaken.metric}" style="margin-left: -39px">
+                    <f:selectItem itemLabel="Select metric" itemValue=""/>
+                    <f:selectItem itemLabel="tsp" itemValue="tsp" />
+                    <f:selectItem itemLabel="ml" itemValue="ml" />
+                    <f:selectItem itemLabel="oz" itemValue="oz" />
+                    <f:selectItem itemLabel="unit(s)" itemValue="unit" />
+                    <f:selectItem itemLabel="drop(s)" itemValue="drop" />
+                    <f:selectItem itemLabel="tablet(s)" itemValue="tablet" />
+                </p:selectOneMenu>
+               <p:outputLabel value="Medicine taken:" style="margin-left: -30px;" />
+               <p:inputTextarea rows="3" cols="26"  value="#{ChildCont.child.medicationTaken.comment}" autoResize="false" style="margin-left: -39px"/>
+            </p:panelGrid>
+            <p:panelGrid columns="3">
+                <p:commandButton value="Cancel" icon="fa fa-fw fa-remove" onclick="PF('dlgEditMedicationTaken').hide()" update="@form :mangeMedicalHistoryDialog"/>
+                <p:commandButton value="#{ChildCont.buttonSaveVal}" action="#{ChildCont.addMedicationTaken()}" icon="fa fa-fw fa-add" update="@form :mangeMedicalHistoryDialog"/>
+                <p:commandButton value="Delete" actionListener="#{ChildCont.deleteMedicationTaken()}" icon="fa fa-fw fa-trash-o" update="@form :mangeMedicalHistoryDialog">
+                    <p:confirm header="Confirmation" message="Are you sure, you want delete the selected record?" icon="ui-icon-alert" />
+                </p:commandButton>
+                <p:confirmDialog global="true" showEffect="fade" hideEffect="fade">
+                    <p:commandButton value="Yes" type="button" styleClass="ui-confirmdialog-yes" icon="ui-icon-check" />
+                    <p:commandButton value="No" type="button" styleClass="ui-confirmdialog-no" icon="ui-icon-close" />
+                </p:confirmDialog> 
+            </p:panelGrid>
+        </h:form> 
+    </ui:composition>
+   
+</html>
+

@@ -18,13 +18,13 @@ public class Temperature {
         return temperatureReading;
     }
 
-    public boolean setTemperatureReading(double temperatureReading) {
+    public void setTemperatureReading(double temperatureReading) {
         boolean set =false;
         if (temperatureReading >= 30 && temperatureReading <= 48){
             this.temperatureReading = temperatureReading;
             set = true;          
         }
-        return set;
+       // return set;
     }
 
     public int getTemperatureId() {

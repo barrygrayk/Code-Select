@@ -1,0 +1,122 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:f="http://xmlns.jcp.org/jsf/core">
+
+        <ui:composition>
+            <h:form id="GenerateReportForm">
+                <div id="div1">                                             
+                    <p:toolbar>
+                        <p:toolbarGroup align="right">
+                            <h:graphicImage  width="130px" height="100px" name="/images/reportIcon.png"/>
+                            <!--<h:graphicImage  width="130px" height="100px" name="/images/logo1.png" />-->
+                        </p:toolbarGroup>
+
+                        <p:toolbarGroup align="left" >      
+                            <h1> Generate Reports </h1>            
+                        </p:toolbarGroup>
+                    </p:toolbar>
+                </div>
+                <div id="div2" style="margin-top: 20px"> 
+                    <p:commandButton id="dynaButton" value="View menu options" type="button" icon="ui-icon-extlink"  style="margin-left: -10px"/>
+                    <p:tooltip id="toolTipGrow" for="dynaButton" value="This button allows selection of reports type to Generate!"
+               showEffect="clip" hideEffect="explode" position="left"/>
+                    <p:tieredMenu overlay="true" trigger="dynaButton" my="left top" at="left bottom">
+                        <p:submenu label="Children Reports">
+                            <p:menuitem value="General"   icon="fa fa-file-pdf-o" />
+                            <p:menuitem value="Individual"  icon="fa fa-file-pdf-o" />
+                        </p:submenu>
+
+                        
+                    </p:tieredMenu>
+                    <p:outputLabel value="Today's Date:    #{ChildCont.getTodayDate()}" style="margin-left: 550px"/>
+                    
+                    <p:separator />
+                </div>
+                <div>
+                    <!--Customized Individual Report-->
+                    <p:panel header="Child Individual Report options" style="text-align: left">
+                        <p:selectOneMenu id="searchChildAdvance" value="#{ChildCont.selectedChild}" style="width: 50px;"  filter="true" filterMatchMode="startsWith">
+                            <f:selectItem itemLabel="Select Child for Report" itemValue="" />
+                            <f:selectItems value="#{ChildCont.listOfChildren}" />
+                            <p:ajax id="currentPage" update="@form" listener="#{ChildCont.getSelectedChildObject()}"/>
+                        </p:selectOneMenu>
+                        
+                        <p:panelGrid columns="5">
+                            <p:selectOneRadio id="NappyWet" value="#{ChildCont.selectedReportType}" layout="grid" columns="2" style="padding: 10px">
+                                <f:selectItem itemLabel="Full Report" itemValue="fullReport">
+                                    
+                                </f:selectItem>
+                                <f:ajax listener="#{ChildCont.updateReportTypeCriteria()}" render="childCondition" />
+                                <f:selectItem itemLabel="Customized Report" itemValue="customReport" />
+                            </p:selectOneRadio>
+                            <p:outputLabel value="Start Date"/>
+                            <p:calendar  placeholder="View date" pattern = "dd/MM/yyyy" value="#{ChildCont.reportStartDate}" mask = "true" />
+                            <p:outputLabel value="End Date"/>
+                            <p:calendar placeholder="View date" pattern = "dd/MM/yyyy" value="#{ChildCont.reportEndDate}" mask = "true" />
+                        </p:panelGrid>
+                        <p:panelGrid columns="2">
+                            <p:panel id="criteriaPanel" header="Selection Criteria" style="width: 130%">
+                                <p:selectManyCheckbox id="childCondition" value="#{ChildCont.reportCriteria}" layout="grid" columns="1">
+                                    <f:selectItem itemLabel=" List Of Meals Taken" itemValue="mealsReport" />
+                                    <f:selectItem itemLabel=" List Of Activities done" itemValue="activitiesReport" />
+                                    <f:selectItem itemLabel=" List of Anomaly Records" itemValue="anomlayReport" />
+                                    <f:selectItem itemLabel=" Nappy Changing Records " itemValue="nappyReport" />
+                                    <f:selectItem itemLabel=" Height Changes Records" itemValue="heightReport" />
+                                    <f:selectItem itemLabel=" Weight Changes Records" itemValue="weightReport" />
+                                    <f:selectItem itemLabel=" Sleeping tracking Records " itemValue="sleepReports" />
+                                    <f:selectItem itemLabel=" Temperature Changes Records" itemValue="temperatureReport" />       
+                                    <f:selectItem itemLabel=" Initial Medical Report" itemValue="initialMedicalReport" />
+                                    <f:selectItem itemLabel=" Vaccination Summary " itemValue="vaccineSummary" />                              
+                                    <f:selectItem itemLabel=" Followed Treatments" itemValue="followedTreatment" />
+                                    <f:selectItem itemLabel=" List of Doctor's Visits" itemValue="doctorVisits" />                                                                                                 
+                                </p:selectManyCheckbox>                  
+                            </p:panel>
+                            <p:panel header="Report Preview" style="width: 150%; margin-left:22%;"  >
+                                <p:media value="/resources/pdfs/ChildIndividualReport.pdf" width="100%" height="340px"/>  
+                            </p:panel>
+                        </p:panelGrid>
+              
+                        <p:panelGrid columns="3" style=" margin-left: 180px">
+                            
+                            <p:commandButton id="generateR" value="Generate Report" icon="fa fa-file-text-o"  actionListener="#{ChildCont.getReportCriteria()}"/>
+   
+                            <p:commandButton value="Download PDF" icon="fa fa-file-pdf-o" ajax="false" >
+                                <p:dataExporter type="pdf" target="manageMedicalHTb" fileName="ChildIndividualReport" preProcessor="#{ChildCont.preProcessPDF}" />
+                            </p:commandButton>
+                            <p:commandButton value="Send report by Email" icon="fa fa-send-o" />
+                                   <p:tooltip id="toolTip" for="generateR" value="This button creates report for preview based on selected Criteria!"
+               showEffect="clip" hideEffect="explode" position="bottom"/>
+                        </p:panelGrid>
+                        
+                    </p:panel>
+                    
+                </div>
+                <!--Display ALbum -->
+                <p:contentFlow value="#{ChildCont.images}" var="image">
+                    <p:graphicImage name="/images/#{image}" styleClass="content" />
+                    <div class="caption">#{image}</div>
+                </p:contentFlow>
+                <!--Tables for the Report-->
+           
+                    <p:dataTable id="manageMedicalHTb"    style="visibility: hidden" >
+         
+                        <p:column>
+                            <h:outputText value="" />
+                        </p:column>
+
+                  </p:dataTable>
+                  <!--For activities-->
+                     
+                
+            </h:form>
+             
+            <!--This for the pop up menus-->
+
+        </ui:composition>
+    <!--</h:body>-->
+</html>
+

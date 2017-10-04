@@ -6,167 +6,147 @@
       xmlns:p="http://primefaces.org/ui"
       xmlns:ui="http://xmlns.jcp.org/jsf/facelets">
     <ui:composition>
-        
+        <h:form id="TsandCs" class="form-style-9">
+            <p:tabView class="form-style-9"  cache="false" >
 
-            <h2 style="margin-top: 0;color:black">Terms and Conditions</h2>
-            <h:form id="TsandCs" class="form-style-9">
-                <p:tabView class="form-style-9"  cache="false" >
-                    
-                    <p:tab title="Spiritual Life: Form A" >
+                <p:tab title="Spiritual Life: Form A" >
 
-                        
-                        <div class="ui-g-12"  styleClass="ui-panelgrid-blank">
-                        
-                        
-                            
+
+                    <div class="ui-g-12"  styleClass="ui-panelgrid-blank">
+
+
+
                         <h:panelGrid styleClass="ui-panelgrid-blank">
-                            
+
                             <p:panel header="Have you committed your life to Jesus Christ ?">
-                                    <p:selectOneRadio id="lifToChrist" value="#{Apply.beliefs.commitedJesus}">
-                                        <f:selectItem itemLabel="Yes" itemValue="Yes" />
-                                        <f:selectItem itemLabel="No" itemValue="NO" />
-                                    </p:selectOneRadio>
-                            </p:panel>
-                            
-                           <p:panel header="Do you attend a local church ?">
-                                
-                                 <p:selectOneRadio id="church" value="#{Apply.beliefs.attend}">
+                                <p:selectOneRadio id="lifToChrist" value="#{Apply.beliefs.commitedJesus}">
                                     <f:selectItem itemLabel="Yes" itemValue="Yes" />
                                     <f:selectItem itemLabel="No" itemValue="NO" />
                                 </p:selectOneRadio>
                             </p:panel>
-                            
-                            
-                                
+
+                            <p:panel header="Do you attend a local church ?">
+
+                                <p:selectOneRadio id="church" value="#{Apply.beliefs.attend}">
+                                    <f:selectItem itemLabel="Yes" itemValue="Yes" />
+                                    <f:selectItem itemLabel="No" itemValue="NO" />
+                                </p:selectOneRadio>
+                            </p:panel>
+
+
+
                             <p:panel header="Enter the name of Church you currently attend?">
-                                    <p:inputText  id="attend" type="text"  class="field-style field-split"  style="width:100%" value="#{Apply.beliefs.whichChurch}"/> 
+                                <p:inputText  id="attend" type="text"  class="field-style field-split"  style="width:100%" value="#{Apply.beliefs.whichChurch}"/> 
                             </p:panel>
-                            
+
                             <p:panel header="How long have you attended there?">
-                                   
-                                    <p:inputText  id="duration1" type="number"  class="field-style field-split align-right" value="#{Apply.beliefs.attendDuration}"/>
-                                     
+
+                                <p:inputText  id="duration1" type="number"  class="field-style field-split align-right" value="#{Apply.beliefs.attendDuration}"/>
+
                             </p:panel> 
-                                
-                                
+
+
                             <p:panel header="What ministries do you serve in? ">
-                                    <p:chips id="ministries"  value="#{Apply.beliefs.listOFMinistries}"/>
+                                <p:watermark for="ministries" value="One (Press enter)"/>
+                                <p:chips id="ministries"  value="#{Apply.beliefs.listOFMinistries}" style="width:100%" />
                             </p:panel>
-                            
-                            
-                            
+
+
+
                             <p:panel header="Please share what your family backgroud is?"> 
-                                    <p:inputTextarea  id="familyBackground" rows="10" cols="75"  class="field-style" 
-                                                  counter="display5" maxlength="1000" counterTemplate="{0} characters remaining." 
-                                                  autoResize="false"   label="Message" value="#{Apply.beliefs.backGround}"/>
-                                    <h:outputText id="display5" />
+                                <p:textEditor id="goals" widgetVar="editor7" value="#{Apply.beliefs.backGround}" height="300"  />
+
 
                             </p:panel>
-                            
+
                         </h:panelGrid>
-                                
-                       
-                            
+
+
+
                     </div>
-                   
-            </p:tab> 
-                
-    <p:tab title="Spiritual Life: Form B " >
-                        
-    <div class="ui-g-12"  styleClass="ui-panelgrid-blank">
-                    
-        <h:panelGrid styleClass="ui-panelgrid-blank">
-                                
-            
-            <p:panel>                             
-                <h3 style="margin-top:0">Please share your testimony</h3>
-                <p:textEditor widgetVar="editor1" value="#{Apply.beliefs.commitedTest}" height="300" style="margin-bottom:10px"/>
- <!--
-                <p:commandButton value="Submit" update="display" oncomplete="PF('dlg').show()" icon="ui-icon-disk" />
-                <p:commandButton value="Clear" type="button" onclick="PF('editor1').clear();" icon="ui-icon-close" />
- 
-    -->
- 
-                <p:dialog header="Content" widgetVar="dlg" showEffect="fade" hideEffect="fade">
-                <p:outputPanel id="display1">
-                    <h3 style="margin-top:0">Please share your testimony</h3>
-                    <h:outputText value="#{Apply.beliefs.commitedTest}" escape="false" />
-                </p:outputPanel>
-                </p:dialog>     
-             </p:panel>
-                       
-                         
-            
-            
-                <p:panel>                             
-                <h3 style="margin-top:0">How did God view you before you were saved?</h3>
-                <p:textEditor widgetVar="editor2" value="#{Apply.beliefs.viewBefSaved}" height="300" style="margin-bottom:10px"/>
- 
-                <!--<p:commandButton value="Submit" update="display" oncomplete="PF('dlg').show()" icon="ui-icon-disk" />
-                <p:commandButton value="Clear" type="button" onclick="PF('editor1').clear();" icon="ui-icon-close" />-->
- 
-                <p:dialog header="Content" widgetVar="dlg" showEffect="fade" hideEffect="fade">
-                <p:outputPanel id="display2">
-                    <h3 style="margin-top:0">Please share your testimony</h3>
-                    <h:outputText value="#{Apply.beliefs.viewBefSaved}" escape="false" />
-                </p:outputPanel>
-                </p:dialog>     
-                </p:panel>
-                       
-                       
-                         
-                <p:panel>                             
-                <h3 style="margin-top:0">How did you hear the gospel?</h3>
-                <p:textEditor widgetVar="editor3" value="#{Apply.beliefs.hearGospel}" height="300" style="margin-bottom:10px"/>
- <!--
-                <p:commandButton value="Submit" update="display" oncomplete="PF('dlg').show()" icon="ui-icon-disk" />
-                <p:commandButton value="Clear" type="button" onclick="PF('editor1').clear();" icon="ui-icon-close" />-->
- 
-                <p:dialog header="Content" widgetVar="dlg" showEffect="fade" hideEffect="fade">
-                <p:outputPanel id="display3">
-                    <h3 style="margin-top:0">Please share your testimony</h3>
-                    <h:outputText value="#{Apply.beliefs.hearGospel}" escape="false" />
-                </p:outputPanel>
-                </p:dialog>     
-                </p:panel>
-                         
-                         
-                       
-                         
-                <p:panel>                             
-                    <p><strong>What is the gospel message and how is your life different now that you believe?</strong></p>
-                <p:textEditor widgetVar="editor4" value="#{Apply.beliefs.gospelMess}" height="300" style="margin-bottom:10px"/>
- <!--
-                <p:commandButton value="Submit" update="display" oncomplete="PF('dlg').show()" icon="ui-icon-disk" />
-                <p:commandButton value="Clear" type="button" onclick="PF('editor1').clear();" icon="ui-icon-close" />
- -->
-                <p:dialog header="Content" widgetVar="dlg" showEffect="fade" hideEffect="fade">
-                <p:outputPanel id="display4">
-                    <h3 style="margin-top:0">Please share your testimony</h3>
-                    <h:outputText value="#{Apply.beliefs.gospelMess}" escape="false" />
-                </p:outputPanel>
-                </p:dialog>     
-                </p:panel>
-            
-        </h:panelGrid>
-        
-        </div>
-   
-        </p:tab>
+
+                </p:tab> 
+
+                <p:tab title="Spiritual Life: Form B " >
+
+                    <div class="ui-g-12"  styleClass="ui-panelgrid-blank">
+
+                        <h:panelGrid styleClass="ui-panelgrid-blank">
+
+
+                            <p:panel header="Please share your testimony">                             
                             
-    </p:tabView>
-                
-            </h:form>
-        
+                                <p:textEditor widgetVar="editor1" value="#{Apply.beliefs.commitedTest}" height="300" style="margin-bottom:10px"/>
+                                <!--
+                                               <p:commandButton value="Submit" update="display" oncomplete="PF('dlg').show()" icon="ui-icon-disk" />
+                                               <p:commandButton value="Clear" type="button" onclick="PF('editor1').clear();" icon="ui-icon-close" />
+                                
+                                -->
+
+                                
+                            </p:panel>
+
+
+
+
+                            <p:panel header="How did God view you before you were saved?">                             
+                              
+                                <p:textEditor widgetVar="editor2" value="#{Apply.beliefs.viewBefSaved}" height="300" style="margin-bottom:10px"/>
+
+                                <!--<p:commandButton value="Submit" update="display" oncomplete="PF('dlg').show()" icon="ui-icon-disk" />
+                                <p:commandButton value="Clear" type="button" onclick="PF('editor1').clear();" icon="ui-icon-close" />-->
+  
+                            </p:panel>
+
+
+
+                            <p:panel header="How did you hear the gospel?">                             
+                              
+                                <p:textEditor widgetVar="gospel" value="#{Apply.beliefs.hearGospel}" height="300" style="margin-bottom:10px"/>
+                                <!--
+                                               <p:commandButton value="Submit" update="display" oncomplete="PF('dlg').show()" icon="ui-icon-disk" />
+                                               <p:commandButton value="Clear" type="button" onclick="PF('editor1').clear();" icon="ui-icon-close" />-->
+
+                                
+                            </p:panel>
+
+
+
+
+                            <p:panel>                             
+                                <p><strong>What is the gospel message and how is your life different now that you believe?</strong></p>
+                                <p:textEditor widgetVar="editor4" value="#{Apply.beliefs.gospelMess}" height="300" style="margin-bottom:10px"/>
+                                <!--
+                                               <p:commandButton value="Submit" update="display" oncomplete="PF('dlg').show()" icon="ui-icon-disk" />
+                                               <p:commandButton value="Clear" type="button" onclick="PF('editor1').clear();" icon="ui-icon-close" />
+                                -->
+                                <p:dialog header="Content" widgetVar="dlg" showEffect="fade" hideEffect="fade">
+                                    <p:outputPanel id="display4">
+                                        <h3 style="margin-top:0">Please share your testimony</h3>
+                                        <h:outputText value="#{Apply.beliefs.gospelMess}" escape="false" />
+                                    </p:outputPanel>
+                                </p:dialog>     
+                            </p:panel>
+
+                        </h:panelGrid>
+
+                    </div>
+
+                </p:tab>
+
+            </p:tabView>
+
+        </h:form>
+
         <div align="center" position="bottom">
-              <p:commandButton  value="Save"  icon="fa fa-save" class="btn btn-primary btn-md" action="#{Apply.saveSpiritualLife()}"/>
+            <p:commandButton  value="Save"  icon="fa fa-save" class="btn btn-primary btn-md" action="#{Apply.saveSpiritualLife()}"/>
         </div>
-            
- 
-        
-        
+
+
+
+
     </ui:composition>
-    
+
 
 </html>
 

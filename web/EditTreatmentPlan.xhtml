@@ -1,0 +1,61 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:f="http://xmlns.jcp.org/jsf/core">
+
+    <ui:composition>
+        
+        <h:form id="editTreatmentForm">
+            <h:panelGrid columns="1" style="width: 550px;" >
+                <p:dataTable id="editTreatmentTb" var="temp" value="#{ChildCont.getListOfAllTreatmentPlan()}" selectionMode="single"  rowKey="#{temp.treatmentPlanId}" scrollable="true" scrollHeight="100" >
+                    
+                    <p:ajax event="rowSelect" listener="#{ChildCont.onRowSelectTreatment}" update="@form"  process="editTreatmentTb"/>
+                    <p:ajax event="rowUnselect" listener="#{ChildCont.onRowUnselectTreatment}" update="@form" process="editTreatmentTb"/>
+                    
+                    <p:column headerText="Treatment Description">
+                        <h:outputText value="#{temp.description}" />
+                    </p:column>
+                    <p:column headerText="Start Date">
+                        <h:outputText value="#{temp.startDate}" />
+                    </p:column>
+                    <p:column headerText="End Date">
+                        <h:outputText value="#{temp.endDate}" />
+                    </p:column>
+                </p:dataTable>
+            </h:panelGrid>
+            
+            <h:panelGrid columns="1" style="margin-top: 15px">
+                <p:outputLabel value="Doctor Prescription:"   />
+                <p:inputTextarea rows="6" cols="55" value="#{ChildCont.child.treatmentPlan2.approach}" />
+            </h:panelGrid> 
+
+            <p:outputLabel value="Treatment Description:" />
+            <p:inputText  value="#{ChildCont.child.treatmentPlan2.description}" style="width: 260px" />
+            
+            <p:panelGrid columns="2">
+                <p:outputLabel value="Start Date:"/>
+                <p:outputLabel value="End Date:"/>
+                <p:calendar id="TreatmentStart" showOn="button" placeholder="View date" pattern = "dd/MM/yyyy" value="#{ChildCont.child.treatmentPlan2.startDate}" mask = "true" style="text-align: left;"/>
+
+                <p:calendar id="TreatmentEnd" showOn="button" placeholder="View date" pattern = "dd/MM/yyyy" value="#{ChildCont.child.treatmentPlan2.endDate}" mask = "true" style="text-align: right;"/>
+            </p:panelGrid>
+            
+            <p:panelGrid columns="3">
+                <p:commandButton value="Cancel" icon="fa fa-fw fa-remove" onclick="PF('dlgEditTreatment').hide()" />
+                <p:commandButton value="Update" action="#{ChildCont.updateTreatmentPlan()}" icon="fa fa-fw fa-edit" oncomplete="PF('dlgEditTreatment').hide()" update="editTreatmentTb :mangeMedicalHistoryDialog"/>
+                <p:commandButton value="Delete" actionListener="#{ChildCont.deleteTreatmentPlan()}" icon="fa fa-fw fa-trash-o" oncomplete="PF('dlgEditTreatment').hide()" update="@form :mangeMedicalHistoryDialog">
+                    <p:confirm header="Confirmation" message="Are you sure, you want delete the selected record?" icon="ui-icon-alert" />
+                </p:commandButton>
+                <p:confirmDialog global="true" showEffect="fade" hideEffect="fade">
+                    <p:commandButton value="Yes" type="button" styleClass="ui-confirmdialog-yes" icon="ui-icon-check" />
+                    <p:commandButton value="No" type="button" styleClass="ui-confirmdialog-no" icon="ui-icon-close" />
+                </p:confirmDialog> 
+            </p:panelGrid>
+        </h:form> 
+    </ui:composition>
+   
+</html>
+

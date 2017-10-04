@@ -2,8 +2,12 @@ package com.child.Model;
 
 
 import com.staff.Model.Person;
+import com.validation.TheEqualizer;
 import java.io.Serializable;
+import java.time.LocalDate;
+import java.time.Period;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.Date;
 
 /**
@@ -16,7 +20,7 @@ public class Child extends Person implements Serializable{
     private int babyProfileid;
     private int currentIndex = -1;
     private String photography;
-    private String destingushingMarks;
+    private String destingushingMarks, childDietComments;
     private String requiredDocNote, ChildArrivalMedicalReport, generalRemarks;
     
     // arrayList 
@@ -24,22 +28,45 @@ public class Child extends Person implements Serializable{
     private ArrayList<Weight> listOfWeightRecords;
     private ArrayList<Height> listOfHeightRecords;
     private ArrayList<Nappies> listOfNappyRecords;
+    private ArrayList<Anomaly> listOfAnomalyRecords;
     private ArrayList<Temperature> listOfTempRecorded;
     private ArrayList<SleepingRoutine> listOfSleepingRecords;
-    private ArrayList childRequiredDocs,childArrivalCondition;
+    private ArrayList childRequiredDocs,childArrivalCondition, childDietDetails;
     private ArrayList<DailyActivities> listOfActivitiesRecorded;
     protected ArrayList<ChildMedicalHistory> listOfMedicalHistoryRecords = new ArrayList<ChildMedicalHistory>();
+    private ArrayList<Appointment> listOfAppointmentRecords = new ArrayList<Appointment>();
+    private ArrayList<Diagnostics> listOfDiagnosticRecords;
+    private ArrayList<MedicalExam> listOfMedicalExamRecords;
+    private ArrayList<MedicalEvidence> listOfMedicalEvidenceRecords;
+    private ArrayList<TreatmentPlan> listOfTreatmentPlanRecords;
+    private ArrayList <DetectedIllness> listOfDetectedIllness;
+    private ArrayList <Allergies> listOfAllergyRecords;
+    private ArrayList <VaccineTaken> listOfVaccineTaken;
+    private ArrayList <Medication> listOfMedicationToTake;
+    private ArrayList <MedicationTaken> listOfMedicationTaken;
     
     //temporary objects
     private Meals mealRecorded = new Meals();
     private Weight weightRecorded = new Weight();
     private Height heightRecorded = new Height();
     private Nappies nappyRecorded = new Nappies();
+    private Allergies allergy = new Allergies();
+    private Medication  medication = new Medication();
+    private Anomaly anomalyRecord = new Anomaly();
     private ParentInfo parentInfo = new ParentInfo();
     protected IntakeInfo intakeDetails = new IntakeInfo();
+    private Diagnostics diagnosis = new Diagnostics();
+    private Appointment appointment = new Appointment();
+    private MedicalExam exams = new MedicalExam();
+    private Temperature temperatureRecord = new Temperature();
     private SocialWorker socialWorkerDetails = new SocialWorker();
     private DailyActivities activityrecorded = new DailyActivities();
     private SleepingRoutine sleepRecorded = new SleepingRoutine();
+    private VaccineTaken vaccineTaken = new VaccineTaken();
+    private TreatmentPlan treatmentPlan = new TreatmentPlan();
+    private TreatmentPlan treatmentPlan2 = new TreatmentPlan();
+    private MedicationTaken medicationTaken = new MedicationTaken();
+    private DetectedIllness chronicIllness = new DetectedIllness();
     protected ChildMedicalHistory medicalHistory = new ChildMedicalHistory();
 
     //clear child Object 
@@ -47,6 +74,15 @@ public class Child extends Person implements Serializable{
         this.destingushingMarks = null;
         super.setLastname(null);
         super.setFirstname(null);
+        /*super.setGender(' ');
+        super.setDateOfBirth(null);
+        super.setPlaceOfBirth(null);
+        this.headCir = 0;
+        this.heightRecorded = null;
+        this.weightRecorded = null;
+        this.ChildArrivalMedicalReport = null;
+        this.generalRemarks = null;*/
+        
     }
     
     public Child(int babyProfileid, String firstname, String lastname, char gender, Date dateOfBirth,
@@ -54,7 +90,7 @@ public class Child extends Person implements Serializable{
             ArrayList childArrivalCondition, String requiredDocNote, String ChildArrivalMedicalReport ,
             IntakeInfo intakeDetails, SocialWorker socialWorkerDetails, ParentInfo parentInfo, String generalRemarks,
             Weight weightRecorded, Height heightRecorded, double headCir, 
-            ArrayList<ChildMedicalHistory> listOfMedicalHistoryRecords, String photography) {
+            ArrayList<ChildMedicalHistory> listOfMedicalHistoryRecords, String photography, ArrayList childDiet, String childDietComments) {
         
         super(firstname, lastname, gender, placeOfBirth, dateOfBirth);
         this.destingushingMarks =  destingushingMarks;
@@ -72,6 +108,9 @@ public class Child extends Person implements Serializable{
         this.headCir = headCir;
         this.listOfMedicalHistoryRecords = listOfMedicalHistoryRecords;
         this.photography = photography;
+        this.childDietDetails = childDiet;
+        this.childDietComments = childDietComments;
+        
         
     }
     public Child(){
@@ -316,12 +355,212 @@ public class Child extends Person implements Serializable{
         this.listOfWeightRecords = listOfWeightRecords;
     }
 
+    public ArrayList<Appointment> getListOfAppointmentRecords() {
+        return listOfAppointmentRecords;
+    }
+
+    public void setListOfAppointmentRecords(ArrayList<Appointment> listOfAppointmentRecords) {
+        this.listOfAppointmentRecords = listOfAppointmentRecords;
+    }
+
     public String getPhotography() {
         return photography;
     }
 
     public void setPhotography(String photography) {
         this.photography = photography;
+    }
+
+    public ArrayList<Anomaly> getListOfAnomalyRecords() {
+        return listOfAnomalyRecords;
+    }
+
+    public void setListOfAnomalyRecords(ArrayList<Anomaly> listOfAnomalyRecords) {
+        this.listOfAnomalyRecords = listOfAnomalyRecords;
+    }
+
+    public Anomaly getAnomalyRecord() {
+        return anomalyRecord;
+    }
+
+    public void setAnomalyRecord(Anomaly anomalyRecord) {
+        this.anomalyRecord = anomalyRecord;
+    }
+
+    public ArrayList getChildDietDetails() {
+        return childDietDetails;
+    }
+
+    public void setChildDietDetails(ArrayList childDietDetails) {
+        this.childDietDetails = childDietDetails;
+    }
+
+    public String getChildDietComments() {
+        return childDietComments;
+    }
+
+    public void setChildDietComments(String childDietComments) {
+        this.childDietComments = childDietComments;
+    }
+
+    public Temperature getTemperatureRecord() {
+        return temperatureRecord;
+    }
+
+    public void setTemperatureRecord(Temperature temperatureRecord) {
+        this.temperatureRecord = temperatureRecord;
+    }
+
+    public Appointment getAppointment() {
+        return appointment;
+    }
+
+    public void setAppointment(Appointment appointment) {
+        this.appointment = appointment;
+    }
+
+    public ArrayList<Diagnostics> getListOfDiagnosticRecords() {
+        return listOfDiagnosticRecords;
+    }
+
+    public void setListOfDiagnosticRecords(ArrayList<Diagnostics> listOfDiagnosticRecords) {
+        this.listOfDiagnosticRecords = listOfDiagnosticRecords;
+    }
+
+    public ArrayList<MedicalExam> getListOfMedicalExamRecords() {
+        return listOfMedicalExamRecords;
+    }
+
+    public void setListOfMedicalExamRecords(ArrayList<MedicalExam> listOfMedicalExamRecords) {
+        this.listOfMedicalExamRecords = listOfMedicalExamRecords;
+    }
+
+    public MedicalExam getExams() {
+        return exams;
+    }
+
+    public void setExams(MedicalExam exams) {
+        this.exams = exams;
+    }
+
+    public ArrayList<TreatmentPlan> getListOfTreatmentPlanRecords() {
+        return listOfTreatmentPlanRecords;
+    }
+
+    public void setListOfTreatmentPlanRecords(ArrayList<TreatmentPlan> listOfTreatmentPlanRecords) {
+        this.listOfTreatmentPlanRecords = listOfTreatmentPlanRecords;
+    }
+
+    public TreatmentPlan getTreatmentPlan() {
+        return treatmentPlan;
+    }
+
+    public void setTreatmentPlan(TreatmentPlan treatmentPlan) {
+        this.treatmentPlan = treatmentPlan;
+    }
+
+    public TreatmentPlan getTreatmentPlan2() {
+        return treatmentPlan2;
+    }
+
+    public void setTreatmentPlan2(TreatmentPlan treatmentPlan2) {
+        this.treatmentPlan2 = treatmentPlan2;
+    }
+
+    public ArrayList<DetectedIllness> getListOfDetectedIllness() {
+        return listOfDetectedIllness;
+    }
+
+    public void setListOfDetectedIllness(ArrayList<DetectedIllness> listOfDetectedIllness) {
+        this.listOfDetectedIllness = listOfDetectedIllness;
+    }
+
+    public ArrayList<Allergies> getListOfAllergyRecords() {
+        return listOfAllergyRecords;
+    }
+
+    public void setListOfAllergyRecords(ArrayList<Allergies> listOfAllergyRecords) {
+        this.listOfAllergyRecords = listOfAllergyRecords;
+    }
+
+    public ArrayList<VaccineTaken> getListOfVaccineTaken() {
+        return listOfVaccineTaken;
+    }
+
+    public void setListOfVaccineTaken(ArrayList<VaccineTaken> listOfVaccineTaken) {
+        this.listOfVaccineTaken = listOfVaccineTaken;
+    }
+
+    public VaccineTaken getVaccineTaken() {
+        return vaccineTaken;
+    }
+
+    public void setVaccineTaken(VaccineTaken vaccineTaken) {
+        this.vaccineTaken = vaccineTaken;
+    }
+
+    public Allergies getAllergy() {
+        return allergy;
+    }
+
+    public void setAllergy(Allergies allergy) {
+        this.allergy = allergy;
+    }
+
+    public Medication getMedication() {
+        return medication;
+    }
+
+    public void setMedication(Medication medication) {
+        this.medication = medication;
+    }
+
+    public ArrayList<Medication> getListOfMedicationToTake() {
+        return listOfMedicationToTake;
+    }
+
+    public void setListOfMedicationToTake(ArrayList<Medication> listOfMedicationToTake) {
+        this.listOfMedicationToTake = listOfMedicationToTake;
+    }
+    
+    public DetectedIllness getChronicIllness() {
+        return chronicIllness;
+    }
+
+    public void setChronicIllness(DetectedIllness chronicIllness) {
+        this.chronicIllness = chronicIllness;
+    }
+
+    public ArrayList<MedicalEvidence> getListOfMedicalEvidenceRecords() {
+        return listOfMedicalEvidenceRecords;
+    }
+
+    public void setListOfMedicalEvidenceRecords(ArrayList<MedicalEvidence> listOfMedicalEvidenceRecords) {
+        this.listOfMedicalEvidenceRecords = listOfMedicalEvidenceRecords;
+    }
+
+    public Diagnostics getDiagnosis() {
+        return diagnosis;
+    }
+
+    public void setDiagnosis(Diagnostics diagnosis) {
+        this.diagnosis = diagnosis;
+    }
+
+    public ArrayList<MedicationTaken> getListOfMedicationTaken() {
+        return listOfMedicationTaken;
+    }
+
+    public void setListOfMedicationTaken(ArrayList<MedicationTaken> listOfMedicationTaken) {
+        this.listOfMedicationTaken = listOfMedicationTaken;
+    }
+
+    public MedicationTaken getMedicationTaken() {
+        return medicationTaken;
+    }
+
+    public void setMedicationTaken(MedicationTaken medicationTaken) {
+        this.medicationTaken = medicationTaken;
     }
     
     // select medicalRecord to update
@@ -404,7 +643,10 @@ public class Child extends Person implements Serializable{
         
     @Override
     public int getAge() {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        //throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        TheEqualizer x = new TheEqualizer();
+        LocalDate currentDate = LocalDate.now();
+        return Period.between(x.convertdateToLocalDate(this.getDateOfBirth()),currentDate).getYears();
     }
 
     @Override

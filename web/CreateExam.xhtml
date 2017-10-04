@@ -1,0 +1,30 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:f="http://xmlns.jcp.org/jsf/core">
+
+    <ui:composition>
+        
+        <h:form id="createExamForm">
+            <p:selectOneMenu id="searchappointment" value="#{ChildCont.selectedAppointment}" style="width: 90px; margin-left: -3px "  filter="true" filterMatchMode="startsWith">
+                <f:selectItem itemLabel="Choose the Appointment:" itemValue="" />
+                <f:selectItems value="#{ChildCont.child.listOfAppointmentRecords}" />
+                <p:ajax id="examPage" update="@form" listener="#{ChildCont.getSelectedAppoitmentObject()}"/>
+            </p:selectOneMenu>
+            <h:panelGrid columns="2" style="margin-top: 15px;">
+                <p:outputLabel value="Exam:" />
+                <p:inputText id="txtExam" value="#{ChildCont.child.exams.examTitle}" style="width: 290px"/>
+                <p:outputLabel value="Comments:" />
+                <p:inputTextarea rows="4" cols="38" value="#{ChildCont.child.exams.resultComments}" style="margin-top: 15px" />
+            </h:panelGrid> 
+            <p:panelGrid columns="2" >
+                <p:commandButton value="Cancel" icon="fa fa-fw fa-remove" onclick="PF('dlgCreateExam').hide()" />
+                <p:commandButton value="Save" action="#{ChildCont.addExam()}" icon="fa fa-fw fa-save" oncomplete="PF('dlgCreateExam').hide()" update=":mangeMedicalHistoryDialog"/>
+            </p:panelGrid>
+        </h:form> 
+    </ui:composition>
+   
+</html>

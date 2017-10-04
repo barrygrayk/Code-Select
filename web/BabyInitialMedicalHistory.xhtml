@@ -1,0 +1,65 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:f="http://xmlns.jcp.org/jsf/core">
+
+    <ui:composition>
+        
+        <h:form id="BabyInitialMedicalHistory">
+            <h:panelGrid columns="1" style="width: 850px;" >
+                <p:dataTable id="initialMedicalHistoryTb" var="temp" value="#{ChildCont.child.listOfMedicalHistoryRecords}" selectionMode="single"  rowKey="#{temp.id}" scrollable="true" scrollHeight="200" >
+                    <f:facet name="header">
+                        List of Medical Records
+                        <p:commandButton id="toggler" type="button" value="View Columns" icon="ui-icon-calculator" />
+                        <p:columnToggler datasource="initialMedicalHistoryTb" trigger="toggler" />
+                    </f:facet>
+                    <p:ajax event="rowSelect" listener="#{ChildCont.onRowSelectTreatment}" update="@form"  process="initialMedicalHistoryTb"/>
+                    <p:ajax event="rowUnselect" listener="#{ChildCont.onRowUnselectTreatment}" update="@form" process="initialMedicalHistoryTb"/>
+                    
+                    <p:column headerText="Detected Illness">
+                        <h:outputText value="#{temp.illnessDetected}" />
+                    </p:column>
+                    <p:column headerText="Causes">
+                        <h:outputText value="#{temp.cause}" />
+                    </p:column>
+                    <p:column headerText="Treatment">
+                        <h:outputText value="#{temp.medicines}" />
+                    </p:column>
+                    <p:column headerText="Special Treatment">
+                        <h:outputText value="#{temp.specialTreatmeants}" />
+                    </p:column>
+                    <p:column headerText="Allergy">
+                        <h:outputText value="#{temp.allergies}" />
+                    </p:column>
+                    <p:column headerText="Doctor Seen">
+                        <h:outputText value="#{temp.doctersName}" />
+                    </p:column>
+                    <p:column headerText="Visited Hospital">
+                        <h:outputText value="#{temp.clincVisited}" />
+                    </p:column>
+                    <p:column headerText="Visit Date">
+                        <h:outputText value="#{temp.dateOfVisit}"> 
+                            <f:convertDateTime pattern="dd/MM/yyyy" type="date" />
+                        </h:outputText>
+                    </p:column>
+                </p:dataTable>
+            </h:panelGrid>
+
+            <p:panelGrid columns="3">
+                <p:commandButton value="Cancel" icon="fa fa-fw fa-remove" onclick="PF('dlgInitialMedicalRecord').hide()" update="@form :mangeMedicalHistoryDialog"/>
+                <p:commandButton value="Delete" actionListener="#{ChildCont.deleteInitialMedicalRecord()}" icon="fa fa-fw fa-trash-o" update="@form initialMedicalHistoryTb :mangeMedicalHistoryDialog">
+                    <p:confirm header="Confirmation" message="Are you sure, you want delete the selected record?" icon="ui-icon-alert" />
+                </p:commandButton>
+                <p:confirmDialog global="true" showEffect="fade" hideEffect="fade">
+                    <p:commandButton value="Yes" type="button" styleClass="ui-confirmdialog-yes" icon="ui-icon-check" />
+                    <p:commandButton value="No" type="button" styleClass="ui-confirmdialog-no" icon="ui-icon-close" />
+                </p:confirmDialog> 
+            </p:panelGrid>
+        </h:form> 
+    </ui:composition>
+   
+</html>
+

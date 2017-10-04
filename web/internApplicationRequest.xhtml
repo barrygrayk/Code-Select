@@ -46,7 +46,7 @@
                                 <h2>Apply </h2>
                             </div>
                         </div>
-                        <h:form>
+                        <h:form id="applicationForm">
                             <p:growl id="growl" sticky="true" showDetail="true" life="3000" />
                             <div class="row">
                                 <div class="col-md-12">
@@ -70,7 +70,7 @@
                                                 <h:panelGrid columns="2">
                                                     <h:panelGrid>
                                                         <p:selectOneMenu label="Country code"  class="form-control" id="country" value="#{Apply.country}" 
-                                                                         style="width:60px; margin: 2px" filter="true" filterMatchMode="startsWith" panelStyle="width:auto">
+                                                                         style="width:250px; margin: 2px" filter="true" filterMatchMode="startsWith" panelStyle="width:auto">
                                                             <p:ajax listener="#{Apply.onCountryChange()}"  update="Phone"  />
                                                             <f:selectItem  class="form-control" itemLabel="Select Country" itemValue="#{Apply.country}" noSelectionOption="true"/>
                                                             <f:selectItems value="#{Apply.countries}" />
@@ -90,7 +90,7 @@
                                                 <h:outputText id="display" />
                                             </div>
                                             <div class="form-group">
-                                                <p:commandButton icon="fa fa-send" class="btn btn-primary btn-md" update="growl" value="Apply" action="#{Apply.sendRequst()}"/>
+                                                <p:commandButton icon="fa fa-send" class="btn btn-primary btn-md" update="growl applicationForm" value="Apply" action="#{Apply.sendRequst()}"/>
                                             </div>
                                         </div>
                                     </div>

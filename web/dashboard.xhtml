@@ -55,13 +55,18 @@
                                     </p:menuitem>
                                 </p:submenu>
                                 <p:submenu label="Baby Tracker" styleClass="sidebar-brand" style="padding:8px" icon="fa fa-child">
-                                    <p:menuitem value="View child profile" actionListener="#{menuView.delete}" action="#{Include.setPage('viewbaby')}" update=":content" icon="fa fa-smile-o"/>
+                                    <p:menuitem value="View child profile" action="#{Include.setPage('viewbaby')}" actionListener="#{ChildCont.setReportTab(false)}" update=":content" icon="fa fa-smile-o"/>
+                                    
+                
                                 </p:submenu>
                                 <p:submenu label="Donations" styleClass="sidebar-brand" style="padding:8px" icon="fa fa-money">
                                     <p:menuitem value="Add needs" actionListener="#{menuView.save}"  icon="fa fa-plus-square-o" action="#{Include.setPage('donations')}" update=":content" />
                                 </p:submenu>
                                 <p:submenu label="Inventory" styleClass="sidebar-brand" style="padding:8px" icon="fa fa-shopping-cart">
                                     <p:menuitem value="Manage inventory" actionListener="#{menuView.save}" action="#{Include.setPage('inventory')}" update=":content" icon="fa fa-clipboard" />
+                                </p:submenu>
+                                <p:submenu label="Reports" styleClass="sidebar-brand" style="padding:8px" icon="fa fa-file-text">
+                                     <p:menuitem value="Generate Report(s)"  action="#{Include.setPage('GenerateReport')}" actionListener="#{ChildCont.setReportTab(true)}" update=":content" icon="fa fa-file-pdf-o" />
                                 </p:submenu>
                                 <p:submenu label="Settings" styleClass="sidebar-brand" style="padding:8px" icon="fa fa-gears">
                                     <p:menuitem value="Logout" actionListener="#{menuView.save}" action="#{Login.doLogOut()}"  icon="fa fa-sign-out" />

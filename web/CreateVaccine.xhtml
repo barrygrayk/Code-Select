@@ -1,0 +1,28 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets">
+
+    <ui:composition>
+        
+        <h:form id="createVaccineForm">
+            
+            <h:panelGrid columns="4">
+                <p:outputLabel value="Vaccine:" />
+                <p:inputText id="txVaccine" value="#{ChildCont.vaccine.vaccine}" style="margin-right: 15px; margin-left: 3px;"/>
+                <p:outputLabel value="Site:" style="margin-right: 15px"/>
+                <p:inputText id="txSite"  value="#{ChildCont.vaccine.site}"/>
+                <p:outputLabel value="AgeGroup:" style="margin-top: 15px"/>
+                <p:inputText id="txAgeGroup" value="#{ChildCont.vaccine.ageGroup}" style="margin-left: 3px"/>
+            </h:panelGrid> 
+            <p:panelGrid columns="2" >
+                <p:commandButton value="Cancel" icon="fa fa-fw fa-remove" onclick="PF('dlgCreateVaccine').hide()" />
+                <p:commandButton value="Save" action="#{ChildCont.addVaccine()}" icon="fa fa-fw fa-save" oncomplete="PF('dlgCreateVaccine').hide()" update=":mangeMedicalHistoryDialog"/>
+            </p:panelGrid>
+        </h:form> 
+    </ui:composition>
+   
+</html>
+

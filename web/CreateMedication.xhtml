@@ -1,0 +1,43 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:f="http://xmlns.jcp.org/jsf/core">
+
+    <ui:composition>
+        
+        <h:form id="createMedicationForm">
+            
+            <h:panelGrid columns="2">
+                <p:outputLabel value="Medicine:" style="margin-left: -50px" />
+                <p:inputText id="txtMedicine" value="#{ChildCont.child.medication.medicine}" />
+                <p:outputLabel value="Time Interval:" style="margin-left: -50px"  />
+                <p:inputText id="txtIntervalTime"  value="#{ChildCont.child.medication.timeInterval}" style="margin-right: -150px" />
+                <p:outputLabel value="Quantity:" style="margin-left: -50px" />
+                <p:inputText id="txtQuantity" value="#{ChildCont.child.medication.quantity}" />
+                <p:outputLabel value="Metric:" style="margin-left: -50px" />
+                <p:selectOneMenu id="metricOptions" value="#{ChildCont.child.medication.metric}">
+                    <f:selectItem itemLabel="Select metric" itemValue=""/>
+                    <f:selectItem itemLabel="tsp" itemValue="tsp" />
+                    <f:selectItem itemLabel="ml" itemValue="ml" />
+                    <f:selectItem itemLabel="oz" itemValue="oz" />
+                    <f:selectItem itemLabel="unit(s)" itemValue="unit" />
+                    <f:selectItem itemLabel="drop(s)" itemValue="drop" />
+                    <f:selectItem itemLabel="tablet(s)" itemValue="tablet" />
+                </p:selectOneMenu>
+            </h:panelGrid> 
+            <p:panelGrid columns="2">
+                <p:outputLabel value="Notes:" style="margin-left: -10px" />
+                 <p:inputTextarea rows="3" cols="25" style="margin-left: -30px" value="#{ChildCont.child.medication.comments}"/>
+                   <p:commandButton value="Cancel" icon="fa fa-fw fa-remove" onclick="PF('dlgCreateMedication').hide()" />
+                   <p:commandButton value="Save" action="#{ChildCont.addMedication()}" icon="fa fa-fw fa-save" oncomplete="PF('dlgCreateMedication').hide()" update=":mangeMedicalHistoryDialog"/>
+         
+            </p:panelGrid>
+          
+        </h:form> 
+    </ui:composition>
+   
+</html>
+

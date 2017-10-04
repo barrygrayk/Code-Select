@@ -56,6 +56,11 @@ public class InternAplicationTableConnection extends DatabaseConnection {
             feedback.addMessage("Success", "Your application request has been sucessfully sent. "
                     + "The success of this application will be communicated via your eamil. Thank you.");
         } catch (SQLException ex) {
+            String errormessage = ex.getMessage();
+            if (errormessage.contains("Duplicate entry")) {
+                feedback.error("Request error", "Our record shows that this email "
+                        + application.getEmailAddress() + " is currently is use. Choose a different email and try again.");
+            }
             Logger.getLogger(InternAplicationTableConnection.class.getName()).log(Level.SEVERE, null, ex);
         } finally {
             try {
@@ -135,7 +140,9 @@ public class InternAplicationTableConnection extends DatabaseConnection {
                 applicant.setAddress(resultset.getString("streetAddress"));
                 applicant.setCountry(resultset.getString("country"));
                 applicant.setZipCode(resultset.getString("zipCode"));
-                applicant.setGender(resultset.getString("gender").charAt(0));
+             String sex = resultset.getString("gender");
+             System.out.println("This is the sex of the "+sex);
+                applicant.setGender(sex == null ? 'm'  : sex.charAt(0));
                 applicant.setMaritalStatus(resultset.getString("maritalStatus"));
                 applicant.setMotivationForApllication(resultset.getString("message"));
             }
@@ -547,7 +554,7 @@ public class InternAplicationTableConnection extends DatabaseConnection {
             ps.setString(1, applicant.getFirstname());
             ps.setString(2, applicant.getLastname());
             ps.setString(3, applicant.getPrename());
-            ps.setDate(4, toSqlDate(applicant.getDateOfBirth()));
+            ps.setDate(4, applicant.getDateOfBirth()==null?null:toSqlDate(applicant.getDateOfBirth()));
             ps.setString(5, applicant.getPhoneNumbe());
             ps.setString(6, applicant.getEmailAddress());
             ps.setString(7, applicant.getCity());
@@ -806,7 +813,7 @@ public class InternAplicationTableConnection extends DatabaseConnection {
 
     public void deleteWorkExperience(int id) {
         try {
-            deleteRecord(id, "DELETE FROM  `applicantworkexperience` where  idapplicantworkexperience=?");
+            deleteARecord(id, "DELETE FROM  `applicantworkexperience` where  idapplicantworkexperience=?");
         } catch (ClassNotFoundException ex) {
             Logger.getLogger(InternAplicationTableConnection.class.getName()).log(Level.SEVERE, null, ex);
         }
@@ -989,7 +996,7 @@ public class InternAplicationTableConnection extends DatabaseConnection {
             ps.setString(1, token);
             ps.setInt(2, id);
             ps.execute();
-            feedback.addMessage("Success", "Account has been suspended");
+            feedback.addMessage("Success", "Account status has been updated");
         } catch (ClassNotFoundException | SQLException ex) {
             Logger.getLogger(InternAplicationTableConnection.class.getName()).log(Level.SEVERE, null, ex);
         } finally {
@@ -1021,6 +1028,25 @@ public class InternAplicationTableConnection extends DatabaseConnection {
                 Logger.getLogger(InternAplicationTableConnection.class.getName()).log(Level.SEVERE, null, ex);
             }
         }
+
+    }
+
+    public void rejectApplicantion(Applicant applicant) throws ClassNotFoundException {
+        String deleteRecord = "DELETE FROM `applicant` WHERE  `idApplicant`= ?";
+        System.out.println("The id of the appliacnt is " + applicant.getId());
+        deleteARecord(applicant.getId(), deleteRecord);
+        String body = "Dear " + applicant.getFirstname() + "  " + applicant.getLastname() + "\n"
+                + "\n"
+                + "We appreciate that you took the time to apply for intern program. We reviewed your application and have decided that we will not offer pursue this application any furthur. \n"
+                + "\n"
+                + "We appreciate that you are interested in our organisation.\n"
+                + "\n"
+                + "Again, thank you for applying. We wish you all the best.\n"
+                + "\n"
+                + "Regards,\n"
+                + "\n"
+                + "Onthatile Admin. `";
+        new StaffTableConnection().sendEmailToStaff(applicant.getEmailAddress(), "Internship application", body);
     }
 
 }

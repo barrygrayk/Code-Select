@@ -44,4 +44,8 @@ public class Height {
         this.heightID = heightID;
     }
     
+    @Override
+    public String toString(){
+        return ""+this.height;
+    }
 }

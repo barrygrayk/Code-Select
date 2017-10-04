@@ -14,25 +14,46 @@
             <div class="ui-g">
                 <div class="ui-g-12" style="width: 500px">
                     <p:panel id="PanelTemperature" style="width: 858px" >
-                        <ct:chart type="line" model="#{ChildCont.temperatureChartM}" style="height:400px; width:800px"/>
+                        <ct:chart id="temperatureChart" type="line" model="#{ChildCont.temperatureChart}" style="height:400px; width:800px">
+                                <p:ajax event="itemSelect" listener="#{ChildCont.onTemperatureSelect}" update="TemperatureDlg lineChartMessage" oncomplete="PF('dlgUpdateTemperature').show()"/>
+                        </ct:chart>
+                        <p:message id="lineChartMessage" for="temperatureChart" showDetail="true" />
                     </p:panel>
                 </div>
-                <div class="ui-g-12">
+                <div class="ui-g-12" style="margin-top:-50px">
                     <p:panel  >
-                        <p:panelGrid columns="3">
-                            <p:commandButton value="Update" >
+                        <p:panelGrid columns="3" style="width:282px">
+                            <p:commandButton value="Refresh" update="@form" icon="fa fa-refresh" >
+                                <p:ajax id="currentPage" update="@form" listener="#{ChildCont.getSelectedChildObject()}"/>
                                 <p:resetInput target="PanelTemperature"/>
                             </p:commandButton>
-                            <p:commandButton value="Delete" >
-                                <p:resetInput target="PanelTemperature"/>
-                            </p:commandButton>
-                            <p:commandButton value="Cancel" >
+
+                            <p:commandButton value="Cancel"  icon="fa fa-times-circle" onclick="PF('dlgTemperatureChart').hide()">
                                 <p:resetInput target="PanelTemperature"/>
                             </p:commandButton>
                         </p:panelGrid>
                     </p:panel>
                 </div>
-            </div>    
+            </div>
+            <p:dialog id="TemperatureDlg" header="Update Temperature Entry" widgetVar="dlgUpdateTemperature" resizable="false" responsive="true">
+            <h:panelGrid columns="2">
+                <p:outputLabel value="Temperature Value:" />
+                <p:inputNumber id="txtHeight" value="#{ChildCont.child.temperatureRecord.temperatureReading}"/>
+                <p:outputLabel value="Date Recorded:" />
+                <p:calendar id="dateEvent" value="#{ChildCont.child.temperatureRecord.temperatureDate}" pattern = "dd/MM/yyyy" mask = "true">
+                    <p:ajax event="dateSelect" listener="#{ChildCont.onDateSelect}" />
+                </p:calendar>
+                <p:outputLabel value="Time Recorded:" />
+                <p:calendar id="txtTempTime" value="#{ChildCont.child.temperatureRecord.temperatureTime}" pattern="HH:mm:ss" timeOnly="true"/>
+            </h:panelGrid>
+            <p:panelGrid columns="3">
+                <p:commandButton value="Cancel"  icon="fa fa-times-circle" onclick="PF('dlgUpdateTemperature').hide()"/>
+                <p:commandButton value="Update" action="#{ChildCont.updateChildTemperatureEntry()}"  icon="fa fa-fw fa-edit" onclick="PF('dlgUpdateTemperature').hide()"/>
+                <p:commandButton value="Delete" icon="fa fa-fw fa-trash-o" action="#{ChildCont.deleteTemperatureEntry()}" onclick="PF('dlgUpdateTemperature').hide()">
+                    <p:resetInput target="PanelTemperature"/>
+                </p:commandButton>
+            </p:panelGrid>
+        </p:dialog>
         </h:form> 
     </ui:composition>
    

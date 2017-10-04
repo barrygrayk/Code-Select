@@ -5,98 +5,101 @@
       xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
       xmlns:p="http://primefaces.org/ui"
       xmlns:f="http://xmlns.jcp.org/jsf/core">
-    
+
     <ui:composition>
-       
-            
-       <div class="ui-g-6">
-            <h:panelGrid styleClass="ui-panelgrid-blank">
-                    
-                        <p:panel header="Desired Start Internship Date *">
+
+
+        <div class="ui-g">
+
+
+
+            <div class="ui-g-6">
+                <h:panelGrid styleClass="ui-panelgrid-blank">
+
+                    <p:panel header="Desired Start Internship Date ">
                         <p:watermark for="start" value="Enter Date" />
                         <p:calendar id="start" value="#{Apply.internshipInfo.startDate}" pattern="dd-MM-yyyy" styleClass="dateTimeFieldLeft">
                             <p:ajax event="dateSelect" listener="#{Apply.onEndDateChange()}"  update="intrnLenght"/>
                         </p:calendar>
-                        </p:panel>
-                
-                        <p:panel header="Please Note: Internship Length">
-                            <p:outputLabel id="intrnLenght" value="#{Apply.duration} Days"/>
-                        </p:panel>
+                    </p:panel>
 
-                       
-                        <p:panel header="Are your Internship days of arrival flexible? *">
+                    <p:panel header="Please Note: Internship Length">
+                        <h:outputText id="intrnLenght" value="#{Apply.duration} Days"/>
+
+                    </p:panel>
+
+
+                    <p:panel header="Are your Internship days of arrival flexible? ">
                         <!-- <h4 for="flexibility">5. Are your days of arrival flexible?</h4> -->
                         <p:selectOneRadio id="flexibility" value="#{Apply.internshipInfo.areDayFlex}">
                             <f:selectItem itemLabel="Yes" itemValue="Yes" />
                             <f:selectItem itemLabel="No" itemValue="No" />
                         </p:selectOneRadio>
-                        
-                        </p:panel>
-                      
-                        
-                        </h:panelGrid>
-                
-            </div>
-                   
-            <div class="ui-g-6">
-                    <h:panelGrid  styleClass="ui-panelgrid-blank">
-                                
-                        <p:panel header="Desired End Internship Date *">   
-                            <p:watermark for="end" value="Enter Date" />
-                            <p:calendar id="end" value="#{Apply.internshipInfo.endDate}" pattern="dd-MM-yyyy" styleClass="dateTimeField" >
-                            <p:ajax event="dateSelect" listener="#{Apply.onEndDateChange()}"  update="intrnLenght"/>
-                            </p:calendar>
-                        </p:panel>
-                        
-                        <p:panel header="Information: Visa Requirements"> 
-                            <!--<p:outputLabel id="visaLength" value="Internship's longer than 90 days require a visa"/>-->
-                            <p>Internship Time Duration's longer than 90 days: Require A Visa</p>
-                        
-                        </p:panel>
-                        
-                        <p:panel header="How did you hear about the Internship? *"> 
-                            <p:selectOneMenu id="hearAbout" value="#{Apply.internshipInfo.howUHeard}">
-                                <f:selectItem itemLabel="Please Select" itemValue="#{Apply.internshipInfo.howUHeard}" noSelectionOption="true" />
-                                <f:selectItems value="#{Apply.heardFromList}" />
-                            </p:selectOneMenu>
-                        </p:panel>
-                    </h:panelGrid>
-                 </div>
-                
-                 <div class="ui-g-12"  styleClass="ui-panelgrid-blank"> 
-                 <h:panelGrid  styleClass="ui-panelgrid-blank">
-                            
-                     <!--<p:panel header="Why do you wish to intern with Onthatile Children’s Ministries And What are your goals for the internship? *"> 
-                            <p:watermark for="goals" value="I wish to intern with Onthatile Children’s Ministries because................And My goals are for the internship are.................." />
-                            <p:inputTextarea  id="goals" rows="10" cols="100"  class="field-style" 
-                                          counter="display" maxlength="1000" counterTemplate="{0} characters remaining." 
-                                          autoResize="false"   value="" label="Message"/>
-                            <h:outputText id="display" /> 
-                            </p:panel>-->
-                     
-                <p:panel>   
-                    <h:outputText value="Why do you wish to intern with Onthatile Children’s Ministries And What are your goals for the internship?"/>
-                <h5 style="margin-top:0"></h5>
-                <p:textEditor id="goals" widgetVar="editor7" value="#{Apply.internshipInfo.internshipGoal}" height="300" style="margin-bottom:10px"/>
- 
-                <p:commandButton value="Submit" oncomplete="PF('dlg').show()" icon="ui-icon-disk" />
-                <p:commandButton value="Clear" type="button" onclick="PF('editor1').clear();" icon="ui-icon-close" />
- 
-                    <!--<p:dialog header="Content" widgetVar="dlg" showEffect="fade" hideEffect="fade">
-                     <p:outputPanel id="display55">
-                    <h3 style="margin-top:0">Why do you wish to intern with Onthatile Children’s Ministries And What are your goals for the internship?</h3>
-                    <h:outputText value="#{Apply.internshipInfo.internshipGoal}" escape="false" />
-                     </p:outputPanel>
-                    </p:dialog> -->    
+
                     </p:panel>
-     
-                    </h:panelGrid>
-                 </div>
-        
-        <div align="center" position="bottom">
-             <p:commandButton  value="Save"   icon="fa fa-save" class="btn btn-primary btn-md" action="#{Apply.saveInternApplicationInfo()}"/>
-        </div>
-                          
+
+
+                </h:panelGrid>
+
+            </div>
+
+            <div class="ui-g-6">
+                <h:panelGrid  styleClass="ui-panelgrid-blank">
+
+                    <p:panel header="Desired End Internship Date ">   
+                        <p:watermark for="end" value="Enter Date" />
+                        <p:calendar id="end" value="#{Apply.internshipInfo.endDate}" pattern="dd-MM-yyyy" styleClass="dateTimeField" >
+                            <p:ajax event="dateSelect" listener="#{Apply.onEndDateChange()}"  update="intrnLenght"/>
+                        </p:calendar>
+                    </p:panel>
+
+                    <p:panel header="Information: Visa Requirements"> 
+                        <!--<p:outputLabel id="visaLength" value="Internship's longer than 90 days require a visa"/>-->
+
+                        <h:outputText id="viss" value="Internships longer than 90 days: Require A Visa"/>
+                    </p:panel>
+
+                    <p:panel header="How did you hear about the Internship? "> 
+                        <p:selectOneMenu id="hearAbout" value="#{Apply.internshipInfo.howUHeard}" style="width: 50%">
+                            <f:selectItem itemLabel="Please Select" itemValue="#{Apply.internshipInfo.howUHeard}" noSelectionOption="true" />
+                            <f:selectItems value="#{Apply.heardFromList}" />
+                        </p:selectOneMenu>
+                    </p:panel>
+                </h:panelGrid>
+            </div>
+
+            <div class="ui-g-12"  styleClass="ui-panelgrid-blank"> 
+                <h:panelGrid  styleClass="ui-panelgrid-blank">
+
+                    <!--<p:panel header="Why do you wish to intern with Onthatile Children’s Ministries And What are your goals for the internship? *"> 
+                           <p:watermark for="goals" value="I wish to intern with Onthatile Children’s Ministries because................And My goals are for the internship are.................." />
+                           <p:inputTextarea  id="goals" rows="10" cols="100"  class="field-style" 
+                                         counter="display" maxlength="1000" counterTemplate="{0} characters remaining." 
+                                         autoResize="false"   value="" label="Message"/>
+                           <h:outputText id="display" /> 
+                           </p:panel>-->
+
+                    <p:panel header="Why do you wish to intern with Onthatile Children’s Ministries And What are your goals for the internship?">   
+         
+                        <p:textEditor id="goals" widgetVar="internGoals" value="#{Apply.internshipInfo.internshipGoal}" height="300" />
+
+
+
+                        <!--<p:dialog header="Content" widgetVar="dlg" showEffect="fade" hideEffect="fade">
+                         <p:outputPanel id="display55">
+                        <h3 style="margin-top:0">Why do you wish to intern with Onthatile Children’s Ministries And What are your goals for the internship?</h3>
+                        <h:outputText value="#{Apply.internshipInfo.internshipGoal}" escape="false" />
+                         </p:outputPanel>
+                        </p:dialog> -->    
+                    </p:panel>
+
+                </h:panelGrid>
+            </div>
+
+            <div align="center" position="bottom">
+                <p:commandButton  value="Save"   icon="fa fa-save" class="btn btn-primary btn-md" action="#{Apply.saveInternApplicationInfo()}"/>
+            </div>
+        </div>        
     </ui:composition>
 </html>
 

@@ -98,7 +98,7 @@ public abstract class DatabaseConnection {
         return sqlDate;
     }
 
-    public void deleteRecord(int id, String query) throws ClassNotFoundException {
+    public void deleteARecord(int id, String query) throws ClassNotFoundException {
         connection = getConnection();
         PreparedStatement deleteRecord = null;
         String deleteItem = query;

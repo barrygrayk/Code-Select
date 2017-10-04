@@ -106,9 +106,10 @@
 
                                     <p:outputLabel id="gender" value="Gender:"/>
                                     <p:selectOneMenu id="genderOptions" value="#{ChildCont.child.gender}">
-                                        <f:selectItem itemLabel="Select gender" itemValue=""/>
+                                        <f:selectItem itemLabel="Select gender" itemValue="#{ChildCont.child.gender}"/>
                                         <f:selectItem itemLabel="Male" itemValue="M" />
                                         <f:selectItem itemLabel="Female" itemValue="F" />
+                                       
                                     </p:selectOneMenu>
 
                                     <p:outputLabel id="birthdate" value="Date-of-birth:" />
@@ -120,22 +121,22 @@
                                     <p:inputText id="txtPlaceOfBirth" value="#{ChildCont.child.placeOfBirth}" />
 
                                 </h:panelGrid>
-                                <h:panelGrid columns="1" cellpadding="5" cellspacing="5">
-                                    <h:panelGrid columns="2" >
+                                <h:panelGrid columns="2" >
+                                    
                                     <p:outputLabel id="headCircunference" value="Head CIR:"/>
                                     <p:inputText id="txtHeadCirc" value="#{ChildCont.child.headCir}" type="number" title="Choose a positive value"/>
                                     <p:outputLabel id="Initialheight" value="Height:" />
                                     <p:inputText id="txtHeight" value="#{ChildCont.child.heightRecorded.height}" type="number" title="Choose a positive value"/>
                                     <p:outputLabel id="Initialweight" value="Weight:" />
                                     <p:inputText id="txtWeight" value="#{ChildCont.child.weightRecorded.weight}" type="number" title="Choose a positive value"/>
-                                    </h:panelGrid>
-                                    <p:panel id="P7" >
+                                    
+                                    
                                     <h5><h:outputLabel value="Diet details" /></h5>
-                                    <p:selectManyCheckbox id="basic" value="#{ChildCont.selectedChildren}" layout="grid" columns="1">
-                                        <f:selectItem itemLabel="Formula details" itemValue="none" />
-                                        <f:selectItem itemLabel="Solid details" itemValue="none" />
-                                        
-                                    </p:selectManyCheckbox></p:panel>
+                                    <p:selectManyCheckbox id="basic" value="#{ChildCont.child.childDietDetails}" layout="grid" columns="2">
+                                        <f:selectItem itemLabel="Formula" itemValue="formula" />
+                                        <f:selectItem itemLabel="Solid" itemValue="solid" />
+                                        <p:inputTextarea rows="2" cols="19" placeholder="Type any Comments" value="#{ChildCont.child.childDietComments}"/>
+                                    </p:selectManyCheckbox>
                                     
                                 </h:panelGrid>
                             </h:panelGrid>
@@ -144,6 +145,7 @@
                         <p:fieldset id="f4" legend="Medical History Details" style="margin-top:10px; text-align:left">
                                 <h:panelGrid columns="2" cellpadding="5">
                                     <p:panel id="P4">
+                                        <p:commandButton icon="fa fa-fw fa-edit" value="Update Illness(es) known" onclick="PF('dlgUpdate').show()" update=":updateDialog" type="submit" />
                                         <p:contextMenu>
                                             <p:menuitem value="Update Illness" action="#{ChildCont.child.selectMedicalRecordToUpdate()}" onclick="PF('dlgUpdate').show()" update=":updateDialog" icon="ui-icon-add"/>
                                             <p:menuitem value="DateTesting" action="#{ChildCont.humorMe()}" />
@@ -180,11 +182,11 @@
                             <p:inputTextarea rows="3" cols="75" style="align-self: flex-end;" value="#{ChildCont.child.generalRemarks}"/>
                         </p:panelGrid>
 
-                        <p:panel id="P3">
-                            <p:commandButton value="Cancel" onclick="PF('dlgEdit').hide();" update="viewListOfBabies:viewTable">
+                        <p:panel id="P3" style=" padding-left: 85px">
+                            <p:commandButton value="Cancel" icon="fa fa-fw fa-remove" onclick="PF('dlgEdit').hide();" update="viewListOfBabies:viewTable">
                                 <p:resetInput target="PanelAdd"/>
                             </p:commandButton>
-                            <p:commandButton value="Update" action="#{ChildCont.editChild()}" onclick="PF('dlgEdit').hide()" update="viewListOfBabies:viewTable">
+                            <p:commandButton value="Update" icon="fa fa-fw fa-edit" action="#{ChildCont.editChild()}" onclick="PF('dlgEdit').hide()" update="viewListOfBabies:viewTable">
                                 <p:resetInput target="PanelAdd"/>
                             </p:commandButton>
                         </p:panel>

@@ -189,6 +189,7 @@ public class InternApplicationController extends Applicant implements Serializab
         try {
             if (ses.getAttribute("id") != null) {
                 int sesPk = (int) ses.getAttribute("id");
+                System.out.println(sesPk+"  Yes this is the key");
                 currentApplicant = new InternAplicationTableConnection().getApplicant(sesPk);
                 setId(sesPk);
                 if (currentApplicant != null) {
@@ -619,9 +620,13 @@ public class InternApplicationController extends Applicant implements Serializab
             application.setEmailAddress(getEmailAddress());
             application.setPhoneNumber(code);
             application.setMotivationForApllication(getMotivationForApllication());
-            System.out.println("-----cont---------");
             new InternAplicationTableConnection().sendApllicationRequest(application);
-            System.out.println("-----Cont--Done-------");
+            this.setFirstname(null);
+            this.setLastname(null);
+            this.setEmailAddress(null);
+            this.setPhoneNumber(null);
+            code= null;
+            this.setMotivationForApllication(null);
         }
     }
 
@@ -845,7 +850,7 @@ public class InternApplicationController extends Applicant implements Serializab
         if (selectedApplicant != null) {
             new InternAplicationTableConnection().updateAccountStatus("Suspended", selectedApplicant.getId());
         } else {
-            feedback.error("Selection error", "please select applicant");
+            feedback.error("Selection error", "Please select applicant");
 
         }
     }
@@ -854,9 +859,19 @@ public class InternApplicationController extends Applicant implements Serializab
         if (selectedApplicant != null) {
             new InternAplicationTableConnection().sendAcceRequest(selectedApplicant);
         } else {
-            feedback.error("Selection error", "please select applicant");
+            feedback.error("Selection error", "Please select applicant");
 
         }
     }
+   
+    public void rejectApplicanttion () throws ClassNotFoundException{
+        if  (selectedApplicant != null){
+            System.out.println("We are here boss");
+            new InternAplicationTableConnection().rejectApplicantion(selectedApplicant);
+        }else{
+            feedback.error("Selection error", "Please select applicant");
+        }
+    }
+    
 
 }

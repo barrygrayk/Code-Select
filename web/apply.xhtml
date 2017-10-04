@@ -36,7 +36,8 @@
 
     <h:body>
         <h:form>     
-            <p:growl id="messages" showDetail="true" />
+            
+             <p:growl autoUpdate="true" sticky="true" showDetail="true" life="3000" />
 
             <p:toolbar>
                 <f:facet name="left">
@@ -46,7 +47,7 @@
                         <span class="ui-icon ui-icon-grip-dotted-vertical" />
                     </span>
 
-                    <p:commandButton type="button" value="Michael Phoya" icon="ui-icon-folder-open" />
+                        <p:commandButton type="button" value="#{Login.fullname} | #{Login.username}" icon="fa fa-user" />
 
                     <span class="ui-separator">
                         <span class="ui-icon ui-icon-grip-dotted-vertical" />
@@ -64,9 +65,9 @@
                         <span class="ui-icon ui-icon-grip-dotted-vertical" />
                     </span>
 
-                    <p:menuButton value="Intern Application Portal">
+                        <p:menuButton value="Intern Application Portal" icon="fa fa-gear">
 
-                        <p:menuitem value="Log Out"  ajax="false" icon="ui-icon-close" />
+                            <p:menuitem value="Log Out"  action="#{Login.doLogOut()}" ajax="false" icon="fa fa-sign-out" />
 
                     </p:menuButton>
                 </f:facet>

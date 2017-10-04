@@ -1,0 +1,44 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:f="http://xmlns.jcp.org/jsf/core">
+
+    <ui:composition>
+        
+        <h:form id="editDiagnosticForm">
+            <p:selectOneMenu id="searchappointment" value="#{ChildCont.selectedAppointment}" style="width: 90px; margin-left: -3px "  filter="true" filterMatchMode="startsWith">
+                <f:selectItem itemLabel="Choose the Appointment:" itemValue="" />
+                <f:selectItems value="#{ChildCont.child.listOfAppointmentRecords}" />
+                <p:ajax id="diagnosticPage" update="@form" listener="#{ChildCont.getSelectedAppoitmentObject()}"/>
+            </p:selectOneMenu>
+            <h:panelGrid columns="1" style="width: 365px;" >
+                <p:dataTable id="editDiagnosticTb" var="temp" value="#{ChildCont.getListOfDiagnosticRecordDb()}" selectionMode="single"  rowKey="#{temp.diagnosticId}" scrollable="true" scrollHeight="100" >
+                    <p:ajax event="rowSelect" listener="#{ChildCont.onRowSelect}" update="@form"/>
+                    <p:ajax event="rowUnselect" listener="#{ChildCont.onRowUnselect}" update="@form"/>
+                    <p:column headerText="Diagnosis List">
+                        <h:outputText value="#{temp.title}" />
+                    </p:column>    
+                </p:dataTable>
+            </h:panelGrid>
+            <h:panelGrid columns="2" style="margin-top: 15px">
+                <p:outputLabel value="Diagnosis:" />
+                <p:inputText id="txtDiagnosis" value="#{ChildCont.child.diagnosis.title}" style="width: 290px"/>
+            </h:panelGrid> 
+            <p:panelGrid columns="3" >
+                <p:commandButton value="Cancel" icon="fa fa-fw fa-remove" onclick="PF('dlgEditDiagnosis').hide()" />
+                <p:commandButton value="Update" action="#{ChildCont.updateDiagnosis()}" icon="fa fa-fw fa-edit" oncomplete="PF('dlgEditDiagnosis').hide()" update="@form :mangeMedicalHistoryDialog"/>
+                <p:commandButton value="Delete" actionListener="#{ChildCont.deleteDiagnosisRecord()}" icon="fa fa-fw fa-trash-o" oncomplete="PF('dlgEditDiagnosis').hide()" update="@form :mangeMedicalHistoryDialog">
+                    <p:confirm header="Confirmation" message="Are you sure, you want delete the selected record?" icon="ui-icon-alert" />
+                </p:commandButton>
+                <p:confirmDialog global="true" showEffect="fade" hideEffect="fade">
+                    <p:commandButton value="Yes" type="button" styleClass="ui-confirmdialog-yes" icon="ui-icon-check" />
+                    <p:commandButton value="No" type="button" styleClass="ui-confirmdialog-no" icon="ui-icon-close" />
+                </p:confirmDialog>
+            </p:panelGrid>
+        </h:form> 
+    </ui:composition>
+   
+</html>

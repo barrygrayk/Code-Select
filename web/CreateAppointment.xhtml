@@ -1,0 +1,48 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:f="http://xmlns.jcp.org/jsf/core">
+
+    <ui:composition>
+        
+        <h:form id="createAppointmentForm">
+            <p:toolbar>
+                <p:toolbarGroup align="left">
+                    <h4>Appointment details</h4>
+                </p:toolbarGroup>
+            </p:toolbar>
+            <p:panel >
+           
+                <p:panelGrid id="Appoointment" columns="3"  >   
+                    <p:outputLabel value="Appointment Date:"/>
+                    <p:outputLabel value="Hospital:"/>
+                    <p:outputLabel value="Doctor:"/>
+                    <p:calendar id="AppoointmentDate" showOn="button" placeholder="View date" pattern = "dd/MM/yyyy" value="#{ChildCont.child.appointment.date}" mask = "true" style="text-align: left;"/>
+                    <p:inputText id="txtHospital"  value="#{ChildCont.child.appointment.hospital}"/>
+                    <p:inputText id="txtDoctor"  value="#{ChildCont.child.appointment.doctor}"/>
+                </p:panelGrid>
+                <p:panelGrid columns="2">
+                <h4>Child Complaints:</h4>
+                <p:inputTextarea rows="3" cols="43" style="margin-right: -40px;" value="#{ChildCont.child.appointment.complaints}"/></p:panelGrid>
+            </p:panel>
+            <p:fieldset id="f6" legend="Doctor visit" toggleable="true" style="margin-top:10px; text-align:left" collapsed="false">
+                <p:panelGrid columns="3" id="panelM">
+                    <p:outputLabel value="Physical Examination"/>
+                    <p:outputLabel value="Doctor Feedback"/>
+                    <p:outputLabel value="Blood test Comment(s)"/>
+                    <p:inputTextarea rows="3" cols="25" style="align-self: flex-end;" value="#{ChildCont.child.appointment.physicalExamination}"/>
+                    <p:inputTextarea rows="3" cols="25" style="align-self: flex-end;" value="#{ChildCont.child.appointment.doctorFeedback}"/>
+                    <p:inputTextarea rows="3" cols="25" style="align-self: flex-end;" value="#{ChildCont.child.appointment.bloodTestNote}"/>
+                </p:panelGrid>
+            </p:fieldset>
+            <p:panelGrid columns="2" >
+                <p:commandButton value="Cancel" icon="fa fa-fw fa-remove" onclick="PF('dlgCreateAppointment').hide()" />
+                <p:commandButton value="Save" action="#{ChildCont.addAppointment()}" icon="fa fa-fw fa-save" oncomplete="PF('dlgCreateAppointment').hide()" update=":mangeMedicalHistoryDialog"/>
+            </p:panelGrid>
+        </h:form> 
+    </ui:composition>
+   
+</html>
