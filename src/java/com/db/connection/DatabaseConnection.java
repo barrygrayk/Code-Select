@@ -30,10 +30,11 @@ public abstract class DatabaseConnection {
         this.dbUserName = "root";
         this.dbPassWord = "password";
         conString = "jdbc:mysql://localhost:3306/onthatile children's ministries";
-      /*  this.dbUserName = "admin";
-        this.dbPassWord = "codeselect";
-        conString = "jdbc:mysql://node159735-adminportal.j.layershift.co.uk/onthatilechildresdb";*/
-//jdbc:mysql://node157038-onthatileapp.j.layershift.co.uk
+//      
+//       this.dbUserName = "root";
+//        this.dbPassWord = "XAXxrq12615";
+//        conString = "jdbc:mysql://node160432-administrationportal.j.layershift.co.uk/onthatilechildresdb";
+        //jdbc:mysql://node157038-onthatileapp.j.layershift.co.uk
         /*   this.dbUserName = "codeselect";
         this.dbPassWord = "9RstG7oenS";
         conString = "jdbc:mysql://node157038-onthatileapp.j.layershift.co.uk/onthatilechildrensministries"*/
@@ -122,7 +123,6 @@ public abstract class DatabaseConnection {
         }
 
     }
-
     abstract boolean recordValidator();
 
 }

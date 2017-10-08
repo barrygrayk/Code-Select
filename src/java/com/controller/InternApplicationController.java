@@ -47,6 +47,7 @@ public class InternApplicationController extends Applicant implements Serializab
             hasPhyHadicap = false;
     private Applicant selectedApplicant;
     private WorkExperience selectedSExperience = new WorkExperience();
+    private WorkExperience otherExperinece = new WorkExperience();
     private WorkExperience workExperience = new WorkExperience();
     private TreeMap<String, String> countries = new TreeMap();
     private List<String> heardFromList = new ArrayList<>();
@@ -60,6 +61,22 @@ public class InternApplicationController extends Applicant implements Serializab
 
     public InternApplicationController() {
         super();
+    }
+
+    public WorkExperience getOtherExperinece() {
+        return otherExperinece;
+    }
+
+    public void setOtherExperinece(WorkExperience otherExperinece) {
+        this.otherExperinece = otherExperinece;
+    }
+
+    public char getGender() {
+        return gender;
+    }
+
+    public void setGender(char gender) {
+        this.gender = gender;
     }
 
     public WorkExperience getSelectedSExperience() {
@@ -473,6 +490,8 @@ public class InternApplicationController extends Applicant implements Serializab
                 setNextSkin(new InternAplicationTableConnection().getEmergencycontact(sesPk));
                 setTsAndCs(new InternAplicationTableConnection().getTermsAndConditions(sesPk));
                 setProgress(new InternAplicationTableConnection().getApplicationProgress(sesPk));
+                setOtherExperinece(new  InternAplicationTableConnection().getExperience(sesPk));
+                setWorkExperience(new  InternAplicationTableConnection().getExperience(sesPk));
                 onChangeRadioBUtton();
             }
         } catch (ClassNotFoundException | SQLException ex) {
@@ -676,6 +695,7 @@ public class InternApplicationController extends Applicant implements Serializab
 
     public void saveMedicalHistory() {
         setId(getId());
+        System.out.println("The conditions--------------"+this.getMediaclHistory().getVitimOfNeglectExp());
         new InternAplicationTableConnection().updateApplicantMedicalhistory(this);
     }
 
@@ -687,14 +707,17 @@ public class InternApplicationController extends Applicant implements Serializab
     public void addWorkExperience() {
         new InternAplicationTableConnection().insertWorkxperience(this, buttonVal);
         clear();
+        System.out.println(getWorkExperience().getNameOfEmployer());
         buttonVal = "Add";
         iconVal = "fa fa-plus";
     }
 
     public void saveWordExperience() {
         String allCertificats = "";
-        allCertificats = getExperience().getCertificates().stream().map((per) -> per + ",").reduce(allCertificats, String::concat);
+        allCertificats =  getOtherExperinece().getCertificates().stream().map((per) -> per + ",").reduce(allCertificats, String::concat);
         getExperience().setCertificatsToString(allCertificats);
+         getExperience().setDealingWith(getOtherExperinece().getDealingWith());
+         getExperience().setDealingWithExplanation(getOtherExperinece().getDealingWithExplanation());
         setId(getId());
         new InternAplicationTableConnection().updateApplicantExperience(this);
     }
@@ -705,7 +728,7 @@ public class InternApplicationController extends Applicant implements Serializab
         new InternAplicationTableConnection().updateApplicantTermsAndConditions(this);
     }
 
-    public void onRowSelectWork(SelectEvent e) {
+        public void onRowSelectWork(SelectEvent e) {
         selectedSExperience = (WorkExperience) e.getObject();
         workExperience.setId(selectedSExperience.getId());
         workExperience.setJobTitle(selectedSExperience.getJobTitle());
@@ -719,9 +742,11 @@ public class InternApplicationController extends Applicant implements Serializab
     }
 
     public void clearForm() {
+        System.out.println("-------------------clear-------------------");
         clear();
         buttonVal = "Add";
         iconVal = "fa fa-plus";
+        System.out.println(workExperience.getNameOfEmployer());
     }
 
     private void clear() {

@@ -226,6 +226,7 @@ public final class Collections {
 
     /**
      * Find a single value of the given type in the given Collection.
+     * @param <T> For tokens
      * @param collection the Collection to search
      * @param type the type to look for
      * @return a value of the given type found if there is a clear match,
@@ -323,9 +324,14 @@ public final class Collections {
      * Marshal the elements from the given enumeration into an array of the given type.
      * Enumeration elements must be assignable to the type of the given array. The array
      * returned will be a different instance than the array given.
+     * @param <A> Generic
+     * @param <E>Generic
+     * @param enumeration Generic
+     * @param array Generic
+     * @return Generic
      */
     public static <A,E extends A> A[] toArray(Enumeration<E> enumeration, A[] array) {
-        ArrayList<A> elements = new ArrayList<A>();
+        ArrayList<A> elements = new ArrayList<>();
         while (enumeration.hasMoreElements()) {
             elements.add(enumeration.nextElement());
         }
@@ -334,11 +340,12 @@ public final class Collections {
 
     /**
      * Adapt an enumeration to an iterator.
+     * @param <E> Generic
      * @param enumeration the enumeration
      * @return the iterator
      */
     public static <E> Iterator<E> toIterator(Enumeration<E> enumeration) {
-        return new EnumerationIterator<E>(enumeration);
+        return new EnumerationIterator<>(enumeration);
     }
 
     /**
@@ -346,16 +353,18 @@ public final class Collections {
      */
     private static class EnumerationIterator<E> implements Iterator<E> {
 
-        private Enumeration<E> enumeration;
+        private final Enumeration<E> enumeration;
 
         public EnumerationIterator(Enumeration<E> enumeration) {
             this.enumeration = enumeration;
         }
 
+        @Override
         public boolean hasNext() {
             return this.enumeration.hasMoreElements();
         }
 
+        @Override
         public E next() {
             return this.enumeration.nextElement();
         }

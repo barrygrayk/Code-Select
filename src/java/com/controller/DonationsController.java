@@ -1,10 +1,8 @@
 package com.controller;
 
 import com.Donations.Donations;
-import com.InventoryModels.Inventory;
 import com.MenuView.MenuView;
 import com.db.connection.DonationsConnection;
-import com.db.connection.InventorytableConneection;
 import com.validation.MrKaplan;
 import com.validation.TheEqualizer;
 import java.io.Serializable;
@@ -14,12 +12,9 @@ import java.util.Random;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.annotation.PostConstruct;
-import javax.faces.application.FacesMessage;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.SessionScoped;
-import javax.faces.context.FacesContext;
 import org.chartistjsf.model.chart.AspectRatio;
-import org.chartistjsf.model.chart.ChartSeries;
 import org.primefaces.event.ItemSelectEvent;
 import org.primefaces.event.SelectEvent;
 import org.primefaces.event.UnselectEvent;

@@ -26,10 +26,10 @@
                 </p:column> 
             </p:dataTable>
             <p:contextMenu for="AlertContext">
-                 <p:menuitem value="View application"   oncomplete="PF('dlg').show()"  icon="fa fa-eye" update=":Applog"/>
+                <p:menuitem value="View application"   oncomplete="PF('dlg').show()"  icon="fa fa-eye" update=":Applog"/>
                 <p:menuitem value="Suspend application"   oncomplete="PF('dlg').show()"  action="#{Apply.suspendAccount()}" icon="fa fa-pause" update=":Applog"/>
                 <p:menuitem value="Reset password"   oncomplete="PF('dlg').show()"  action="#{Apply.restAccount()}" icon="fa fa fa-refresh" update=":Applog"/>
-                <p:menuitem value="Delete"  action="#{msgCont.delete()}" icon="fa fa-remove" update=":procressForm"/>
+                <p:menuitem value="Delete"  action="#{msgCont.delete()}" icon="fa fa-remove" update=":Applog"/>
             </p:contextMenu>
         </h:form>
         <p:dialog id="Applog" header="#{Apply.firstname}   #{Apply.lastname} 's Apllication form" widgetVar="dlg" minimizable="true" maximizable="true" position="center" >
@@ -84,7 +84,7 @@
                             <hr/>
                             <p:commandButton value="Grant intern access" icon="fa fa-unlock" action="#{Apply.grantInternAccess()}" /> 
                         </p:panel>
-                         
+
                     </div>
                 </div>
                 <div class="ui-g">
@@ -218,7 +218,7 @@
                                 #{Apply.mediaclHistory.medications}
                                 <h:outputLabel value="Medications" />
                                 #{Apply.mediaclHistory.medicationsExplanation}
-                                <h:outputLabel value="Have you had any serious	illness	or injuries in the last 3 years?"/>
+                                <h:outputLabel value="Have you had any serious illness or injuries in the last 3 years?"/>
                                 #{Apply.mediaclHistory.seriousIllness}
                                 <h:outputLabel value="Explanation for illness" />
                                 #{Apply.mediaclHistory.seriousIllnessExplanation}
@@ -226,10 +226,15 @@
                                 #{Apply.mediaclHistory.restrictions}
                                 <h:outputLabel value="Dietary restrictions" />
                                 #{Apply.mediaclHistory.restrictionsExplanation}
-                                <h:outputLabel value="Do you have any	physical handicaps, conditions,	or limitations preventing you from performing any type of activity?"/>
+                                <h:outputLabel value="Do you have any physical handicaps, conditions, or limitations preventing you from performing any type of activity?"/>
                                 #{Apply.mediaclHistory.physicalHandicap}
                                 <h:outputLabel  value="Handicap details" />
                                 #{Apply.mediaclHistory.physicalHandicapExplanation}
+                                <h:outputLabel value="Were you a victim of abuse, neglect, or	abandonment as a minor?"/>
+                                #{Apply.mediaclHistory.victimOfNeg}
+                                <h:outputLabel for="reason1" value="Explanation" />
+                                #{Apply.mediaclHistory.vitimOfNeglectExp}
+                                
                             </h:panelGrid>
                         </p:panel>
                     </div>
@@ -264,14 +269,12 @@
                                     <h:panelGrid columns="1" style="width:100%" >
 
                                         <h:outputLabel value="Do you have certifications in the following?"/>
-                                        #{Apply.experience.certificates}
+                                        #{Apply.otherExperinece.certificates}
                                         <h:outputLabel value="Do you have any previous	training or background in dealing with abused, neglected,  or abandoned	children?"/>
-                                        #{Apply.experience.dealingWith}
+                                        #{Apply.otherExperinece.dealingWith}
                                         <h:outputLabel  value="Explanation" />
-                                        #{Apply.experience.dealingWithExplanation}
-                                        <h:outputLabel value="Were you a victim of abuse, neglect, or	abandonment as a minor?	"/>
-                                        #{Apply.experience.victimOf}
-                                        <h:outputLabel for="reason1" value="Explanation" />
+                                        #{Apply.otherExperinece.dealingWithExplanation}
+
                                         #{Apply.experience.victimOfxplanation}
                                     </h:panelGrid>
                                 </p:tab>
@@ -352,7 +355,7 @@
 
             </h:form> 
             <h:form>
-             
+
             </h:form>
         </p:dialog>
     </ui:composition>

@@ -38,7 +38,7 @@
                     <p:growl id="viewListOfChildren" showDetail="true"/>
                     <p:row>
       
-                        <p:commandButton process="viewTable" update=":content" icon="ui-icon-search" value="View" action="#{Include.setPage('childProfilePage')}" actionListener="#{ChildCont.setDefaultChild()}"/>
+                        <p:commandButton process="viewTable" update=":content" icon="ui-icon-search" value="View" action="#{Include.setPage('childProfilePage')}" />
                         <p:commandButton icon="fa fa-plus" value="Add" action="#{ChildCont.clearChild()}" onclick="PF('dlgAdd').show()" update=":addChildForm" process="viewListOfBabies" type="submit">
                             <p:resetInput target=":addChildForm" />
                             <p:ajax update=":addChildForm" resetValues="true" />

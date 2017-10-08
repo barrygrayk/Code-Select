@@ -243,7 +243,8 @@ public class StaffTableConnection extends DatabaseConnection {
         ps.setString(3, g);
         ps.setString(4, staff.getAddress());
         ps.setString(5, staff.getPlaceOfBirth());
-        ps.setDate(6, toSqlDate(staff.getDateOfBirth()));
+        Date now = new Date ();
+        ps.setDate(6, staff.getDateOfBirth()!= null? toSqlDate(staff.getDateOfBirth()): toSqlDate(now));
         ps.setString(7, staff.getEmailAddress());
         if (update) {
 
@@ -295,7 +296,7 @@ public class StaffTableConnection extends DatabaseConnection {
             auth.setSalt(resultset.getBytes("passwordSalt"));
             auth.sethashPassword(resultset.getString("passwordHash"));
             auth.setStatus(getAccountStatus(resultset.getString("status")));
-            auth.setStatus(getAccountStatus(resultset.getString("token")));
+            auth.setToken(resultset.getString("token"));
             st.setAuthcateDetails((Authentication) auth);
             members.add(st);
         }
@@ -321,6 +322,9 @@ public class StaffTableConnection extends DatabaseConnection {
                 break;
             case "Deactivated":
                 statusIndex = 3;
+                break;
+             case "Suspended":
+                statusIndex = 4;
                 break;
         }
         return statusIndex;
@@ -397,8 +401,8 @@ public class StaffTableConnection extends DatabaseConnection {
     }
 
     public void sendEmailToStaff(String sendTo, String emailSubject, String emailBody) {
-        String USER_NAME = "barry.kapelembeg";  // GMail user name (just the part before "@gmail.com")
-        String PASSWORD = "06Yarg9595"; // GMail password
+        String USER_NAME = "apponthatile";  // GMail user name (just the part before "@gmail.com")
+        String PASSWORD = "codeselect"; // GMail password
         String RECIPIENT = sendTo;
         String from = USER_NAME;
         String pass = PASSWORD;

@@ -5,7 +5,7 @@ package com.applicants.Model;
  * @author Barry Gray
  */
 public class MediaclHistory {
-
+/*`victimOfNeg` = ?,`vitimOfNeglectExp`*/
     private String conditions;
     private String conditionExplanation;
     private String medications;
@@ -16,6 +16,8 @@ public class MediaclHistory {
     private String restrictionsExplanation;
     private String physicalHandicap;
     private String physicalHandicapExplanation;
+    private String victimOfNeg;
+    private String vitimOfNeglectExp;
 
     public String getConditions() {
         return conditions;
@@ -96,6 +98,23 @@ public class MediaclHistory {
     public void setPhysicalHandicapExplanation(String physicalHandicapExplanation) {
         this.physicalHandicapExplanation = physicalHandicapExplanation;
     }
+
+    public String getVictimOfNeg() {
+        return victimOfNeg;
+    }
+
+    public void setVictimOfNeg(String victimOfNeg) {
+        this.victimOfNeg = victimOfNeg;
+    }
+
+    public String getVitimOfNeglectExp() {
+        return vitimOfNeglectExp;
+    }
+
+    public void setVitimOfNeglectExp(String vitimOfNeglectExp) {
+        this.vitimOfNeglectExp = vitimOfNeglectExp;
+    }
+    
     
     
 

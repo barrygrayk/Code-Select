@@ -36,8 +36,8 @@
                 </ul>
 
                 <ul>
-                    <p:panel>
-                        <h4>Have you ever been arrested for sexual misconduct?</h4>
+                    <p:panel header="Have you ever been arrested for sexual misconduct?">
+            
                         <p:selectOneRadio id="misconduct" value="#{Apply.legalHistory.sexualMisCond}" >
                             <p:ajax process="misconduct" update="legalHist" listener="#{Apply.onChangeRadioBUtton()}"  />
                             <f:selectItem itemLabel="Yes" itemValue="Yes" />

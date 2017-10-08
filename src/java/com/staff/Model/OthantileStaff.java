@@ -62,10 +62,6 @@ public class OthantileStaff extends Person implements Role {
         this.authcateDetails = authcateDetails;
     }
 
-    /**
-     *
-     * @return
-     */
     @Override
     public int getAge() {
         return 2;

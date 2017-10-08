@@ -12,7 +12,6 @@ import com.applicants.Model.PersonanlityTraits;
 import com.applicants.Model.SpiritualLife;
 import com.applicants.Model.TermAndConditions;
 import com.applicants.Model.WorkExperience;
-import com.controller.InternApplicationController;
 import com.staff.Model.Authenticate;
 import com.staff.Model.Authentication;
 import com.validation.AuthTokens;
@@ -23,6 +22,7 @@ import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Date;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -140,9 +140,9 @@ public class InternAplicationTableConnection extends DatabaseConnection {
                 applicant.setAddress(resultset.getString("streetAddress"));
                 applicant.setCountry(resultset.getString("country"));
                 applicant.setZipCode(resultset.getString("zipCode"));
-             String sex = resultset.getString("gender");
-             System.out.println("This is the sex of the "+sex);
-                applicant.setGender(sex == null ? 'm'  : sex.charAt(0));
+                String sex = resultset.getString("gender");
+                System.out.println("This is the sex of the " + sex);
+                applicant.setGender(sex == null ? 'm' : sex.charAt(0));
                 applicant.setMaritalStatus(resultset.getString("maritalStatus"));
                 applicant.setMotivationForApllication(resultset.getString("message"));
             }
@@ -312,6 +312,8 @@ public class InternAplicationTableConnection extends DatabaseConnection {
                 med.setRestrictionsExplanation(resultset.getString("dietaryRestrictionsDesc"));
                 med.setPhysicalHandicap(resultset.getString("physicalHandicap"));
                 med.setPhysicalHandicapExplanation(resultset.getString("handicapDesc"));
+                med.setVictimOfNeg(resultset.getString("victimOfNeg"));
+                med.setVitimOfNeglectExp(resultset.getString("vitimOfNeglectExp"));
             }
         } catch (ClassNotFoundException | SQLException ex) {
             Logger.getLogger(InventorytableConneection.class.getName()).log(Level.SEVERE, null, ex);
@@ -491,7 +493,7 @@ public class InternAplicationTableConnection extends DatabaseConnection {
             PreparedStatement insertPersTraits = connection.prepareStatement("INSERT INTO applicantPersonalityTraits (`applicantID`) VALUES(?)");
             insertPersTraits.setInt(1, fk);
             insertPersTraits.execute();
-            PreparedStatement insertLegalHist = connection.prepareStatement("INSERT INTO idapplicantLegalHistory (`applicantLegLid`) VALUES(?)");
+            PreparedStatement insertLegalHist = connection.prepareStatement("INSERT INTO applicantLegalHistory (`applicantLegLid`) VALUES(?)");
             insertLegalHist.setInt(1, fk);
             insertLegalHist.execute();
             PreparedStatement insertLegalExp = connection.prepareStatement("INSERT INTO applicantExperience (`appicantID_Fk`) VALUES(?)");
@@ -503,6 +505,12 @@ public class InternAplicationTableConnection extends DatabaseConnection {
             PreparedStatement inserRecDocs = connection.prepareStatement("INSERT INTO applicantRequiredDocuments (`applicant_Id`) VALUES(?)");
             inserRecDocs.setInt(1, fk);
             inserRecDocs.execute();
+            PreparedStatement terms = connection.prepareStatement("INSERT INTO applicantTermsAndConditions (`appliacantid_fk`) VALUES(?)");
+            terms.setInt(1, fk);
+            terms.execute();
+            PreparedStatement experince = connection.prepareStatement("INSERT INTO applicantExperience (`appicantID_Fk`) VALUES(?)");
+            experince.setInt(1, fk);
+            experince.execute();
         } catch (SQLException ex) {
             Logger.getLogger(InternAplicationTableConnection.class.getName()).log(Level.SEVERE, null, ex);
         } finally {
@@ -554,7 +562,7 @@ public class InternAplicationTableConnection extends DatabaseConnection {
             ps.setString(1, applicant.getFirstname());
             ps.setString(2, applicant.getLastname());
             ps.setString(3, applicant.getPrename());
-            ps.setDate(4, applicant.getDateOfBirth()==null?null:toSqlDate(applicant.getDateOfBirth()));
+            ps.setDate(4, applicant.getDateOfBirth() == null ? null : toSqlDate(applicant.getDateOfBirth()));
             ps.setString(5, applicant.getPhoneNumbe());
             ps.setString(6, applicant.getEmailAddress());
             ps.setString(7, applicant.getCity());
@@ -651,9 +659,9 @@ public class InternAplicationTableConnection extends DatabaseConnection {
             PreparedStatement ps = null;
             ps = connection.prepareStatement(updateAuthfQuery);
             ps.setString(1, applicant.getFormation().getHighestQualification());
-            ps.setDate(2, toSqlDate(applicant.getFormation().getHighestGraduationDate()));
+            ps.setDate(2, applicant.getFormation().getHighestGraduationDate() == null ? null : toSqlDate(applicant.getFormation().getHighestGraduationDate()));
             ps.setString(3, applicant.getFormation().getSpecialQualification());
-            ps.setDate(4, toSqlDate(applicant.getFormation().getSpecialGraduationDate()));
+            ps.setDate(4, applicant.getFormation().getSpecialGraduationDate() == null ? null : toSqlDate(applicant.getFormation().getSpecialGraduationDate()));
             ps.setInt(5, applicant.getId());
             ps.execute();
             System.out.println("------update ex---------");
@@ -715,11 +723,15 @@ public class InternAplicationTableConnection extends DatabaseConnection {
                 query = insert;
                 id = applicant.getId();
             }
+            System.out.println("This is the id of fk " + id);
             PreparedStatement insertEdu = connection.prepareStatement(query);
             insertEdu.setString(1, applicant.getExperience().getNameOfEmployer());
             insertEdu.setString(2, applicant.getExperience().getJobTitle());
-            insertEdu.setDate(3, toSqlDate(applicant.getExperience().getJobStart()));
-            insertEdu.setDate(4, toSqlDate(applicant.getExperience().getJobEnd()));
+            Date start = applicant.getExperience().getJobStart();
+            Date end = applicant.getExperience().getJobEnd();
+
+            insertEdu.setDate(3, start == null ? null : toSqlDate(applicant.getExperience().getJobStart()));
+            insertEdu.setDate(4, end == null ? null : toSqlDate(applicant.getExperience().getJobEnd()));
             insertEdu.setString(5, applicant.getExperience().getDailyDuities());
             insertEdu.setInt(6, id);
 
@@ -738,6 +750,8 @@ public class InternAplicationTableConnection extends DatabaseConnection {
     }
 
     public void updateApplicantLegalHist(Applicant applicant) {
+        System.out.println(applicant.getId());
+        System.out.println(applicant.getMediaclHistory());
 
         try {
             connection = getConnection();
@@ -755,6 +769,7 @@ public class InternAplicationTableConnection extends DatabaseConnection {
             ps.setString(7, applicant.getLegalHistory().getWeed());
             ps.setString(8, applicant.getLegalHistory().getAlcohol());
             ps.setString(9, applicant.getLegalHistory().getReason());
+            System.out.println(applicant.getId());
             ps.setInt(10, applicant.getId());
             ps.execute();
             System.out.println("------update ex complete---------");
@@ -779,11 +794,13 @@ public class InternAplicationTableConnection extends DatabaseConnection {
             connection = getConnection();
             String updateLegalHist = "UPDATE applicantmedicalhistory SET `anyMedicalConditions` = ?, `medicalConditionDesc` = ?,"
                     + " `anyMedication` =?, `medicationDec` = ?, `anyPastMedicalCondition` =?, `pastMedicalConditionDesc` = ?, "
-                    + "`diataryRestrictions` = ?, `dietaryRestrictionsDesc` = ?, `physicalHandicap` = ?, `handicapDesc` = ?"
+                    + "`diataryRestrictions` = ?, `dietaryRestrictionsDesc` = ?, `physicalHandicap` = ?, `handicapDesc` = ?,`victimOfNeg` = ?, `vitimOfNeglectExp` = ?"
                     + " WHERE  `Applicant_idApplicant` = ?;";
+
             PreparedStatement ps = null;
             ps = connection.prepareStatement(updateLegalHist);
             ps.setString(1, applicant.getMediaclHistory().getConditions());
+            System.out.println("This is this " + applicant.getMediaclHistory().getConditionExplanation());
             ps.setString(2, applicant.getMediaclHistory().getConditionExplanation());
             ps.setString(3, applicant.getMediaclHistory().getMedications());
             ps.setString(4, applicant.getMediaclHistory().getMedicationsExplanation());
@@ -793,7 +810,10 @@ public class InternAplicationTableConnection extends DatabaseConnection {
             ps.setString(8, applicant.getMediaclHistory().getRestrictionsExplanation());
             ps.setString(9, applicant.getMediaclHistory().getPhysicalHandicap());
             ps.setString(10, applicant.getMediaclHistory().getPhysicalHandicapExplanation());
-            ps.setInt(11, applicant.getId());
+
+            ps.setString(11, applicant.getMediaclHistory().getVictimOfNeg());
+            ps.setString(12, applicant.getMediaclHistory().getMedicationsExplanation());
+            ps.setInt(13, applicant.getId());
             ps.execute();
             System.out.println("------update ex complete---------");
             feedback.addMessage("Success", "Your Medical History has been saved");
@@ -819,13 +839,40 @@ public class InternAplicationTableConnection extends DatabaseConnection {
         }
     }
 
+    public WorkExperience getExperience(int id) {
+             WorkExperience work = new WorkExperience();
+        try {
+            System.out.println("The id being passed " + id);
+            getResultSet(id, "SELECT * FROM `applicantExperience` WHERE `appicantID_Fk` = ?");
+
+            if (resultset.next()) {
+                String certificate = resultset.getString("certificates");
+                if (certificate != null && certificate.length() > 1) {
+                    work.setCertificates(new ArrayList<>(Arrays.asList(certificate.split(","))));
+                    System.out.println("Here-----------------------------------------"+work.getCertificates());
+                }
+                work.setDealingWith(resultset.getString("deallingWithNeg"));
+                work.setDealingWithExplanation(resultset.getString("dealingWithExplanation"));
+            }
+        } catch (ClassNotFoundException | SQLException ex) {
+            Logger.getLogger(InternAplicationTableConnection.class.getName()).log(Level.SEVERE, null, ex);
+        } finally {
+            try {
+                connection.close();
+            } catch (SQLException ex) {
+                Logger.getLogger(InternAplicationTableConnection.class.getName()).log(Level.SEVERE, null, ex);
+            }
+        }
+        return work;
+    }
+
     public List<WorkExperience> getWorkExperience(int id) {
         List<WorkExperience> works = new ArrayList<>();
         try {
-
+            System.out.println("The id being passed " + id);
             getResultSet(id, "SELECT * FROM applicantworkexperience WHERE `Applicant_idApplicant` = ?");
+            WorkExperience work = new WorkExperience();
             while (resultset.next()) {
-                WorkExperience work = new WorkExperience();
                 work.setId(resultset.getInt("idapplicantworkexperience"));
                 work.setJobTitle(resultset.getString("jobTitle"));
                 work.setNameOfEmployer(resultset.getString("nameOfEmployer"));
@@ -836,6 +883,12 @@ public class InternAplicationTableConnection extends DatabaseConnection {
             }
         } catch (ClassNotFoundException | SQLException ex) {
             Logger.getLogger(InternAplicationTableConnection.class.getName()).log(Level.SEVERE, null, ex);
+        } finally {
+            try {
+                connection.close();
+            } catch (SQLException ex) {
+                Logger.getLogger(InternAplicationTableConnection.class.getName()).log(Level.SEVERE, null, ex);
+            }
         }
         return works;
     }
@@ -1049,16 +1102,6 @@ public class InternAplicationTableConnection extends DatabaseConnection {
         new StaffTableConnection().sendEmailToStaff(applicant.getEmailAddress(), "Internship application", body);
     }
 
+
+
 }
-
-/*
-UPDATE `onthatile children's ministries`.`applicantRequiredDocuments`
-SET
-`idinternRequiredDocuments` = <{idinternRequiredDocuments: }>,
-`generalRefe` = <{generalRefe: }>,
-`pasroralRef` = <{pasroralRef: }>,
-`parentalCon` = <{parentalCon: }>,
-`applicant_Id` = <{applicant_Id: }>
-WHERE `idinternRequiredDocuments` = <{expr}> AND `applicant_Id` = <{expr}>;
-
- */

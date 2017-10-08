@@ -80,8 +80,11 @@
                            </p:panel>-->
 
                     <p:panel header="Why do you wish to intern with Onthatile Children’s Ministries And What are your goals for the internship?">   
+                           <p:inputTextarea  id="goals" rows="10" cols="100"  class="field-style" 
+                                         counter="displayyyy" maxlength="1000" counterTemplate="{0} characters remaining." 
+                                         autoResize="false"   label="Message" value="#{Apply.internshipInfo.internshipGoal}" />
+                           <h:outputText id="displayyyy" />
          
-                        <p:textEditor id="goals" widgetVar="internGoals" value="#{Apply.internshipInfo.internshipGoal}" height="300" />
 
 
 

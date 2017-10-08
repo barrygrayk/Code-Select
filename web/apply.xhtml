@@ -17,6 +17,8 @@
         <a href="internAppTopNav.xhtml"></a>
         <a href="i"></a>
         <f:facet name="middle">
+            
+            
             <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css"/>
             <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
             <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
@@ -35,13 +37,14 @@
 
 
     <h:body>
-        <h:form>     
+        <h:form id="applicationForm">     
             
              <p:growl autoUpdate="true" sticky="true" showDetail="true" life="3000" />
 
             <p:toolbar>
                 <f:facet name="left">
-                    <p:commandButton type="button" value="Onthatile Children's Ministry" icon="ui-icon-document" />
+                    
+                    <p:commandButton type="button" value="Onthatile Children's Ministry" icon="fa fa-child" />
 
                     <span class="ui-separator">
                         <span class="ui-icon ui-icon-grip-dotted-vertical" />
@@ -53,9 +56,6 @@
                         <span class="ui-icon ui-icon-grip-dotted-vertical" />
                     </span>
 
-                    <p:commandButton type="button" title="Save" icon="ui-icon-disk" />
-                    <p:commandButton type="button" title="Delete" icon="ui-icon-trash" />
-                    <p:commandButton type="button" title="Print" icon="ui-icon-print" />
                 </f:facet>
 
                 <f:facet name="right">
@@ -302,7 +302,7 @@
 
                     <p:tab title="Required Commitments" id="tab3">
                         <!--- Side Menu -->
-                        <!-- <p:tabView orientation="left" id="tab3a" >
+                        <p:tabView orientation="left" id="tab3a" >
                                <p:tab title="1. Intern Commitments"> 
                                    <p:tab id="Commitments" title="Intern Commitments">  
                                        <div class="bhoechie-tab-content">
@@ -310,28 +310,10 @@
                                        </div>
                                    </p:tab>
                                </p:tab>     
-                           </p:tabView>-->
+                           </p:tabView>
 
                     </p:tab>
-
                     <!-- Top Tab 4  -->
-
-                    <p:tab title="Check List" id="tab4">
-                        <!--- Side Menu -->
-                        <p:tabView orientation="left" id="tab4a" >
-                            <!--- Pastoral Reference -->
-                            <!--- Inner Menu -->
-                            <p:tab title="Check List"> 
-                                <p:tab id="Commitments" title="Check List">  
-                                    <div class="bhoechie-tab-content">
-
-                                    </div>
-                                </p:tab>
-                            </p:tab>     
-                        </p:tabView>        
-                    </p:tab>
-
-
                 </p:tabView>
             </h:form>
         </div>

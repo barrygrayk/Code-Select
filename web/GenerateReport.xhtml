@@ -54,7 +54,7 @@
                                 <f:selectItem itemLabel="Customized Report" itemValue="customReport" />
                             </p:selectOneRadio>
                             <p:outputLabel value="Start Date"/>
-                            <p:calendar  placeholder="View date" pattern = "dd/MM/yyyy" value="#{ChildCont.reportStartDate}" mask = "true" />
+                            <p:calendar  placeholder="View date" pattern = "dd/MM/yyyy" value="#{ChildCont.reportStartDate}" mask = "true" style="width: 25px" />
                             <p:outputLabel value="End Date"/>
                             <p:calendar placeholder="View date" pattern = "dd/MM/yyyy" value="#{ChildCont.reportEndDate}" mask = "true" />
                         </p:panelGrid>
@@ -96,10 +96,7 @@
                     
                 </div>
                 <!--Display ALbum -->
-                <p:contentFlow value="#{ChildCont.images}" var="image">
-                    <p:graphicImage name="/images/#{image}" styleClass="content" />
-                    <div class="caption">#{image}</div>
-                </p:contentFlow>
+
                 <!--Tables for the Report-->
            
                     <p:dataTable id="manageMedicalHTb"    style="visibility: hidden" >
